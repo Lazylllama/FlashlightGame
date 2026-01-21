@@ -24,6 +24,7 @@ public class EnemyController : MonoBehaviour {
 
 	private void Start() {
 		rb = GetComponent<Rigidbody2D>();
+		health = maxHealth;
 	}
 
 	private void Update() {
