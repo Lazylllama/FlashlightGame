@@ -69,5 +69,10 @@ public class EnemyController : MonoBehaviour {
 		overheadText.text = $"Health: {health}/{maxHealth}";
 	}
 
+	public void UpdateHealth(float amount) {
+		health += amount;
+		UpdateOverheadText();
+	}
+
 	#endregion
 }
