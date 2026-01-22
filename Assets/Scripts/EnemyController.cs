@@ -71,6 +71,8 @@ public class EnemyController : MonoBehaviour {
 	public void UpdateHealth(float amount) {
 		health -= amount;
 		UpdateOverheadText();
+		
+		if (health <= 0) Destroy(gameObject);
 	}
 
 	#endregion
