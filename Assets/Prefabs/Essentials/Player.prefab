@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8851002494661578932}
   - component: {fileID: 1123465994746251690}
   - component: {fileID: 8938937570483269785}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,7 +133,7 @@ Rigidbody2D:
   m_Material: {fileID: 6200000, guid: 309d6462adf46ba42a5160c5afd49f5f, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -154,7 +154,7 @@ CapsuleCollider2D:
   m_Material: {fileID: 6200000, guid: 309d6462adf46ba42a5160c5afd49f5f, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -187,7 +187,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3770971208982464766}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GroundCheckPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -15,10 +15,17 @@ public class FlashlightController : MonoBehaviour {
 
 	[Header("Light Output")]
 	[SerializeField] private Transform lightOutput;
+	
+	//* Refs
+	private LayerMask excludePlayer;
 
 	#endregion
 
 	#region Unity functions
+
+	private void Start() {
+		excludePlayer = ~LayerMask.GetMask("Player");
+	}
 
 	private void Update() {
 		UpdateFlashlightPosition();
@@ -75,7 +82,7 @@ public class FlashlightController : MonoBehaviour {
 			Debug.DrawLine(startPoint, endPoint, Color.red);
 
 			//? Adds all colliders that hit the ray to a Dictionary and counts the number of times they hit.
-			var hit = Physics2D.Linecast(startPoint, endPoint);
+			var hit = Physics2D.Linecast(startPoint, endPoint, excludePlayer);
 			if (!hit || !hit.collider.gameObject.CompareTag("Enemy")) continue;
 			if (!hitList.TryAdd(hit.collider, 1)) {
 				hitList[hit.collider]++;

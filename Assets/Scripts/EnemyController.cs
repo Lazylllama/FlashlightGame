@@ -69,7 +69,7 @@ public class EnemyController : MonoBehaviour {
 	}
 
 	public void UpdateHealth(float amount) {
-		health += amount;
+		health -= amount;
 		UpdateOverheadText();
 	}
 
