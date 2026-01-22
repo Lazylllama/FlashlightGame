@@ -3,8 +3,7 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour {
 	#region Fields
-
-	//* Refs
+	
 	[Header("Refs")]
 	[SerializeField] private TMP_Text overheadText;
 	private Rigidbody2D rb;

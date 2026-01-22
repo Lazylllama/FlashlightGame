@@ -434,6 +434,7 @@ GameObject:
   m_Component:
   - component: {fileID: 745286265}
   - component: {fileID: 745286267}
+  - component: {fileID: 745286268}
   m_Layer: 0
   m_Name: Flashlight
   m_TagString: Player
@@ -517,6 +518,23 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &745286268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 745286264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef111dcba8227b847af2dd69c5855fd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FlashlightController
+  flashlightWidth: 0
+  rayAmount: 100
+  beamWidth: 45
+  range: 10
+  lightOutput: {fileID: 1070042747}
 --- !u!1 &1070042746
 GameObject:
   m_ObjectHideFlags: 0
