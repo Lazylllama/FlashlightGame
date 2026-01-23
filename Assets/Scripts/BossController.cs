@@ -16,13 +16,20 @@ public class BossController : MonoBehaviour {
 	[Header("WeakPoints")]
 	[SerializeField] private GameObject[] weakPoints;
 	
+	//* Refs
+	private LayerMask groundLayer;
+	
 	//* States
-	public float timeSinceLastChange;
+	private float timeSinceLastChange;
+
+	private Vector2 groundPosition;
 	#endregion
 	#region unity functions
 
 	private void Start() {
+		groundLayer = LayerMask.GetMask("Ground");
 		timeSinceLastChange = weakpointChangeInterval;
+		groundPosition = Physics2D.Raycast(transform.position, Vector2.down, 1000f, groundLayer).point;
 		CloseWeakPoints();
 	}
 	
@@ -40,7 +47,7 @@ public class BossController : MonoBehaviour {
 			t.tag                       = "Untagged";
 			t.GetComponent<SpriteRenderer>().color = Color.red;
 		}
-		StartCoroutine(OpenWeakpointAfter(weakpointClosedFor));
+		OpenWeakPoint();
 	}
 
 	private void OpenWeakPoint() {
@@ -58,6 +65,7 @@ public class BossController : MonoBehaviour {
 		healthText.text = health.ToString();
 	}
 	#endregion
+	
 	#region Enumerators
 
 	private IEnumerator OpenWeakpointAfter(float time) {
