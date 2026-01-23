@@ -28,7 +28,7 @@ public class FlashlightController : MonoBehaviour {
 	#region Unity functions
 
 	private void Start() {
-		excludePlayer = ~LayerMask.GetMask("Player") | ~LayerMask.GetMask("FlashlightIgnore");
+		excludePlayer = ~LayerMask.GetMask("Player");
 	}
 
 	private void Update() {
@@ -93,7 +93,7 @@ public class FlashlightController : MonoBehaviour {
 
 			//? Adds all colliders that hit the ray to a Dictionary and counts the number of times they hit.
 			var hit = Physics2D.Linecast(startPoint, endPoint, excludePlayer);
-			if (!hit || !hit.collider.gameObject.CompareTag("Enemy")) continue;
+			if (!hit || !(hit.collider.gameObject.CompareTag("Enemy") || hit.collider.gameObject.CompareTag("WeakPoint"))) continue;
 			if (!hitList.TryAdd(hit.collider, 1)) {
 				hitList[hit.collider]++;
 				Debug.Log("Test 1");
@@ -102,10 +102,13 @@ public class FlashlightController : MonoBehaviour {
 			}
 		}
 
-		Debug.Log(hitList);
-
 		foreach (var hit in hitList) {
-			hit.Key.gameObject.GetComponent<EnemyController>().UpdateHealth(hit.Value / (float)rayAmount);
+			if (hit.Key.gameObject.CompareTag("Enemy")) {
+				hit.Key.gameObject.GetComponent<EnemyController>().UpdateHealth(hit.Value / (float)rayAmount);
+			} else {
+				hit.Key.gameObject.GetComponentInParent<BossController>().Hit(hit.Value / (float)rayAmount);
+			}
+			
 		}
 	}
 
