@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,8 +11,9 @@ public class PlayerMovement : MonoBehaviour {
 	private InputAction jumpAction, moveAction;
 	private Rigidbody2D playerRb;
 
+	//! Friction impacts speed *GREATLY*!	
 	[Header("Movement Settings")]
-	[SerializeField] private float jumpForce, playerSpeed;
+	[SerializeField] private float jumpForce, maxSpeed, acceleration;
 
 	[Header("Ground Check")]
 	[SerializeField] private Transform groundCheckPosition;
@@ -48,7 +48,7 @@ public class PlayerMovement : MonoBehaviour {
 		Gizmos.color = isGrounded ? Color.green : Color.red;
 		Gizmos.DrawWireSphere(groundCheckPosition.position, groundCheckRadius);
 	}
-	
+
 	//? Set global instance
 	private void Awake() {
 		if (Instance != null && Instance != this) {
@@ -87,7 +87,16 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	private void PerformMove() {
-		playerRb.linearVelocityX = moveInputVal.x * playerSpeed;
+		// playerRb.linearVelocityX = moveInputVal.x * playerSpeed;
+
+		//* Revolutionary!?
+		var inputSpeed      = moveInputVal.x * maxSpeed;
+		var speedDifference = inputSpeed - playerRb.linearVelocityX;
+		var finalForce      = speedDifference * acceleration;
+		
+		playerRb.AddForce(Vector2.right * finalForce, ForceMode2D.Force);
+		print("Final Force:"  + finalForce + ". Speed: " + playerRb.linearVelocityX + ". Input: " + inputSpeed + "");
+
 	}
 
 	#endregion
