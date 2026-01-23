@@ -66,7 +66,13 @@ public class BossController : MonoBehaviour {
 	}
 	#endregion
 	
-	#region Enumerators
+	#region AttackFunctions
+	
+	
+	
+	#endregion
+	
+	#region Coroutines
 
 	private IEnumerator OpenWeakpointAfter(float time) {
 		yield return new WaitForSeconds(time);
