@@ -6,7 +6,7 @@
 
 # Enemies
 /Assets/Scripts/Enemy    @LKarLzs0n
-/Assets/Prefabs/Enemies
+/Assets/Prefabs/Enemies  @LKarLzs0n
 
 # Player
 /Assets/Scripts/Player   @lazylllama
