@@ -816,6 +816,7 @@ GameObject:
   - component: {fileID: 1120287881}
   - component: {fileID: 1120287883}
   - component: {fileID: 1120287882}
+  - component: {fileID: 1120287884}
   m_Layer: 0
   m_Name: WeakPoint
   m_TagString: WeakPoint
@@ -909,6 +910,42 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!58 &1120287884
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1120287880}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 0.5
 --- !u!1 &1147448609
 GameObject:
   m_ObjectHideFlags: 0
@@ -999,6 +1036,7 @@ GameObject:
   - component: {fileID: 1769435863}
   - component: {fileID: 1769435864}
   - component: {fileID: 1769435865}
+  - component: {fileID: 1769435866}
   m_Layer: 0
   m_Name: WeakPoint (2)
   m_TagString: WeakPoint
@@ -1092,6 +1130,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22f164df23ba2b94586b54be2c336687, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeakPoint
+--- !u!58 &1769435866
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1769435862}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 0.5
 --- !u!1 &2044555767
 GameObject:
   m_ObjectHideFlags: 0
@@ -1122,11 +1196,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d5390f81616b7429bf4c32c016fe7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  health: 1000
+  weakpointChangeInterval: 5
+  weakpointClosedFor: 2
   healthText: {fileID: 276113337}
   weakPoints:
-  - {fileID: 1120287882}
-  - {fileID: 2067260617}
-  - {fileID: 1769435865}
+  - {fileID: 1120287880}
+  - {fileID: 2067260614}
+  - {fileID: 1769435862}
 --- !u!212 &2044555769
 SpriteRenderer:
   serializedVersion: 2
@@ -1216,6 +1293,7 @@ GameObject:
   - component: {fileID: 2067260615}
   - component: {fileID: 2067260616}
   - component: {fileID: 2067260617}
+  - component: {fileID: 2067260618}
   m_Layer: 0
   m_Name: WeakPoint (1)
   m_TagString: WeakPoint
@@ -1309,6 +1387,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22f164df23ba2b94586b54be2c336687, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeakPoint
+--- !u!58 &2067260618
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2067260614}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 0.5
 --- !u!1001 &116063129775080111
 PrefabInstance:
   m_ObjectHideFlags: 0
