@@ -1,0 +1,20 @@
+# All PRs should be reviewed by alteast 1 Lead Programmer
+*                        @lazylllama @th1n0-i
+
+# Other
+*.md                     @lazylllama
+
+# Enemies
+/Assets/Scripts/Enemy    @LKarLzs0n
+/Assets/Prefabs/Enemies
+
+# Player
+/Assets/Scripts/Player   @lazylllama
+
+# Level
+/Assets/Tiles            @ImWazi @LKarLzs0n
+/Assets/Scenes/Game      @ImWazi @LKarLzs0n
+/Assets/Prefabs/Level    @ImWazi @LKarLzs0n
+
+# Graphics
+# /Assets/Graphics       @? @? @?
