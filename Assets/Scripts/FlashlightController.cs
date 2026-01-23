@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.InputSystem;
 
 
@@ -15,6 +16,9 @@ public class FlashlightController : MonoBehaviour {
 
 	[Header("Light Output")]
 	[SerializeField] private Transform lightOutput;
+
+	[Header("SpotLight")]
+	[SerializeField] private SpotLight spotLight;
 	
 	//* Refs
 	private LayerMask excludePlayer;
@@ -24,10 +28,11 @@ public class FlashlightController : MonoBehaviour {
 	#region Unity functions
 
 	private void Start() {
-		excludePlayer = ~LayerMask.GetMask("Player");
+		excludePlayer = ~LayerMask.GetMask("Player") | ~LayerMask.GetMask("FlashlightIgnore");
 	}
 
 	private void Update() {
+		UpdateSpotlight();
 		UpdateFlashlightPosition();
 		CheckForEnemy();
 	}
@@ -35,6 +40,11 @@ public class FlashlightController : MonoBehaviour {
 	#endregion
 
 	#region Functions
+
+	private void UpdateSpotlight() {
+		spotLight.coneAngle = beamWidth*2;
+		spotLight.range     = range;
+	}
 
 	private void UpdateFlashlightPosition() {
 		// Gets the mouse position in world space
