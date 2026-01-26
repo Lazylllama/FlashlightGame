@@ -8,12 +8,17 @@ public class PlayerMovement : MonoBehaviour {
 	public static PlayerMovement Instance;
 
 	//* Refs
-	private InputAction jumpAction, moveAction;
+	private InputAction moveAction;
 	private Rigidbody2D playerRb;
 
-	//! Friction impacts speed *GREATLY*!	
+	private static bool IsLookingRight {
+		get => PlayerData.Instance.IsLookingRight;
+		set => PlayerData.Instance.IsLookingRight = value;
+	}
+
+	//! Friction impacts speed *GREATLY*
 	[Header("Movement Settings")]
-	[SerializeField] private float jumpForce, maxSpeed, acceleration;
+	[SerializeField] private float maxSpeed, acceleration;
 
 	[Header("Ground Check")]
 	[SerializeField] private Transform groundCheckPosition;
@@ -31,7 +36,6 @@ public class PlayerMovement : MonoBehaviour {
 	private void Start() {
 		playerRb   = GetComponent<Rigidbody2D>();
 		moveAction = InputSystem.actions.FindAction("Move");
-		jumpAction = InputSystem.actions.FindAction("Jump");
 	}
 
 	private void Update() {
@@ -66,24 +70,19 @@ public class PlayerMovement : MonoBehaviour {
 	private void GroundCheck() {
 		var hit = Physics2D.OverlapCircle(groundCheckPosition.position, groundCheckRadius, groundLayer);
 
-		if (hit) {
-			isGrounded = true;
-		} else {
-			isGrounded = false;
-		}
+		isGrounded = hit;
 	}
 
 	private void InputCheck() {
 		moveInputVal = moveAction.ReadValue<Vector2>();
-		if (jumpAction.IsPressed()) PerformJump();
-	}
 
-	private void PerformJump() {
-		switch (isGrounded) {
-			case true:
-				playerRb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-				break;
-		}
+		IsLookingRight = moveInputVal.x switch {
+			< 0 when IsLookingRight  => false,
+			> 0 when !IsLookingRight => true,
+			_                        => IsLookingRight
+		};
+		
+		print(IsLookingRight);
 	}
 
 	private void PerformMove() {
@@ -93,10 +92,9 @@ public class PlayerMovement : MonoBehaviour {
 		var inputSpeed      = moveInputVal.x * maxSpeed;
 		var speedDifference = inputSpeed - playerRb.linearVelocityX;
 		var finalForce      = speedDifference * acceleration;
-		
-		playerRb.AddForce(Vector2.right * finalForce, ForceMode2D.Force);
-		print("Final Force:"  + finalForce + ". Speed: " + playerRb.linearVelocityX + ". Input: " + inputSpeed + "");
 
+		playerRb.AddForce(Vector2.right * finalForce, ForceMode2D.Force);
+		print("Final Force:" + finalForce + ". Speed: " + playerRb.linearVelocityX + ". Input: " + inputSpeed + "");
 	}
 
 	#endregion
