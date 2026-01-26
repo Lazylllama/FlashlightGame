@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class BossController : MonoBehaviour {
 	#region Fields
@@ -40,7 +41,7 @@ public class BossController : MonoBehaviour {
 	
 	#endregion
 	#region Functions
-
+	
 	private void CloseWeakPoints() {
 		timeSinceLastChange = 0;
 		foreach (var t in weakPoints) {

@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal;
 
 
 public class FlashlightController : MonoBehaviour {
@@ -10,40 +13,60 @@ public class FlashlightController : MonoBehaviour {
 
 	[Header("Flashlight Settings")]
 	[SerializeField] private float flashlightWidth = 45;
-	[SerializeField] private int   rayAmount = 100;
-	[SerializeField] private float beamWidth = 10;
-	[SerializeField] private float range     = 10;
+	[SerializeField] private int   rayAmount         = 100;
+	[SerializeField] private float beamWidth         = 10;
+	[SerializeField] private float rangePreset       = 10;
+	[SerializeField] private float scrollSensitivity = 10;
 
 	[Header("Light Output")]
 	[SerializeField] private Transform lightOutput;
 
 	[Header("SpotLight")]
-	[SerializeField] private SpotLight spotLight;
-	
+	[SerializeField] private GameObject spotLightGameObject;
+
 	//* Refs
-	private LayerMask excludePlayer;
+	private LayerMask   excludePlayer;
+	private InputAction scrollAction;
+
+	//* States
+	private Vector2   totalScroll;
+	private float     range;
+	private Light2D spotLight;
 
 	#endregion
 
 	#region Unity functions
 
 	private void Start() {
+		spotLight     = spotLightGameObject.GetComponent<Light2D>();
+		
 		excludePlayer = ~LayerMask.GetMask("Player");
+	}
+
+	private void Awake() {
+		scrollAction  = InputSystem.actions.FindAction("ScrollWheel");
 	}
 
 	private void Update() {
 		UpdateSpotlight();
 		UpdateFlashlightPosition();
 		CheckForEnemy();
+		CheckPlayerInputs();
 	}
 
 	#endregion
 
 	#region Functions
 
+	private void CheckPlayerInputs() {
+		range = rangePreset / beamWidth;
+		if (scrollAction.ReadValue<Vector2>().y == 0) return;
+		beamWidth += scrollAction.ReadValue<Vector2>().y * scrollSensitivity;
+	}
+
 	private void UpdateSpotlight() {
-		spotLight.coneAngle = beamWidth*2;
-		spotLight.range     = range;
+		spotLight.pointLightOuterAngle = beamWidth * 2;
+		spotLight.pointLightOuterRadius     = range;
 	}
 
 	private void UpdateFlashlightPosition() {
@@ -93,12 +116,12 @@ public class FlashlightController : MonoBehaviour {
 
 			//? Adds all colliders that hit the ray to a Dictionary and counts the number of times they hit.
 			var hit = Physics2D.Linecast(startPoint, endPoint, excludePlayer);
-			if (!hit || !(hit.collider.gameObject.CompareTag("Enemy") || hit.collider.gameObject.CompareTag("WeakPoint"))) continue;
+			if (!hit ||
+			    !(hit.collider.gameObject.CompareTag("Enemy") ||
+			      hit.collider.gameObject.CompareTag("WeakPoint"))) continue;
 			if (!hitList.TryAdd(hit.collider, 1)) {
 				hitList[hit.collider]++;
-				Debug.Log("Test 1");
 			} else {
-				Debug.Log("Test 2");
 			}
 		}
 
@@ -108,7 +131,6 @@ public class FlashlightController : MonoBehaviour {
 			} else {
 				hit.Key.gameObject.GetComponentInParent<BossController>().Hit(hit.Value / (float)rayAmount);
 			}
-			
 		}
 	}
 
