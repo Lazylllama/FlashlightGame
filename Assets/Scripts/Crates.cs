@@ -3,10 +3,10 @@ using UnityEngine;
 public class Crates : MonoBehaviour {
 	#region Fields
 
-	//* Refs                                                   
-	[SerializeField] private new ParticleSystem particleSystem;
+	//* Refs *//
+	private ParticleController particleController;
 
-	//* Cache
+	//* State *//
 	private Vector2 lastPosition;
 
 	#endregion
@@ -14,14 +14,19 @@ public class Crates : MonoBehaviour {
 	#region Unity Functions
 
 	private void Start() {
-		particleSystem = GetComponent<ParticleSystem>();
+		particleController = GetComponentInChildren<ParticleController>();
 	}
 
 	private void FixedUpdate() {
-		if (lastPosition.Equals(particleSystem.transform.position)) return;
-		lastPosition = transform.position;
+		Vector2 currentPosition = transform.position;
+		var     delta           = currentPosition - lastPosition;
 
-		particleSystem.Emit(1);
+		//? No change = Ignore
+		if (delta == Vector2.zero) return;
+		
+		particleController.CrateMovement(delta.x);
+
+		lastPosition = currentPosition;
 	}
 
 	#endregion
