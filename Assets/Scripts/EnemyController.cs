@@ -9,58 +9,51 @@ public class EnemyController : MonoBehaviour {
 	private Rigidbody2D rb;
 
 	[Header("Enemy Options")]
-	[SerializeField] private float detectionRange;
-	[SerializeField] private float     enemySpeed;
-	[SerializeField] private float     baseSpeed;
-	[SerializeField] private float     maxHealth;
-	[SerializeField] private Transform lookPosition;
+	private float health;
+	[SerializeField] private bool      isGrounded,     isChasing,  facingRight;
+	[SerializeField] private float     detectionRange, enemySpeed, baseSpeed, maxHealth;
+	[SerializeField] private Transform lookPosition,   groundCheck;
 	[SerializeField] private LayerMask groundLayer;
-	//TEST
+
 	[Header("Wall Detection")]
 	[SerializeField] private float wallRayDistance = 3f;
 	[SerializeField] private float     wallRayHeight = 1.2f;
-	[SerializeField] private LayerMask wallLayer;
+	[SerializeField] private LayerMask climbableWallLayer, wallLayer;
 
 	[Header("Teleport Settings")]
 	[SerializeField] private float teleportCooldown = 1.2f;
 	[SerializeField] private float teleportOffsetY = 0.05f;
-
+	private                  float teleportTimer;
+	private                  bool  canTeleport;
+	
 	[Header("Slow Down")]
 	[SerializeField] private float slowDistance = 2f;
 	[SerializeField] private float slowFactor = 0.5f;
+
 	
-
-
 	//* States
 	private Vector3  teleportPoint;
 	private Vector2? target;
-
-	private                  float teleportTimer;
-	private                  bool  canTeleport;
-	private                  float health;
-	[SerializeField] private bool  isChasing;
-	[SerializeField] private bool  facingRight;
 
 	#endregion
 
 	#region Unity Functions
 
 	private void Start() {
-		rb        = GetComponent<Rigidbody2D>();
-		health    = maxHealth;
+		rb         = GetComponent<Rigidbody2D>();
+		health     = maxHealth;
 		enemySpeed = baseSpeed;
 	}
 
 	private void Update() {
-		GroundHitCheck();
-		CheckClimbableWall();
+		GroundCheck();
+		LedgeCheck();
 		HandleTeleport();
 		CheckForTarget();
 		UpdateOverheadText();
 		TurnEnemy();
-		
-
-		
+		CheckClimbableWall();
+		CheckWall();
 	}
 
 	private void FixedUpdate() {
@@ -76,37 +69,45 @@ public class EnemyController : MonoBehaviour {
 		var distanceToPlayer = Vector2.Distance(transform.position, playerPosition);
 
 		if (distanceToPlayer <= detectionRange) {
-			target  = playerPosition;
+			target = playerPosition;
 		} else {
-			target  = null;
+			target = null;
 		}
 	}
-	private void GroundHitCheck() {
-		var groundCheckHit = Physics2D.Raycast(lookPosition.position, Vector2.down, 0.2f, groundLayer);
-		if (!groundCheckHit.collider & !isChasing) {
-			baseSpeed = 2f;
-			if (facingRight) {
+
+	private void LedgeCheck() {
+		var ledgeHit = Physics2D.Raycast(lookPosition.position, Vector2.down, 0.3f, groundLayer);
+		if (!ledgeHit.collider & !isChasing) {
+			enemySpeed = baseSpeed;
+			if (facingRight & isGrounded) {
 				facingRight = false;
-			} else if (!facingRight) {
+			} else if (!facingRight & isGrounded) {
 				facingRight = true;
 			}
-			
 		}
-		if (!groundCheckHit.collider & isChasing) {
-			baseSpeed = 0f;
+	}
+
+	private void GroundCheck() {
+		var groundHit = Physics2D.Raycast(groundCheck.position, Vector2.down, 0.1f, groundLayer);
+		if (groundHit.collider) {
+			isGrounded = true;
+		} else {
+			isGrounded = false;
 		}
 	}
 
 	private void CheckWall() {
-		var wallHit = Physics2D.Raycast(lookPosition.position, facingRight ? Vector2.right : Vector2.left, 0.2f, wallLayer);
-		if (wallHit.collider) {
-			if (facingRight) {
+		var wallHit = Physics2D.Raycast(lookPosition.position, facingRight ? Vector2.right : Vector2.left, 2f, wallLayer);
+		Debug.DrawRay(lookPosition.position, facingRight ? Vector2.right : Vector2.left * 2f, Color.yellow);
+		if (wallHit.collider & !isChasing) {
+			if (facingRight & isGrounded) {
 				facingRight = false;
-			} else if (!facingRight) {
+			} else if (!facingRight & isGrounded) {
 				facingRight = true;
 			}
 		}
 	}
+
 	private void CheckClimbableWall() {
 		canTeleport = false;
 
@@ -115,7 +116,7 @@ public class EnemyController : MonoBehaviour {
 
 		Debug.DrawRay(origin, direction * wallRayDistance, Color.red);
 
-		var climbableWallHit = Physics2D.Raycast(origin, direction, wallRayDistance, wallLayer);
+		var climbableWallHit = Physics2D.Raycast(origin, direction, wallRayDistance, climbableWallLayer);
 		if (!climbableWallHit) {
 			enemySpeed = baseSpeed;
 			return;
@@ -129,16 +130,17 @@ public class EnemyController : MonoBehaviour {
 		                           );
 
 		canTeleport = true;
+		enemySpeed  = 0f;
 		Debug.DrawLine(origin, climbableWallHit.point, Color.green);
-
-
 		var distance = climbableWallHit.distance;
 		if (distance < slowDistance) {
 			enemySpeed = baseSpeed * slowFactor;
 		} else {
 			enemySpeed = baseSpeed;
 		}
+
 	}
+
 	private void HandleTeleport() {
 		if (!canTeleport) {
 			teleportTimer = 0f;
@@ -154,37 +156,26 @@ public class EnemyController : MonoBehaviour {
 
 	private void ChaseTarget() {
 		if (target == null) {
-			isChasing = false;
-			Debug.Log("Enemy has no target");
+			enemySpeed = baseSpeed;
+			isChasing          = false;
 			rb.linearVelocityX = (facingRight ? 1 : -1) * enemySpeed;
 			return;
-			
 		}
 
-		
-
-		Debug.Log("Enemy has a target");
-
-		isChasing = true;
-		float dirX = target.Value.x - transform.position.x;
-		facingRight = dirX > 0;
+		isChasing  = true;
+		enemySpeed = enemySpeed * 2f;
+		var dirX = target.Value.x - transform.position.x;
+		facingRight        = dirX > 0;
 		rb.linearVelocityX = Mathf.Sign(dirX) * enemySpeed;
-
-
-
 	}
 
 	private void TurnEnemy() {
-		if (facingRight)
-			transform.localScale = new Vector3(1, 1, 1);
-		else
-			transform.localScale = new Vector3(-1, 1, 1);
-
+		transform.localScale = facingRight ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1);
 	}
-
-
+	
 	private void UpdateOverheadText() {
-		overheadText.text = $"Health: {health}/{maxHealth}";
+		overheadText.text                 = $"Health: {health}/{maxHealth}";
+		overheadText.transform.localScale = facingRight ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1);
 	}
 
 	public void UpdateHealth(float amount) {
@@ -193,8 +184,6 @@ public class EnemyController : MonoBehaviour {
 
 		if (health <= 0) Destroy(gameObject);
 	}
-
-	
 	
 	private void OnDrawGizmos() {
 		Gizmos.color = Color.green;

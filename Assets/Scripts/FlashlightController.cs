@@ -92,7 +92,7 @@ public class FlashlightController : MonoBehaviour {
 			}
 		}
 
-		Debug.Log(hitList);
+		//Debug.Log(hitList);
 
 		foreach (var hit in hitList) {
 			hit.Key.gameObject.GetComponent<EnemyController>().UpdateHealth(hit.Value / (float)rayAmount);
