@@ -1,3 +1,5 @@
+using System.Collections;
+using Assets.Scripts;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,9 +8,12 @@ public class PlayerMovement : MonoBehaviour {
 
 	//* Instance
 	public static PlayerMovement Instance;
-
-	//* Refs
-	private InputAction moveAction;
+	
+	[Header("Settings")]
+	[SerializeField] private LayerMask groundLayer;
+	
+	//* Regs
+	private InputAction moveAction, mantleAction;
 	private Rigidbody2D playerRb;
 
 	private static bool IsLookingRight {
@@ -22,24 +27,30 @@ public class PlayerMovement : MonoBehaviour {
 
 	[Header("Ground Check")]
 	[SerializeField] private Transform groundCheckPosition;
-	[SerializeField] private LayerMask groundLayer;
-	[SerializeField] private float     groundCheckRadius;
-	private                  bool      isGrounded;
+	[SerializeField] private float groundCheckRadius;
+
+	[Header("Mantling")]
+	[SerializeField] private Transform headLevelPosition;
+	[SerializeField] private float mantleCheckDistance;
 
 	//* States
-	private Vector2 moveInputVal;
+	private bool      isGrounded;
+	private bool      canMantle;
+	private Coroutine mantleRoutineState;
+	private Vector2   moveInputVal;
 
 	#endregion
 
 	#region Unity Functions
 
 	private void Start() {
-		playerRb   = GetComponent<Rigidbody2D>();
-		moveAction = InputSystem.actions.FindAction("Move");
+		playerRb     = GetComponent<Rigidbody2D>();
+		moveAction   = InputSystem.actions.FindAction("Move");
+		mantleAction = InputSystem.actions.FindAction("MantleClimb");
 	}
 
 	private void Update() {
-		GroundCheck();
+		RaycastChecks();
 	}
 
 	private void FixedUpdate() {
@@ -51,26 +62,33 @@ public class PlayerMovement : MonoBehaviour {
 	private void OnDrawGizmos() {
 		Gizmos.color = isGrounded ? Color.green : Color.red;
 		Gizmos.DrawWireSphere(groundCheckPosition.position, groundCheckRadius);
+
+		Gizmos.color = canMantle ? Color.green : Color.red;
+		Gizmos.DrawLine(headLevelPosition.position,
+		                headLevelPosition.position +
+		                new Vector3(IsLookingRight ? mantleCheckDistance : -mantleCheckDistance, 0));
 	}
 
 	//? Set global instance
 	private void Awake() {
 		if (Instance != null && Instance != this) {
 			Destroy(gameObject);
-			return;
+		} else {
+			Instance = this;
 		}
-
-		Instance = this;
 	}
 
 	#endregion
 
 	#region Functions
 
-	private void GroundCheck() {
-		var hit = Physics2D.OverlapCircle(groundCheckPosition.position, groundCheckRadius, groundLayer);
+	private void RaycastChecks() {
+		var groundCheckHit = Physics2D.OverlapCircle(groundCheckPosition.position, groundCheckRadius, groundLayer);
+		var mantleCheckHit = Physics2D.Raycast(headLevelPosition.position, new Vector2(IsLookingRight ? 1 : -1, 0),
+		                                       mantleCheckDistance, groundLayer);
 
-		isGrounded = hit;
+		isGrounded = groundCheckHit;
+		canMantle  = mantleCheckHit;
 	}
 
 	private void InputCheck() {
@@ -81,20 +99,42 @@ public class PlayerMovement : MonoBehaviour {
 			> 0 when !IsLookingRight => true,
 			_                        => IsLookingRight
 		};
-		
-		print(IsLookingRight);
+
+		if (mantleAction.IsPressed()) Mantle();
 	}
 
 	private void PerformMove() {
-		// playerRb.linearVelocityX = moveInputVal.x * playerSpeed;
-
-		//* Revolutionary!?
 		var inputSpeed      = moveInputVal.x * maxSpeed;
 		var speedDifference = inputSpeed - playerRb.linearVelocityX;
 		var finalForce      = speedDifference * acceleration;
 
 		playerRb.AddForce(Vector2.right * finalForce, ForceMode2D.Force);
-		print("Final Force:" + finalForce + ". Speed: " + playerRb.linearVelocityX + ". Input: " + inputSpeed + "");
+		
+		DebugHandler.Instance.LogKv("PerformMove", DebugHandler.DebugLevel.Debug, new object[] {
+			"inputSpeed", inputSpeed,
+			"speedDifference", speedDifference,
+			"finalForce", finalForce
+		});
+	}
+
+	private void Mantle() {
+		DebugHandler.Instance.LogKv("Mantle", DebugHandler.DebugLevel.Debug, new object[] {
+			"isGrounded", isGrounded,
+			"canMantle", canMantle,
+			"mantleRoutineState", mantleRoutineState
+		});
+		
+		if (!isGrounded || !canMantle || mantleRoutineState != null) return;
+		mantleRoutineState = StartCoroutine(MantleRoutine());
+	}
+
+	#endregion
+
+	#region Coroutines
+
+	private IEnumerator MantleRoutine() {
+		yield return new WaitForSecondsRealtime(1.5f);
+		mantleRoutineState = null;
 	}
 
 	#endregion

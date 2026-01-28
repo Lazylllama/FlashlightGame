@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using HeadDof = UnityEngine.HeadDof;
 
 public class PlayerData : MonoBehaviour {
 	#region Fields
@@ -53,7 +55,7 @@ public class PlayerData : MonoBehaviour {
 		Health += amount;
 		if (Health > 100) Health = 100;
 	}
-	
+
 	//! Private Functions
 	/// Set whether the player is looking right.
 	private void SetIsLookingRight(bool value) {
