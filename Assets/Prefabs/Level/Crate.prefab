@@ -19709,7 +19709,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b5bb33236807f34e807d8c90e3ec360, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  crateRb: {fileID: 7086872392209876451}
   dustParticles:
   - {fileID: 3104349103162282972}
   - {fileID: 131971197345835082}
@@ -19720,6 +19719,7 @@ MonoBehaviour:
   - {fileID: 161196107499972583}
   afterMovement: 2.175
   dustPeriod: 0.0439
+  dustLocalOffsetY: -2.4
 --- !u!61 &63804849382072868
 BoxCollider2D:
   m_ObjectHideFlags: 0

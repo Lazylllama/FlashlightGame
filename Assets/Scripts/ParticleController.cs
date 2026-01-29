@@ -5,14 +5,13 @@ public class ParticleController : MonoBehaviour {
 	#region Fields
 
 	[Header("Refs")]
-	[SerializeField] private Rigidbody2D crateRb;
 	[SerializeField] private List<ParticleSystem> dustParticles;
 	[SerializeField] private List<ParticleSystem> fallParticles;
 
 	[Header("Settings")]
-	[Range(0, 20)] [SerializeField] float afterMovement;
-	[Range(0, 0.2f)] [SerializeField] float dustPeriod;
-
+	[Range(0, 20.0f)] [SerializeField] private float afterMovement;
+	[Range(0, 0.2f)] [SerializeField] private float dustPeriod;
+	[Range(-5f, 5f)] [SerializeField]  private float dustLocalOffsetY;
 
 	//* State *//
 	private float counter;
@@ -26,7 +25,7 @@ public class ParticleController : MonoBehaviour {
 		if (!collision.CompareTag("Ground")) return;
 
 		// ? Emit fall particles
-		foreach (ParticleSystem particle in fallParticles) {
+		foreach (var particle in fallParticles) {
 			particle.Play();
 		}
 
@@ -44,7 +43,7 @@ public class ParticleController : MonoBehaviour {
 	#region Functions
 
 	/// <summary>
-	/// Emit particles when crate moves
+	/// Emit particles when the crate moves
 	/// </summary>
 	/// <param name="deltaX">Change in X position</param>
 	public void CrateMovement(float deltaX) {
@@ -53,12 +52,12 @@ public class ParticleController : MonoBehaviour {
 		//? Update counter
 		counter += Time.deltaTime;
 
-		if (!onGround || !(counter > dustPeriod)) return;
+		if (!onGround || counter <= dustPeriod) return;
 
-		//? Move dust particles to correct side and emit
-		foreach (ParticleSystem particle in dustParticles) {
-			particle.transform.localPosition = new Vector3(-Mathf.Sign(deltaX) * afterMovement, -2.4f, 0);
-			
+		//? Move dust particles to the correct side and emit
+		foreach (var particle in dustParticles) {
+			particle.transform.localPosition = new Vector3(-Mathf.Sign(deltaX) * afterMovement, dustLocalOffsetY, 0);
+
 			particle.Emit(1);
 		}
 

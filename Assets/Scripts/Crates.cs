@@ -15,6 +15,12 @@ public class Crates : MonoBehaviour {
 
 	private void Start() {
 		particleController = GetComponentInChildren<ParticleController>();
+		lastPosition       = transform.position;
+
+		if (particleController == null) {
+			Debug.LogError("ParticleController not found");
+			enabled = false;
+		};
 	}
 
 	private void FixedUpdate() {
@@ -25,7 +31,6 @@ public class Crates : MonoBehaviour {
 		if (delta == Vector2.zero) return;
 		
 		particleController.CrateMovement(delta.x);
-
 		lastPosition = currentPosition;
 	}
 
