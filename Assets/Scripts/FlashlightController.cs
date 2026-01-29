@@ -8,6 +8,12 @@ using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
 
+public class FlashLightPreset {
+	public float PresetDensity;
+	public float PresetBeamWidth;
+	public float PresetRange;
+}
+
 
 public class FlashlightController : MonoBehaviour {
 	#region Fields
@@ -16,8 +22,7 @@ public class FlashlightController : MonoBehaviour {
 	[SerializeField] private float flashlightWidth = 45;
 	[SerializeField] private int   rayAmount         = 100;
 	[SerializeField] private float beamWidth         = 10;
-	[SerializeField] private float rangePreset       = 10;
-	[SerializeField] private float scrollSensitivity = 10;
+	[SerializeField] private float range       = 10;
 	[SerializeField] private float density;
 
 	[Header("Light Output")]
@@ -27,14 +32,15 @@ public class FlashlightController : MonoBehaviour {
 	[SerializeField] private GameObject spotLightGameObject;
 
 	//* Refs
-	private LayerMask   excludePlayer;
-	private InputAction scrollAction;
+	private LayerMask        excludePlayer;
+	private FlashLightPreset laserPreset   = new FlashLightPreset();
+	private FlashLightPreset defaultPreset = new FlashLightPreset();
+	private InputAction      equipFlashlight1;
+	private InputAction      equipFlashlight2;
 
 	//* States
-	private Vector2 totalScroll;
-	private float   range;
 	private Light2D spotLight;
-
+	private FlashLightPreset equippedFlashlight;
 	#endregion
 
 	#region Unity functions
@@ -43,10 +49,18 @@ public class FlashlightController : MonoBehaviour {
 		spotLight = spotLightGameObject.GetComponent<Light2D>();
 
 		excludePlayer = ~LayerMask.GetMask("Player");
+
+		laserPreset.PresetDensity     = 1.5f;
+		laserPreset.PresetBeamWidth   = 0.1f;
+		laserPreset.PresetRange       = 100f;
+		defaultPreset.PresetDensity   = 1.5f;
+		defaultPreset.PresetBeamWidth = 20f;
+		defaultPreset.PresetRange     = 10f;
 	}
 
 	private void Awake() {
-		scrollAction = InputSystem.actions.FindAction("ScrollWheel");
+		equipFlashlight1 = InputSystem.actions["Flashlight1"];
+		equipFlashlight2 = InputSystem.actions["Flashlight2"];
 	}
 
 	private void Update() {
@@ -54,6 +68,7 @@ public class FlashlightController : MonoBehaviour {
 		UpdateFlashlightPosition();
 		CheckForEnemy();
 		CheckPlayerInputs();
+		UpdateFlashlight();
 	}
 
 	#endregion
@@ -61,11 +76,20 @@ public class FlashlightController : MonoBehaviour {
 	#region Functions
 
 	private void CheckPlayerInputs() {
-		range = rangePreset / beamWidth;
-		if (scrollAction.ReadValue<Vector2>().y == 0) return;
-		beamWidth += scrollAction.ReadValue<Vector2>().y * scrollSensitivity;
+		if (equipFlashlight1.triggered && equippedFlashlight != defaultPreset) {
+			equippedFlashlight = defaultPreset;
+		} else if (equipFlashlight2.triggered && equippedFlashlight != laserPreset) {
+			equippedFlashlight = laserPreset;
+		}
 	}
 
+	private void UpdateFlashlight() {
+		density = Mathf.Lerp(density, equippedFlashlight.PresetDensity, Time.deltaTime * 10);
+		beamWidth = Mathf.Lerp(beamWidth, equippedFlashlight.PresetBeamWidth, Time.deltaTime * 10);
+		range = Mathf.Lerp(range, equippedFlashlight.PresetRange, Time.deltaTime * 10);
+	}
+	
+	
 	private void UpdateSpotlight() {
 		spotLight.pointLightOuterAngle  = beamWidth * 2;
 		spotLight.pointLightOuterRadius = range;

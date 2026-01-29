@@ -769,11 +769,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef111dcba8227b847af2dd69c5855fd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlashlightController
-  flashlightWidth: 1
+  flashlightWidth: 0.1
   rayAmount: 100
   beamWidth: 10
-  rangePreset: 10
-  scrollSensitivity: 10
+  range: 0
+  density: 0
   lightOutput: {fileID: 1070042747}
   spotLightGameObject: {fileID: 477232818}
 --- !u!1 &1070042746
