@@ -90,12 +90,12 @@ public class EnemyController : MonoBehaviour {
 	private void CheckWall() {
 		var wallHit = Lib.Movement.WallCheck(lookPosition.position, facingRight);
 
-		if (!(wallHit.collider & !isChasing)) return;
-
-		if (facingRight & isGrounded) {
-			facingRight = false;
-		} else if (!facingRight & isGrounded) {
-			facingRight = true;
+		if (wallHit.collider != null && !isChasing) {
+			if (facingRight & isGrounded) {
+				facingRight = false;
+			} else if (!facingRight & isGrounded) {
+				facingRight = true;
+			}
 		}
 	}
 
@@ -130,7 +130,7 @@ public class EnemyController : MonoBehaviour {
 
 		teleportTimer += Time.deltaTime;
 
-		if (!(teleportTimer >= teleportCooldown)) return;
+		if (teleportTimer < teleportCooldown) return;
 		transform.position = teleportPoint;
 		StartCoroutine(FadeOut());
 		teleportTimer = 0f;
@@ -145,7 +145,7 @@ public class EnemyController : MonoBehaviour {
 		}
 
 		isChasing  = true;
-		enemySpeed = enemySpeed * 1.3f;
+		enemySpeed = baseSpeed * 1.3f;
 		var dirX = target.Value.x - transform.position.x;
 		facingRight        = dirX > 0;
 		rb.linearVelocityX = Mathf.Sign(dirX) * enemySpeed;
