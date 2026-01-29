@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - Ground
+  - WeakPoint
   layers:
   - Default
   - TransparentFX
@@ -16,6 +17,9 @@ TagManager:
   - Player
   - Box
   - Particles
+  - FlashlightIgnore
+  - ClimbableWall
+  - Wall
   - 
   - 
   - 
