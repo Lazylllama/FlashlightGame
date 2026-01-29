@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -10,7 +11,7 @@ public class EnemyController : MonoBehaviour {
 
 	[Header("Enemy Options")]
 	private float health;
-	//private                  SpriteRenderer    enemySpriteRenderer;
+	private                  SpriteRenderer    enemySpriteRenderer;
 	[SerializeField] private bool      isGrounded,     isChasing,  facingRight;
 	[SerializeField] private float     detectionRange, enemySpeed, baseSpeed, maxHealth;
 	[SerializeField] private Transform lookPosition,   groundCheck;
@@ -41,10 +42,11 @@ public class EnemyController : MonoBehaviour {
 	#region Unity Functions
 
 	private void Start() {
-		//enemySpriteRenderer = GetComponent<SpriteRenderer>();
+		enemySpriteRenderer = GetComponent<SpriteRenderer>();
 		rb         = GetComponent<Rigidbody2D>();
 		health     = maxHealth;
 		enemySpeed = baseSpeed;
+		
 	}
 
 	private void Update() {
@@ -91,11 +93,7 @@ public class EnemyController : MonoBehaviour {
 
 	private void GroundCheck() {
 		var groundHit = Physics2D.Raycast(groundCheck.position, Vector2.down, 0.1f, groundLayer);
-		if (groundHit.collider) {
-			isGrounded = true;
-		} else {
-			isGrounded = false;
-		}
+		isGrounded = groundHit.collider;
 	}
 
 	private void CheckWall() {
@@ -134,8 +132,8 @@ public class EnemyController : MonoBehaviour {
 		canTeleport = true;
 		enemySpeed  = 0f;
 		Debug.DrawLine(origin, climbableWallHit.point, Color.green);
-		Debug.Log("Jalla Kebab");
-		//enemySpriteRenderer.color = new Color(1f, 1f, 1f, 0.5f);
+		StartCoroutine(FadeIn());
+		
 		var distance = climbableWallHit.distance;
 		if (distance < slowDistance) {
 			enemySpeed        = baseSpeed * slowFactor;
@@ -156,7 +154,7 @@ public class EnemyController : MonoBehaviour {
 
 		if (!(teleportTimer >= teleportCooldown)) return;
 		transform.position        = teleportPoint;
-		//enemySpriteRenderer.color = new Color(1f, 1f, 1f, 1f);
+		StartCoroutine(FadeOut());
 		teleportTimer             = 0f;
 	}
 
@@ -198,6 +196,41 @@ public class EnemyController : MonoBehaviour {
 		if (!canTeleport) return;
 		Gizmos.DrawSphere(teleportPoint, 0.15f);
 	}
-
+	
 	#endregion
+
+	#region  Coroutines
+	
+	private IEnumerator FadeIn()
+	{
+		float alphaVal = enemySpriteRenderer.color.a;
+		Color tmp      = enemySpriteRenderer.color;
+
+		while (enemySpriteRenderer.color.a > 0)
+		{
+			alphaVal                  -= 0.10f;
+			tmp.a                     =  alphaVal;
+			enemySpriteRenderer.color =  tmp;
+
+			yield return new WaitForSeconds(0.05f);
+		}
+	}
+
+	private IEnumerator FadeOut()
+	{
+		float alphaVal = enemySpriteRenderer.color.a;
+		Color tmp      = enemySpriteRenderer.color;
+
+		while (enemySpriteRenderer.color.a < 1)
+		{
+			alphaVal                  += 0.10f;
+			tmp.a                     =  alphaVal;
+			enemySpriteRenderer.color =  tmp;
+
+			yield return new WaitForSeconds(0.05f);
+		}
+	}
+	#endregion
+	
+	
 }
