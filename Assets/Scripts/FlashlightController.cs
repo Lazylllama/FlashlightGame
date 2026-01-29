@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
-using Unity.VisualScripting;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
-using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
 
@@ -22,7 +19,7 @@ public class FlashlightController : MonoBehaviour {
 	[SerializeField] private float flashlightWidth = 45;
 	[SerializeField] private int   rayAmount         = 100;
 	[SerializeField] private float beamWidth         = 10;
-	[SerializeField] private float range       = 10;
+	[SerializeField] private float range            = 10;
 	[SerializeField] private float density;
 
 	[Header("Light Output")]
@@ -46,7 +43,14 @@ public class FlashlightController : MonoBehaviour {
 	#region Unity functions
 
 	private void Start() {
-		spotLight = spotLightGameObject.GetComponent<Light2D>();
+		if (spotLightGameObject == null) {
+			Debug.LogError("FlashlightController: 'spotLightGameObject' is not assigned in the Inspector.", this);
+		} else {
+			spotLight = spotLightGameObject.GetComponent<Light2D>();
+			if (spotLight == null) {
+				Debug.LogError("FlashlightController: No Light2D component found on 'spotLightGameObject'.", this);
+			}
+		}
 
 		excludePlayer = ~LayerMask.GetMask("Player");
 
