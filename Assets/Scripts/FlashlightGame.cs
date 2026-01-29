@@ -11,9 +11,11 @@ namespace FlashlightGame {
 		public static LayerMask ClimbableWallLayerMask => LayerMask.GetMask("ClimbableWall");
 
 		//* Constants
+		private const float WallCheckDistance   = 0.8f;
 		private const float WallRayDistance     = 3f;
 		private const float WallRayHeight       = 1.2f;
-		private const float WallTeleportOffsetY = 0.05f;
+		private const float WallTeleportOffsetY = 2f;
+		
 
 		//* Refs
 		private static bool GizmosEnabled => true;
@@ -56,12 +58,11 @@ namespace FlashlightGame {
 			/// <param name="origin">Where to check from</param>
 			/// <param name="positiveX">Positive X means isLookingRight</param>
 			/// <returns>RaycastHit2D</returns>
-			public static RaycastHit2D CanClimbWall(Vector3 origin, bool positiveX) {
-				var wallHit = Physics2D.Raycast(origin, positiveX ? Vector2.right : Vector2.left, WallRayDistance,
-				                                ClimbableWallLayerMask);
+			public static RaycastHit2D WallCheck(Vector3 origin, bool positiveX) {
+				var wallHit = Physics2D.Raycast(origin, positiveX ? Vector2.right : Vector2.left, WallCheckDistance);
 
 				if (GizmosEnabled)
-					Debug.DrawRay(origin, (positiveX ? Vector2.right : Vector2.left) * WallRayDistance,
+					Debug.DrawRay(origin, (positiveX ? Vector2.right : Vector2.left) * WallCheckDistance,
 					              wallHit.collider ? Color.green : Color.red);
 
 				return wallHit;

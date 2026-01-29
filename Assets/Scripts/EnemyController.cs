@@ -88,7 +88,7 @@ public class EnemyController : MonoBehaviour {
 	}
 
 	private void CheckWall() {
-		var wallHit = Lib.Movement.CanClimbWall(lookPosition.position, facingRight);
+		var wallHit = Lib.Movement.WallCheck(lookPosition.position, facingRight);
 
 		if (!(wallHit.collider & !isChasing)) return;
 
@@ -145,7 +145,7 @@ public class EnemyController : MonoBehaviour {
 		}
 
 		isChasing  = true;
-		enemySpeed = enemySpeed * 2f;
+		enemySpeed = enemySpeed * 1.3f;
 		var dirX = target.Value.x - transform.position.x;
 		facingRight        = dirX > 0;
 		rb.linearVelocityX = Mathf.Sign(dirX) * enemySpeed;
