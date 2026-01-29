@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using FlashlightGame;
 
 public class EnemyController : MonoBehaviour {
 	#region Fields
@@ -11,28 +12,22 @@ public class EnemyController : MonoBehaviour {
 
 	[Header("Enemy Options")]
 	private float health;
-	private                  SpriteRenderer    enemySpriteRenderer;
-	[SerializeField] private bool      isGrounded,     isChasing,  facingRight;
-	[SerializeField] private float     detectionRange, enemySpeed, baseSpeed, maxHealth;
-	[SerializeField] private Transform lookPosition,   groundCheck;
-	[SerializeField] private LayerMask groundLayer;
-
-	[Header("Wall Detection")]
-	[SerializeField] private float wallRayDistance = 3f;
-	[SerializeField] private float     wallRayHeight = 1.2f;
-	[SerializeField] private LayerMask climbableWallLayer, wallLayer;
+	private                  SpriteRenderer enemySpriteRenderer;
+	[SerializeField] private bool           isGrounded,     isChasing,  facingRight;
+	[SerializeField] private float          detectionRange, enemySpeed, baseSpeed, maxHealth;
+	[SerializeField] private Transform      lookPosition,   groundCheck;
+	[SerializeField] private LayerMask      groundLayer;
 
 	[Header("Teleport Settings")]
 	[SerializeField] private float teleportCooldown = 1.2f;
-	[SerializeField] private float teleportOffsetY = 0.05f;
 	private                  float teleportTimer;
 	private                  bool  canTeleport;
-	
+
 	[Header("Slow Down")]
 	[SerializeField] private float slowDistance = 2f;
 	[SerializeField] private float slowFactor = 0.5f;
 
-	
+
 	//* States
 	private Vector3  teleportPoint;
 	private Vector2? target;
@@ -43,14 +38,13 @@ public class EnemyController : MonoBehaviour {
 
 	private void Start() {
 		enemySpriteRenderer = GetComponent<SpriteRenderer>();
-		rb         = GetComponent<Rigidbody2D>();
-		health     = maxHealth;
-		enemySpeed = baseSpeed;
-		
+		rb                  = GetComponent<Rigidbody2D>();
+		health              = maxHealth;
+		enemySpeed          = baseSpeed;
 	}
 
 	private void Update() {
-		GroundCheck();
+		isGrounded = Lib.Movement.GroundCheck(groundCheck.position, 0.2f);
 		LedgeCheck();
 		HandleTeleport();
 		CheckForTarget();
@@ -80,68 +74,52 @@ public class EnemyController : MonoBehaviour {
 	}
 
 	private void LedgeCheck() {
-		var ledgeHit = Physics2D.Raycast(lookPosition.position, Vector2.down, 0.3f, groundLayer);
-		if (!ledgeHit.collider & !isChasing) {
-			enemySpeed = baseSpeed;
-			if (facingRight & isGrounded) {
-				facingRight = false;
-			} else if (!facingRight & isGrounded) {
-				facingRight = true;
-			}
+		var check = Lib.Movement.LedgeCheck(lookPosition.position, 0.3f);
+
+		if (!(!check.collider & !isChasing)) return;
+
+		enemySpeed = baseSpeed;
+
+		if (facingRight & isGrounded) {
+			facingRight = false;
+		} else if (!facingRight & isGrounded) {
+			facingRight = true;
 		}
 	}
 
-	private void GroundCheck() {
-		var groundHit = Physics2D.Raycast(groundCheck.position, Vector2.down, 0.1f, groundLayer);
-		isGrounded = groundHit.collider;
-	}
-
 	private void CheckWall() {
-		var wallHit = Physics2D.Raycast(lookPosition.position, facingRight ? Vector2.right : Vector2.left, 2f, wallLayer);
-		Debug.DrawRay(lookPosition.position, facingRight ? Vector2.right : Vector2.left * 2f, Color.yellow);
-		if (wallHit.collider & !isChasing) {
-			if (facingRight & isGrounded) {
-				facingRight = false;
-			} else if (!facingRight & isGrounded) {
-				facingRight = true;
-			}
+		var wallHit = Lib.Movement.CanClimbWall(lookPosition.position, facingRight);
+
+		if (!(wallHit.collider & !isChasing)) return;
+
+		if (facingRight & isGrounded) {
+			facingRight = false;
+		} else if (!facingRight & isGrounded) {
+			facingRight = true;
 		}
 	}
 
 	private void CheckClimbableWall() {
 		canTeleport = false;
 
-		var origin    = (Vector2)transform.position + Vector2.up * wallRayHeight;
-		var direction = facingRight ? Vector2.right : Vector2.left;
-
-		Debug.DrawRay(origin, direction * wallRayDistance, Color.red);
-
-		var climbableWallHit = Physics2D.Raycast(origin, direction, wallRayDistance, climbableWallLayer);
-		if (!climbableWallHit) {
+		var climbPoint = Lib.Movement.GetWallClimbPoint(transform.position, facingRight);
+		
+		if (climbPoint.Position == Vector3.zero) {
 			enemySpeed = baseSpeed;
 			return;
 		}
-
-		var bounds = climbableWallHit.collider.bounds;
-		teleportPoint = new Vector3(
-		                            bounds.center.x,
-		                            bounds.max.y + teleportOffsetY,
-		                            transform.position.z
-		                           );
-
+		
+		teleportPoint = climbPoint.Position;
 		canTeleport = true;
 		enemySpeed  = 0f;
-		Debug.DrawLine(origin, climbableWallHit.point, Color.green);
 		StartCoroutine(FadeIn());
-		
-		var distance = climbableWallHit.distance;
-		if (distance < slowDistance) {
-			enemySpeed        = baseSpeed * slowFactor;
+
+		if (climbPoint.Distance < slowDistance) {
+			enemySpeed = baseSpeed * slowFactor;
 			//fade out
 		} else {
 			enemySpeed = baseSpeed;
 		}
-
 	}
 
 	private void HandleTeleport() {
@@ -153,14 +131,14 @@ public class EnemyController : MonoBehaviour {
 		teleportTimer += Time.deltaTime;
 
 		if (!(teleportTimer >= teleportCooldown)) return;
-		transform.position        = teleportPoint;
+		transform.position = teleportPoint;
 		StartCoroutine(FadeOut());
-		teleportTimer             = 0f;
+		teleportTimer = 0f;
 	}
 
 	private void ChaseTarget() {
 		if (target == null) {
-			enemySpeed = baseSpeed;
+			enemySpeed         = baseSpeed;
 			isChasing          = false;
 			rb.linearVelocityX = (facingRight ? 1 : -1) * enemySpeed;
 			return;
@@ -176,7 +154,7 @@ public class EnemyController : MonoBehaviour {
 	private void TurnEnemy() {
 		transform.localScale = facingRight ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1);
 	}
-	
+
 	private void UpdateOverheadText() {
 		overheadText.text                 = $"Health: {health}/{maxHealth}";
 		overheadText.transform.localScale = facingRight ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1);
@@ -188,7 +166,7 @@ public class EnemyController : MonoBehaviour {
 
 		if (health <= 0) Destroy(gameObject);
 	}
-	
+
 	private void OnDrawGizmos() {
 		Gizmos.color = Color.green;
 		Gizmos.DrawWireSphere(transform.position, detectionRange);
@@ -196,18 +174,16 @@ public class EnemyController : MonoBehaviour {
 		if (!canTeleport) return;
 		Gizmos.DrawSphere(teleportPoint, 0.15f);
 	}
-	
+
 	#endregion
 
-	#region  Coroutines
-	
-	private IEnumerator FadeIn()
-	{
-		float alphaVal = enemySpriteRenderer.color.a;
-		Color tmp      = enemySpriteRenderer.color;
+	#region Coroutines
 
-		while (enemySpriteRenderer.color.a > 0)
-		{
+	private IEnumerator FadeIn() {
+		var alphaVal = enemySpriteRenderer.color.a;
+		var  tmp      = enemySpriteRenderer.color;
+
+		while (enemySpriteRenderer.color.a > 0) {
 			alphaVal                  -= 0.10f;
 			tmp.a                     =  alphaVal;
 			enemySpriteRenderer.color =  tmp;
@@ -216,13 +192,11 @@ public class EnemyController : MonoBehaviour {
 		}
 	}
 
-	private IEnumerator FadeOut()
-	{
-		float alphaVal = enemySpriteRenderer.color.a;
-		Color tmp      = enemySpriteRenderer.color;
+	private IEnumerator FadeOut() {
+		var alphaVal = enemySpriteRenderer.color.a;
+		var tmp      = enemySpriteRenderer.color;
 
-		while (enemySpriteRenderer.color.a < 1)
-		{
+		while (enemySpriteRenderer.color.a < 1) {
 			alphaVal                  += 0.10f;
 			tmp.a                     =  alphaVal;
 			enemySpriteRenderer.color =  tmp;
@@ -230,7 +204,6 @@ public class EnemyController : MonoBehaviour {
 			yield return new WaitForSeconds(0.05f);
 		}
 	}
+
 	#endregion
-	
-	
 }
