@@ -52,5 +52,11 @@ TagManager:
   - name: Flashlight
     uniqueID: 1633899869
     locked: 0
+  - name: Object
+    uniqueID: 1887157377
+    locked: 0
+  - name: Particle
+    uniqueID: 1237660001
+    locked: 0
   m_RenderingLayers:
   - Default

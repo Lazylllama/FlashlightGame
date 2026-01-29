@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ParticleController : MonoBehaviour {
@@ -5,11 +6,11 @@ public class ParticleController : MonoBehaviour {
 
 	[Header("Refs")]
 	[SerializeField] private Rigidbody2D crateRb;
-	[SerializeField] ParticleSystem dustParticles;
-	[SerializeField] ParticleSystem fallParticles;
+	[SerializeField] private List<ParticleSystem> dustParticles;
+	[SerializeField] private List<ParticleSystem> fallParticles;
 
 	[Header("Settings")]
-	[Range(0, 20)] [SerializeField] int afterMovement;
+	[Range(0, 20)] [SerializeField] float afterMovement;
 	[Range(0, 0.2f)] [SerializeField] float dustPeriod;
 
 
@@ -25,7 +26,9 @@ public class ParticleController : MonoBehaviour {
 		if (!collision.CompareTag("Ground")) return;
 
 		// ? Emit fall particles
-		fallParticles.Play();
+		foreach (ParticleSystem particle in fallParticles) {
+			particle.Play();
+		}
 
 		onGround = true;
 	}
@@ -53,8 +56,11 @@ public class ParticleController : MonoBehaviour {
 		if (!onGround || !(counter > dustPeriod)) return;
 
 		//? Move dust particles to correct side and emit
-		dustParticles.transform.localPosition = new Vector3(-Mathf.Sign(deltaX) * afterMovement, -1, 0);
-		dustParticles.Emit(1);
+		foreach (ParticleSystem particle in dustParticles) {
+			particle.transform.localPosition = new Vector3(-Mathf.Sign(deltaX) * afterMovement, -2.4f, 0);
+			
+			particle.Emit(1);
+		}
 
 		//? Reset counter
 		counter = 0;
