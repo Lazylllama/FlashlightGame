@@ -86,9 +86,9 @@ public class FlashlightController : MonoBehaviour {
 			if (!hit || !hit.collider.gameObject.CompareTag("Enemy")) continue;
 			if (!hitList.TryAdd(hit.collider, 1)) {
 				hitList[hit.collider]++;
-				Debug.Log("Test 1");
+				//Debug.Log("Test 1");
 			} else {
-				Debug.Log("Test 2");
+				//Debug.Log("Test 2");
 			}
 		}
 

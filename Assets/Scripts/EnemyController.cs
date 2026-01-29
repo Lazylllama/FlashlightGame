@@ -10,6 +10,7 @@ public class EnemyController : MonoBehaviour {
 
 	[Header("Enemy Options")]
 	private float health;
+	//private                  SpriteRenderer    enemySpriteRenderer;
 	[SerializeField] private bool      isGrounded,     isChasing,  facingRight;
 	[SerializeField] private float     detectionRange, enemySpeed, baseSpeed, maxHealth;
 	[SerializeField] private Transform lookPosition,   groundCheck;
@@ -40,6 +41,7 @@ public class EnemyController : MonoBehaviour {
 	#region Unity Functions
 
 	private void Start() {
+		//enemySpriteRenderer = GetComponent<SpriteRenderer>();
 		rb         = GetComponent<Rigidbody2D>();
 		health     = maxHealth;
 		enemySpeed = baseSpeed;
@@ -132,9 +134,12 @@ public class EnemyController : MonoBehaviour {
 		canTeleport = true;
 		enemySpeed  = 0f;
 		Debug.DrawLine(origin, climbableWallHit.point, Color.green);
+		Debug.Log("Jalla Kebab");
+		//enemySpriteRenderer.color = new Color(1f, 1f, 1f, 0.5f);
 		var distance = climbableWallHit.distance;
 		if (distance < slowDistance) {
-			enemySpeed = baseSpeed * slowFactor;
+			enemySpeed        = baseSpeed * slowFactor;
+			//fade out
 		} else {
 			enemySpeed = baseSpeed;
 		}
@@ -150,8 +155,9 @@ public class EnemyController : MonoBehaviour {
 		teleportTimer += Time.deltaTime;
 
 		if (!(teleportTimer >= teleportCooldown)) return;
-		transform.position = teleportPoint;
-		teleportTimer      = 0f;
+		transform.position        = teleportPoint;
+		//enemySpriteRenderer.color = new Color(1f, 1f, 1f, 1f);
+		teleportTimer             = 0f;
 	}
 
 	private void ChaseTarget() {
