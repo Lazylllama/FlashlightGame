@@ -7,21 +7,20 @@ public class EnemyController : MonoBehaviour {
 	#region Fields
 
 	[Header("Refs")]
-	[SerializeField] private TMP_Text overheadText;
-	private Rigidbody2D rb;
+	[SerializeField] private TMP_Text       overheadText;
+	private                  SpriteRenderer enemySpriteRenderer;
+	private                  Rigidbody2D    rb;
 
 	[Header("Enemy Options")]
-	private float health;
-	private                  SpriteRenderer enemySpriteRenderer;
 	[SerializeField] private bool           isGrounded,     isChasing,  facingRight;
-	[SerializeField] private float          detectionRange, enemySpeed, baseSpeed, maxHealth;
+	[SerializeField] private float          detectionRange, baseSpeed, maxHealth;
 	[SerializeField] private Transform      lookPosition,   groundCheck;
 	[SerializeField] private LayerMask      groundLayer;
+	
 
 	[Header("Teleport Settings")]
 	[SerializeField] private float teleportCooldown = 1.2f;
 	private                  float teleportTimer;
-	private                  bool  canTeleport;
 
 	[Header("Slow Down")]
 	[SerializeField] private float slowDistance = 2f;
@@ -31,6 +30,9 @@ public class EnemyController : MonoBehaviour {
 	//* States
 	private Vector3  teleportPoint;
 	private Vector2? target;
+	private float    health, enemySpeed;
+	private bool     canTeleport;
+
 
 	#endregion
 
@@ -66,11 +68,7 @@ public class EnemyController : MonoBehaviour {
 		var playerPosition   = PlayerMovement.Instance.transform.position;
 		var distanceToPlayer = Vector2.Distance(transform.position, playerPosition);
 
-		if (distanceToPlayer <= detectionRange) {
-			target = playerPosition;
-		} else {
-			target = null;
-		}
+		target = (distanceToPlayer <= detectionRange) ? playerPosition : null;
 	}
 
 	private void LedgeCheck() {
@@ -180,7 +178,7 @@ public class EnemyController : MonoBehaviour {
 
 	private IEnumerator FadeIn() {
 		var alphaVal = enemySpriteRenderer.color.a;
-		var  tmp      = enemySpriteRenderer.color;
+		var tmp      = enemySpriteRenderer.color;
 
 		while (enemySpriteRenderer.color.a > 0) {
 			alphaVal                  -= 0.10f;
