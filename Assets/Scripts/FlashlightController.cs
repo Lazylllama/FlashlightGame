@@ -158,8 +158,13 @@ public class FlashlightController : MonoBehaviour {
 			      hit.collider.gameObject.CompareTag("WeakPoint"))) continue;
 			if (!hitList.TryAdd(hit.collider, 1)) {
 				hitList[hit.collider]++;
+				//Debug.Log("Test 1");
+			} else {
+				//Debug.Log("Test 2");
 			}
 		}
+
+		//Debug.Log(hitList);
 
 		foreach (var hit in hitList) {
 			if (hit.Key.gameObject.CompareTag("Enemy")) {
