@@ -76,7 +76,7 @@ public class EnemyController : MonoBehaviour {
 	private void LedgeCheck() {
 		var check = Lib.Movement.LedgeCheck(lookPosition.position, 0.3f);
 
-		if (!(!check.collider & !isChasing)) return;
+		if (!isChasing && !check.collider) return;
 
 		enemySpeed = baseSpeed;
 
@@ -111,7 +111,6 @@ public class EnemyController : MonoBehaviour {
 		
 		teleportPoint = climbPoint.Position;
 		canTeleport = true;
-		enemySpeed  = 0f;
 		StartCoroutine(FadeIn());
 
 		if (climbPoint.Distance < slowDistance) {
