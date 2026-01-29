@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour {
 	/// Update the player's sprite direction based on the PlayerData's IsLookingRight property.
 	/// </summary>
 	public void UpdateDirection() {
-		playerSprite.rotation = new Quaternion(0, PlayerData.Instance.IsLookingRight ? 0 : 180, 0, 0);
+		playerSprite.rotation = Quaternion.Euler(0f, PlayerData.Instance.IsLookingRight ? 0f : 180f, 0f);
 	}
 
 	#endregion

@@ -33,16 +33,19 @@ public class DebugHandler : MonoBehaviour {
 
 	#region Unity Functions
 
-	private void Awake() {
-		if (Instance != null && Instance != this) {
-			Destroy(this.gameObject);
+	private static void RegisterInstance(DebugHandler instance) {
+		if (Instance != null && Instance != instance) {
+			Destroy(instance.gameObject);
 		} else {
-			Instance = this;
+			Instance = instance;
 			
-			LogKv("DebugHandler initialized.", DebugLevel.Info, new object[] { "Debug Level", debugLevel.ToString() });
+			instance.LogKv("DebugHandler initialized.", DebugLevel.Info, new object[] { "Debug Level", instance.debugLevel.ToString() });
 		}
 	}
 
+	private void Awake() {
+		RegisterInstance(this);
+	}
 	#endregion
 
 	#region Functions

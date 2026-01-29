@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using HeadDof = UnityEngine.HeadDof;
+
 
 public class PlayerData : MonoBehaviour {
 	#region Fields
@@ -44,10 +44,11 @@ public class PlayerData : MonoBehaviour {
 	public void TakeDamage(int damage) {
 		if (damage < 0) return;
 		Health -= damage;
+		if (Health < 0) Health = 0;
 	}
 
 	/// <summary>
-	/// Restore health to the player. Caps ou at 100.
+	/// Restore health to the player. Caps out at 100.
 	/// </summary>
 	/// <param name="amount">1-100 Health Points</param>
 	public void RestoreHealth(int amount) {
@@ -60,7 +61,10 @@ public class PlayerData : MonoBehaviour {
 	/// Set whether the player is looking right.
 	private void SetIsLookingRight(bool value) {
 		isLookingRight = value;
-		PlayerController.Instance.UpdateDirection();
+		var controller = PlayerController.Instance;
+		if (controller != null) {
+			controller.UpdateDirection();
+		}
 	}
 
 	#endregion

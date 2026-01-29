@@ -1,5 +1,5 @@
 using System.Collections;
-using Assets.Scripts;
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,13 +12,17 @@ public class PlayerMovement : MonoBehaviour {
 	[Header("Settings")]
 	[SerializeField] private LayerMask groundLayer;
 	
-	//* Regs
+	//* Refs
 	private InputAction moveAction, mantleAction;
 	private Rigidbody2D playerRb;
 
 	private static bool IsLookingRight {
-		get => PlayerData.Instance.IsLookingRight;
-		set => PlayerData.Instance.IsLookingRight = value;
+		get => PlayerData.Instance != null && PlayerData.Instance.IsLookingRight;
+		set {
+			if (PlayerData.Instance != null) {
+				PlayerData.Instance.IsLookingRight = value;
+			}
+		}
 	}
 
 	//! Friction impacts speed *GREATLY*
@@ -60,13 +64,17 @@ public class PlayerMovement : MonoBehaviour {
 
 	//? Draws gizmo to visualize ground check status
 	private void OnDrawGizmos() {
-		Gizmos.color = isGrounded ? Color.green : Color.red;
-		Gizmos.DrawWireSphere(groundCheckPosition.position, groundCheckRadius);
+		if (groundCheckPosition != null) {
+			Gizmos.color = isGrounded ? Color.green : Color.red;
+			Gizmos.DrawWireSphere(groundCheckPosition.position, groundCheckRadius);
+		}
 
-		Gizmos.color = canMantle ? Color.green : Color.red;
-		Gizmos.DrawLine(headLevelPosition.position,
-		                headLevelPosition.position +
-		                new Vector3(IsLookingRight ? mantleCheckDistance : -mantleCheckDistance, 0));
+		if (headLevelPosition != null) {
+			Gizmos.color = canMantle ? Color.green : Color.red;
+			Gizmos.DrawLine(headLevelPosition.position,
+			                headLevelPosition.position +
+			                new Vector3(IsLookingRight ? mantleCheckDistance : -mantleCheckDistance, 0));
+		}
 	}
 
 	//? Set global instance
@@ -110,19 +118,25 @@ public class PlayerMovement : MonoBehaviour {
 
 		playerRb.AddForce(Vector2.right * finalForce, ForceMode2D.Force);
 		
-		DebugHandler.Instance.LogKv("PerformMove", DebugHandler.DebugLevel.Debug, new object[] {
-			"inputSpeed", inputSpeed,
-			"speedDifference", speedDifference,
-			"finalForce", finalForce
-		});
+		var debugHandler = DebugHandler.Instance;
+		if (debugHandler != null) {
+			debugHandler.LogKv("PerformMove", DebugHandler.DebugLevel.Debug, new object[] {
+				"inputSpeed", inputSpeed,
+				"speedDifference", speedDifference,
+				"finalForce", finalForce
+			});
+		}
 	}
 
 	private void Mantle() {
-		DebugHandler.Instance.LogKv("Mantle", DebugHandler.DebugLevel.Debug, new object[] {
-			"isGrounded", isGrounded,
-			"canMantle", canMantle,
-			"mantleRoutineState", mantleRoutineState
-		});
+		var debugHandler = DebugHandler.Instance;
+		if (debugHandler != null) {
+			debugHandler.LogKv("Mantle", DebugHandler.DebugLevel.Debug, new object[] {
+				"isGrounded", isGrounded,
+				"canMantle", canMantle,
+				"mantleRoutineState", mantleRoutineState
+			});
+		}
 		
 		if (!isGrounded || !canMantle || mantleRoutineState != null) return;
 		mantleRoutineState = StartCoroutine(MantleRoutine());
