@@ -9,7 +9,6 @@ public class BossController : MonoBehaviour {
 	[Header("Boss Settings")]
 	[SerializeField] private float health;
 	[SerializeField] private float weakpointChangeInterval;
-	[SerializeField] private float weakpointClosedFor; //? The amount of time all weakpoints are closed between changes.
 	
 	[Header("Text")]
 	[SerializeField] private TMP_Text healthText;
@@ -22,15 +21,13 @@ public class BossController : MonoBehaviour {
 	
 	//* States
 	private float timeSinceLastChange;
-
-	private Vector2 groundPosition;
+	
 	#endregion
-	#region unity functions
+	#region Unity Functions
 
 	private void Start() {
 		groundLayer = LayerMask.GetMask("Ground");
 		timeSinceLastChange = weakpointChangeInterval;
-		groundPosition = Physics2D.Raycast(transform.position, Vector2.down, 1000f, groundLayer).point;
 		CloseWeakPoints();
 	}
 	
@@ -67,7 +64,7 @@ public class BossController : MonoBehaviour {
 	}
 	#endregion
 	
-	#region AttackFunctions
+	#region Attack Functions
 	
 	
 	

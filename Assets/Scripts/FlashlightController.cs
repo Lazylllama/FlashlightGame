@@ -40,10 +40,10 @@ public class FlashlightController : MonoBehaviour {
 
 	//* States
 	private Light2D spotLight;
-	private FlashLightPreset equippedFlashlight;
+	private FlashLightPreset equippedFlashlight = new FlashLightPreset();
 	#endregion
 
-	#region Unity functions
+	#region Unity Functions
 
 	private void Start() {
 		spotLight = spotLightGameObject.GetComponent<Light2D>();
@@ -56,9 +56,7 @@ public class FlashlightController : MonoBehaviour {
 		defaultPreset.PresetDensity   = 1.5f;
 		defaultPreset.PresetBeamWidth = 20f;
 		defaultPreset.PresetRange     = 10f;
-	}
 
-	private void Awake() {
 		equipFlashlight1 = InputSystem.actions["Flashlight1"];
 		equipFlashlight2 = InputSystem.actions["Flashlight2"];
 	}
@@ -156,7 +154,6 @@ public class FlashlightController : MonoBehaviour {
 			      hit.collider.gameObject.CompareTag("WeakPoint"))) continue;
 			if (!hitList.TryAdd(hit.collider, 1)) {
 				hitList[hit.collider]++;
-			} else {
 			}
 		}
 
