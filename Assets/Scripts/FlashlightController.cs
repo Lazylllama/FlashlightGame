@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
@@ -17,6 +18,7 @@ public class FlashlightController : MonoBehaviour {
 	[SerializeField] private float beamWidth         = 10;
 	[SerializeField] private float rangePreset       = 10;
 	[SerializeField] private float scrollSensitivity = 10;
+	[SerializeField] private float density;
 
 	[Header("Light Output")]
 	[SerializeField] private Transform lightOutput;
@@ -29,8 +31,8 @@ public class FlashlightController : MonoBehaviour {
 	private InputAction scrollAction;
 
 	//* States
-	private Vector2   totalScroll;
-	private float     range;
+	private Vector2 totalScroll;
+	private float   range;
 	private Light2D spotLight;
 
 	#endregion
@@ -38,13 +40,13 @@ public class FlashlightController : MonoBehaviour {
 	#region Unity functions
 
 	private void Start() {
-		spotLight     = spotLightGameObject.GetComponent<Light2D>();
-		
+		spotLight = spotLightGameObject.GetComponent<Light2D>();
+
 		excludePlayer = ~LayerMask.GetMask("Player");
 	}
 
 	private void Awake() {
-		scrollAction  = InputSystem.actions.FindAction("ScrollWheel");
+		scrollAction = InputSystem.actions.FindAction("ScrollWheel");
 	}
 
 	private void Update() {
@@ -65,14 +67,14 @@ public class FlashlightController : MonoBehaviour {
 	}
 
 	private void UpdateSpotlight() {
-		spotLight.pointLightOuterAngle = beamWidth * 2;
-		spotLight.pointLightOuterRadius     = range;
+		spotLight.pointLightOuterAngle  = beamWidth * 2;
+		spotLight.pointLightOuterRadius = range;
 	}
 
 	private void UpdateFlashlightPosition() {
 		// Gets the mouse position in world space
 		var mousePositionOnScreen = InputSystem.actions["point"].ReadValue<Vector2>();
-		var mousePosition         = Camera.main!.ScreenToWorldPoint(mousePositionOnScreen);
+		var mousePosition         = Camera.main!.ScreenToWorldPoint(new Vector3(mousePositionOnScreen.x, mousePositionOnScreen.y, 10f));
 
 		// Rotates the camera around the pivot point
 		var cameraAngleZ = -90 + (
@@ -95,21 +97,30 @@ public class FlashlightController : MonoBehaviour {
 		                           Mathf.Sin(transform.eulerAngles.z * Mathf.Deg2Rad));
 
 		for (var i = 0; i < rayAmount; i++) {
-			//? Calculates the offset from the center of the flashlight, uses rotation to know if the offset should be on the x or y-axis
-			var offset = new Vector2((i * (flashlightWidth / (rayAmount - 1)) - flashlightWidth / 2) * rotation.x,
-			                         (i * (flashlightWidth / (rayAmount - 1)) - flashlightWidth / 2) * rotation.y);
+			//? Calculates the startpoint of each line.
+			var startPointLinear = flashlightWidth - 2 * i * (flashlightWidth / rayAmount);
+			//? Applies density to the startpoint.
+			var startPointDensity =
+				math.pow(Math.Abs(startPointLinear), density) / math.pow(flashlightWidth, density - 1);
+			//? Finalizes the density calculation.
+			var startPointNormal = startPointDensity * math.sign(startPointLinear);
+			//? Applies rotation and offset to the startpoint.
+			var startPoint =
+				new Vector2(startPointNormal * rotation.x + lightOutput.position.x,
+				            startPointNormal * rotation.y + lightOutput.position.y);
 
-			//? Calculates the startPosition of each line to be evenly spaced along the flashlight.
-			var startPoint = new Vector2(lightOutput.position.x + offset.x, lightOutput.position.y + offset.y);
 
-			//? The normalEndPoint is the endPoint if the source was at (0,0 and was point up)
-			var normalEndPoint =
-				new Vector2(Mathf.Sin((2 * i * degreesPerRay - beamWidth) * Mathf.Deg2Rad) * range,
-				            Mathf.Cos((2 * i * degreesPerRay - beamWidth) * Mathf.Deg2Rad) * range);
+			//? Calculates the endPoint of each line.
+			var endpointLinear = beamWidth - 2 * i * (beamWidth / rayAmount);
+			//? Applies density to the endpoint.
+			var endpointDensity = math.pow(Math.Abs(endpointLinear), density) / math.pow(beamWidth, density - 1);
+			var endpointNormal  = endpointDensity                             * math.sign(endpointLinear);
+			//? Applies rotation and offset to the endpoint.
+			var endpointBend = new Vector2(math.sin(endpointNormal * math.TORADIANS) * range,
+			                               math.cos(endpointNormal * math.TORADIANS) * range);
+			var endPoint = new Vector2(endpointBend.x * rotation.x + endpointBend.y * -rotation.y + startPoint.x,
+			                           endpointBend.x * rotation.y + endpointBend.y * rotation.x  + startPoint.y);
 
-			//? The normalEndPoint gets rotated and moved to match the flashlights transform.
-			var endPoint = new Vector2(normalEndPoint.x * rotation.x + normalEndPoint.y * -rotation.y + startPoint.x,
-			                           normalEndPoint.x * rotation.y + normalEndPoint.y * rotation.x  + startPoint.y);
 
 			//? Gizmo
 			Debug.DrawLine(startPoint, endPoint, Color.red);
