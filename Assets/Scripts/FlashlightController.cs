@@ -9,6 +9,8 @@ public class FlashLightPreset {
 	public float PresetDensity;
 	public float PresetBeamWidth;
 	public float PresetRange;
+	public float PresetIntensity;
+	public Color PresetColor;
 }
 
 
@@ -17,16 +19,18 @@ public class FlashlightController : MonoBehaviour {
 
 	[Header("Flashlight Settings")]
 	[SerializeField] private float flashlightWidth = 45;
-	[SerializeField] private int   rayAmount         = 100;
-	[SerializeField] private float beamWidth         = 10;
-	[SerializeField] private float range            = 10;
+	[SerializeField] private int   rayAmount = 100;
+	[SerializeField] private float beamWidth = 10;
+	[SerializeField] private float range     = 10;
 	[SerializeField] private float density;
+	[SerializeField] private Color color;
 
 	[Header("Light Output")]
 	[SerializeField] private Transform lightOutput;
 
 	[Header("SpotLight")]
 	[SerializeField] private GameObject spotLightGameObject;
+	[SerializeField] private GameObject laserSpotLightGameObject;
 
 	//* Refs
 	private LayerMask        excludePlayer;
@@ -36,41 +40,41 @@ public class FlashlightController : MonoBehaviour {
 	private InputAction      equipFlashlight2;
 
 	//* States
-	private Light2D spotLight;
+	private float            intensity;
+	private Light2D          spotLight;
 	private FlashLightPreset equippedFlashlight = new FlashLightPreset();
+
 	#endregion
 
 	#region Unity Functions
 
 	private void Start() {
-		if (spotLightGameObject == null) {
-			Debug.LogError("FlashlightController: 'spotLightGameObject' is not assigned in the Inspector.", this);
-		} else {
-			spotLight = spotLightGameObject.GetComponent<Light2D>();
-			if (spotLight == null) {
-				Debug.LogError("FlashlightController: No Light2D component found on 'spotLightGameObject'.", this);
-			}
-		}
+		spotLight = spotLightGameObject.GetComponent<Light2D>();
+
 
 		excludePlayer = ~LayerMask.GetMask("Player");
 
 		laserPreset.PresetDensity     = 1.5f;
 		laserPreset.PresetBeamWidth   = 0.1f;
 		laserPreset.PresetRange       = 100f;
+		laserPreset.PresetIntensity   = 20f;
+		laserPreset.PresetColor       = new Color(1, 0, 0, 1);
 		defaultPreset.PresetDensity   = 1.5f;
 		defaultPreset.PresetBeamWidth = 20f;
 		defaultPreset.PresetRange     = 10f;
+		defaultPreset.PresetIntensity = 7f;
+		defaultPreset.PresetColor     = new Color(1, 0.94f, 0.55f, 1);
 
 		equipFlashlight1 = InputSystem.actions["Flashlight1"];
 		equipFlashlight2 = InputSystem.actions["Flashlight2"];
 	}
 
 	private void Update() {
-		UpdateSpotlight();
 		UpdateFlashlightPosition();
 		CheckForEnemy();
 		CheckPlayerInputs();
 		UpdateFlashlight();
+		UpdateSpotlight();
 	}
 
 	#endregion
@@ -86,21 +90,29 @@ public class FlashlightController : MonoBehaviour {
 	}
 
 	private void UpdateFlashlight() {
-		density = Mathf.Lerp(density, equippedFlashlight.PresetDensity, Time.deltaTime * 10);
+		density   = Mathf.Lerp(density,   equippedFlashlight.PresetDensity,   Time.deltaTime * 10);
 		beamWidth = Mathf.Lerp(beamWidth, equippedFlashlight.PresetBeamWidth, Time.deltaTime * 10);
-		range = Mathf.Lerp(range, equippedFlashlight.PresetRange, Time.deltaTime * 10);
+		range     = Mathf.Lerp(range,     equippedFlashlight.PresetRange,     Time.deltaTime * 10);
+		intensity = Mathf.Lerp(intensity, equippedFlashlight.PresetIntensity, Time.deltaTime * 10);
+		color = new Color(Mathf.Lerp(color.r, equippedFlashlight.PresetColor.r, Time.deltaTime * 10),
+		                  Mathf.Lerp(color.g, equippedFlashlight.PresetColor.g, Time.deltaTime * 10),
+		                  Mathf.Lerp(color.b, equippedFlashlight.PresetColor.b, Time.deltaTime * 10),
+		                  1);
+		laserSpotLightGameObject.SetActive(beamWidth <= 2);
 	}
-	
-	
+
 	private void UpdateSpotlight() {
 		spotLight.pointLightOuterAngle  = beamWidth * 2;
+		spotLight.color                 = color;
 		spotLight.pointLightOuterRadius = range;
+		spotLight.intensity             = intensity;
 	}
 
 	private void UpdateFlashlightPosition() {
 		// Gets the mouse position in world space
 		var mousePositionOnScreen = InputSystem.actions["point"].ReadValue<Vector2>();
-		var mousePosition         = Camera.main!.ScreenToWorldPoint(new Vector3(mousePositionOnScreen.x, mousePositionOnScreen.y, 10f));
+		var mousePosition =
+			Camera.main!.ScreenToWorldPoint(new Vector3(mousePositionOnScreen.x, mousePositionOnScreen.y, 10f));
 
 		// Rotates the camera around the pivot point
 		var cameraAngleZ = -90 + (
