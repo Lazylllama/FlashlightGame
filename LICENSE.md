@@ -3,7 +3,7 @@ EXCEPT for certain assets as noted below.
 
 All assets/files located in the directory:
 
-    /Assets/Graphics
+    /Assets/Sprites
 
 are licensed under the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License (CC BY-NC-ND 4.0).
 
