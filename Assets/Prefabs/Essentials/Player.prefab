@@ -746,4 +746,4 @@ MonoBehaviour:
   range: 5
   density: 0
   lightOutput: {fileID: 4936669862843185341}
-  spotLightGameObject: {fileID: 0}
+  spotLightGameObject: {fileID: 8803065448645038569}
