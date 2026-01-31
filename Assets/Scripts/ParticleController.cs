@@ -51,7 +51,7 @@ public class ParticleController : MonoBehaviour {
 
 		//? Update counter
 		counter += Time.deltaTime;
-
+		
 		if (!onGround || counter <= dustPeriod) return;
 
 		//? Move dust particles to the correct side and emit

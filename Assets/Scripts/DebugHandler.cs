@@ -69,7 +69,7 @@ public class DebugHandler : MonoBehaviour {
 	public void LogKv(string message, DebugLevel level, params object[] context) {
 		if (!LevelPermitted(level)) return;
 
-		var logMessage = $"[{level.ToString().ToUpper()}] {message}";
+		var logMessage = message;
 
 		if (context != null && context.Length > 0) {
 			for (var i = 0; i < context.Length; i += 2) {

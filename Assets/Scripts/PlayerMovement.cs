@@ -1,16 +1,17 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using FlashlightGame;
 
 public class PlayerMovement : MonoBehaviour {
 	#region Fields
 
 	//* Instance
 	public static PlayerMovement Instance;
-	
+
 	[Header("Settings")]
 	[SerializeField] private LayerMask groundLayer;
-	
+
 	//* Refs
 	private InputAction moveAction, mantleAction;
 	private Rigidbody2D playerRb;
@@ -91,8 +92,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	private void RaycastChecks() {
 		var groundCheckHit = Physics2D.OverlapCircle(groundCheckPosition.position, groundCheckRadius, groundLayer);
-		var mantleCheckHit = Physics2D.Raycast(headLevelPosition.position, new Vector2(IsLookingRight ? 1 : -1, 0),
-		                                       mantleCheckDistance, groundLayer);
+		var mantleCheckHit = Lib.Movement.WallCheck(headLevelPosition.position, IsLookingRight);
 
 		isGrounded = groundCheckHit;
 		canMantle  = mantleCheckHit;
@@ -116,7 +116,7 @@ public class PlayerMovement : MonoBehaviour {
 		var finalForce      = speedDifference * acceleration;
 
 		playerRb.AddForce(Vector2.right * finalForce, ForceMode2D.Force);
-		
+
 		var debugHandler = DebugHandler.Instance;
 		if (debugHandler != null) {
 			debugHandler.LogKv("PerformMove", DebugHandler.DebugLevel.Debug, new object[] {
@@ -136,7 +136,7 @@ public class PlayerMovement : MonoBehaviour {
 				"mantleRoutineState", mantleRoutineState
 			});
 		}
-		
+
 		if (!isGrounded || !canMantle || mantleRoutineState != null) return;
 		mantleRoutineState = StartCoroutine(MantleRoutine());
 	}
@@ -146,7 +146,16 @@ public class PlayerMovement : MonoBehaviour {
 	#region Coroutines
 
 	private IEnumerator MantleRoutine() {
+		var mantle = Lib.Movement.GetWallClimbPoint(transform.position, IsLookingRight);
+		
+		if (mantle.Position == Vector3.zero) {
+			DebugHandler.Instance.Log("Mantle point invalid, cancelling mantle.", DebugHandler.DebugLevel.Warning);
+			mantleRoutineState = null;
+			yield break;
+		}
+		
 		yield return new WaitForSecondsRealtime(1.5f);
+		transform.position = mantle.Position;
 		mantleRoutineState = null;
 	}
 
