@@ -16,6 +16,7 @@ public class FlashLightPreset {
 
 public class FlashlightController : MonoBehaviour {
 	#region Fields
+	public static FlashlightController Instance;
 
 	[Header("Flashlight Settings")]
 	[SerializeField] private float maxAngle = 90;
@@ -50,6 +51,16 @@ public class FlashlightController : MonoBehaviour {
 
 	#region Unity Functions
 
+	private void Awake() {
+		//* Instance
+		if (Instance != null && Instance != this) {
+			Destroy(gameObject);
+			return;
+		}
+
+		Instance = this;
+	}
+	
 	private void Start() {
 		spotLight = spotLightGameObject.GetComponent<Light2D>();
 
@@ -129,14 +140,21 @@ public class FlashlightController : MonoBehaviour {
 			                         Mathf.Rad2Deg
 		                         );
 
+		Debug.Log(cameraAngleZ);
+		Debug.Log(isFacingRight);
 		if (isFacingRight) {
-			if (cameraAngleZ > -90 + maxAngle) cameraAngleZ = -90 + maxAngle;
-			if (cameraAngleZ < -90 - maxAngle) cameraAngleZ = -90 - maxAngle;
+			if (cameraAngleZ > -90 + maxAngle && cameraAngleZ <= 90) cameraAngleZ = -90 + maxAngle;
+			Debug.Log(cameraAngleZ);
+			if (cameraAngleZ < -90 - maxAngle && cameraAngleZ >= -270) cameraAngleZ = -90 - maxAngle;
+			Debug.Log(cameraAngleZ);
 		} else {
-			if (cameraAngleZ > 90 - maxAngle) cameraAngleZ = 90 - maxAngle;
+			if (cameraAngleZ < 90 - maxAngle && cameraAngleZ >= -90) cameraAngleZ = 90 - maxAngle;
+			Debug.Log(cameraAngleZ);
+			if (cameraAngleZ > -90 - maxAngle && cameraAngleZ < -90) cameraAngleZ = 90 + maxAngle;
+			Debug.Log(cameraAngleZ);
 		}
 		
-		transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, cameraAngleZ), 0.1f);
+		transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, cameraAngleZ), 0.03f);
 	}
 
 	private void CheckForEnemy() {
