@@ -18,6 +18,7 @@ public class FlashlightController : MonoBehaviour {
 	#region Fields
 
 	[Header("Flashlight Settings")]
+	[SerializeField] private float maxAngle = 90;
 	[SerializeField] private float flashlightWidth = 45;
 	[SerializeField] private int   rayAmount = 100;
 	[SerializeField] private float beamWidth = 10;
@@ -40,6 +41,7 @@ public class FlashlightController : MonoBehaviour {
 	private InputAction      equipFlashlight2;
 
 	//* States
+	private bool             isFacingRight;
 	private float            intensity;
 	private Light2D          spotLight;
 	private FlashLightPreset equippedFlashlight = new FlashLightPreset();
@@ -81,6 +83,12 @@ public class FlashlightController : MonoBehaviour {
 
 	#region Functions
 
+	public void UpdateDirection() {
+		if (PlayerData.Instance) isFacingRight = PlayerData.Instance.IsLookingRight;
+		else DebugHandler.Instance.Log("PlayerData not found, cannot update direction.", DebugHandler.DebugLevel.Fatal);
+
+	}
+
 	private void CheckPlayerInputs() {
 		if (equipFlashlight1.triggered && equippedFlashlight != defaultPreset) {
 			equippedFlashlight = defaultPreset;
@@ -121,6 +129,13 @@ public class FlashlightController : MonoBehaviour {
 			                         Mathf.Rad2Deg
 		                         );
 
+		if (isFacingRight) {
+			if (cameraAngleZ > -90 + maxAngle) cameraAngleZ = -90 + maxAngle;
+			if (cameraAngleZ < -90 - maxAngle) cameraAngleZ = -90 - maxAngle;
+		} else {
+			if (cameraAngleZ > 90 - maxAngle) cameraAngleZ = 90 - maxAngle;
+		}
+		
 		transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, cameraAngleZ), 0.1f);
 	}
 
