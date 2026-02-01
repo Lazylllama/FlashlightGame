@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -27,7 +28,7 @@ public class DebugHandler : MonoBehaviour {
 	//* Settings *//
 	[Header("Settings")]
 	public DebugLevel debugLevel = DebugLevel.Warning;
-	
+	public List<string> filteredLogs;
 
 	#endregion
 
@@ -38,14 +39,16 @@ public class DebugHandler : MonoBehaviour {
 			Destroy(instance.gameObject);
 		} else {
 			Instance = instance;
-			
-			instance.LogKv("DebugHandler initialized.", DebugLevel.Info, new object[] { "Debug Level", instance.debugLevel.ToString() });
+
+			instance.LogKv("DebugHandler initialized.", DebugLevel.Info,
+			               new object[] { "Debug Level", instance.debugLevel.ToString() });
 		}
 	}
 
 	private void Awake() {
 		RegisterInstance(this);
 	}
+
 	#endregion
 
 	#region Functions
@@ -54,10 +57,15 @@ public class DebugHandler : MonoBehaviour {
 	/// Check if the specified debug level is permitted by current settings.
 	/// </summary>
 	/// <param name="level">DebugHandler.DebugLevel.*</param>
-	/// <returns>True/False depending on level</returns>
+	/// <returns>True/False depending on the level</returns>
 	public bool LevelPermitted(DebugLevel level) {
 		if (debugLevel == DebugLevel.None) return false;
 		return level   <= debugLevel;
+	}
+
+	private bool IsFiltered(string message) {
+		var firstWord = message.Split(' ')[0];
+		return filteredLogs.Contains(firstWord);
 	}
 
 	/// <summary>
@@ -68,10 +76,11 @@ public class DebugHandler : MonoBehaviour {
 	/// <param name="context">{ "Key", "Value", "Key", "Value" ... }</param>
 	public void LogKv(string message, DebugLevel level, params object[] context) {
 		if (!LevelPermitted(level)) return;
+		if (IsFiltered(message)) return;
 
 		var logMessage = message;
 
-		if (context != null && context.Length > 0) {
+		if (context is { Length: > 0 }) {
 			for (var i = 0; i < context.Length; i += 2) {
 				logMessage += $" | {context[i]}: {context[i + 1]}";
 			}
@@ -88,10 +97,11 @@ public class DebugHandler : MonoBehaviour {
 	/// <param name="context">new object[] { "Something", 132, false ... }</param>
 	public void Log(string message, DebugLevel level, params object[] context) {
 		if (!LevelPermitted(level)) return;
+		if (IsFiltered(message)) return;
 
 		var logMessage = message;
 
-		if (context != null && context.Length > 0) {
+		if (context is { Length: > 0 }) {
 			logMessage = context.Aggregate(logMessage, (current, ctx) => current + $" | {ctx}");
 		}
 
@@ -99,13 +109,20 @@ public class DebugHandler : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Log a simple message for specified level.
+	/// Log a message together with no level. Defaults to DebugLevel.Info.
+	/// </summary>
+	/// <param name="message">string</param>
+	public void Log(string message) => Log(message, DebugLevel.Info);
+
+	/// <summary>
+	/// Log a simple message for the specified level.
 	/// </summary>
 	/// <param name="message">string</param>
 	/// <param name="level">DebugHandler.DebugLevel.*</param>
 	/// <exception cref="ArgumentOutOfRangeException">Invalid DebugLevel</exception>
 	public void Log(string message, DebugLevel level) {
 		if (!LevelPermitted(level)) return;
+		if (IsFiltered(message)) return;
 
 		var logMessage = $"[{level.ToString().ToUpper()}] {message} ";
 

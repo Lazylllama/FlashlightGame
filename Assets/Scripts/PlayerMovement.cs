@@ -17,9 +17,9 @@ public class PlayerMovement : MonoBehaviour {
 	private Rigidbody2D playerRb;
 
 	private static bool IsLookingRight {
-		get => PlayerData.Instance != null && PlayerData.Instance.IsLookingRight;
+		get => PlayerData.Instance ? PlayerData.Instance : false;
 		set {
-			if (PlayerData.Instance != null) {
+			if (PlayerData.Instance) {
 				PlayerData.Instance.IsLookingRight = value;
 			}
 		}
@@ -64,12 +64,12 @@ public class PlayerMovement : MonoBehaviour {
 
 	//? Draws gizmo to visualize ground check status
 	private void OnDrawGizmos() {
-		if (groundCheckPosition != null) {
+		if (groundCheckPosition) {
 			Gizmos.color = isGrounded ? Color.green : Color.red;
 			Gizmos.DrawWireSphere(groundCheckPosition.position, groundCheckRadius);
 		}
 
-		if (headLevelPosition != null) {
+		if (headLevelPosition) {
 			Gizmos.color = canMantle ? Color.green : Color.red;
 			Gizmos.DrawLine(headLevelPosition.position,
 			                headLevelPosition.position +
@@ -118,7 +118,7 @@ public class PlayerMovement : MonoBehaviour {
 		playerRb.AddForce(Vector2.right * finalForce, ForceMode2D.Force);
 
 		var debugHandler = DebugHandler.Instance;
-		if (debugHandler != null) {
+		if (debugHandler) {
 			debugHandler.LogKv("PerformMove", DebugHandler.DebugLevel.Debug, new object[] {
 				"inputSpeed", inputSpeed,
 				"speedDifference", speedDifference,
@@ -129,7 +129,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	private void Mantle() {
 		var debugHandler = DebugHandler.Instance;
-		if (debugHandler != null) {
+		if (debugHandler) {
 			debugHandler.LogKv("Mantle", DebugHandler.DebugLevel.Debug, new object[] {
 				"isGrounded", isGrounded,
 				"canMantle", canMantle,
