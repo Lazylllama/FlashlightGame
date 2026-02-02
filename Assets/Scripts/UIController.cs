@@ -1,13 +1,12 @@
-using System;
-using TMPro;
-using Unity.VisualScripting;
+using FlashlightGame;
 using UnityEngine;
+using TMPro;
 
 public class UIController : MonoBehaviour {
 	#region Fields
 
 	//* Instance *//
-	public static  UIController Instance;
+	public static UIController Instance;
 
 	[SerializeField] private TMP_Text healthText;
 	[SerializeField] private TMP_Text batteryText;
@@ -16,7 +15,7 @@ public class UIController : MonoBehaviour {
 
 	#region Unity Functions
 
-	private void Awake() {
+	private void Start() {
 		RegisterInstance(this);
 	}
 
@@ -29,8 +28,8 @@ public class UIController : MonoBehaviour {
 			Destroy(instance.gameObject);
 		} else {
 			Instance = instance;
-			
-			DebugHandler.Instance.Log("UIController initialized.");
+
+			DebugHandler.Log("UIController initialized.");
 		}
 	}
 

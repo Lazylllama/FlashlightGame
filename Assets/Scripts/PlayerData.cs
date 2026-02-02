@@ -1,4 +1,5 @@
 using System;
+using FlashlightGame;
 using UnityEngine;
 
 
@@ -39,8 +40,7 @@ public class PlayerData : MonoBehaviour {
 
 		//? Drain Battery
 		if (!FlashlightEnabled || drainInterval > drainTimer) return;
-		Battery--;
-		if (Battery < 0) Battery = 0;
+		Battery = Mathf.Clamp(Battery--, 0, 100);
 		UIController.Instance.UpdateUI();
 	}
 
@@ -50,21 +50,14 @@ public class PlayerData : MonoBehaviour {
 
 	//! Public Functions
 	/// <summary>
-	/// Deal damage to the player. Caps out at 100.
+	/// Update the player's battery by the specified difference. Clamps between 0 and 100.
 	/// </summary>
-	/// <param name="damage">1-100 Health Points</param>
-	public void TakeDamage(int damage) {
-		Health = Mathf.Clamp(Health - damage, 0, 100);
-
+	/// <param name="difference">-100 to +100 Health Points</param>
+	private void UpdateHealth(int difference) {
+		UIController.Instance.UpdateUI();
+		Health = Mathf.Clamp(Health + difference, 0, 100);
 	}
 
-	/// <summary>
-	/// Restore health to the player. Caps out at 100.
-	/// </summary>
-	/// <param name="amount">1-100 Health Points</param>
-	public void RestoreHealth(int amount) {
-		Health = Mathf.Clamp(Health + amount, 0, 100);
-	}
 
 	//! Private Functions
 	/// Set whether the player is looking right.
@@ -83,7 +76,7 @@ public class PlayerData : MonoBehaviour {
 		} else {
 			Instance = instance;
 
-			DebugHandler.Instance.Log("PlayerData initialized.");
+			DebugHandler.Log("PlayerData initialized.");
 		}
 	}
 
