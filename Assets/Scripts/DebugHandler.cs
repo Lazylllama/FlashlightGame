@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FlashlightGame;
 using UnityEngine;
 
 public class DebugHandler : MonoBehaviour {
@@ -26,10 +27,9 @@ public class DebugHandler : MonoBehaviour {
 	public static DebugHandler Instance;
 
 	//* Settings *//
-	[Header("Settings")]
-	public DebugLevel debugLevel = DebugLevel.Warning;
-	public List<string> filteredLogs;
-
+	private DebugLevel   DbgLevel => Settings.DebugLevel;
+	private List<string> LogFilter => Settings.LogFilter;
+	
 	#endregion
 
 	#region Unity Functions
@@ -41,7 +41,7 @@ public class DebugHandler : MonoBehaviour {
 			Instance = instance;
 
 			instance.LogKv("DebugHandler initialized.", DebugLevel.Info,
-			               new object[] { "Debug Level", instance.debugLevel.ToString() });
+			               new object[] { "Debug Level", instance.DbgLevel.ToString() });
 		}
 	}
 
@@ -59,13 +59,13 @@ public class DebugHandler : MonoBehaviour {
 	/// <param name="level">DebugHandler.DebugLevel.*</param>
 	/// <returns>True/False depending on the level</returns>
 	public bool LevelPermitted(DebugLevel level) {
-		if (debugLevel == DebugLevel.None) return false;
-		return level   <= debugLevel;
+		if (DbgLevel == DebugLevel.None) return false;
+		return level <= DbgLevel;
 	}
 
 	private bool IsFiltered(string message) {
 		var firstWord = message.Split(' ')[0];
-		return filteredLogs.Contains(firstWord);
+		return LogFilter.Contains(firstWord);
 	}
 
 	/// <summary>

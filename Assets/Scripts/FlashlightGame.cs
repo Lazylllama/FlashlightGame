@@ -113,7 +113,7 @@ namespace FlashlightGame {
 		public static readonly List<string> LogFilter = new List<string>() {
 			"PerformMove", // Spammy
 			"ChaseTarget"  // Spammy
-		};
+		};	
 
 		#endregion
 	}
