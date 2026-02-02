@@ -900,10 +900,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FlashlightController
   maxAngle: 90
   flashlightWidth: 0.1
-  rayAmount: 100
+  lerpSpeed: 0
   beamWidth: 10
   range: 0
   density: 0
+  rayAmount: 100
   color: {r: 0, g: 0, b: 0, a: 0}
   lightOutput: {fileID: 1070042747}
   spotLightGameObject: {fileID: 477232818}
@@ -1742,6 +1743,14 @@ PrefabInstance:
     - target: {fileID: 1004458531176302579, guid: 3c2ff7f8be452514ba883a0d0c092b0d, type: 3}
       propertyPath: m_Name
       value: EnemySpawningArea
+      objectReference: {fileID: 0}
+    - target: {fileID: 3825484399884497724, guid: 3c2ff7f8be452514ba883a0d0c092b0d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3825484399884497724, guid: 3c2ff7f8be452514ba883a0d0c092b0d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3825484399884497724, guid: 3c2ff7f8be452514ba883a0d0c092b0d, type: 3}
       propertyPath: m_LocalPosition.x

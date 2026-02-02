@@ -46,6 +46,8 @@ public class FlashlightController : MonoBehaviour {
 	private float            intensity;
 	private Light2D          spotLight;
 	private FlashLightPreset equippedFlashlight = new FlashLightPreset();
+	
+	private Dictionary<Collider2D, int> hitList = new Dictionary<Collider2D, int>();
 
 	#endregion
 
@@ -158,7 +160,6 @@ public class FlashlightController : MonoBehaviour {
 	}
 
 	private void CheckForEnemy() {
-		var hitList = new Dictionary<Collider2D, int>();
 
 		//? How many degrees apart should each ray be
 		var degreesPerRay = beamWidth / (rayAmount - 1);
@@ -191,26 +192,30 @@ public class FlashlightController : MonoBehaviour {
 			                               math.cos(endpointNormal * math.TORADIANS) * range);
 			var endPoint = new Vector2(endpointBend.x * rotation.x + endpointBend.y * -rotation.y + startPoint.x,
 			                           endpointBend.x * rotation.y + endpointBend.y * rotation.x  + startPoint.y);
-
-
-			//? Gizmo
-			Debug.DrawLine(startPoint, endPoint, Color.red);
-
-			//? Adds all colliders that hit the ray to a Dictionary and counts the number of times they hit.
-			var hit = Physics2D.Linecast(startPoint, endPoint, excludePlayer);
-			if (!hit ||
-			    !(hit.collider.gameObject.CompareTag("Enemy") ||
-			      hit.collider.gameObject.CompareTag("WeakPoint"))) continue;
-			if (!hitList.TryAdd(hit.collider, 1)) {
-				hitList[hit.collider]++;
-				//Debug.Log("Test 1");
-			} else {
-				//Debug.Log("Test 2");
-			}
+			
+			DrawNewLine(startPoint, endPoint);
 		}
+		
+		RegisterHitList();
+	}
 
-		//Debug.Log(hitList);
+	private void DrawNewLine(Vector2 start, Vector2 end) {
+		
+		
+		//? Gizmo
+		Debug.DrawLine(start, end, Color.red);
 
+		//? Adds all colliders that hit the ray to a Dictionary and counts the number of times they hit.
+		var hit = Physics2D.Linecast(start, end, excludePlayer);
+		if (!hit ||
+		    !(hit.collider.gameObject.CompareTag("Enemy") ||
+		      hit.collider.gameObject.CompareTag("WeakPoint"))) return;
+		if (!hitList.TryAdd(hit.collider, 1)) {
+			hitList[hit.collider]++;
+		}
+	}
+
+	private void RegisterHitList() {
 		foreach (var hit in hitList) {
 			if (hit.Key.gameObject.CompareTag("Enemy")) {
 				hit.Key.gameObject.GetComponent<EnemyController>().UpdateHealth(hit.Value / (float)rayAmount);
@@ -218,6 +223,7 @@ public class FlashlightController : MonoBehaviour {
 				hit.Key.gameObject.GetComponentInParent<BossController>().Hit(hit.Value / (float)rayAmount);
 			}
 		}
+		hitList.Clear();
 	}
 
 	#endregion
