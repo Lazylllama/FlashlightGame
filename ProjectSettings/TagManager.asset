@@ -18,12 +18,9 @@ TagManager:
   - Box
   - Particles
   - FlashlightIgnore
-  - ClimbableWall
+  - ClimbWall
   - Wall
-  - 
-  - 
-  - 
-  - 
+  - MantleWall
   - 
   - 
   - 

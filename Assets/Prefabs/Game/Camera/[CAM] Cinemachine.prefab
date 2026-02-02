@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7813169037428560119}
   - component: {fileID: 6042924845670639021}
   m_Layer: 0
-  m_Name: CmCamera
+  m_Name: '[CAM] Cinemachine'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 9071384862457871270}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -10.4860935, y: -11.0738535, z: -146.2061}
+  m_LocalPosition: {x: 3.5099995, y: 1.78, z: -26.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

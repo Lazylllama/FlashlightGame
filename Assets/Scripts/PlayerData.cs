@@ -7,29 +7,41 @@ public class PlayerData : MonoBehaviour {
 
 	public static PlayerData Instance;
 
-	//* Player Stats
+	//* Player Stats *//
 	public int Health  { get; private set; } = 100;
-	public int Battery { get; set; }         = 100;
+	public int Battery { get; private set; } = 100;
 
-	//* Player Data
+	//* Player Data *//
 	private bool isLookingRight;
 	public bool IsLookingRight {
 		set => SetIsLookingRight(value);
 		get => isLookingRight;
 	}
 
+	//* Player States *//
+	public bool FlashlightEnabled { get; set; } = true;
+
+	//* Options *//
+	[SerializeField] private float drainInterval = 1f;
+
+	//* States *//
+	private float drainTimer;
+
 	#endregion
 
 	#region Unity Functions
 
-	private void Awake() {
-		//* Instance
-		if (Instance != null && Instance != this) {
-			Destroy(gameObject);
-			return;
-		}
+	private void Awake() => RegisterInstance(this);
 
-		Instance = this;
+	private void FixedUpdate() {
+		//? Timer
+		drainTimer = Time.deltaTime;
+
+		//? Drain Battery
+		if (!FlashlightEnabled || drainInterval > drainTimer) return;
+		Battery--;
+		if (Battery < 0) Battery = 0;
+		UIController.Instance.UpdateUI();
 	}
 
 	#endregion
@@ -42,9 +54,8 @@ public class PlayerData : MonoBehaviour {
 	/// </summary>
 	/// <param name="damage">1-100 Health Points</param>
 	public void TakeDamage(int damage) {
-		if (damage < 0) return;
-		Health -= damage;
-		if (Health < 0) Health = 0;
+		Health = Mathf.Clamp(Health - damage, 0, 100);
+
 	}
 
 	/// <summary>
@@ -52,9 +63,7 @@ public class PlayerData : MonoBehaviour {
 	/// </summary>
 	/// <param name="amount">1-100 Health Points</param>
 	public void RestoreHealth(int amount) {
-		if (amount < 0) return;
-		Health += amount;
-		if (Health > 100) Health = 100;
+		Health = Mathf.Clamp(Health + amount, 0, 100);
 	}
 
 	//! Private Functions
@@ -64,6 +73,17 @@ public class PlayerData : MonoBehaviour {
 		var controller = PlayerController.Instance;
 		if (controller != null) {
 			controller.UpdateDirection();
+		}
+	}
+
+	/// Register the PlayerData instance.
+	private static void RegisterInstance(PlayerData instance) {
+		if (Instance && Instance != instance) {
+			Destroy(instance.gameObject);
+		} else {
+			Instance = instance;
+
+			DebugHandler.Instance.Log("PlayerData initialized.");
 		}
 	}
 
