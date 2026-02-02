@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour {
 	public static PlayerController Instance;
 
 	//* Refs
-	[SerializeField] private Transform playerSprite;
+	[SerializeField] private SpriteRenderer playerSprite;
 
 	#endregion
 
@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour {
 	/// Update the player's sprite direction based on the PlayerData's IsLookingRight property.
 	/// </summary>
 	public void UpdateDirection() {
-		playerSprite.rotation = Quaternion.Euler(0f, PlayerData.Instance.IsLookingRight ? 0f : 180f, 0f);
+		playerSprite.flipX = !PlayerData.Instance.IsLookingRight;
 	}
 
 	#endregion

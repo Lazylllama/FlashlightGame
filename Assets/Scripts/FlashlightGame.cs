@@ -1,8 +1,26 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
 
-
+// ReSharper disable once CheckNamespace
 namespace FlashlightGame {
+	#region Types
+
+	/// <summary>
+	/// Defines the level of debug message. Messages with a level equal to or lower than the current setting will be logged.
+	/// </summary>
+	public enum DebugLevel {
+		None,
+		Fatal,
+		Error,
+		Warning,
+		Info,
+		Debug
+	}
+
+	#endregion
+
 	public static class Lib {
 		#region Fields
 
@@ -104,16 +122,111 @@ namespace FlashlightGame {
 
 		#endregion
 	}
+	
+	public static class DebugHandler {
 
-	public static class Settings {
 		#region Fields
 
-		//* DebugHandler *//
-		public const DebugHandler.DebugLevel DebugLevel = DebugHandler.DebugLevel.Debug;
-		public static readonly List<string> LogFilter = new List<string>() {
-			"PerformMove", // Spammy
-			"ChaseTarget"  // Spammy
-		};	
+		//* Settings *//
+		public static DebugLevel   DbgLevel  = DebugLevel.Error;
+		public static List<string> LogFilter = new List<string>();
+
+		#endregion
+
+		#region Functions
+
+		/// <summary>
+		/// Check if the specified debug level is permitted by current settings.
+		/// </summary>
+		/// <param name="level">DebugHandler.DebugLevel.*</param>
+		/// <returns>True/False depending on the level</returns>
+		public static bool LevelPermitted(DebugLevel level) {
+			if (DbgLevel == DebugLevel.None) return false;
+			return level <= DbgLevel;
+		}
+
+		private static bool IsFiltered(string message) {
+			var firstWord = message.Split(' ')[0];
+			return LogFilter.Contains(firstWord);
+		}
+
+		/// <summary>
+		/// Log a message together with "key-value pairs" as context.
+		/// </summary>
+		/// <param name="message">string</param>
+		/// <param name="level">DebugHandler.DebugLevel.*</param>
+		/// <param name="context">{ "Key", "Value", "Key", "Value" ... }</param>
+		public static void LogKv(string message, DebugLevel level, params object[] context) {
+			if (!LevelPermitted(level)) return;
+			if (IsFiltered(message)) return;
+
+			var logMessage = message;
+
+			if (context is { Length: > 0 }) {
+				for (var i = 0; i < context.Length; i += 2) {
+					logMessage += $" | {context[i]}: {context[i + 1]}";
+				}
+			}
+
+			Log(logMessage, level);
+		}
+
+		/// <summary>
+		/// Log a message together with unlabeled context.
+		/// </summary>
+		/// <param name="message">string</param>
+		/// <param name="level">DebugHandler.DebugLevel.*</param>
+		/// <param name="context">new object[] { "Something", 132, false ... }</param>
+		public static void Log(string message, DebugLevel level, params object[] context) {
+			if (!LevelPermitted(level)) return;
+			if (IsFiltered(message)) return;
+
+			var logMessage = message;
+
+			if (context is { Length: > 0 }) {
+				logMessage = context.Aggregate(logMessage, (current, ctx) => current + $" | {ctx}");
+			}
+
+			Log(logMessage, level);
+		}
+
+		/// <summary>
+		/// Log a message together with no level. Defaults to DebugLevel.Info.
+		/// </summary>
+		/// <param name="message">string</param>
+		public static void Log(string message) => Log(message, DebugLevel.Info);
+
+		/// <summary>
+		/// Log a simple message for the specified level.
+		/// </summary>
+		/// <param name="message">string</param>
+		/// <param name="level">DebugHandler.DebugLevel.*</param>
+		/// <exception cref="ArgumentOutOfRangeException">Invalid DebugLevel</exception>
+		public static void Log(string message, DebugLevel level) {
+			if (!LevelPermitted(level)) return;
+			if (IsFiltered(message)) return;
+
+			var logMessage = $"[{level.ToString().ToUpper()}] {message} ";
+
+			switch (level) {
+				case DebugLevel.None: break;
+				case DebugLevel.Fatal:
+					Debug.LogException(new Exception(logMessage));
+					return;
+				case DebugLevel.Error:
+					Debug.LogError(logMessage);
+					return;
+				case DebugLevel.Info:
+				case DebugLevel.Debug:
+					Debug.Log(logMessage);
+					return;
+				case DebugLevel.Warning:
+					Debug.LogWarning(logMessage);
+					return;
+
+				default: throw new ArgumentOutOfRangeException(nameof(level), level, null);
+			}
+		}
 
 		#endregion
 	}
