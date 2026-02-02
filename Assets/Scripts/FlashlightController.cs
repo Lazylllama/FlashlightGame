@@ -48,6 +48,7 @@ public class FlashlightController : MonoBehaviour {
 	private FlashLightPreset equippedFlashlight = new FlashLightPreset();
 	
 	private Dictionary<Collider2D, int> hitList = new Dictionary<Collider2D, int>();
+	private Dictionary<RaycastHit2D, Vector2> reflectList = new Dictionary<RaycastHit2D, Vector2>();
 
 	#endregion
 
@@ -141,19 +142,13 @@ public class FlashlightController : MonoBehaviour {
 			                                     mousePosition.x - transform.position.x) *
 			                         Mathf.Rad2Deg
 		                         );
-
-		Debug.Log(cameraAngleZ);
-		Debug.Log(isFacingRight);
+		
 		if (isFacingRight) {
 			if (cameraAngleZ > -90 + maxAngle && cameraAngleZ <= 90) cameraAngleZ = -90 + maxAngle;
-			Debug.Log(cameraAngleZ);
 			if (cameraAngleZ < -90 - maxAngle && cameraAngleZ >= -270) cameraAngleZ = -90 - maxAngle;
-			Debug.Log(cameraAngleZ);
 		} else {
 			if (cameraAngleZ < 90 - maxAngle && cameraAngleZ >= -90) cameraAngleZ = 90 - maxAngle;
-			Debug.Log(cameraAngleZ);
 			if (cameraAngleZ > -90 - maxAngle && cameraAngleZ < -90) cameraAngleZ = 90 + maxAngle;
-			Debug.Log(cameraAngleZ);
 		}
 		
 		transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, cameraAngleZ), 0.03f);
@@ -197,6 +192,27 @@ public class FlashlightController : MonoBehaviour {
 		}
 		
 		RegisterHitList();
+		RegisterReflectList();
+	}
+
+	private void ReflectRay(Vector2 inDirection, Vector2 inNormal, Vector2 origin ) {
+		DrawNewRay(origin ,Vector2.Reflect(inDirection, inNormal).normalized);
+	}
+
+	private void DrawNewRay(Vector2 start, Vector2 direction) {
+		Debug.DrawRay(start, direction, Color.red);
+		
+		var hit = Physics2D.Raycast(start, direction, excludePlayer);
+		
+		if (!hit ||
+		    !(hit.collider.gameObject.CompareTag("Enemy")     ||
+		      hit.collider.gameObject.CompareTag("WeakPoint") || 
+		      hit.collider.gameObject.CompareTag("Mirror"))) return;
+		if (hit.collider.gameObject.CompareTag("Mirror")) {
+			reflectList.TryAdd(hit, start);
+		}else if (!hitList.TryAdd(hit.collider, 1)) {
+			hitList[hit.collider]++;
+		}
 	}
 
 	private void DrawNewLine(Vector2 start, Vector2 end) {
@@ -209,21 +225,45 @@ public class FlashlightController : MonoBehaviour {
 		var hit = Physics2D.Linecast(start, end, excludePlayer);
 		if (!hit ||
 		    !(hit.collider.gameObject.CompareTag("Enemy") ||
-		      hit.collider.gameObject.CompareTag("WeakPoint"))) return;
-		if (!hitList.TryAdd(hit.collider, 1)) {
+		      hit.collider.gameObject.CompareTag("WeakPoint") || 
+		      hit.collider.gameObject.CompareTag("Mirror"))) return;
+		if (hit.collider.gameObject.CompareTag("Mirror")) {
+			reflectList.TryAdd(hit, start);
+		}else if (!hitList.TryAdd(hit.collider, 1)) {
 			hitList[hit.collider]++;
 		}
 	}
 
 	private void RegisterHitList() {
+		List<Collider2D> removeList = new List<Collider2D>();
 		foreach (var hit in hitList) {
 			if (hit.Key.gameObject.CompareTag("Enemy")) {
 				hit.Key.gameObject.GetComponent<EnemyController>().UpdateHealth(hit.Value / (float)rayAmount);
-			} else {
+				removeList.Add(hit.Key);
+			} else if (hit.Key.gameObject.CompareTag("WeakPoint")) {
 				hit.Key.gameObject.GetComponentInParent<BossController>().Hit(hit.Value / (float)rayAmount);
+				removeList.Add(hit.Key);
 			}
 		}
-		hitList.Clear();
+		
+		foreach (var key in removeList) {
+			hitList.Remove(key);
+		}
+		removeList.Clear();
+	}
+
+	private void RegisterReflectList() {
+		List<RaycastHit2D> removeList = new List<RaycastHit2D>();
+		foreach (var hit in reflectList) {
+			Debug.Log("Mango");
+			ReflectRay(Vector2.Normalize(hit.Key.point-hit.Value),hit.Key.normal,hit.Key.point);
+			removeList.Add(hit.Key);
+		}
+
+		foreach (var key in removeList) {
+			reflectList.Remove(key);
+		}
+		removeList.Clear();
 	}
 
 	#endregion
