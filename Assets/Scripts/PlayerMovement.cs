@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour {
 	private Rigidbody2D playerRb;
 
 	private static bool IsLookingRight {
-		get => PlayerData.Instance ? PlayerData.Instance : false;
+		get => PlayerData.Instance && PlayerData.Instance.IsLookingRight;
 		set {
 			if (PlayerData.Instance) {
 				PlayerData.Instance.IsLookingRight = value;
@@ -62,21 +62,6 @@ public class PlayerMovement : MonoBehaviour {
 		PerformMove();
 	}
 
-	//? Draws gizmo to visualize ground check status
-	private void OnDrawGizmos() {
-		if (groundCheckPosition) {
-			Gizmos.color = isGrounded ? Color.green : Color.red;
-			Gizmos.DrawWireSphere(groundCheckPosition.position, groundCheckRadius);
-		}
-
-		if (headLevelPosition) {
-			Gizmos.color = canMantle ? Color.green : Color.red;
-			Gizmos.DrawLine(headLevelPosition.position,
-			                headLevelPosition.position +
-			                new Vector3(IsLookingRight ? mantleCheckDistance : -mantleCheckDistance, 0));
-		}
-	}
-
 	//? Set global instance
 	private void Awake() {
 		if (Instance != null && Instance != this) {
@@ -100,7 +85,6 @@ public class PlayerMovement : MonoBehaviour {
 
 	private void InputCheck() {
 		moveInputVal = moveAction.ReadValue<Vector2>();
-
 		IsLookingRight = moveInputVal.x switch {
 			< 0 when IsLookingRight  => false,
 			> 0 when !IsLookingRight => true,
@@ -117,25 +101,20 @@ public class PlayerMovement : MonoBehaviour {
 
 		playerRb.AddForce(Vector2.right * finalForce, ForceMode2D.Force);
 
-		var debugHandler = DebugHandler.Instance;
-		if (debugHandler) {
-			debugHandler.LogKv("PerformMove", DebugHandler.DebugLevel.Debug, new object[] {
-				"inputSpeed", inputSpeed,
-				"speedDifference", speedDifference,
-				"finalForce", finalForce
-			});
-		}
+
+		DebugHandler.LogKv("PerformMove", DebugLevel.Debug, new object[] {
+			"inputSpeed", inputSpeed,
+			"speedDifference", speedDifference,
+			"finalForce", finalForce
+		});
 	}
 
 	private void Mantle() {
-		var debugHandler = DebugHandler.Instance;
-		if (debugHandler) {
-			debugHandler.LogKv("Mantle", DebugHandler.DebugLevel.Debug, new object[] {
-				"isGrounded", isGrounded,
-				"canMantle", canMantle,
-				"mantleRoutineState", mantleRoutineState
-			});
-		}
+		DebugHandler.LogKv("Mantle", DebugLevel.Debug, new object[] {
+			"isGrounded", isGrounded,
+			"canMantle", canMantle,
+			"mantleRoutineState", mantleRoutineState
+		});
 
 		if (!isGrounded || !canMantle || mantleRoutineState != null) return;
 		mantleRoutineState = StartCoroutine(MantleRoutine());
@@ -147,14 +126,13 @@ public class PlayerMovement : MonoBehaviour {
 
 	private IEnumerator MantleRoutine() {
 		var mantle = Lib.Movement.GetWallClimbPoint(transform.position, IsLookingRight);
-		
+
 		if (mantle.Position == Vector3.zero) {
-			DebugHandler.Instance.Log("Mantle point invalid, cancelling mantle.", DebugHandler.DebugLevel.Warning);
+			DebugHandler.Log("Mantle point invalid, cancelling mantle.", DebugLevel.Warning);
 			mantleRoutineState = null;
 			yield break;
 		}
-		
-		yield return new WaitForSecondsRealtime(1.5f);
+
 		transform.position = mantle.Position;
 		mantleRoutineState = null;
 	}
