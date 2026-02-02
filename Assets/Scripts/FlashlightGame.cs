@@ -1,5 +1,4 @@
-﻿using JetBrains.Annotations;
-
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -7,15 +6,15 @@ namespace FlashlightGame {
 	public static class Lib {
 		#region Fields
 
-		public static LayerMask GroundLayerMask        => LayerMask.GetMask("Ground");
-		public static LayerMask ClimbableWallLayerMask => LayerMask.GetMask("ClimbableWall");
+		private static LayerMask GroundLayerMask    => LayerMask.GetMask("Ground");
+		private static LayerMask ClimbWallLayerMask => LayerMask.GetMask("ClimbWall");
 
 		//* Constants
 		private const float WallCheckDistance   = 0.8f;
 		private const float WallRayDistance     = 3f;
 		private const float WallRayHeight       = 1.2f;
 		private const float WallTeleportOffsetY = 2f;
-		
+
 
 		//* Refs
 		private static bool GizmosEnabled => true;
@@ -23,7 +22,7 @@ namespace FlashlightGame {
 		#endregion
 
 		#region Structs
-		
+
 		public struct WallClimbPoint {
 			public Vector3 Position;
 			public float   Distance;
@@ -80,12 +79,13 @@ namespace FlashlightGame {
 
 				if (GizmosEnabled) Debug.DrawRay(origin, direction * WallRayDistance, Color.red);
 
-				var climbableWallHit = Physics2D.Raycast(origin, direction, WallRayDistance, ClimbableWallLayerMask);
+				var climbableWallHit = Physics2D.Raycast(origin, direction, WallRayDistance, ClimbWallLayerMask);
 
-				if (!climbableWallHit) return new WallClimbPoint() {
-					Position = Vector3.zero,
-					Distance = 0f
-				};
+				if (!climbableWallHit)
+					return new WallClimbPoint() {
+						Position = Vector3.zero,
+						Distance = 0f
+					};
 
 				var bounds = climbableWallHit.collider.bounds;
 
@@ -101,6 +101,19 @@ namespace FlashlightGame {
 				};
 			}
 		}
+
+		#endregion
+	}
+
+	public static class Settings {
+		#region Fields
+
+		//* DebugHandler *//
+		public const DebugHandler.DebugLevel DebugLevel = DebugHandler.DebugLevel.Debug;
+		public static readonly List<string> LogFilter = new List<string>() {
+			"PerformMove", // Spammy
+			"ChaseTarget"  // Spammy
+		};	
 
 		#endregion
 	}
