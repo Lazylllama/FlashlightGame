@@ -64,16 +64,20 @@ public class PlayerMovement : MonoBehaviour {
 
 	//? Set global instance
 	private void Awake() {
+		RegisterInstance(this);
+	}
+
+	#endregion
+
+	#region Functions
+
+	private void RegisterInstance(PlayerMovement instance) {
 		if (Instance != null && Instance != this) {
 			Destroy(gameObject);
 		} else {
 			Instance = this;
 		}
 	}
-
-	#endregion
-
-	#region Functions
 
 	private void RaycastChecks() {
 		var groundCheckHit = Physics2D.OverlapCircle(groundCheckPosition.position, groundCheckRadius, groundLayer);
@@ -102,7 +106,7 @@ public class PlayerMovement : MonoBehaviour {
 		playerRb.AddForce(Vector2.right * finalForce, ForceMode2D.Force);
 
 
-		DebugHandler.LogKv("PerformMove", DebugLevel.Debug, new object[] {
+		DebugHandler.LogKv("PlayerMovement: PerformMove", DebugLevel.Debug, new object[] {
 			"inputSpeed", inputSpeed,
 			"speedDifference", speedDifference,
 			"finalForce", finalForce
@@ -110,10 +114,9 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	private void Mantle() {
-		DebugHandler.LogKv("Mantle", DebugLevel.Debug, new object[] {
+		DebugHandler.LogKv("PlayerMovement: Mantle", DebugLevel.Debug, new object[] {
 			"isGrounded", isGrounded,
-			"canMantle", canMantle,
-			"mantleRoutineState", mantleRoutineState
+			"canMantle", canMantle
 		});
 
 		if (!isGrounded || !canMantle || mantleRoutineState != null) return;
@@ -128,7 +131,7 @@ public class PlayerMovement : MonoBehaviour {
 		var mantle = Lib.Movement.GetWallClimbPoint(transform.position, IsLookingRight);
 
 		if (mantle.Position == Vector3.zero) {
-			DebugHandler.Log("Mantle point invalid, cancelling mantle.", DebugLevel.Warning);
+			DebugHandler.Log("PlayerMovement: Mantle point invalid, cancelling mantle.", DebugLevel.Warning);
 			mantleRoutineState = null;
 			yield break;
 		}

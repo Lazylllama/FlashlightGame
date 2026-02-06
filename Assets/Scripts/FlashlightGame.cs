@@ -122,14 +122,14 @@ namespace FlashlightGame {
 
 		#endregion
 	}
-	
-	public static class DebugHandler {
 
+	public static class DebugHandler {
 		#region Fields
 
 		//* Settings *//
-		public static DebugLevel   DbgLevel  = DebugLevel.Error;
-		public static List<string> LogFilter = new List<string>();
+		public static DebugLevel   DbgLevel        = DebugLevel.Error;
+		public static List<string> LogFilter       = new List<string>();
+		public static string       LogFileLocation = Application.consoleLogPath;
 
 		#endregion
 
@@ -195,6 +195,12 @@ namespace FlashlightGame {
 		/// </summary>
 		/// <param name="message">string</param>
 		public static void Log(string message) => Log(message, DebugLevel.Info);
+
+		/// <summary>
+		/// Handle cases where the given object isn't a string.
+		/// </summary>
+		/// <param name="message">Object that can be converted using ToString()</param>
+		public static void Log(object message) => Log(message.ToString(), DebugLevel.Info);
 
 		/// <summary>
 		/// Log a simple message for the specified level.

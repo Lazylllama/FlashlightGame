@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using FlashlightGame;
 using UnityEngine;
@@ -6,6 +7,20 @@ using UnityEngine;
 //! DOCUMENTATION: https://github.com/richardelms/FileBasedPlayerPrefs?tab=readme-ov-file#api
 
 public class PlayerPrefsHandler : MonoBehaviour {
+	#region Fields
+
+	private static Dictionary<string, object> configurationSchema = new Dictionary<string, object>() {
+		{
+			"TargetFrameRate", 60
+		}, {
+			"DebugLevel", "Warning"
+		}, {
+			"LogFilter", ""
+		}
+	};
+
+	#endregion
+
 	#region Unity Functions
 
 	private void Awake() {
@@ -19,28 +34,16 @@ public class PlayerPrefsHandler : MonoBehaviour {
 
 		FBPP.Start(config);
 
-		// Load preferences
-		Application.targetFrameRate = FBPP.GetInt("TargetFrameRate", 60);
-
-		DebugHandler.DbgLevel = FBPP.GetString("DebugLevel", "Error") switch {
-			"None"    => DebugLevel.None,
-			"Fatal"   => DebugLevel.Fatal,
-			"Error"   => DebugLevel.Error,
-			"Warning" => DebugLevel.Warning,
-			"Info"    => DebugLevel.Info,
-			"Debug"   => DebugLevel.Debug,
-			_         => DebugLevel.Error
-		};
-
-		DebugHandler.LogFilter = FBPP.GetString("LogFilter")
-		                             .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-		                             .Select(s => s.Trim())
-		                             .ToList();
+		LoadPreferences();
 	}
 
 	private void Start() {
-		DebugHandler.Log("PlayerPrefsHandler initialized.");
 		CheckMissingKeysAndSave();
+		
+		DebugHandler.LogKv("DebugInformation:", DebugLevel.Info, new object[] {
+			"isEditor", Application.isEditor,
+			"isProduction", Application.version,
+		});
 	}
 
 	#endregion
@@ -63,19 +66,54 @@ public class PlayerPrefsHandler : MonoBehaviour {
 	}
 
 	private void CheckMissingKeysAndSave() {
-		if (!FBPP.HasKey("TargetFrameRate")) {
-			FBPP.SetInt("TargetFrameRate", 60);
-		}
+		DebugHandler.Log("PlayerPrefsHandler: Checking for missing keys");
+		foreach (var kvp in configurationSchema) {
+			if (FBPP.HasKey(kvp.Key)) return;
 
-		if (!FBPP.HasKey("DebugLevel")) {
-			FBPP.SetString("DebugLevel", "Error");
-		}
+			DebugHandler.LogKv($"PlayerPrefsHandler: Key '{kvp.Key}' is missing, attempting to add now.",
+			                   DebugLevel.Warning, new object[] {
+				                   "Key", kvp.Key,
+				                   "DefaultValue", kvp.Value
+			                   });
 
-		if (!FBPP.HasKey("LogFilter")) {
-			FBPP.SetString("LogFilter", "");
+			switch (kvp.Value) {
+				case int val:
+					FBPP.SetInt(kvp.Key, val);
+					break;
+				case string val:
+					FBPP.SetString(kvp.Key, val);
+					break;
+				case bool val:
+					FBPP.SetBool(kvp.Key, val);
+					break;
+				case float val:
+					FBPP.SetFloat(kvp.Key, val);
+					break;
+			}
 		}
 
 		SavePreferences();
+	}
+
+	private void LoadPreferences() {
+		//? Framerate Soft-cap/Target
+		Application.targetFrameRate = FBPP.GetInt("TargetFrameRate", 60);
+
+		//? DebugHandler Level & Filter
+		DebugHandler.DbgLevel = FBPP.GetString("DebugLevel", "Error") switch {
+			"None"    => DebugLevel.None,
+			"Fatal"   => DebugLevel.Fatal,
+			"Error"   => DebugLevel.Error,
+			"Warning" => DebugLevel.Warning,
+			"Info"    => DebugLevel.Info,
+			"Debug"   => DebugLevel.Debug,
+			_         => DebugLevel.Error
+		};
+
+		DebugHandler.LogFilter = FBPP.GetString("LogFilter")
+		                             .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+		                             .Select(s => s.Trim())
+		                             .ToList();
 	}
 
 	#endregion

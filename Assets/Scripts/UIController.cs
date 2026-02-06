@@ -15,7 +15,7 @@ public class UIController : MonoBehaviour {
 
 	#region Unity Functions
 
-	private void Start() {
+	private void Awake() {
 		RegisterInstance(this);
 	}
 
@@ -28,8 +28,6 @@ public class UIController : MonoBehaviour {
 			Destroy(instance.gameObject);
 		} else {
 			Instance = instance;
-
-			DebugHandler.Log("UIController initialized.");
 		}
 	}
 
@@ -37,8 +35,13 @@ public class UIController : MonoBehaviour {
 	/// Update the UI with the current player data.
 	/// </summary>
 	public void UpdateUI() {
-		healthText.text  = $"Health: {PlayerData.Instance.Health}";
-		batteryText.text = $"Battery: {PlayerData.Instance.Battery}";
+		DebugHandler.LogKv("Updating UI", DebugLevel.Debug, new object[] {
+			"Health", PlayerData.Instance.Health,
+			"Battery", PlayerData.Instance.Battery
+		});
+
+		healthText.text  = $"Health: {PlayerData.Instance.Health} HP";
+		batteryText.text = $"Battery: {PlayerData.Instance.Battery}%";
 	}
 
 	#endregion
