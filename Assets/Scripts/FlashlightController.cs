@@ -4,6 +4,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
+using Object = UnityEngine.Object;
 
 public class FlashLightPreset {
 	public float PresetDensity;
@@ -16,14 +17,16 @@ public class FlashLightPreset {
 
 public class FlashlightController : MonoBehaviour {
 	#region Fields
+
 	public static FlashlightController Instance;
 
 	[Header("Flashlight Settings")]
-	[SerializeField] private float maxAngle = 90;
+	[SerializeField] private float updateInterval;
+	[SerializeField] private float maxAngle        = 90;
 	[SerializeField] private float flashlightWidth = 45;
-	[SerializeField] private int   rayAmount = 100;
-	[SerializeField] private float beamWidth = 10;
-	[SerializeField] private float range     = 10;
+	[SerializeField] private int   rayAmount       = 100;
+	[SerializeField] private float beamWidth       = 10;
+	[SerializeField] private float range           = 10;
 	[SerializeField] private float density;
 	[SerializeField] private Color color;
 
@@ -44,10 +47,11 @@ public class FlashlightController : MonoBehaviour {
 	//* States
 	private bool             isFacingRight;
 	private float            intensity;
+	private float            flashLightUpdateTime;
 	private Light2D          spotLight;
 	private FlashLightPreset equippedFlashlight = new FlashLightPreset();
-	
-	private Dictionary<Collider2D, int> hitList = new Dictionary<Collider2D, int>();
+
+	private Dictionary<Collider2D, int>       hitList     = new Dictionary<Collider2D, int>();
 	private Dictionary<RaycastHit2D, Vector2> reflectList = new Dictionary<RaycastHit2D, Vector2>();
 
 	#endregion
@@ -63,9 +67,10 @@ public class FlashlightController : MonoBehaviour {
 
 		Instance = this;
 	}
-	
+
 	private void Start() {
-		spotLight = spotLightGameObject.GetComponent<Light2D>();
+		flashLightUpdateTime = updateInterval;
+		spotLight            = spotLightGameObject.GetComponent<Light2D>();
 
 
 		excludePlayer = ~LayerMask.GetMask("Player");
@@ -87,10 +92,18 @@ public class FlashlightController : MonoBehaviour {
 
 	private void Update() {
 		UpdateFlashlightPosition();
-		CheckForEnemy();
-		CheckPlayerInputs();
 		UpdateFlashlight();
+		CheckPlayerInputs();
 		UpdateSpotlight();
+		CheckForEnemy();
+	}
+
+	private void FixedUpdate() {
+		flashLightUpdateTime += Time.deltaTime;
+		if (flashLightUpdateTime >= updateInterval) {
+			flashLightUpdateTime = 0;
+			
+		}
 	}
 
 	#endregion
@@ -100,7 +113,6 @@ public class FlashlightController : MonoBehaviour {
 	public void UpdateDirection() {
 		if (PlayerData.Instance) isFacingRight = PlayerData.Instance.IsLookingRight;
 		else DebugHandler.Instance.Log("PlayerData not found, cannot update direction.", DebugHandler.DebugLevel.Fatal);
-
 	}
 
 	private void CheckPlayerInputs() {
@@ -142,20 +154,19 @@ public class FlashlightController : MonoBehaviour {
 			                                     mousePosition.x - transform.position.x) *
 			                         Mathf.Rad2Deg
 		                         );
-		
+
 		if (isFacingRight) {
-			if (cameraAngleZ > -90 + maxAngle && cameraAngleZ <= 90) cameraAngleZ = -90 + maxAngle;
+			if (cameraAngleZ > -90 + maxAngle && cameraAngleZ <= 90) cameraAngleZ   = -90 + maxAngle;
 			if (cameraAngleZ < -90 - maxAngle && cameraAngleZ >= -270) cameraAngleZ = -90 - maxAngle;
 		} else {
-			if (cameraAngleZ < 90 - maxAngle && cameraAngleZ >= -90) cameraAngleZ = 90 - maxAngle;
-			if (cameraAngleZ > -90 - maxAngle && cameraAngleZ < -90) cameraAngleZ = 90 + maxAngle;
+			if (cameraAngleZ < 90  - maxAngle && cameraAngleZ >= -90) cameraAngleZ = 90 - maxAngle;
+			if (cameraAngleZ > -90 - maxAngle && cameraAngleZ < -90) cameraAngleZ  = 90 + maxAngle;
 		}
-		
+
 		transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, cameraAngleZ), 0.03f);
 	}
 
 	private void CheckForEnemy() {
-
 		//? How many degrees apart should each ray be
 		var degreesPerRay = beamWidth / (rayAmount - 1);
 
@@ -187,49 +198,47 @@ public class FlashlightController : MonoBehaviour {
 			                               math.cos(endpointNormal * math.TORADIANS) * range);
 			var endPoint = new Vector2(endpointBend.x * rotation.x + endpointBend.y * -rotation.y + startPoint.x,
 			                           endpointBend.x * rotation.y + endpointBend.y * rotation.x  + startPoint.y);
-			
+
 			DrawNewLine(startPoint, endPoint);
 		}
-		
+
 		RegisterHitList();
 		RegisterReflectList();
 	}
 
-	private void ReflectRay(Vector2 inDirection, Vector2 inNormal, Vector2 origin ) {
-		DrawNewRay(origin ,Vector2.Reflect(inDirection, inNormal).normalized);
+	private void ReflectRay(Vector2 inDirection, Vector2 inNormal, Vector2 origin) {
+		DrawNewRay(origin, Vector2.Reflect(inDirection, inNormal));
 	}
 
 	private void DrawNewRay(Vector2 start, Vector2 direction) {
 		Debug.DrawRay(start, direction, Color.red);
-		
+
 		var hit = Physics2D.Raycast(start, direction, excludePlayer);
-		
+
 		if (!hit ||
 		    !(hit.collider.gameObject.CompareTag("Enemy")     ||
-		      hit.collider.gameObject.CompareTag("WeakPoint") || 
+		      hit.collider.gameObject.CompareTag("WeakPoint") ||
 		      hit.collider.gameObject.CompareTag("Mirror"))) return;
 		if (hit.collider.gameObject.CompareTag("Mirror")) {
-			reflectList.TryAdd(hit, start);
-		}else if (!hitList.TryAdd(hit.collider, 1)) {
+			reflectList.Add(hit, start);
+		} else if (!hitList.TryAdd(hit.collider, 1)) {
 			hitList[hit.collider]++;
 		}
 	}
 
 	private void DrawNewLine(Vector2 start, Vector2 end) {
-		
-		
 		//? Gizmo
 		Debug.DrawLine(start, end, Color.red);
 
 		//? Adds all colliders that hit the ray to a Dictionary and counts the number of times they hit.
 		var hit = Physics2D.Linecast(start, end, excludePlayer);
 		if (!hit ||
-		    !(hit.collider.gameObject.CompareTag("Enemy") ||
-		      hit.collider.gameObject.CompareTag("WeakPoint") || 
+		    !(hit.collider.gameObject.CompareTag("Enemy")     ||
+		      hit.collider.gameObject.CompareTag("WeakPoint") ||
 		      hit.collider.gameObject.CompareTag("Mirror"))) return;
 		if (hit.collider.gameObject.CompareTag("Mirror")) {
 			reflectList.TryAdd(hit, start);
-		}else if (!hitList.TryAdd(hit.collider, 1)) {
+		} else if (!hitList.TryAdd(hit.collider, 1)) {
 			hitList[hit.collider]++;
 		}
 	}
@@ -245,25 +254,42 @@ public class FlashlightController : MonoBehaviour {
 				removeList.Add(hit.Key);
 			}
 		}
-		
+
 		foreach (var key in removeList) {
 			hitList.Remove(key);
 		}
+
 		removeList.Clear();
 	}
 
 	private void RegisterReflectList() {
-		List<RaycastHit2D> removeList = new List<RaycastHit2D>();
+		// var removeList = new List<RaycastHit2D>();
+
+		var middleRayNum = reflectList.Count / 2;
+
+
+		// ReSharper disable once UsageOfDefaultStructEquality
+		// var tempList = new Dictionary<RaycastHit2D, Vector2>();
 		foreach (var hit in reflectList) {
-			Debug.Log("Mango");
-			ReflectRay(Vector2.Normalize(hit.Key.point-hit.Value),hit.Key.normal,hit.Key.point);
-			removeList.Add(hit.Key);
+			Debug.Log("AHHHHH");
+			middleRayNum--;
+			if (middleRayNum != 0) continue;
+			Debug.Log("OWWWWW");
+			ReflectRay(Vector2.Normalize(hit.Key.point - hit.Value), hit.Key.normal * 10, hit.Key.point);
+			break;
 		}
 
-		foreach (var key in removeList) {
-			reflectList.Remove(key);
-		}
-		removeList.Clear();
+
+		// foreach (var hit in tempList) {
+		// 	ReflectRay(Vector2.Normalize(hit.Key.point - hit.Value), hit.Key.normal * 10, hit.Key.point);
+		// }
+
+		// foreach (var key in removeList) {
+		// 	reflectList.Remove(key);
+		// }
+
+		// tempList.Clear();
+		// removeList.Clear();
 	}
 
 	#endregion
