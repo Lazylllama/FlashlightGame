@@ -74,14 +74,13 @@ public class EnemyController : MonoBehaviour {
 	private void LedgeCheck() {
 		var check = Lib.Movement.LedgeCheck(lookPosition.position, 0.3f);
 
-		if (!isChasing && !check.collider) return;
-
-		enemySpeed = baseSpeed;
-
-		if (facingRight & isGrounded) {
-			facingRight = false;
-		} else if (!facingRight & isGrounded) {
-			facingRight = true;
+		if (!check.collider & !isChasing) {
+			enemySpeed = baseSpeed;
+			if (facingRight & isGrounded) {
+				facingRight = false;
+			} else if (!facingRight & isGrounded) {
+				facingRight = true;
+			}
 		}
 	}
 

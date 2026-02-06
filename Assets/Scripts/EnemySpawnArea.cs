@@ -49,7 +49,7 @@ public class EnemySpawnArea : MonoBehaviour {
 		var enemy = Instantiate(enemyTypes[randomIndex], spawnPosition, Quaternion.identity);
 		
 		//? Set as child of spawn area for organization
-		enemy.transform.SetParent(transform, true);
+		enemy.transform.SetParent(enemy.transform, true);
 
 		timeSinceLastSpawn = 0f;
 	}
