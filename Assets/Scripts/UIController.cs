@@ -1,3 +1,4 @@
+using System;
 using FlashlightGame;
 using UnityEngine;
 using TMPro;
@@ -6,18 +7,21 @@ public class UIController : MonoBehaviour {
 	#region Fields
 
 	//* Instance *//
-	public static UIController Instance;
-
-	[SerializeField] private TMP_Text healthText;
-	[SerializeField] private TMP_Text batteryText;
+	public static            UIController Instance;
+	private static           DebugHandler Debug;
+	
+	[SerializeField] private TMP_Text     healthText;
+	[SerializeField] private TMP_Text     batteryText;
 
 	#endregion
 
 	#region Unity Functions
 
 	private void Awake() {
-		RegisterInstance(this);
+		Debug = new DebugHandler("UIController");
 	}
+
+	private void Start() => RegisterInstance(this);
 
 	#endregion
 
@@ -35,7 +39,7 @@ public class UIController : MonoBehaviour {
 	/// Update the UI with the current player data.
 	/// </summary>
 	public void UpdateUI() {
-		DebugHandler.LogKv("Updating UI", DebugLevel.Debug, new object[] {
+		Debug.LogKv("Updating UI", DebugLevel.Debug, new object[] {
 			"Health", PlayerData.Instance.Health,
 			"Battery", PlayerData.Instance.Battery
 		});

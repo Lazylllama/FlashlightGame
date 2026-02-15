@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -7,7 +8,8 @@ public class PlayerMovement : MonoBehaviour {
 	#region Fields
 
 	//* Instance
-	public static PlayerMovement Instance;
+	public static  PlayerMovement Instance;
+	private static DebugHandler   Debug;
 
 	[Header("Settings")]
 	[SerializeField] private LayerMask groundLayer;
@@ -35,7 +37,6 @@ public class PlayerMovement : MonoBehaviour {
 
 	[Header("Mantling")]
 	[SerializeField] private Transform headLevelPosition;
-	[SerializeField] private float mantleCheckDistance;
 
 	//* States
 	private bool      isGrounded;
@@ -47,7 +48,12 @@ public class PlayerMovement : MonoBehaviour {
 
 	#region Unity Functions
 
+	//? Set global instance
+	private void Awake() => RegisterInstance(this);
+
 	private void Start() {
+		Debug = new DebugHandler("PlayerMovement");
+
 		playerRb     = GetComponent<Rigidbody2D>();
 		moveAction   = InputSystem.actions.FindAction("Move");
 		mantleAction = InputSystem.actions.FindAction("MantleClimb");
@@ -62,9 +68,20 @@ public class PlayerMovement : MonoBehaviour {
 		PerformMove();
 	}
 
-	//? Set global instance
-	private void Awake() {
-		RegisterInstance(this);
+	private void OnDrawGizmos() {
+		//? Ground Check
+		Gizmos.color = Lib.Movement.GroundCheck(groundCheckPosition.position, groundCheckRadius)
+			               ? Color.green
+			               : Color.red;
+		Gizmos.DrawWireSphere(groundCheckPosition.position, groundCheckRadius);
+
+		//? Wall Check
+		Gizmos.color = Lib.Movement.WallCheck(headLevelPosition.position, IsLookingRight).collider
+			               ? Color.green
+			               : Color.red;
+		Gizmos.DrawLine(headLevelPosition.position,
+		                headLevelPosition.position + (IsLookingRight ? Vector3.right : Vector3.left) *
+		                Lib.Movement.WallCheckDistance);
 	}
 
 	#endregion
@@ -80,11 +97,11 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	private void RaycastChecks() {
-		var groundCheckHit = Physics2D.OverlapCircle(groundCheckPosition.position, groundCheckRadius, groundLayer);
+		var groundCheckHit = Lib.Movement.GroundCheck(groundCheckPosition.position, groundCheckRadius);
 		var mantleCheckHit = Lib.Movement.WallCheck(headLevelPosition.position, IsLookingRight);
 
 		isGrounded = groundCheckHit;
-		canMantle  = mantleCheckHit;
+		canMantle  = mantleCheckHit.collider;
 	}
 
 	private void InputCheck() {
@@ -95,7 +112,7 @@ public class PlayerMovement : MonoBehaviour {
 			_                        => IsLookingRight
 		};
 
-		if (mantleAction.IsPressed()) Mantle();
+		if (mantleAction.WasPressedThisFrame()) Mantle();
 	}
 
 	private void PerformMove() {
@@ -106,7 +123,8 @@ public class PlayerMovement : MonoBehaviour {
 		playerRb.AddForce(Vector2.right * finalForce, ForceMode2D.Force);
 
 
-		DebugHandler.LogKv("PlayerMovement: PerformMove", DebugLevel.Debug, new object[] {
+		//! TODO(@lazylllama): Do not include in prod builds :)
+		Debug.LogKv("PerformMove", DebugLevel.Debug, new object[] {
 			"inputSpeed", inputSpeed,
 			"speedDifference", speedDifference,
 			"finalForce", finalForce
@@ -114,7 +132,7 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	private void Mantle() {
-		DebugHandler.LogKv("PlayerMovement: Mantle", DebugLevel.Debug, new object[] {
+		Debug.LogKv("Mantle", DebugLevel.Debug, new object[] {
 			"isGrounded", isGrounded,
 			"canMantle", canMantle
 		});
@@ -131,7 +149,7 @@ public class PlayerMovement : MonoBehaviour {
 		var mantle = Lib.Movement.GetWallClimbPoint(transform.position, IsLookingRight);
 
 		if (mantle.Position == Vector3.zero) {
-			DebugHandler.Log("PlayerMovement: Mantle point invalid, cancelling mantle.", DebugLevel.Warning);
+			Debug.Log("Mantle point invalid, cancelling mantle.", DebugLevel.Warning);
 			mantleRoutineState = null;
 			yield break;
 		}

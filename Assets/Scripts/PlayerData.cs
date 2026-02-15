@@ -6,7 +6,8 @@ using UnityEngine;
 public class PlayerData : MonoBehaviour {
 	#region Fields
 
-	public static PlayerData Instance;
+	public static  PlayerData   Instance;
+	private static DebugHandler Debug;
 
 	//* Player Stats *//
 	public int Health  { get; private set; } = 100;
@@ -33,22 +34,20 @@ public class PlayerData : MonoBehaviour {
 
 	#region Unity Functions
 
+	private void Awake() {
+		Debug = new DebugHandler("PlayerData");
+	}
+
 	private void Start() => RegisterInstance(this);
 
 	private void FixedUpdate() {
 		//? Timer
 		drainTimer += Time.deltaTime;
 
-		//? Drain Battery
-		DebugHandler.Log("PlayerData: Checking Battery Drain...", DebugLevel.Debug, new object[] {
-			drainTimer, drainInterval, FlashlightEnabled, Battery
-		});
-
 		if (!FlashlightEnabled || drainInterval > drainTimer) return;
 
-		DebugHandler.Log("PlayerData: Draining Battery by 1", DebugLevel.Debug);
+		Debug.Log("Draining Battery by 1", DebugLevel.Debug);
 
-		DebugHandler.Log(Mathf.Clamp(Battery--, 0, 100).ToString());
 		Battery           = Mathf.Clamp(Battery--, 0, 100);
 		FlashlightEnabled = Battery > 0;
 		drainTimer        = 0f;
@@ -76,7 +75,7 @@ public class PlayerData : MonoBehaviour {
 	/// <param name="mode">Int - 1,2 and 3</param>
 	public void HandleFlashlightModeChange(int mode) {
 		FlashlightMode = mode;
-		DebugHandler.LogKv("PlayerData: Flashlight Mode Changed", DebugLevel.Debug, new object[] {
+		Debug.LogKv("Flashlight Mode Changed", DebugLevel.Debug, new object[] {
 			"New Mode", FlashlightMode
 		});
 	}
@@ -91,7 +90,7 @@ public class PlayerData : MonoBehaviour {
 		if (FlashlightMode < 1) FlashlightMode = 3;
 		if (FlashlightMode > 3) FlashlightMode = 1;
 
-		DebugHandler.LogKv("PlayerData: Flashlight Mode Changed", DebugLevel.Debug, new object[] {
+		Debug.LogKv("Flashlight Mode Changed", DebugLevel.Debug, new object[] {
 			"New Mode", FlashlightMode
 		});
 	}
@@ -113,7 +112,7 @@ public class PlayerData : MonoBehaviour {
 		} else {
 			Instance = instance;
 
-			DebugHandler.Log("PlayerData initialized.");
+			Debug.Log("PlayerData initialized.");
 		}
 	}
 

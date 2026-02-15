@@ -9,6 +9,7 @@ using UnityEngine;
 public class PlayerPrefsHandler : MonoBehaviour {
 	#region Fields
 
+	private static DebugHandler Debug;
 	private static Dictionary<string, object> configurationSchema = new Dictionary<string, object>() {
 		{
 			"TargetFrameRate", 60
@@ -24,12 +25,14 @@ public class PlayerPrefsHandler : MonoBehaviour {
 	#region Unity Functions
 
 	private void Awake() {
+		Debug = new DebugHandler("PlayerPrefsHandler");
+
 		var config = new FBPPConfig() {
 			SaveFileName     = "preferences.cfg",
 			AutoSaveData     = false,
 			ScrambleSaveData = false,
 			SaveFilePath     = Application.persistentDataPath,
-			OnLoadError      = () => DebugHandler.Log("Error loading FBPP data.", DebugLevel.Fatal)
+			OnLoadError      = () => Debug.Log("Error loading FBPP data.", DebugLevel.Fatal)
 		};
 
 		FBPP.Start(config);
@@ -39,8 +42,8 @@ public class PlayerPrefsHandler : MonoBehaviour {
 
 	private void Start() {
 		CheckMissingKeysAndSave();
-		
-		DebugHandler.LogKv("DebugInformation:", DebugLevel.Info, new object[] {
+
+		Debug.LogKv("DebugInformation:", DebugLevel.Info, new object[] {
 			"isEditor", Application.isEditor,
 			"isProduction", Application.version,
 		});
@@ -66,15 +69,15 @@ public class PlayerPrefsHandler : MonoBehaviour {
 	}
 
 	private void CheckMissingKeysAndSave() {
-		DebugHandler.Log("PlayerPrefsHandler: Checking for missing keys");
+		Debug.Log("Checking for missing keys");
 		foreach (var kvp in configurationSchema) {
 			if (FBPP.HasKey(kvp.Key)) return;
 
-			DebugHandler.LogKv($"PlayerPrefsHandler: Key '{kvp.Key}' is missing, attempting to add now.",
-			                   DebugLevel.Warning, new object[] {
-				                   "Key", kvp.Key,
-				                   "DefaultValue", kvp.Value
-			                   });
+			Debug.LogKv($"Key '{kvp.Key}' is missing, attempting to add now.",
+			            DebugLevel.Warning, new object[] {
+				            "Key", kvp.Key,
+				            "DefaultValue", kvp.Value
+			            });
 
 			switch (kvp.Value) {
 				case int val:
@@ -92,15 +95,17 @@ public class PlayerPrefsHandler : MonoBehaviour {
 			}
 		}
 
+		Debug.Log("Finished checking for missing keys, saving.");
 		SavePreferences();
 	}
 
 	private void LoadPreferences() {
 		//? Framerate Soft-cap/Target
-		Application.targetFrameRate = FBPP.GetInt("TargetFrameRate", 60);
+		Preferences.Game.TargetFrameRate = FBPP.GetInt("TargetFrameRate", 60);
+		Application.targetFrameRate      = Preferences.Game.TargetFrameRate;
 
 		//? DebugHandler Level & Filter
-		DebugHandler.DbgLevel = FBPP.GetString("DebugLevel", "Error") switch {
+		Preferences.DebugHandler.DbgLevel = FBPP.GetString("DebugLevel", "Error") switch {
 			"None"    => DebugLevel.None,
 			"Fatal"   => DebugLevel.Fatal,
 			"Error"   => DebugLevel.Error,
@@ -110,10 +115,10 @@ public class PlayerPrefsHandler : MonoBehaviour {
 			_         => DebugLevel.Error
 		};
 
-		DebugHandler.LogFilter = FBPP.GetString("LogFilter")
-		                             .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-		                             .Select(s => s.Trim())
-		                             .ToList();
+		Preferences.DebugHandler.LogFilter = FBPP.GetString("LogFilter")
+		                                         .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+		                                         .Select(s => s.Trim())
+		                                         .ToList();
 	}
 
 	#endregion

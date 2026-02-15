@@ -21,21 +21,27 @@ public class InputHandler : MonoBehaviour {
 	#endregion
 
 	#region Fields
-	
+
+	private static DebugHandler Debug;
+
 	private Dictionary<InputActions, InputAction> inputActionsList = new();
 
 	#endregion
 
 	#region Unity Functions
 
+	private void Awake() {
+		Debug = new DebugHandler("InputHandler");
+	}
+
 	private void Start() {
 		foreach (InputActions action in Enum.GetValues(typeof(InputActions))) {
 			var inputAction = InputSystem.actions.FindAction(action.ToString());
 			if (inputAction != null) {
-				DebugHandler.Log($"Registered Action: {action.ToString()}", DebugLevel.Debug);
+				Debug.Log($"Registered Action: {action.ToString()}", DebugLevel.Debug);
 				inputActionsList[action] = inputAction;
 			} else {
-				DebugHandler.LogKv($"Input action '{action}' not found!", DebugLevel.Error, new object[] {
+				Debug.LogKv($"Input action '{action}' not found!", DebugLevel.Error, new object[] {
 					"Action", action
 				});
 			}
@@ -43,13 +49,13 @@ public class InputHandler : MonoBehaviour {
 	}
 
 	private void Update() {
-		foreach (var kvp in inputActionsList.Where(kvp => kvp.Value.IsPressed())) {
-			DebugHandler.Log($"InputHandler: Action '{kvp.Key.ToString()}' was triggered", DebugLevel.Debug, new object[] { });
+		foreach (var kvp in inputActionsList.Where(kvp => kvp.Value.WasPressedThisFrame())) {
+			Debug.Log($"Action '{kvp.Key.ToString()}' was triggered", DebugLevel.Debug,
+			          new object[] { });
 			switch (kvp.Key) {
 				case InputActions.ToggleFlashlight:
-					
 					if (PlayerData.Instance.Battery < 0) {
-						DebugHandler.LogKv("InputHandler: Battery Empty", DebugLevel.Debug, new object[] {
+						Debug.LogKv("Battery Empty", DebugLevel.Debug, new object[] {
 							"Battery Level", PlayerData.Instance.Battery
 						});
 						break;
@@ -72,7 +78,6 @@ public class InputHandler : MonoBehaviour {
 				case InputActions.Flashlight3:
 					PlayerData.Instance.HandleFlashlightModeChange(3);
 					break;
-					
 			}
 		}
 	}
