@@ -9,7 +9,7 @@ public class ParticleController : MonoBehaviour {
 	[SerializeField] private List<ParticleSystem> fallParticles;
 
 	[Header("Settings")]
-	[Range(0, 20.0f)] [SerializeField] private float afterMovement;
+	[Range(-20f, 20.0f)] [SerializeField] private float afterMovement;
 	[Range(0, 0.2f)] [SerializeField] private float dustPeriod;
 	[Range(-5f, 5f)] [SerializeField]  private float dustLocalOffsetY;
 
@@ -18,7 +18,6 @@ public class ParticleController : MonoBehaviour {
 	private bool  onGround;
 
 	#endregion
-
 	#region Unity Functions
 
 	private void OnTriggerEnter2D(Collider2D collision) {
@@ -64,6 +63,5 @@ public class ParticleController : MonoBehaviour {
 		//? Reset counter
 		counter = 0;
 	}
-
 	#endregion
 }
