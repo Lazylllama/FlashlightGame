@@ -2,6 +2,7 @@ using System;
 using FlashlightGame;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class UIController : MonoBehaviour {
 	#region Fields
@@ -10,8 +11,8 @@ public class UIController : MonoBehaviour {
 	public static            UIController Instance;
 	private static           DebugHandler Debug;
 	
-	[SerializeField] private TMP_Text     healthText;
-	[SerializeField] private TMP_Text     batteryText;
+	[SerializeField] private Image     healthFill;
+	[SerializeField] private Image     batteryFill;
 
 	#endregion
 
@@ -44,8 +45,8 @@ public class UIController : MonoBehaviour {
 			"Battery", PlayerData.Instance.Battery
 		});
 
-		healthText.text  = $"Health: {PlayerData.Instance.Health} HP";
-		batteryText.text = $"Battery: {PlayerData.Instance.Battery}%";
+		healthFill.fillAmount = PlayerData.Instance.Health / 100f;
+		batteryFill.fillAmount = PlayerData.Instance.Battery / 100f;
 	}
 
 	#endregion

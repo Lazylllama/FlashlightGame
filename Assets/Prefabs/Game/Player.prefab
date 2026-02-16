@@ -175,7 +175,6 @@ MonoBehaviour:
   groundCheckPosition: {fileID: 3770971208982464766}
   groundCheckRadius: 0.2
   headLevelPosition: {fileID: 7988358005208953918}
-  mantleCheckDistance: 1.2
 --- !u!114 &6812476317795494045
 MonoBehaviour:
   m_ObjectHideFlags: 0
