@@ -6,7 +6,8 @@ using UnityEngine;
 public class PlayerData : MonoBehaviour {
 	#region Fields
 
-	public static PlayerData Instance;
+	public static  PlayerData   Instance;
+	private static DebugHandler Debug;
 
 	//* Player Stats *//
 	public int Health  { get; private set; } = 100;
@@ -20,7 +21,8 @@ public class PlayerData : MonoBehaviour {
 	}
 
 	//* Player States *//
-	public bool FlashlightEnabled { get; set; } = true;
+	public bool FlashlightEnabled { get; set; }         = true;
+	public int  FlashlightMode    { get; private set; } = 1;
 
 	//* Options *//
 	[SerializeField] private float drainInterval = 1f;
@@ -32,15 +34,24 @@ public class PlayerData : MonoBehaviour {
 
 	#region Unity Functions
 
-	private void Awake() => RegisterInstance(this);
+	private void Awake() {
+		Debug = new DebugHandler("PlayerData");
+	}
+
+	private void Start() => RegisterInstance(this);
 
 	private void FixedUpdate() {
 		//? Timer
-		drainTimer = Time.deltaTime;
+		drainTimer += Time.deltaTime;
 
-		//? Drain Battery
 		if (!FlashlightEnabled || drainInterval > drainTimer) return;
-		Battery = Mathf.Clamp(Battery--, 0, 100);
+
+		Debug.Log("Draining Battery by 1", DebugLevel.Debug);
+
+		Battery           = Mathf.Clamp(Battery--, 0, 100);
+		FlashlightEnabled = Battery > 0;
+		drainTimer        = 0f;
+
 		UIController.Instance.UpdateUI();
 	}
 
@@ -58,6 +69,31 @@ public class PlayerData : MonoBehaviour {
 		Health = Mathf.Clamp(Health + difference, 0, 100);
 	}
 
+	/// <summary>
+	/// Set the flashlight mode to a specific mode.
+	/// </summary>
+	/// <param name="mode">Int - 1,2 and 3</param>
+	public void HandleFlashlightModeChange(int mode) {
+		FlashlightMode = mode;
+		Debug.LogKv("Flashlight Mode Changed", DebugLevel.Debug, new object[] {
+			"New Mode", FlashlightMode
+		});
+	}
+
+	/// <summary>
+	/// Handle changing the flashlight mode by incrementing or decrementing.
+	/// </summary>
+	/// <param name="increment"></param>
+	public void HandleFlashlightModeChange(bool increment) {
+		FlashlightMode = increment ? FlashlightMode + 1 : FlashlightMode - 1;
+
+		if (FlashlightMode < 1) FlashlightMode = 3;
+		if (FlashlightMode > 3) FlashlightMode = 1;
+
+		Debug.LogKv("Flashlight Mode Changed", DebugLevel.Debug, new object[] {
+			"New Mode", FlashlightMode
+		});
+	}
 
 	//! Private Functions
 	/// Set whether the player is looking right.
@@ -76,7 +112,7 @@ public class PlayerData : MonoBehaviour {
 		} else {
 			Instance = instance;
 
-			DebugHandler.Log("PlayerData initialized.");
+			Debug.Log("PlayerData initialized.");
 		}
 	}
 

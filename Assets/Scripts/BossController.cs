@@ -9,36 +9,39 @@ public class BossController : MonoBehaviour {
 	[Header("Boss Settings")]
 	[SerializeField] private float health;
 	[SerializeField] private float weakpointChangeInterval;
-	
-	
+
+
 	[Header("Text")]
 	[SerializeField] private TMP_Text healthText;
-	
+
 	[Header("WeakPoints")]
 	[SerializeField] private GameObject[] weakPoints;
-	
-	//* Refs
+
+	//* Refs *//
 	private LayerMask groundLayer;
-	
-	//* States
+
+	//* States *//
 	private float timeSinceLastChange;
+
 	#endregion
+
 	#region unity functions
 
 	private void Start() {
-		groundLayer = LayerMask.GetMask("Ground");
+		groundLayer         = LayerMask.GetMask("Ground");
 		timeSinceLastChange = weakpointChangeInterval;
 		CloseWeakPoints();
 	}
-	
+
 	private void Update() {
 		timeSinceLastChange += Time.deltaTime;
 		if (timeSinceLastChange >= weakpointChangeInterval) CloseWeakPoints();
 	}
-	
+
 	#endregion
+
 	#region Functions
-	
+
 	private void CloseWeakPoints() {
 		timeSinceLastChange = 0;
 		foreach (var t in weakPoints) {
@@ -50,6 +53,7 @@ public class BossController : MonoBehaviour {
 				Debug.LogWarning($"WeakPoint GameObject '{t.name}' is missing a SpriteRenderer component.", t);
 			}
 		}
+
 		OpenWeakPoint();
 	}
 
@@ -60,7 +64,8 @@ public class BossController : MonoBehaviour {
 		if (spriteRenderer != null) {
 			spriteRenderer.color = Color.green;
 		} else {
-			Debug.LogWarning($"WeakPoint GameObject '{openWeakPoint.name}' is missing a SpriteRenderer component.", openWeakPoint);
+			Debug.LogWarning($"WeakPoint GameObject '{openWeakPoint.name}' is missing a SpriteRenderer component.",
+			                 openWeakPoint);
 		}
 	}
 
@@ -68,16 +73,14 @@ public class BossController : MonoBehaviour {
 		health -= damage;
 		UpdateText();
 	}
-	
+
 	private void UpdateText() {
 		healthText.text = health.ToString("F0");
 	}
-	#endregion
-	
-	#region AttackFunctions
-	
-	
-	
+
 	#endregion
 
+	#region AttackFunctions
+
+	#endregion
 }
