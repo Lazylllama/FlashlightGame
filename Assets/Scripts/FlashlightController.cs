@@ -14,6 +14,11 @@ public class FlashLightPreset {
 	public Color PresetColor;
 }
 
+public struct RaycastObj {
+	public Vector2 Point;
+	public Vector2 Normal;
+}
+
 
 public class FlashlightController : MonoBehaviour {
 	#region Fields
@@ -52,7 +57,7 @@ public class FlashlightController : MonoBehaviour {
 	private FlashLightPreset equippedFlashlight = new FlashLightPreset();
 
 	private Dictionary<Collider2D, int>       hitList     = new Dictionary<Collider2D, int>();
-	private Dictionary<RaycastHit2D, Vector2> reflectList = new Dictionary<RaycastHit2D, Vector2>();
+	private Dictionary<RaycastObj, Vector2> reflectList = new Dictionary<RaycastObj, Vector2>();
 
 	#endregion
 
@@ -148,20 +153,22 @@ public class FlashlightController : MonoBehaviour {
 		var mousePosition =
 			Camera.main!.ScreenToWorldPoint(new Vector3(mousePositionOnScreen.x, mousePositionOnScreen.y, 10f));
 
+		if (isFacingRight && mousePosition.x - transform.position.x < 0) {
+			Debug.Log("Changed mouse position from: " + mousePosition.x + " to:");
+			mousePosition.x += 2 * (transform.position.x - mousePosition.x);
+			Debug.Log(mousePosition.x);
+		} else if (!isFacingRight && mousePosition.x - transform.position.x > 0) {
+			Debug.Log("Changed mouse position from: "    + mousePosition.x + " to:");
+			mousePosition.x += 2 * (transform.position.x - mousePosition.x);
+			Debug.Log(mousePosition.x);
+		}
+	
 		// Rotates the camera around the pivot point
 		var cameraAngleZ = -90 + (
 			                         Mathf.Atan2(mousePosition.y - transform.position.y,
 			                                     mousePosition.x - transform.position.x) *
 			                         Mathf.Rad2Deg
 		                         );
-
-		if (isFacingRight) {
-			if (cameraAngleZ > -90 + maxAngle && cameraAngleZ <= 90) cameraAngleZ   = -90 + maxAngle;
-			if (cameraAngleZ < -90 - maxAngle && cameraAngleZ >= -270) cameraAngleZ = -90 - maxAngle;
-		} else {
-			if (cameraAngleZ < 90  - maxAngle && cameraAngleZ >= -90) cameraAngleZ = 90 - maxAngle;
-			if (cameraAngleZ > -90 - maxAngle && cameraAngleZ < -90) cameraAngleZ  = 90 + maxAngle;
-		}
 
 		transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, cameraAngleZ), 0.03f);
 	}
@@ -207,7 +214,9 @@ public class FlashlightController : MonoBehaviour {
 	}
 
 	private void ReflectRay(Vector2 inDirection, Vector2 inNormal, Vector2 origin) {
-		DrawNewRay(origin, Vector2.Reflect(inDirection, inNormal));
+		DrawNewRay(origin + Vector2.Reflect(inDirection, inNormal.normalized)*0.1f, Vector2.Reflect(inDirection, inNormal.normalized)*range);
+		RegisterHitList();
+		RegisterReflectList();
 	}
 
 	private void DrawNewRay(Vector2 start, Vector2 direction) {
@@ -220,7 +229,7 @@ public class FlashlightController : MonoBehaviour {
 		      hit.collider.gameObject.CompareTag("WeakPoint") ||
 		      hit.collider.gameObject.CompareTag("Mirror"))) return;
 		if (hit.collider.gameObject.CompareTag("Mirror")) {
-			reflectList.Add(hit, start);
+			reflectList.Add(new RaycastObj(){Point = hit.point, Normal = hit.normal}, start);
 		} else if (!hitList.TryAdd(hit.collider, 1)) {
 			hitList[hit.collider]++;
 		}
@@ -237,7 +246,7 @@ public class FlashlightController : MonoBehaviour {
 		      hit.collider.gameObject.CompareTag("WeakPoint") ||
 		      hit.collider.gameObject.CompareTag("Mirror"))) return;
 		if (hit.collider.gameObject.CompareTag("Mirror")) {
-			reflectList.TryAdd(hit, start);
+			reflectList.TryAdd(new RaycastObj(){Point = hit.point, Normal = hit.normal}, start);
 		} else if (!hitList.TryAdd(hit.collider, 1)) {
 			hitList[hit.collider]++;
 		}
@@ -263,33 +272,19 @@ public class FlashlightController : MonoBehaviour {
 	}
 
 	private void RegisterReflectList() {
-		// var removeList = new List<RaycastHit2D>();
-
+		if(reflectList.Count == 0) return;
+		
 		var middleRayNum = reflectList.Count / 2;
-
-
-		// ReSharper disable once UsageOfDefaultStructEquality
-		// var tempList = new Dictionary<RaycastHit2D, Vector2>();
+		
 		foreach (var hit in reflectList) {
-			Debug.Log("AHHHHH");
 			middleRayNum--;
-			if (middleRayNum != 0) continue;
-			Debug.Log("OWWWWW");
-			ReflectRay(Vector2.Normalize(hit.Key.point - hit.Value), hit.Key.normal * 10, hit.Key.point);
+			if (middleRayNum <= 0.5 && middleRayNum > -0.5 ) continue;
+			Debug.Log(hit.Key);
+			Debug.Log("Reflecting Ray!");
+			ReflectRay(Vector2.Normalize(hit.Key.Point - hit.Value), hit.Key.Normal * 10, hit.Key.Point);
 			break;
 		}
-
-
-		// foreach (var hit in tempList) {
-		// 	ReflectRay(Vector2.Normalize(hit.Key.point - hit.Value), hit.Key.normal * 10, hit.Key.point);
-		// }
-
-		// foreach (var key in removeList) {
-		// 	reflectList.Remove(key);
-		// }
-
-		// tempList.Clear();
-		// removeList.Clear();
+		reflectList.Clear();
 	}
 
 	#endregion
