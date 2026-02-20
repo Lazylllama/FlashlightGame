@@ -147,7 +147,11 @@ public class FlashlightController : MonoBehaviour {
                     Mathf.Lerp(color.g, equippedFlashlight.PresetColor.g, Time.deltaTime * 10),
                     Mathf.Lerp(color.b, equippedFlashlight.PresetColor.b, Time.deltaTime * 10),
                     1);
-  laserSpotLightGameObject.SetActive(beamWidth <= 2);
+  if (laserSpotLightGameObject != null) {
+   laserSpotLightGameObject.SetActive(beamWidth <= 2);
+  } else {
+   DebugHandler.Instance.Log("Laser spotlight GameObject not assigned; skipping laser toggle.", DebugHandler.DebugLevel.Warning);
+  }
  }
 
  private void UpdateSpotlight() {
