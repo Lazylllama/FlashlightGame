@@ -655,6 +655,11 @@ TilemapCollider2D:
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
   m_UseDelaunayMesh: 0
+--- !u!4 &576898533 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8668320892217811640, guid: 47bc0420e8e23c743906c565842d62c0, type: 3}
+  m_PrefabInstance: {fileID: 7219038356218337949}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &696743965
 GameObject:
   m_ObjectHideFlags: 0
@@ -696,11 +701,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6382515027411411204, guid: 3820ac79424500e4590164b9a8d9307d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.108025
+      value: -6.156038
       objectReference: {fileID: 0}
     - target: {fileID: 6382515027411411204, guid: 3820ac79424500e4590164b9a8d9307d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.4179974
+      value: 5.4059944
       objectReference: {fileID: 0}
     - target: {fileID: 6382515027411411204, guid: 3820ac79424500e4590164b9a8d9307d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -762,11 +767,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1357524861124581957, guid: b4e441cda9e145e49814695a9bf9a453, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.108025
+      value: -6.156038
       objectReference: {fileID: 0}
     - target: {fileID: 1357524861124581957, guid: b4e441cda9e145e49814695a9bf9a453, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.4179974
+      value: 5.4059944
       objectReference: {fileID: 0}
     - target: {fileID: 1357524861124581957, guid: b4e441cda9e145e49814695a9bf9a453, type: 3}
       propertyPath: m_LocalPosition.z
@@ -804,10 +809,18 @@ PrefabInstance:
       propertyPath: Lookahead.IgnoreY
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6042924845670639021, guid: b4e441cda9e145e49814695a9bf9a453, type: 3}
+      propertyPath: Composition.ScreenPosition.x
+      value: 0.005416736
+      objectReference: {fileID: 0}
+    - target: {fileID: 6042924845670639021, guid: b4e441cda9e145e49814695a9bf9a453, type: 3}
+      propertyPath: Composition.ScreenPosition.y
+      value: -0.001481496
+      objectReference: {fileID: 0}
     - target: {fileID: 7813169037428560119, guid: b4e441cda9e145e49814695a9bf9a453, type: 3}
       propertyPath: Target.TrackingTarget
       value: 
-      objectReference: {fileID: 1763357152}
+      objectReference: {fileID: 576898533}
     - target: {fileID: 9071384862457871270, guid: b4e441cda9e145e49814695a9bf9a453, type: 3}
       propertyPath: m_Name
       value: '[CAM] Cinemachine'
@@ -923,7 +936,7 @@ Transform:
   m_GameObject: {fileID: 907453667}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0.009999804, y: -2.29, z: 0}
+  m_LocalPosition: {x: -0.009999804, y: -2.67, z: 0}
   m_LocalScale: {x: 0.2817694, y: 0.23862581, z: 0.061531093}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8281,8 +8294,8 @@ Transform:
   m_GameObject: {fileID: 1556966369}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0.009999804, y: -2.29, z: 0}
-  m_LocalScale: {x: 0.78173226, y: 0.66203594, z: 0.17070997}
+  m_LocalPosition: {x: -0.009999804, y: -2.67, z: 0}
+  m_LocalScale: {x: 0.26213047, y: 0.2219939, z: 0.057242464}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1530129991}
@@ -18231,11 +18244,11 @@ PrefabInstance:
       objectReference: {fileID: 711819906}
     - target: {fileID: 5111297691607556555, guid: c7822efe977559f409c682b5ff720670, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.1080256
+      value: -6.1560383
       objectReference: {fileID: 0}
     - target: {fileID: 5111297691607556555, guid: c7822efe977559f409c682b5ff720670, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 18.417997
+      value: 18.405994
       objectReference: {fileID: 0}
     - target: {fileID: 5111297691607556555, guid: c7822efe977559f409c682b5ff720670, type: 3}
       propertyPath: m_LocalPosition.z
