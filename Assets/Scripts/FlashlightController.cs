@@ -57,7 +57,6 @@ public class FlashlightController : MonoBehaviour {
  //* States
  private bool             isFacingRight;
  private float            intensity;
- private float            flashLightUpdateTime;
  private Light2D          spotLight;
  private FlashLightPreset equippedFlashlight = new FlashLightPreset();
 
@@ -84,10 +83,7 @@ public class FlashlightController : MonoBehaviour {
  }
 
  private void Start() {
-  flashLightUpdateTime = updateInterval;
-  spotLight            = spotLightGameObject.GetComponent<Light2D>();
-
-
+  spotLight     = spotLightGameObject.GetComponent<Light2D>();
   excludePlayer = ~LayerMask.GetMask("Player");
 
   laserPreset.PresetDensity     = 1.5f;
@@ -111,14 +107,6 @@ public class FlashlightController : MonoBehaviour {
   CheckPlayerInputs();
   UpdateSpotlight();
   CheckForEnemy();
- }
-
- private void FixedUpdate() {
-  flashLightUpdateTime += Time.deltaTime;
-  if (flashLightUpdateTime >= updateInterval) {
-   flashLightUpdateTime = 0;
-
-  }
  }
 
  #endregion
@@ -349,4 +337,5 @@ public class FlashlightController : MonoBehaviour {
  }
 
  #endregion
+
 }
