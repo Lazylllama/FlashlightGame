@@ -168,13 +168,9 @@ public class FlashlightController : MonoBehaviour {
    Camera.main!.ScreenToWorldPoint(new Vector3(mousePositionOnScreen.x, mousePositionOnScreen.y, 10f));
 
   if (isFacingRight && mousePosition.x - transform.position.x < 0) {
-   Debug.Log("Changed mouse position from: " + mousePosition.x + " to:");
    mousePosition.x += 2 * (transform.position.x - mousePosition.x);
-   Debug.Log(mousePosition.x);
   } else if (!isFacingRight && mousePosition.x - transform.position.x > 0) {
-   Debug.Log("Changed mouse position from: "    + mousePosition.x + " to:");
    mousePosition.x += 2 * (transform.position.x - mousePosition.x);
-   Debug.Log(mousePosition.x);
   }
 
   // Rotates the camera around the pivot point
