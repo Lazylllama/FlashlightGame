@@ -15,8 +15,9 @@ public class PlayerMovement : MonoBehaviour {
 	[SerializeField] private LayerMask groundLayer;
 
 	//* Refs
-	private InputAction moveAction, mantleAction;
-	private Rigidbody2D playerRb;
+	private InputAction        moveAction, mantleAction;
+	private Rigidbody2D        playerRb;
+	private ParticleController particleController;
 
 	private static bool IsLookingRight {
 		get => PlayerData.Instance && PlayerData.Instance.IsLookingRight;
@@ -43,6 +44,7 @@ public class PlayerMovement : MonoBehaviour {
 	private bool      canMantle;
 	private Coroutine mantleRoutineState;
 	private Vector2   moveInputVal;
+	private Vector2   lastPosition;
 
 	#endregion
 
@@ -54,7 +56,9 @@ public class PlayerMovement : MonoBehaviour {
 	private void Start() {
 		Debug = new DebugHandler("PlayerMovement");
 
-		playerRb     = GetComponent<Rigidbody2D>();
+		playerRb           = GetComponent<Rigidbody2D>();
+		particleController = GetComponentInChildren<ParticleController>();
+
 		moveAction   = InputSystem.actions.FindAction("Move");
 		mantleAction = InputSystem.actions.FindAction("MantleClimb");
 	}
@@ -120,8 +124,12 @@ public class PlayerMovement : MonoBehaviour {
 		var speedDifference = inputSpeed - playerRb.linearVelocityX;
 		var finalForce      = speedDifference * acceleration;
 
-		playerRb.AddForce(Vector2.right * finalForce, ForceMode2D.Force);
+		var delta = lastPosition - (Vector2)transform.position;
+		if (delta != Vector2.zero) particleController.CrateMovement(delta.x);
 
+		lastPosition = transform.position;
+
+		playerRb.AddForce(Vector2.right * finalForce, ForceMode2D.Force);
 
 		//! TODO(@lazylllama): Do not include in prod builds :)
 		Debug.LogKv("PerformMove", DebugLevel.Debug, new object[] {
