@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using FlashlightGame;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 public class PlayerData : MonoBehaviour {
@@ -50,7 +51,7 @@ public class PlayerData : MonoBehaviour {
 		};
 
 	//* Options *//
-	[SerializeField] private float drainInterval = 1f;
+	[SerializeField] private float batteryDrainInterval = 1f;
 
 	//* States *//
 	private float drainTimer;
@@ -66,18 +67,7 @@ public class PlayerData : MonoBehaviour {
 	private void Start() => RegisterInstance(this);
 
 	private void FixedUpdate() {
-		//? Timer
-		drainTimer += Time.deltaTime;
-
-		if (!FlashlightEnabled || drainInterval > drainTimer) return;
-
-		Debug.Log("Draining Battery by 1", DebugLevel.Debug);
-
-		Battery           = Mathf.Clamp(Battery--, 0, 100);
-		FlashlightEnabled = Battery > 0;
-		drainTimer        = 0f;
-
-		UIController.Instance.UpdateUI();
+		HandleBatteryDrain();
 	}
 
 	#endregion
@@ -156,6 +146,21 @@ public class PlayerData : MonoBehaviour {
 		if (controller != null) {
 			controller.UpdateDirection();
 		}
+	}
+
+	private void HandleBatteryDrain() {
+		//? Timer
+		drainTimer += Time.deltaTime;
+
+		if (!FlashlightEnabled || batteryDrainInterval > drainTimer) return;
+
+		Debug.Log("Draining Battery by 1", DebugLevel.Debug);
+
+		Battery           = Mathf.Clamp(Battery--, 0, 100);
+		FlashlightEnabled = Battery > 0;
+		drainTimer        = 0f;
+		
+		UIController.Instance.UpdateUI();
 	}
 
 	/// Register the PlayerData instance.
