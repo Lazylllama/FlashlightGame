@@ -153,8 +153,12 @@ public class PlayerData : MonoBehaviour {
 	private void SetIsLookingRight(bool value) {
 		isLookingRight = value;
 		var controller = PlayerController.Instance;
+		var flashlightController = FlashlightController.Instance;
 		if (controller != null) {
 			controller.UpdateDirection();
+		}
+		if (flashlightController != null) {
+			flashlightController.UpdateDirection();
 		}
 	}
 
