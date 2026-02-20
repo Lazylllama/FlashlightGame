@@ -47,19 +47,19 @@ public class EnemySpawner : MonoBehaviour
 		if (pointA == null || pointB == null)
 			return;
 
-		// Get positions
-		Vector3 posA = pointA.position;
-		Vector3 posB = pointB.position;
+		
+		var posA = pointA.position;
+		var posB = pointB.position;
 
-		// Calculate center
-		Vector3 center = (posA + posB) / 2f;
+		//Calculate center
+		var center = (posA + posB) / 2f;
 
-		// Calculate size
-		Vector3 size = new Vector3(
-		                           Mathf.Abs(posA.x - posB.x),
-		                           Mathf.Abs(posA.y - posB.y),
-		                           Mathf.Abs(posA.z - posB.z)
-		                          );
+		//Calculate size
+		var size = new Vector3(
+		                       Mathf.Abs(posA.x - posB.x),
+		                       Mathf.Abs(posA.y - posB.y),
+		                       Mathf.Abs(posA.z - posB.z)
+		                      );
 
 		// Set gizmo color
 		Gizmos.color = Color.darkOliveGreen;

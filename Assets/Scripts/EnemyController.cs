@@ -8,7 +8,6 @@ public class EnemyController : MonoBehaviour {
 
 	[Header("Refs")]
 	[SerializeField] private TMP_Text       overheadText;
-	private                  SpriteRenderer enemySpriteRenderer;
 	private                  Rigidbody2D    rb;
 
 	[Header("Enemy Options")]
@@ -39,7 +38,6 @@ public class EnemyController : MonoBehaviour {
 	#region Unity Functions
 
 	private void Start() {
-		enemySpriteRenderer = GetComponent<SpriteRenderer>();
 		rb                  = GetComponent<Rigidbody2D>();
 		health              = maxHealth;
 		enemySpeed          = baseSpeed;
@@ -54,6 +52,7 @@ public class EnemyController : MonoBehaviour {
 		TurnEnemy();
 		CheckClimbableWall();
 		CheckWall();
+		
 	}
 
 	private void FixedUpdate() {
@@ -74,11 +73,11 @@ public class EnemyController : MonoBehaviour {
 	private void LedgeCheck() {
 		var check = Lib.Movement.LedgeCheck(lookPosition.position, 0.3f);
 
-		if (!check.collider & !isChasing) {
+		if (!check.collider && !isChasing) {
 			enemySpeed = baseSpeed;
-			if (facingRight & isGrounded) {
+			if (facingRight && isGrounded) {
 				facingRight = false;
-			} else if (!facingRight & isGrounded) {
+			} else if (!facingRight && isGrounded) {
 				facingRight = true;
 			}
 		}
@@ -86,11 +85,12 @@ public class EnemyController : MonoBehaviour {
 
 	private void CheckWall() {
 		var wallHit = Lib.Movement.WallCheck(lookPosition.position, facingRight);
+		
 
 		if (wallHit.collider != null && !isChasing) {
-			if (facingRight & isGrounded) {
+			if (facingRight && isGrounded) {
 				facingRight = false;
-			} else if (!facingRight & isGrounded) {
+			} else if (!facingRight && isGrounded) {
 				facingRight = true;
 			}
 		}
@@ -108,7 +108,7 @@ public class EnemyController : MonoBehaviour {
 		
 		teleportPoint = climbPoint.Position;
 		canTeleport = true;
-		StartCoroutine(FadeIn());
+		
 
 		if (climbPoint.Distance < slowDistance) {
 			enemySpeed = baseSpeed * slowFactor;
@@ -128,7 +128,7 @@ public class EnemyController : MonoBehaviour {
 
 		if (teleportTimer < teleportCooldown) return;
 		transform.position = teleportPoint;
-		StartCoroutine(FadeOut());
+		
 		teleportTimer = 0f;
 	}
 
@@ -175,31 +175,7 @@ public class EnemyController : MonoBehaviour {
 
 	#region Coroutines
 
-	private IEnumerator FadeIn() {
-		var alphaVal = enemySpriteRenderer.color.a;
-		var tmp      = enemySpriteRenderer.color;
-
-		while (enemySpriteRenderer.color.a > 0) {
-			alphaVal                  -= 0.10f;
-			tmp.a                     =  alphaVal;
-			enemySpriteRenderer.color =  tmp;
-
-			yield return new WaitForSeconds(0.05f);
-		}
-	}
-
-	private IEnumerator FadeOut() {
-		var alphaVal = enemySpriteRenderer.color.a;
-		var tmp      = enemySpriteRenderer.color;
-
-		while (enemySpriteRenderer.color.a < 1) {
-			alphaVal                  += 0.10f;
-			tmp.a                     =  alphaVal;
-			enemySpriteRenderer.color =  tmp;
-
-			yield return new WaitForSeconds(0.05f);
-		}
-	}
+	
 
 	#endregion
 }

@@ -57,7 +57,7 @@ namespace FlashlightGame {
 			/// <param name="positiveX">Positive X means isLookingRight</param>
 			/// <returns>RaycastHit2D</returns>
 			public static RaycastHit2D WallCheck(Vector3 origin, bool positiveX) =>
-				Physics2D.Raycast(origin, positiveX ? Vector2.right : Vector2.left, WallCheckDistance, ClimbWallLayerMask);
+				Physics2D.Raycast(origin, positiveX ? Vector2.right : Vector2.left, WallCheckDistance);
 
 
 			/// <summary>
