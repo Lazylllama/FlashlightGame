@@ -106,4 +106,4 @@ MonoBehaviour:
     Enabled: 1
     Time: 0.6
     Smoothing: 5
-    IgnoreY: 1
+    IgnoreY: 0
