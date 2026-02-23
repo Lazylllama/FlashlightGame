@@ -34,7 +34,15 @@ public class InputHandler : MonoBehaviour {
 		Debug = new DebugHandler("InputHandler");
 	}
 
-	private void Start() {
+	private void Start() => FindActions();
+
+	private void Update() => CheckForTriggeredActions();
+
+	#endregion
+
+	#region Functions
+
+	private void FindActions() {
 		foreach (InputActions action in Enum.GetValues(typeof(InputActions))) {
 			var inputAction = InputSystem.actions.FindAction(action.ToString());
 			if (inputAction != null) {
@@ -48,7 +56,7 @@ public class InputHandler : MonoBehaviour {
 		}
 	}
 
-	private void Update() {
+	private void CheckForTriggeredActions() {
 		foreach (var kvp in inputActionsList.Where(kvp => kvp.Value.WasPressedThisFrame())) {
 			Debug.Log($"Action '{kvp.Key.ToString()}' was triggered", DebugLevel.Debug,
 			          new object[] { });

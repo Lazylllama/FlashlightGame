@@ -98,3 +98,9 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+
+# Stupid DS_Store
+*.DS_Store
+
+# Recovery
+_Recovery
