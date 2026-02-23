@@ -43,6 +43,7 @@ public class FlashlightController : MonoBehaviour {
 	[SerializeField] private float range     = 10;
 	[SerializeField] private float density;
 	[SerializeField] private Color color;
+	[SerializeField] private float lerpTime = 0.04f;
 
 	[Header("Light Output")]
 	[SerializeField] private Transform lightOutput;
@@ -199,7 +200,7 @@ public class FlashlightController : MonoBehaviour {
 			                         Mathf.Rad2Deg
 		                         );
 
-		transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, cameraAngleZ), 0.03f);
+		transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, cameraAngleZ), lerpTime);
 	}
 
 	private void CheckForEnemy() {
