@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -28,6 +29,7 @@ public struct RaycastObj : IEquatable<RaycastObj> {
 public struct ReflectInfo {
 	public Vector2    Origin;
 	public Collider2D Collider;
+	public bool       IsLightRay;
 }
 
 public class FlashlightController : MonoBehaviour {
@@ -65,10 +67,12 @@ public class FlashlightController : MonoBehaviour {
 	private float            intensity;
 	private Light2D          spotLight;
 	private FlashLightPreset equippedFlashlight = new FlashLightPreset();
+	private Vector2[]        lightPoints = new Vector2[1];
 
 	// Reflection controls
 	[SerializeField] private int maxReflections = 3; // limit bounce count to avoid infinite loops
-	[SerializeField] private float reflectionOriginOffset = 0.01f; // small offset to avoid immediate re-hit of the same surface
+	[SerializeField]
+	private float reflectionOriginOffset = 0.01f; // small offset to avoid immediate re-hit of the same surface
 	private int reflectionDepth;
 
 	private Dictionary<Collider2D, int>         hitList     = new Dictionary<Collider2D, int>();
@@ -115,7 +119,8 @@ public class FlashlightController : MonoBehaviour {
 		UpdateFlashlight();
 		CheckPlayerInputs();
 		UpdateSpotlight();
-		CheckForEnemy();
+		//CheckForEnemy();
+		LaserLightRay();
 	}
 
 	#endregion
@@ -248,16 +253,17 @@ public class FlashlightController : MonoBehaviour {
 		ProcessReflections();
 	}
 
-	private void DrawNewLine(Vector2 start, Vector2 end) {
-		//? Gizmo
-		Debug.DrawLine(start, end, Color.red);
+	private void LaserLightRay() {
+		DrawNewRay(transform.position,transform.up , true);
+	}
 
-		//? Adds all colliders that hit the ray to a Dictionary and counts the number of times they hit.
-		var hit = Physics2D.Linecast(start, end, excludePlayer);
-
-		//? Null guard & only process relevant tags
-		if (!hit || hit.collider.tag is not ("Enemy" or "WeakPoint" or "Mirror")) return;
+	private void DrawNewRay(Vector2 start, Vector2 direction, bool isLightRay = false) {
+		Debug.DrawRay(start, direction * range, Color.red);
+		var hit = Physics2D.Raycast(start, direction, range, excludePlayer);
 		
+
+		if (!hit || hit.collider.tag is not ("Enemy" or "WeakPoint" or "Mirror")) return;
+
 		switch (hit.collider.tag) {
 			case "Enemy" or "WeakPoint":
 				if (hitList.TryAdd(hit.collider, 1)) break;
@@ -266,7 +272,31 @@ public class FlashlightController : MonoBehaviour {
 			case "Mirror":
 				reflectList.TryAdd
 					(new RaycastObj() { Point = hit.point, Normal = hit.normal },
-					 new ReflectInfo { Origin = start, Collider   = hit.collider });
+					 new ReflectInfo { Origin = start, Collider   = hit.collider, IsLightRay = isLightRay });
+				break;
+		}
+		ProcessReflections();
+	}
+
+	private void DrawNewLine(Vector2 start, Vector2 end, bool isLightRay = false) {
+		//? Gizmo
+		Debug.DrawLine(start, end, Color.red);
+
+		//? Adds all colliders that hit the ray to a Dictionary and counts the number of times they hit.
+		var hit = Physics2D.Linecast(start, end, excludePlayer);
+
+		//? Null guard & only process relevant tags
+
+
+		switch (hit.collider.tag) {
+			case "Enemy" or "WeakPoint":
+				if (hitList.TryAdd(hit.collider, 1)) break;
+				hitList[hit.collider]++;
+				break;
+			case "Mirror":
+				reflectList.TryAdd
+					(new RaycastObj() { Point = hit.point, Normal = hit.normal },
+					 new ReflectInfo { Origin = start, Collider   = hit.collider, IsLightRay = isLightRay });
 				break;
 		}
 	}
@@ -280,7 +310,7 @@ public class FlashlightController : MonoBehaviour {
 					hit.Key.gameObject.GetComponent<EnemyController>().UpdateHealth(hit.Value / (float)rayAmount);
 					break;
 				case "WeakPoint":
-					hit.Key.gameObject.GetComponentInParent<BossController>().Hit(hit.Value / (float)rayAmount);
+					hit.Key.gameObject.GetComponentInParent<BossController>()§Hit(hit.Value / (float)rayAmount);
 					break;
 			}
 
@@ -304,7 +334,8 @@ public class FlashlightController : MonoBehaviour {
 		while (queue.Count > 0) {
 			var pair = queue.Dequeue();
 			// Start casting from the hit point using the original origin stored
-			CastReflectionChain(pair.Key.Point, pair.Key.Normal, pair.Value.Origin, pair.Value.Collider, 0, queue);
+			CastReflectionChain(pair.Key.Point, pair.Key.Normal, pair.Value.Origin, pair.Value.Collider, 0, queue,
+			                    pair.Value.IsLightRay);
 		}
 
 		// After processing all reflections, apply hits found along reflection rays
@@ -317,7 +348,8 @@ public class FlashlightController : MonoBehaviour {
 		Vector2                                      origin,
 		Collider2D                                   sourceCollider,
 		int                                          depth,
-		Queue<KeyValuePair<RaycastObj, ReflectInfo>> queue
+		Queue<KeyValuePair<RaycastObj, ReflectInfo>> queue,
+		bool                                         isLightRay
 	) {
 		if (depth >= maxReflections) return;
 
@@ -333,6 +365,9 @@ public class FlashlightController : MonoBehaviour {
 
 		//? Null guard || ignore immediate bounce back onto the same collider
 		if (!hit || hit.collider == sourceCollider) return;
+		
+		// TODO: fix :)
+		//lightPoints.Append(hit.point);
 
 		if (hit.collider.gameObject.tag is not ("Enemy" or "WeakPoint" or "Mirror")) return;
 
@@ -344,7 +379,7 @@ public class FlashlightController : MonoBehaviour {
 			queue.Enqueue(new KeyValuePair<RaycastObj, ReflectInfo>(rObj, rInfo));
 
 			//? Process further in same chain (depth+1)
-			CastReflectionChain(hit.point, hit.normal, newOrigin, hit.collider, depth + 1, queue);
+			CastReflectionChain(hit.point, hit.normal, newOrigin, hit.collider, depth + 1, queue, isLightRay);
 		} else {
 			//? Hit an enemy or weakpoint along the reflection
 			if (!hitList.TryAdd(hit.collider, 1)) hitList[hit.collider]++;
