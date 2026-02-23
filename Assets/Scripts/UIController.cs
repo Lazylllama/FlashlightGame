@@ -1,18 +1,27 @@
 using System;
+using System.Collections;
 using FlashlightGame;
 using UnityEngine;
 using TMPro;
+using Unity.Cinemachine;
 using UnityEngine.UI;
 
 public class UIController : MonoBehaviour {
 	#region Fields
 
 	//* Instance *//
-	public static            UIController Instance;
-	private static           DebugHandler Debug;
-	
-	[SerializeField] private Image     healthFill;
-	[SerializeField] private Image     batteryFill;
+	public static  UIController Instance;
+	private static DebugHandler Debug;
+
+	//* Refs *//
+	[SerializeField] private Image healthFill;
+	[SerializeField] private Image batteryFill;
+
+	[SerializeField] private CinemachineCamera playerCamera;
+	[SerializeField] private CinemachineCamera menuCamera;
+
+	//* State *//
+	public bool IsInMenu { get; private set; } = true;
 
 	#endregion
 
@@ -45,9 +54,23 @@ public class UIController : MonoBehaviour {
 			"Battery", PlayerData.Instance.Battery
 		});
 
-		healthFill.fillAmount = PlayerData.Instance.Health / 100f;
+		healthFill.fillAmount  = PlayerData.Instance.Health  / 100f;
 		batteryFill.fillAmount = PlayerData.Instance.Battery / 100f;
 	}
+
+	public void InitiatePlayerFall() {
+		Debug.Log("Initiating player fall sequence.", DebugLevel.Debug);
+		StartCoroutine(PlayerFallSequence());
+	}
+
+	#endregion
+
+	#region Coroutines
+
+	private IEnumerator PlayerFallSequence() {
+		PlayerController.Instance.StartFall();
+		yield return null;
+	}	
 
 	#endregion
 }
