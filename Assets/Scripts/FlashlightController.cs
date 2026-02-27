@@ -310,7 +310,7 @@ public class FlashlightController : MonoBehaviour {
 					hit.Key.gameObject.GetComponent<EnemyController>().UpdateHealth(hit.Value / (float)rayAmount);
 					break;
 				case "WeakPoint":
-					hit.Key.gameObject.GetComponentInParent<BossController>()§Hit(hit.Value / (float)rayAmount);
+					hit.Key.gameObject.GetComponentInParent<BossController>().Hit(hit.Value / (float)rayAmount);
 					break;
 			}
 

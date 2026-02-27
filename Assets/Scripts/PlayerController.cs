@@ -43,7 +43,6 @@ public class PlayerController : MonoBehaviour {
 	/// </summary>
 	public void UpdateDirection() {
 		var rotationY = PlayerData.Instance.IsLookingRight ? 0 : 180;
-
 		playerSprite.transform.rotation = new Quaternion(0, rotationY, 0, 0);
 	}
 

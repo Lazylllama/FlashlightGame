@@ -1,8 +1,6 @@
-using System;
 using System.Collections;
 using FlashlightGame;
 using UnityEngine;
-using TMPro;
 using Unity.Cinemachine;
 using UnityEngine.UI;
 
@@ -17,8 +15,12 @@ public class UIController : MonoBehaviour {
 	[SerializeField] private Image healthFill;
 	[SerializeField] private Image batteryFill;
 
-	[SerializeField] private CinemachineCamera playerCamera;
-	[SerializeField] private CinemachineCamera menuCamera;
+	[SerializeField] private CinemachineCamera playerCinemachine;
+	[SerializeField] private CinemachineCamera mainMenuCinemachine;
+
+	[SerializeField] private Camera mainCamera;
+	[SerializeField] private Camera mainMenuOverlayCamera;
+	[SerializeField] private Camera gameOverlayCamera;
 
 	//* State *//
 	public bool IsInMenu { get; private set; } = true;
@@ -36,6 +38,13 @@ public class UIController : MonoBehaviour {
 	#endregion
 
 	#region Functions
+
+	private void SwitchToGameCams() {
+		playerCinemachine.Priority    = 10;
+		mainMenuCinemachine.Priority  = 0;
+		mainMenuOverlayCamera.enabled = false;
+		gameOverlayCamera.enabled = true;
+	}
 
 	private static void RegisterInstance(UIController instance) {
 		if (Instance && Instance != instance) {
@@ -69,8 +78,10 @@ public class UIController : MonoBehaviour {
 
 	private IEnumerator PlayerFallSequence() {
 		PlayerController.Instance.StartFall();
+		yield return new WaitForSecondsRealtime(1.5f);
+		SwitchToGameCams();
 		yield return null;
-	}	
+	}
 
 	#endregion
 }
