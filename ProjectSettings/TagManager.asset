@@ -7,6 +7,7 @@ TagManager:
   - Enemy
   - Ground
   - WeakPoint
+  - Mirror
   layers:
   - Default
   - TransparentFX
@@ -21,9 +22,6 @@ TagManager:
   - ClimbWall
   - Wall
   - MantleWall
-  - 
-  - 
-  - 
   - 
   - 
   - 
