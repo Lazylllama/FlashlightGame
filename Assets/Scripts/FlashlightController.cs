@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -29,6 +30,7 @@ public struct RaycastObj : IEquatable<RaycastObj> {
 public struct ReflectInfo {
 	public Vector2    Origin;
 	public Collider2D Collider;
+	public bool       IsLightRay;
 }
 
 public class FlashlightController : MonoBehaviour {
@@ -120,7 +122,8 @@ public class FlashlightController : MonoBehaviour {
 		UpdateFlashlight();
 		CheckPlayerInputs();
 		UpdateSpotlight();
-		CheckForEnemy();
+		//CheckForEnemy();
+		LaserLightRay();
 	}
 
 	#endregion
@@ -254,6 +257,18 @@ public class FlashlightController : MonoBehaviour {
 	private void DrawNewRay(Vector2 start, Vector2 direction, bool isLightRay = false) {
 		Debug.DrawRay(start, direction * range, Color.red);
 		var hit = Physics2D.Raycast(start, direction, range, excludePlayer);
+
+		if (isLightRay && !hit) {
+			lightPoints = lightPoints.Append(new Vector3(start.x + direction.x * range ,start.y + direction.y * range, 0)).ToArray();
+			SetLightPosition(lightPoints);
+			return;
+		}
+		
+		if (isLightRay && !hit.collider.CompareTag("Mirror")) {
+			lightPoints = lightPoints.Append(new Vector3(hit.point.x ,hit.point.y, 0)).ToArray();
+			SetLightPosition(lightPoints);
+			return;
+		}
 		
 		if (isLightRay) lightPoints = lightPoints.Append(new Vector3(hit.point.x ,hit.point.y, 0)).ToArray();
 
@@ -344,7 +359,7 @@ public class FlashlightController : MonoBehaviour {
 		while (queue.Count > 0) {
 			var pair = queue.Dequeue();
 			// Start casting from the hit point using the original origin stored
-			CastReflectionChain(pair.Key.Point, pair.Key.Normal, pair.Value.Origin, pair.Value.Collider, 0, queue);
+			CastReflectionChain(pair.Key.Point, pair.Key.Normal, pair.Value.Origin, pair.Value.Collider, 0, queue, pair.Value.IsLightRay);
 		}
 
 		// After processing all reflections, apply hits found along reflection rays
@@ -357,7 +372,8 @@ public class FlashlightController : MonoBehaviour {
 		Vector2                                      origin,
 		Collider2D                                   sourceCollider,
 		int                                          depth,
-		Queue<KeyValuePair<RaycastObj, ReflectInfo>> queue
+		Queue<KeyValuePair<RaycastObj, ReflectInfo>> queue,
+		bool                                         isLightRay = false
 	) {
 		if (depth >= maxReflections) return;
 
@@ -373,6 +389,7 @@ public class FlashlightController : MonoBehaviour {
 
 		
 		if (isLightRay && !hit) {
+			lightPoints = lightPoints.Append(new Vector3(newOrigin.x + reflectedDir.x * range ,newOrigin.y + reflectedDir.y * range, 0)).ToArray();
 			print("Rizz");
 			SetLightPosition(lightPoints);
 		} else if (isLightRay && !hit.collider.gameObject.CompareTag("Mirror")) {
@@ -398,7 +415,7 @@ public class FlashlightController : MonoBehaviour {
 			queue.Enqueue(new KeyValuePair<RaycastObj, ReflectInfo>(rObj, rInfo));
 
 			//? Process further in same chain (depth+1)
-			CastReflectionChain(hit.point, hit.normal, newOrigin, hit.collider, depth + 1, queue);
+			CastReflectionChain(hit.point, hit.normal, newOrigin, hit.collider, depth + 1, queue, isLightRay);
 		} else {
 			//? Hit an enemy or weakpoint along the reflection
 			if (!hitList.TryAdd(hit.collider, 1)) hitList[hit.collider]++;
