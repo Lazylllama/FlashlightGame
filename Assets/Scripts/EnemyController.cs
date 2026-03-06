@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -6,6 +7,8 @@ using FlashlightGame;
 public class EnemyController : MonoBehaviour {
 	#region Fields
 
+	private static DebugHandler Debug;
+	
 	[Header("Refs")]
 	[SerializeField] private TMP_Text       overheadText;
 	private                  Rigidbody2D    rb;
@@ -36,6 +39,10 @@ public class EnemyController : MonoBehaviour {
 	#endregion
 
 	#region Unity Functions
+
+	private void Awake() {
+		Debug = new DebugHandler("EnemyController");
+	}
 
 	private void Start() {
 		rb                  = GetComponent<Rigidbody2D>();
@@ -100,7 +107,7 @@ public class EnemyController : MonoBehaviour {
 		canTeleport = false;
 
 		var climbPoint = Lib.Movement.GetWallClimbPoint(transform.position, facingRight);
-		
+		Debug.Log(climbPoint);
 		if (climbPoint.Position == Vector3.zero) {
 			enemySpeed = baseSpeed;
 			return;
