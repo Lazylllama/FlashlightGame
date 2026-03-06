@@ -22,6 +22,7 @@ TagManager:
   - ClimbWall
   - Wall
   - MantleWall
+  - MainMenuUI
   - Environment
   - 
   - 
