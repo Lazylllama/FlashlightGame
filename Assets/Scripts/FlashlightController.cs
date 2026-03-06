@@ -69,6 +69,8 @@ public class FlashlightController : MonoBehaviour {
 	private Light2D          freeFormLight;
 	private FlashLightPreset equippedFlashlight = new FlashLightPreset();
 	private Vector3[]        lightPoints        = { };
+	private Vector3          flashlightPositionWhenFacingRight;
+	private Vector3          flashLightPositionWhenFacingLeft;
 
 	// Reflection controls
 	[SerializeField] private int maxReflections = 3; // limit bounce count to avoid infinite loops
@@ -95,6 +97,9 @@ public class FlashlightController : MonoBehaviour {
 	}
 
 	private void Start() {
+		flashlightPositionWhenFacingRight = transform.localPosition;
+		flashLightPositionWhenFacingLeft =
+			new Vector3(-flashlightPositionWhenFacingRight.x, flashlightPositionWhenFacingRight.y, 0);
 		spotLight     = spotLightGameObject.GetComponent<Light2D>();
 		freeFormLight = freeFormLightGameObject.GetComponent<Light2D>();
 		excludePlayer = ~LayerMask.GetMask("Player");
@@ -122,8 +127,8 @@ public class FlashlightController : MonoBehaviour {
 		UpdateFlashlight();
 		CheckPlayerInputs();
 		UpdateSpotlight();
-		//CheckForEnemy();
-		LaserLightRay();
+		CheckForEnemy();
+		if (equippedFlashlight == laserPreset) LaserLightRay();
 	}
 
 	#endregion
@@ -133,11 +138,20 @@ public class FlashlightController : MonoBehaviour {
 	public void UpdateDirection() {
 		if (PlayerData.Instance) isFacingRight = PlayerData.Instance.IsLookingRight;
 		else flDebug.Log("PlayerData not found, cannot update direction.", DebugLevel.Fatal);
+		if (isFacingRight) transform.localPosition = flashlightPositionWhenFacingRight;
+		else transform.localPosition = flashLightPositionWhenFacingLeft;
 	}
 
 	private void CheckPlayerInputs() {
 		if (!PlayerData.Instance) return;
 		equippedFlashlight = PlayerData.Instance.FlashlightMode == 1 ? defaultPreset : laserPreset;
+		if (equippedFlashlight == laserPreset) {
+			freeFormLightGameObject.SetActive(true);
+			spotLightGameObject.SetActive(false);
+		} else {
+			freeFormLightGameObject.SetActive(false);
+			spotLightGameObject.SetActive(true);
+		}
 		
 	}
 	
