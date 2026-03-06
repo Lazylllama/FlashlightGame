@@ -102,8 +102,9 @@ public class PlayerMovement : MonoBehaviour {
 
 	private void RaycastChecks() {
 		var groundCheckHit = Lib.Movement.GroundCheck(groundCheckPosition.position, groundCheckRadius);
-		var mantleCheckHit = Lib.Movement.WallCheck(headLevelPosition.position, IsLookingRight);
-
+		var mantleCheckHit = Lib.Movement.MantleWallCheck(headLevelPosition.position, IsLookingRight);
+		var climbCheckHit  = Lib.Movement.ClimbWallCheck(headLevelPosition.position, IsLookingRight);
+		
 		isGrounded = groundCheckHit;
 		canMantle  = mantleCheckHit.collider;
 	}

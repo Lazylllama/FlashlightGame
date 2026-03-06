@@ -49,6 +49,15 @@ namespace FlashlightGame {
 			public static Collider2D GroundCheck(Vector3 origin, float radius) =>
 				Physics2D.OverlapCircle(origin, radius, GroundLayerMask);
 
+			/// <summary>
+			/// Check if a mantle-able wall is in front of the origin points look direction.
+			/// </summary>
+			/// <param name="origin">Where to check from</param>
+			/// <param name="positiveX">Positive X means isLookingRight</param>
+			/// <returns>RaycastHit2D</returns>
+			public static RaycastHit2D MantleWallCheck(Vector3 origin, bool positiveX) =>
+				Physics2D.Raycast(origin, positiveX ? Vector2.right : Vector2.left, WallCheckDistance,
+				                  ClimbWallLayerMask);
 
 			/// <summary>
 			/// Check if a climbable wall is in front of the origin points look direction.
@@ -56,8 +65,19 @@ namespace FlashlightGame {
 			/// <param name="origin">Where to check from</param>
 			/// <param name="positiveX">Positive X means isLookingRight</param>
 			/// <returns>RaycastHit2D</returns>
+			public static RaycastHit2D ClimbWallCheck(Vector3 origin, bool positiveX) =>
+				Physics2D.Raycast(origin, positiveX ? Vector2.right : Vector2.left, WallCheckDistance,
+				                  ClimbWallLayerMask);
+
+			/// <summary>
+			/// Check if a ground layer wall is in front of the origin points look direction.
+			/// </summary>
+			/// <param name="origin">Where to check from</param>
+			/// <param name="positiveX">Positive X means isLookingRight</param>
+			/// <returns>RaycastHit2D</returns>
 			public static RaycastHit2D WallCheck(Vector3 origin, bool positiveX) =>
-				Physics2D.Raycast(origin, positiveX ? Vector2.right : Vector2.left, WallCheckDistance);
+				Physics2D.Raycast(origin, positiveX ? Vector2.right : Vector2.left, WallCheckDistance,
+				                  GroundLayerMask);
 
 
 			/// <summary>
@@ -70,19 +90,22 @@ namespace FlashlightGame {
 				var origin           = (Vector2)basePosition + Vector2.up * WallCheckDistance;
 				var direction        = positiveX ? Vector2.right : Vector2.left;
 				var climbableWallHit = Physics2D.Raycast(origin, direction, WallCheckDistance, ClimbWallLayerMask);
-
+				Debug.Log("Origin: " + origin + " Direction: " + direction + " Hit: " + climbableWallHit.collider);
 				if (!climbableWallHit)
 					return new WallClimbPoint() {
 						Position = Vector3.zero,
 						Distance = 0f
 					};
 
-				var bounds = climbableWallHit.collider.bounds;
+				var centerX = climbableWallHit.point.x + (positiveX ? 0.5f : -0.5f);
+				var getGroundY = Physics2D.Raycast(new Vector2(centerX, climbableWallHit.point.y + 30f),
+				                                   Vector2.down, 30f,
+				                                   GroundLayerMask);
 
 				return new WallClimbPoint() {
 					Position = new Vector3(
-					                       bounds.center.x,
-					                       bounds.max.y + WallTeleportOffsetY,
+					                       centerX,
+					                       getGroundY.point.y + WallTeleportOffsetY,
 					                       basePosition.z
 					                      ),
 					Distance = climbableWallHit.distance
