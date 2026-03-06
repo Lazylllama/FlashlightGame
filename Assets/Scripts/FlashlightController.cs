@@ -74,7 +74,8 @@ public class FlashlightController : MonoBehaviour {
 
 	// Reflection controls
 	[SerializeField] private int maxReflections = 3; // limit bounce count to avoid infinite loops
-	[SerializeField] private float reflectionOriginOffset = 0.01f; // small offset to avoid immediate re-hit of the same surface
+	[SerializeField]
+	private float reflectionOriginOffset = 0.01f; // small offset to avoid immediate re-hit of the same surface
 	private int reflectionDepth;
 
 	private Dictionary<Collider2D, int>         hitList     = new Dictionary<Collider2D, int>();
@@ -310,8 +311,8 @@ public class FlashlightController : MonoBehaviour {
 		var hit = Physics2D.Linecast(start, end, excludePlayer);
 
 		//? Null guard & only process relevant tags
-		if (!hit || hit.collider.tag is not ("Enemy" or "WeakPoint" or "Mirror")) return;
-		
+
+
 		switch (hit.collider.tag) {
 			case "Enemy" or "WeakPoint":
 				if (hitList.TryAdd(hit.collider, 1)) break;
@@ -320,7 +321,7 @@ public class FlashlightController : MonoBehaviour {
 			case "Mirror":
 				reflectList.TryAdd
 					(new RaycastObj() { Point = hit.point, Normal = hit.normal },
-					 new ReflectInfo { Origin = start, Collider   = hit.collider });
+					 new ReflectInfo { Origin = start, Collider   = hit.collider, IsLightRay = isLightRay });
 				break;
 		}
 	}
@@ -349,7 +350,7 @@ public class FlashlightController : MonoBehaviour {
 					hit.Key.gameObject.GetComponent<EnemyController>().UpdateHealth(hit.Value / (float)rayAmount);
 					break;
 				case "WeakPoint":
-					hit.Key.gameObject.GetComponentInParent<BossController>().Hit(hit.Value / (float)rayAmount);
+					hit.Key.gameObject.GetComponentInParent<BossController>()§Hit(hit.Value / (float)rayAmount);
 					break;
 			}
 
@@ -413,6 +414,9 @@ public class FlashlightController : MonoBehaviour {
 		}
 		//? Null guard || ignore immediate bounce back onto the same collider
 		if (!hit || hit.collider == sourceCollider) return;
+		
+		// TODO: fix :)
+		//lightPoints.Append(hit.point);
 
 		if (isLightRay) {
 			print("Mango");

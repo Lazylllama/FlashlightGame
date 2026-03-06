@@ -7,20 +7,19 @@ public class EnemyController : MonoBehaviour {
 	#region Fields
 
 	[Header("Refs")]
-	[SerializeField] private TMP_Text       overheadText;
-	private                  SpriteRenderer enemySpriteRenderer;
-	private                  Rigidbody2D    rb;
+	[SerializeField] private TMP_Text overheadText;
+	private Rigidbody2D rb;
 
 	[Header("Enemy Options")]
-	[SerializeField] private bool           isGrounded,     isChasing,  facingRight;
-	[SerializeField] private float          detectionRange, baseSpeed, maxHealth;
-	[SerializeField] private Transform      lookPosition,   groundCheck;
-	[SerializeField] private LayerMask      groundLayer;
-	
+	[SerializeField] private bool isGrounded, isChasing, facingRight;
+	[SerializeField] private float     detectionRange, baseSpeed, maxHealth;
+	[SerializeField] private Transform lookPosition,   groundCheck;
+	[SerializeField] private LayerMask groundLayer;
+
 
 	[Header("Teleport Settings")]
 	[SerializeField] private float teleportCooldown = 1.2f;
-	private                  float teleportTimer;
+	private float teleportTimer;
 
 	[Header("Slow Down")]
 	[SerializeField] private float slowDistance = 2f;
@@ -33,16 +32,14 @@ public class EnemyController : MonoBehaviour {
 	private float    health, enemySpeed;
 	private bool     canTeleport;
 
-
 	#endregion
 
 	#region Unity Functions
 
 	private void Start() {
-		enemySpriteRenderer = GetComponent<SpriteRenderer>();
-		rb                  = GetComponent<Rigidbody2D>();
-		health              = maxHealth;
-		enemySpeed          = baseSpeed;
+		rb         = GetComponent<Rigidbody2D>();
+		health     = maxHealth;
+		enemySpeed = baseSpeed;
 	}
 
 	private void Update() {
@@ -74,24 +71,24 @@ public class EnemyController : MonoBehaviour {
 	private void LedgeCheck() {
 		var check = Lib.Movement.LedgeCheck(lookPosition.position, 0.3f);
 
-		if (!isChasing && !check.collider) return;
-
-		enemySpeed = baseSpeed;
-
-		if (facingRight & isGrounded) {
-			facingRight = false;
-		} else if (!facingRight & isGrounded) {
-			facingRight = true;
+		if (!check.collider && !isChasing) {
+			enemySpeed = baseSpeed;
+			if (facingRight && isGrounded) {
+				facingRight = false;
+			} else if (!facingRight && isGrounded) {
+				facingRight = true;
+			}
 		}
 	}
 
 	private void CheckWall() {
 		var wallHit = Lib.Movement.WallCheck(lookPosition.position, facingRight);
 
+
 		if (wallHit.collider != null && !isChasing) {
-			if (facingRight & isGrounded) {
+			if (facingRight && isGrounded) {
 				facingRight = false;
-			} else if (!facingRight & isGrounded) {
+			} else if (!facingRight && isGrounded) {
 				facingRight = true;
 			}
 		}
@@ -99,17 +96,20 @@ public class EnemyController : MonoBehaviour {
 
 	private void CheckClimbableWall() {
 		canTeleport = false;
-
-		var climbPoint = Lib.Movement.GetWallClimbPoint(transform.position, facingRight);
 		
+		if (!Lib.Movement.ClimbWallCheck(lookPosition.position, facingRight) ||
+		    !Lib.Movement.MantleWallCheck(lookPosition.position, facingRight)) return;
+		
+		var climbPoint = Lib.Movement.GetWallClimbPoint(transform.position, facingRight);
+
 		if (climbPoint.Position == Vector3.zero) {
 			enemySpeed = baseSpeed;
 			return;
 		}
-		
+
 		teleportPoint = climbPoint.Position;
-		canTeleport = true;
-		StartCoroutine(FadeIn());
+		canTeleport   = true;
+
 
 		if (climbPoint.Distance < slowDistance) {
 			enemySpeed = baseSpeed * slowFactor;
@@ -129,7 +129,7 @@ public class EnemyController : MonoBehaviour {
 
 		if (teleportTimer < teleportCooldown) return;
 		transform.position = teleportPoint;
-		StartCoroutine(FadeOut());
+
 		teleportTimer = 0f;
 	}
 
@@ -175,32 +175,6 @@ public class EnemyController : MonoBehaviour {
 	#endregion
 
 	#region Coroutines
-
-	private IEnumerator FadeIn() {
-		var alphaVal = enemySpriteRenderer.color.a;
-		var tmp      = enemySpriteRenderer.color;
-
-		while (enemySpriteRenderer.color.a > 0) {
-			alphaVal                  -= 0.10f;
-			tmp.a                     =  alphaVal;
-			enemySpriteRenderer.color =  tmp;
-
-			yield return new WaitForSeconds(0.05f);
-		}
-	}
-
-	private IEnumerator FadeOut() {
-		var alphaVal = enemySpriteRenderer.color.a;
-		var tmp      = enemySpriteRenderer.color;
-
-		while (enemySpriteRenderer.color.a < 1) {
-			alphaVal                  += 0.10f;
-			tmp.a                     =  alphaVal;
-			enemySpriteRenderer.color =  tmp;
-
-			yield return new WaitForSeconds(0.05f);
-		}
-	}
 
 	#endregion
 }
