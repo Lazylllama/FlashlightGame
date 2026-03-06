@@ -138,8 +138,8 @@ public class FlashlightController : MonoBehaviour {
 	public void UpdateDirection() {
 		if (PlayerData.Instance) isFacingRight = PlayerData.Instance.IsLookingRight;
 		else flDebug.Log("PlayerData not found, cannot update direction.", DebugLevel.Fatal);
-		if (isFacingRight) transform.localPosition = flashlightPositionWhenFacingRight;
-		else transform.localPosition = flashLightPositionWhenFacingLeft;
+		//if (isFacingRight) transform.localPosition = flashlightPositionWhenFacingRight;
+		//else transform.localPosition = flashLightPositionWhenFacingLeft;
 	}
 
 	private void CheckPlayerInputs() {
@@ -303,6 +303,7 @@ public class FlashlightController : MonoBehaviour {
 	}
 
 	private void DrawNewLine(Vector2 start, Vector2 end, bool isLightRay = false) {
+		print(start);
 		//? Gizmo
 		Debug.DrawLine(start, end, Color.red);
 

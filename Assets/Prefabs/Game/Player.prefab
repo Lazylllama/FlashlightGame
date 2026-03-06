@@ -200,10 +200,10 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3919401633137556873}
-  - {fileID: 6095902756367772043}
   - {fileID: 3770971208982464766}
   - {fileID: 8668320892217811640}
   - {fileID: 7988358005208953918}
+  - {fileID: 6095902756367772043}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8689629290832342502
@@ -651,14 +651,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2691413020089955389}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.6597903, w: 0.7514498}
+  m_LocalRotation: {x: -0, y: -0, z: 0.6436528, w: 0.7653177}
   m_LocalPosition: {x: 0.61480385, y: -0.00000007834257, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5910677233766757271}
+  - {fileID: 5093192918114938914}
   m_Father: {fileID: 3145217641412115119}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 80.129}
 --- !u!1 &2732394630170872853
 GameObject:
   m_ObjectHideFlags: 0
@@ -6409,6 +6410,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3082724946432282984}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6096618480463820167
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5093192918114938914}
+  m_Layer: 0
+  m_Name: Flashlightposition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5093192918114938914
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6096618480463820167}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.363, y: 0.211, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6132014861041631048}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6126330079988330875
 GameObject:
@@ -16529,6 +16561,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6095902756367772043}
   - component: {fileID: 5188551032976108374}
+  - component: {fileID: 3372813745512499410}
   m_Layer: 0
   m_Name: Flashlight
   m_TagString: Player
@@ -16544,9 +16577,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8947315786924848605}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.6427876, w: 0.7660445}
-  m_LocalPosition: {x: 1.218, y: 0.236, z: 2}
-  m_LocalScale: {x: 0.25464, y: 0.4, z: 1}
+  m_LocalRotation: {x: -0, y: 0, z: -0.65894073, w: 0.7521949}
+  m_LocalPosition: {x: 1.249, y: 0.172, z: 0}
+  m_LocalScale: {x: 0.2531395, y: 0.40306216, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4936669862843185341}
@@ -16578,6 +16611,26 @@ MonoBehaviour:
   freeFormLightGameObject: {fileID: 0}
   maxReflections: 3
   reflectionOriginOffset: 0.01
+--- !u!1818360608 &3372813745512499410
+PositionConstraint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8947315786924848605}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Weight: 1
+  m_TranslationAtRest: {x: 1.249, y: 0.172, z: 0}
+  m_TranslationOffset: {x: 0.0061610937, y: -0.0013729036, z: 0}
+  m_AffectTranslationX: 1
+  m_AffectTranslationY: 1
+  m_AffectTranslationZ: 1
+  m_Active: 1
+  m_IsLocked: 1
+  m_Sources:
+  - sourceTransform: {fileID: 5093192918114938914}
+    weight: 1
 --- !u!1 &9118698453171720590
 GameObject:
   m_ObjectHideFlags: 0
