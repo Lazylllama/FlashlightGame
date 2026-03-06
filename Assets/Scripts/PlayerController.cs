@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour {
 		playerRb     = GetComponent<Rigidbody2D>();
 
 		//* Freeze Player in place *//
-		//playerRb.bodyType = RigidbodyType2D.Static;
+		playerRb.bodyType = RigidbodyType2D.Static;
 
 		UpdateDirection();
 	}
