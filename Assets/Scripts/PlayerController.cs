@@ -25,11 +25,11 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void Start() {
-		playerSprite = GetComponent<SpriteRenderer>();
+		playerSprite = GetComponentInChildren<SpriteRenderer>();
 		playerRb     = GetComponent<Rigidbody2D>();
 
 		//* Freeze Player in place *//
-		playerRb.bodyType = RigidbodyType2D.Static;
+		//playerRb.bodyType = RigidbodyType2D.Static;
 
 		UpdateDirection();
 	}
@@ -42,6 +42,7 @@ public class PlayerController : MonoBehaviour {
 	/// Update the player's sprite direction based on the PlayerData's IsLookingRight property.
 	/// </summary>
 	public void UpdateDirection() {
+		if (!PlayerData.Instance) return;
 		var rotationY = PlayerData.Instance.IsLookingRight ? 0 : 180;
 		playerSprite.transform.rotation = new Quaternion(0, rotationY, 0, 0);
 	}
