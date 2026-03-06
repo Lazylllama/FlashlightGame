@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
 using FlashlightGame;
+using Unity.VisualScripting;
 
 public class FlashLightPreset {
 	public float PresetDensity;
@@ -28,6 +30,7 @@ public struct RaycastObj : IEquatable<RaycastObj> {
 public struct ReflectInfo {
 	public Vector2    Origin;
 	public Collider2D Collider;
+	public bool       IsLightRay;
 }
 
 public class FlashlightController : MonoBehaviour {
@@ -43,19 +46,19 @@ public class FlashlightController : MonoBehaviour {
 	[SerializeField] private float range     = 10;
 	[SerializeField] private float density;
 	[SerializeField] private Color color;
+	[SerializeField] private float lerpTime = 0.04f;
 
 	[Header("Light Output")]
 	[SerializeField] private Transform lightOutput;
 
 	[Header("SpotLight")]
 	[SerializeField] private GameObject spotLightGameObject;
-	[SerializeField] private GameObject laserSpotLightGameObject;
+	[SerializeField] private GameObject freeFormLightGameObject;
 
 	//* Refs
 	private LayerMask        excludePlayer;
 	private FlashLightPreset laserPreset   = new FlashLightPreset();
 	private FlashLightPreset defaultPreset = new FlashLightPreset();
-
 	// TODO: Replace with InputHandler asap pls 
 	private InputAction equipFlashlight1, equipFlashlight2;
 
@@ -63,7 +66,11 @@ public class FlashlightController : MonoBehaviour {
 	private bool             isFacingRight;
 	private float            intensity;
 	private Light2D          spotLight;
+	private Light2D          freeFormLight;
 	private FlashLightPreset equippedFlashlight = new FlashLightPreset();
+	private Vector3[]        lightPoints        = { };
+	private Vector3          flashlightPositionWhenFacingRight;
+	private Vector3          flashLightPositionWhenFacingLeft;
 
 	// Reflection controls
 	[SerializeField] private int maxReflections = 3; // limit bounce count to avoid infinite loops
@@ -90,12 +97,17 @@ public class FlashlightController : MonoBehaviour {
 	}
 
 	private void Start() {
+		flashlightPositionWhenFacingRight = transform.localPosition;
+		flashLightPositionWhenFacingLeft =
+			new Vector3(-flashlightPositionWhenFacingRight.x, flashlightPositionWhenFacingRight.y, 0);
 		spotLight     = spotLightGameObject.GetComponent<Light2D>();
+		freeFormLight = freeFormLightGameObject.GetComponent<Light2D>();
 		excludePlayer = ~LayerMask.GetMask("Player");
-
+		
 		laserPreset.PresetDensity     = 1.5f;
 		laserPreset.PresetBeamWidth   = 0.1f;
 		laserPreset.PresetRange       = 100f;
+		print(laserPreset.PresetRange);
 		laserPreset.PresetIntensity   = 20f;
 		laserPreset.PresetColor       = new Color(1, 0, 0, 1);
 		defaultPreset.PresetDensity   = 1.5f;
@@ -103,9 +115,10 @@ public class FlashlightController : MonoBehaviour {
 		defaultPreset.PresetRange     = 10f;
 		defaultPreset.PresetIntensity = 7f;
 		defaultPreset.PresetColor     = new Color(1, 0.94f, 0.55f, 1);
-
-		equipFlashlight1 = InputSystem.actions["Flashlight1"];
-		equipFlashlight2 = InputSystem.actions["Flashlight2"];
+		
+		
+		equipFlashlight1 = InputSystem.actions.FindAction("Flashlight1");
+		equipFlashlight2 = InputSystem.actions.FindAction("Flashlight2");
 	}
 
 
@@ -115,6 +128,7 @@ public class FlashlightController : MonoBehaviour {
 		CheckPlayerInputs();
 		UpdateSpotlight();
 		CheckForEnemy();
+		if (equippedFlashlight == laserPreset) LaserLightRay();
 	}
 
 	#endregion
@@ -124,16 +138,23 @@ public class FlashlightController : MonoBehaviour {
 	public void UpdateDirection() {
 		if (PlayerData.Instance) isFacingRight = PlayerData.Instance.IsLookingRight;
 		else flDebug.Log("PlayerData not found, cannot update direction.", DebugLevel.Fatal);
+		if (isFacingRight) transform.localPosition = flashlightPositionWhenFacingRight;
+		else transform.localPosition = flashLightPositionWhenFacingLeft;
 	}
 
 	private void CheckPlayerInputs() {
-		if (equipFlashlight1.triggered && equippedFlashlight != defaultPreset) {
-			equippedFlashlight = defaultPreset;
-		} else if (equipFlashlight2.triggered && equippedFlashlight != laserPreset) {
-			equippedFlashlight = laserPreset;
+		if (!PlayerData.Instance) return;
+		equippedFlashlight = PlayerData.Instance.FlashlightMode == 1 ? defaultPreset : laserPreset;
+		if (equippedFlashlight == laserPreset) {
+			freeFormLightGameObject.SetActive(true);
+			spotLightGameObject.SetActive(false);
+		} else {
+			freeFormLightGameObject.SetActive(false);
+			spotLightGameObject.SetActive(true);
 		}
+		
 	}
-
+	
 	private void UpdateFlashlight() {
 		density   = Mathf.Lerp(density,   equippedFlashlight.PresetDensity,   Time.deltaTime * 10);
 		beamWidth = Mathf.Lerp(beamWidth, equippedFlashlight.PresetBeamWidth, Time.deltaTime * 10);
@@ -143,11 +164,6 @@ public class FlashlightController : MonoBehaviour {
 		                  Mathf.Lerp(color.g, equippedFlashlight.PresetColor.g, Time.deltaTime * 10),
 		                  Mathf.Lerp(color.b, equippedFlashlight.PresetColor.b, Time.deltaTime * 10),
 		                  1);
-		if (laserSpotLightGameObject != null) {
-			laserSpotLightGameObject.SetActive(beamWidth <= 2);
-		} else {
-			flDebug.Log("Laser spotlight GameObject not assigned; skipping laser toggle.", DebugLevel.Warning);
-		}
 	}
 
 	private void UpdateSpotlight() {
@@ -199,7 +215,7 @@ public class FlashlightController : MonoBehaviour {
 			                         Mathf.Rad2Deg
 		                         );
 
-		transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, cameraAngleZ), 0.03f);
+		transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, cameraAngleZ), lerpTime);
 	}
 
 	private void CheckForEnemy() {
@@ -239,7 +255,7 @@ public class FlashlightController : MonoBehaviour {
 			                               math.cos(endpointNormal * math.TORADIANS) * range);
 			var endPoint = new Vector2(endpointBend.x * rotation.x + endpointBend.y * -rotation.y + startPoint.x,
 			                           endpointBend.x * rotation.y + endpointBend.y * rotation.x  + startPoint.y);
-
+			
 			DrawNewLine(startPoint, endPoint);
 		}
 
@@ -247,7 +263,46 @@ public class FlashlightController : MonoBehaviour {
 		ProcessReflections();
 	}
 
-	private void DrawNewLine(Vector2 start, Vector2 end) {
+	private void LaserLightRay() {
+		lightPoints = new []{transform.position};
+		DrawNewRay(transform.position,transform.up , true);
+	}
+
+	private void DrawNewRay(Vector2 start, Vector2 direction, bool isLightRay = false) {
+		Debug.DrawRay(start, direction * range, Color.red);
+		var hit = Physics2D.Raycast(start, direction, range, excludePlayer);
+
+		if (isLightRay && !hit) {
+			lightPoints = lightPoints.Append(new Vector3(start.x + direction.x * range ,start.y + direction.y * range, 0)).ToArray();
+			SetLightPosition(lightPoints);
+			return;
+		}
+		
+		if (isLightRay && !hit.collider.CompareTag("Mirror")) {
+			lightPoints = lightPoints.Append(new Vector3(hit.point.x ,hit.point.y, 0)).ToArray();
+			SetLightPosition(lightPoints);
+			return;
+		}
+		
+		if (isLightRay) lightPoints = lightPoints.Append(new Vector3(hit.point.x ,hit.point.y, 0)).ToArray();
+
+		if (!hit || hit.collider.tag is not ("Enemy" or "WeakPoint" or "Mirror")) return;
+
+		switch (hit.collider.tag) {
+			case "Enemy" or "WeakPoint":
+				if (hitList.TryAdd(hit.collider, 1)) break;
+				hitList[hit.collider]++;
+				break;
+			case "Mirror":
+				reflectList.TryAdd
+					(new RaycastObj() { Point = hit.point, Normal = hit.normal },
+					 new ReflectInfo { Origin = start, Collider   = hit.collider, IsLightRay = isLightRay });
+				break;
+		}
+		ProcessReflections();
+	}
+
+	private void DrawNewLine(Vector2 start, Vector2 end, bool isLightRay = false) {
 		//? Gizmo
 		Debug.DrawLine(start, end, Color.red);
 
@@ -268,6 +323,21 @@ public class FlashlightController : MonoBehaviour {
 					 new ReflectInfo { Origin = start, Collider   = hit.collider });
 				break;
 		}
+	}
+
+	private void SetLightPosition(Vector3[] oldLightPoints) {
+		var newLightPoints = new Vector3[] { };
+		var reversedLightPoints = oldLightPoints.Reverse().ToArray();
+		foreach (var point in reversedLightPoints) {
+			newLightPoints = newLightPoints.Append(point).ToArray();
+			newLightPoints = newLightPoints.Reverse().ToArray();
+			newLightPoints = newLightPoints.Append(point).ToArray();
+		}
+
+		foreach (var point in newLightPoints) {
+			print(point);
+		}
+		freeFormLight.SetShapePath(newLightPoints);
 	}
 
 	private void RegisterHitList() {
@@ -303,7 +373,7 @@ public class FlashlightController : MonoBehaviour {
 		while (queue.Count > 0) {
 			var pair = queue.Dequeue();
 			// Start casting from the hit point using the original origin stored
-			CastReflectionChain(pair.Key.Point, pair.Key.Normal, pair.Value.Origin, pair.Value.Collider, 0, queue);
+			CastReflectionChain(pair.Key.Point, pair.Key.Normal, pair.Value.Origin, pair.Value.Collider, 0, queue, pair.Value.IsLightRay);
 		}
 
 		// After processing all reflections, apply hits found along reflection rays
@@ -316,7 +386,8 @@ public class FlashlightController : MonoBehaviour {
 		Vector2                                      origin,
 		Collider2D                                   sourceCollider,
 		int                                          depth,
-		Queue<KeyValuePair<RaycastObj, ReflectInfo>> queue
+		Queue<KeyValuePair<RaycastObj, ReflectInfo>> queue,
+		bool                                         isLightRay = false
 	) {
 		if (depth >= maxReflections) return;
 
@@ -330,8 +401,23 @@ public class FlashlightController : MonoBehaviour {
 		var dirNorm = reflectedDir.normalized;
 		var hit     = Physics2D.Raycast(newOrigin, dirNorm, range, excludePlayer);
 
+		
+		if (isLightRay && !hit) {
+			lightPoints = lightPoints.Append(new Vector3(newOrigin.x + reflectedDir.x * range ,newOrigin.y + reflectedDir.y * range, 0)).ToArray();
+			print("Rizz");
+			SetLightPosition(lightPoints);
+		} else if (isLightRay && !hit.collider.gameObject.CompareTag("Mirror")) {
+			print("Gyatt");
+			lightPoints = lightPoints.Append(new Vector3(hit.point.x, hit.point.y, 0)).ToArray();
+			SetLightPosition(lightPoints);
+		}
 		//? Null guard || ignore immediate bounce back onto the same collider
 		if (!hit || hit.collider == sourceCollider) return;
+
+		if (isLightRay) {
+			print("Mango");
+			lightPoints = lightPoints.Append(new Vector3(hit.point.x, hit.point.y, 0)).ToArray();
+		}
 
 		if (hit.collider.gameObject.tag is not ("Enemy" or "WeakPoint" or "Mirror")) return;
 
@@ -343,7 +429,7 @@ public class FlashlightController : MonoBehaviour {
 			queue.Enqueue(new KeyValuePair<RaycastObj, ReflectInfo>(rObj, rInfo));
 
 			//? Process further in same chain (depth+1)
-			CastReflectionChain(hit.point, hit.normal, newOrigin, hit.collider, depth + 1, queue);
+			CastReflectionChain(hit.point, hit.normal, newOrigin, hit.collider, depth + 1, queue, isLightRay);
 		} else {
 			//? Hit an enemy or weakpoint along the reflection
 			if (!hitList.TryAdd(hit.collider, 1)) hitList[hit.collider]++;

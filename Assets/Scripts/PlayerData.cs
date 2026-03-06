@@ -27,7 +27,7 @@ public class PlayerData : MonoBehaviour {
 	//* Player States *//
 	public Dictionary<int, bool> FlashlightModesUnlocked { get; private set; } = new Dictionary<int, bool>() {
 		{ 1, true }, // Mode 1 is always unlocked
-		{ 2, false },
+		{ 2, true },
 		{ 3, false }
 	};
 	public bool FlashlightEnabled { get; set; }         = true;

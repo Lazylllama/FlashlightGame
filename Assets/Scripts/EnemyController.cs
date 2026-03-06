@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -35,7 +34,6 @@ public class EnemyController : MonoBehaviour {
 	private float    health, enemySpeed;
 	private bool     canTeleport;
 
-
 	#endregion
 
 	#region Unity Functions
@@ -45,9 +43,9 @@ public class EnemyController : MonoBehaviour {
 	}
 
 	private void Start() {
-		rb                  = GetComponent<Rigidbody2D>();
-		health              = maxHealth;
-		enemySpeed          = baseSpeed;
+		rb         = GetComponent<Rigidbody2D>();
+		health     = maxHealth;
+		enemySpeed = baseSpeed;
 	}
 
 	private void Update() {
@@ -59,7 +57,6 @@ public class EnemyController : MonoBehaviour {
 		TurnEnemy();
 		CheckClimbableWall();
 		CheckWall();
-		
 	}
 
 	private void FixedUpdate() {
@@ -105,17 +102,21 @@ public class EnemyController : MonoBehaviour {
 
 	private void CheckClimbableWall() {
 		canTeleport = false;
-
+		
+		if (!Lib.Movement.ClimbWallCheck(lookPosition.position, facingRight) ||
+		    !Lib.Movement.MantleWallCheck(lookPosition.position, facingRight)) return;
+		
 		var climbPoint = Lib.Movement.GetWallClimbPoint(transform.position, facingRight);
+
 		Debug.Log(climbPoint);
 		if (climbPoint.Position == Vector3.zero) {
 			enemySpeed = baseSpeed;
 			return;
 		}
-		
+
 		teleportPoint = climbPoint.Position;
-		canTeleport = true;
-		
+		canTeleport   = true;
+
 
 		if (climbPoint.Distance < slowDistance) {
 			enemySpeed = baseSpeed * slowFactor;
@@ -135,7 +136,7 @@ public class EnemyController : MonoBehaviour {
 
 		if (teleportTimer < teleportCooldown) return;
 		transform.position = teleportPoint;
-		
+
 		teleportTimer = 0f;
 	}
 
@@ -181,8 +182,6 @@ public class EnemyController : MonoBehaviour {
 	#endregion
 
 	#region Coroutines
-
-	
 
 	#endregion
 }

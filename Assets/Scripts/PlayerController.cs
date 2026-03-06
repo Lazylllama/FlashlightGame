@@ -8,7 +8,8 @@ public class PlayerController : MonoBehaviour {
 	public static PlayerController Instance;
 
 	//* Refs
-	[SerializeField] private SpriteRenderer playerSprite;
+	private SpriteRenderer playerSprite;
+	private Rigidbody2D    playerRb;
 
 	#endregion
 
@@ -23,6 +24,16 @@ public class PlayerController : MonoBehaviour {
 		Instance = this;
 	}
 
+	private void Start() {
+		playerSprite = GetComponentInChildren<SpriteRenderer>();
+		playerRb     = GetComponent<Rigidbody2D>();
+
+		//* Freeze Player in place *//
+		playerRb.bodyType = RigidbodyType2D.Static;
+
+		UpdateDirection();
+	}
+
 	#endregion
 
 	#region Functions
@@ -31,9 +42,16 @@ public class PlayerController : MonoBehaviour {
 	/// Update the player's sprite direction based on the PlayerData's IsLookingRight property.
 	/// </summary>
 	public void UpdateDirection() {
+		if (!PlayerData.Instance) return;
 		var rotationY = PlayerData.Instance.IsLookingRight ? 0 : 180;
-
 		playerSprite.transform.rotation = new Quaternion(0, rotationY, 0, 0);
+	}
+
+	/// <summary>
+	/// Set the player back to dynamic body type
+	/// </summary>
+	public void StartFall() {
+		playerRb.bodyType = RigidbodyType2D.Dynamic;
 	}
 
 	#endregion

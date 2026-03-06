@@ -1,18 +1,29 @@
-using System;
+using System.Collections;
 using FlashlightGame;
 using UnityEngine;
-using TMPro;
+using Unity.Cinemachine;
 using UnityEngine.UI;
 
 public class UIController : MonoBehaviour {
 	#region Fields
 
 	//* Instance *//
-	public static            UIController Instance;
-	private static           DebugHandler Debug;
-	
-	[SerializeField] private Image     healthFill;
-	[SerializeField] private Image     batteryFill;
+	public static  UIController Instance;
+	private static DebugHandler Debug;
+
+	//* Refs *//
+	[SerializeField] private Image healthFill;
+	[SerializeField] private Image batteryFill;
+
+	[SerializeField] private CinemachineCamera playerCinemachine;
+	[SerializeField] private CinemachineCamera mainMenuCinemachine;
+
+	[SerializeField] private Camera mainCamera;
+	[SerializeField] private Camera mainMenuOverlayCamera;
+	[SerializeField] private Camera gameOverlayCamera;
+
+	//* State *//
+	public bool IsInMenu { get; private set; } = true;
 
 	#endregion
 
@@ -27,6 +38,13 @@ public class UIController : MonoBehaviour {
 	#endregion
 
 	#region Functions
+
+	private void SwitchToGameCams() {
+		playerCinemachine.Priority    = 10;
+		mainMenuCinemachine.Priority  = 0;
+		mainMenuOverlayCamera.enabled = false;
+		gameOverlayCamera.enabled = true;
+	}
 
 	private static void RegisterInstance(UIController instance) {
 		if (Instance && Instance != instance) {
@@ -45,8 +63,24 @@ public class UIController : MonoBehaviour {
 			"Battery", PlayerData.Instance.Battery
 		});
 
-		healthFill.fillAmount = PlayerData.Instance.Health / 100f;
+		healthFill.fillAmount  = PlayerData.Instance.Health  / 100f;
 		batteryFill.fillAmount = PlayerData.Instance.Battery / 100f;
+	}
+
+	public void InitiatePlayerFall() {
+		Debug.Log("Initiating player fall sequence.", DebugLevel.Debug);
+		StartCoroutine(PlayerFallSequence());
+	}
+
+	#endregion
+
+	#region Coroutines
+
+	private IEnumerator PlayerFallSequence() {
+		PlayerController.Instance.StartFall();
+		yield return new WaitForSecondsRealtime(1.5f);
+		SwitchToGameCams();
+		yield return null;
 	}
 
 	#endregion

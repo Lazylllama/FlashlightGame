@@ -113,6 +113,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleLever",
+                    "type": "Button",
+                    "id": "a8dcf462-b70e-4dab-9027-087f3c8c5b74",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -421,17 +430,6 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "ToggleModeLeft",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "e81dbeb8-d9c0-4595-8e94-f1f1e4628033",
-                    "path": "<Keyboard>/enter",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "NextLine",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
