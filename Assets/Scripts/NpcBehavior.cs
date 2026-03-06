@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class NpcBehavior : MonoBehaviour
 {
@@ -12,16 +13,17 @@ public class NpcBehavior : MonoBehaviour
 	public float wordSpeed;
 	public bool  playerIsClose;
 
+	InputAction nextLineAction;
 
 	void Start()
 	{
+		nextLineAction = InputSystem.actions.FindAction("NextLine");
 		dialogueText.text = "";
 	}
-
-	// Update is called once per frame
+	
 	void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.E) && playerIsClose)
+		if (nextLineAction.WasPerformedThisFrame() && playerIsClose)
 		{
 			if (!dialoguePanel.activeInHierarchy)
 			{
@@ -33,10 +35,6 @@ public class NpcBehavior : MonoBehaviour
 				NextLine();
 			}
 
-		}
-		if (Input.GetKeyDown(KeyCode.Q) && dialoguePanel.activeInHierarchy)
-		{
-			RemoveText();
 		}
 	}
 
