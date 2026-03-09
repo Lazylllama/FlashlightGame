@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using FlashlightGame;
@@ -36,15 +37,24 @@ public class PlayerMovement : MonoBehaviour {
 	[SerializeField] private Transform groundCheckPosition;
 	[SerializeField] private float groundCheckRadius;
 
+	private readonly Dictionary<string, AudioManager.FootstepSurface> surfaceTags = new() {
+		{ "DirtGround", AudioManager.FootstepSurface.Dirt },
+		{ "ConcreteGround", AudioManager.FootstepSurface.Concrete },
+		{ "GrassGround", AudioManager.FootstepSurface.Grass },
+		{ "SandGround", AudioManager.FootstepSurface.Sand },
+		{ "WoodGround", AudioManager.FootstepSurface.Wood }
+	};
+
 	[Header("Mantling")]
 	[SerializeField] private Transform headLevelPosition;
 
 	//* States
-	private bool      isGrounded;
-	private bool      canMantle;
-	private Coroutine mantleRoutineState;
-	private Vector2   moveInputVal;
-	private Vector2   lastPosition;
+	private bool                         isGrounded;
+	private bool                         canMantle;
+	private Coroutine                    mantleRoutineState;
+	private Vector2                      moveInputVal;
+	private Vector2                      lastPosition;
+	private AudioManager.FootstepSurface currentSurface;
 
 	#endregion
 
@@ -104,9 +114,13 @@ public class PlayerMovement : MonoBehaviour {
 		var groundCheckHit = Lib.Movement.GroundCheck(groundCheckPosition.position, groundCheckRadius);
 		var mantleCheckHit = Lib.Movement.MantleWallCheck(headLevelPosition.position, IsLookingRight);
 		var climbCheckHit  = Lib.Movement.ClimbWallCheck(headLevelPosition.position, IsLookingRight);
+
+		isGrounded     = groundCheckHit;
+		canMantle      = mantleCheckHit.collider;
 		
-		isGrounded = groundCheckHit;
-		canMantle  = mantleCheckHit.collider;
+		Debug.Log(groundCheckHit.tag);
+		currentSurface = surfaceTags.GetValueOrDefault(groundCheckHit.tag, AudioManager.FootstepSurface.Dirt);
+		Debug.Log(currentSurface);
 	}
 
 	private void InputCheck() {
@@ -125,8 +139,12 @@ public class PlayerMovement : MonoBehaviour {
 		var speedDifference = inputSpeed - playerRb.linearVelocityX;
 		var finalForce      = speedDifference * acceleration;
 
-		var delta = lastPosition - (Vector2)transform.position;
-		if (delta != Vector2.zero) particleController.CrateMovement(delta.x);
+		var delta = Vector2.Normalize(lastPosition - (Vector2)transform.position);
+
+		if (delta != Vector2.zero && Mathf.Abs(delta.x) > 0.1f) {
+			particleController.CrateMovement(delta.x);
+			AudioManager.Instance.PlayFootstepSfx(currentSurface);
+		}
 
 		lastPosition = transform.position;
 
