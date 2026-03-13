@@ -117,10 +117,9 @@ public class PlayerMovement : MonoBehaviour {
 
 		isGrounded     = groundCheckHit;
 		canMantle      = mantleCheckHit.collider;
-		
-		Debug.Log(groundCheckHit.tag);
+
+		if (!groundCheckHit) return;
 		currentSurface = surfaceTags.GetValueOrDefault(groundCheckHit.tag, AudioManager.FootstepSurface.Dirt);
-		Debug.Log(currentSurface);
 	}
 
 	private void InputCheck() {

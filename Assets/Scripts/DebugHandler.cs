@@ -112,6 +112,24 @@ public class DebugHandler {
 	public void Log(object message) => LogInternal(message.ToString(), DebugLevel.Info);
 
 	/// <summary>
+	/// Log a warning message.
+	/// </summary>
+	/// <param name="message"></param>
+	public void LogWarning(string message) => LogInternal(message, DebugLevel.Warning);
+
+	/// <summary>
+	/// Log an exception error message.
+	/// </summary>
+	/// <param name="exception"></param>
+	public void LogException(Exception exception) => LogInternal(exception.ToString(), DebugLevel.Fatal);
+
+	/// <summary>
+	/// Log an error message.
+	/// </summary>
+	/// <param name="message"></param>
+	public void LogError(string message) => LogInternal(message, DebugLevel.Error);
+
+	/// <summary>
 	/// Log a simple message for the specified level.
 	/// </summary>
 	/// <param name="message">string</param>
@@ -144,5 +162,40 @@ public class DebugHandler {
 		}
 	}
 
+	#endregion
+
+	#region Compatibility
+
+	public static void DrawRay(Vector3 start, Vector3 dir, Color color, float duration = 0, bool depthTest = true) =>
+		Debug.DrawRay(start, dir, color, duration, depthTest);
+
+	public static void DrawLine(Vector3 start, Vector3 end, Color color, float duration = 0, bool depthTest = true) =>
+		Debug.DrawLine(start, end, color, duration, depthTest);
+
+	public static void Assert(bool condition, string message) => Debug.Assert(condition, message);
+
+	public static void AssertFormat(bool condition, string format, params object[] args) =>
+		Debug.AssertFormat(condition, format, args);
+
+	public static void LogErrorFormat(string format, params object[] args) => Debug.LogErrorFormat(format, args);
+
+	public static void LogWarningFormat(string format, params object[] args) => Debug.LogWarningFormat(format, args);
+
+	public static void LogFormat(string format, params object[] args) => Debug.LogFormat(format, args);
+
+	public static Debug.StartupLog[] RetrieveStartupLogs() => Debug.RetrieveStartupLogs();
+
+	public static void ClearDeveloperConsole() => Debug.ClearDeveloperConsole();
+
+	public static bool IsValidationLevelEnabled(ValidationLevel lvl) => Debug.IsValidationLevelEnabled(lvl);
+
+	public static void Break() => Debug.Break();
+	
+	public static void DebugBreak() => Debug.DebugBreak();
+	
+	public static void LogAssertion(string message) => Debug.LogAssertion(message);
+	
+	public static void LogAssertionFormat(string format, params object[] args) => Debug.LogAssertionFormat(format, args);
+		
 	#endregion
 }

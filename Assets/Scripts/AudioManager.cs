@@ -1,12 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour {
 	#region Fields
 
-	public static AudioManager Instance;
+	public static  AudioManager Instance;
+	private static DebugHandler debug;
 
 	[SerializeField] private float stepInterval;
 
@@ -20,7 +22,7 @@ public class AudioManager : MonoBehaviour {
 
 	//? Map index to names
 	public enum AudioName {
-		CoinCollect, //0
+		WingFlap, //0
 	};
 
 	public enum FootstepSurface {
@@ -78,10 +80,49 @@ public class AudioManager : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Plays a sound effect
+	/// </summary>
+	/// <param name="audioName">Audio Clip Name - AudioManager.AudioName[]</param>
+	/// <param name="src">AudioSource</param>
+	/// <param name="volume">Sound Volume - 0 to 1 (float)</param>
+	public void PlaySfx(AudioName audioName, AudioSource src, float volume = 1f) {
+		if (audioClips.TryGetValue(audioName, out var clip) && src != null) {
+			src.PlayOneShot(clip, volume);
+		} else {
+			Debug.LogWarning($"AudioClip {audioName} not found in AudioManager dictionary!");
+		}
+	}
+
+	/// <summary>
+	/// Plays a sound effect
+	/// </summary>
+	/// <param name="audioName">Audio Clip Name - AudioManager.AudioName[]</param>
+	/// <param name="point">Vector2</param>
+	/// <param name="volume">Sound Volume - 0 to 1 (float)</param>
+	public void PlaySfxAtPoint(AudioName audioName, Vector2 point, float volume = 1f) {
+		if (point.IsNaN()) {
+			Debug.LogWarning($"Invalid point provided for PlaySfxAtPoint: {point}");
+			return;
+		}
+
+		if (audioClips.TryGetValue(audioName, out var clip)) {
+			AudioSource.PlayClipAtPoint(clip, point, volume);
+		} else {
+			Debug.LogWarning($"AudioClip {audioName} not found in AudioManager dictionary!");
+		}
+	}
+
+	/// <summary>
+	/// Play a footstep sound effect based on the surface type. Routine based delay.
+	/// </summary>
+	/// <param name="surface">FootstepSurface</param>
+	/// <param name="volume">0-1</param>
 	public void PlayFootstepSfx(FootstepSurface surface, float volume = 1f) {
 		if (footstepCoroutine != null) return;
 		footstepCoroutine = StartCoroutine(PlayFootstepSfxCoroutine(surface, volume));
 	}
+
 
 	#region Coroutines
 
