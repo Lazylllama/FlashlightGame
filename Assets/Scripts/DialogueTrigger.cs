@@ -15,7 +15,9 @@ public class MyArray1
 
 public class DialogueTrigger: MonoBehaviour
 {
-    public GameObject dialoguePanel;
+	#region Fields
+	
+	public GameObject dialoguePanel;
     public TextMeshProUGUI dialogueText;
     
     public int npcindex = 0;
@@ -23,17 +25,18 @@ public class DialogueTrigger: MonoBehaviour
 
     public TextMeshProUGUI nPCnameText;
 
+    public float wordSpeed;
+    public bool  playerIsClose;
+    public Image sImage;
+    
     public MyArray1[] array1;
 
-
-    public float wordSpeed;
-    public bool playerIsClose;
-    public Image sImage;
-
-
-
     InputAction nextLineAction;
+    
+    #endregion
 
+    #region Unity Functions
+    
     void Start()
     {
         dialogueText.text = "";
@@ -42,29 +45,34 @@ public class DialogueTrigger: MonoBehaviour
     
     void Update()
     {
-
-        
+	    
+	    
         sImage.sprite = array1[npcindex].sprite;
         nPCnameText.text = array1[npcindex].names;
+
         if (nextLineAction.WasPerformedThisFrame() && playerIsClose)
         {
-            if (!dialoguePanel.activeInHierarchy)
-            {
-                
-                dialoguePanel.SetActive(true);
-                StartCoroutine(Typing());
-            }
-            else if (dialogueText.text == array1[npcindex].dialogue[dialogueindex])
-            {
-                NextLine();
-                
-            }
-            
+	        if (!dialoguePanel.activeInHierarchy)
+	        {
+		        
+		        dialoguePanel.SetActive(true);
+		        StartCoroutine(Typing());
+	        }
+	        else if (dialogueText.text == array1[npcindex].dialogue[dialogueindex])
+	        {
+		        NextLine();
+		        
+	        }
+	        
         }
         
         
+        
+        
     }
-
+    #endregion
+	
+    #region Functions
 
     private void RemoveText()
     {
@@ -107,11 +115,14 @@ public class DialogueTrigger: MonoBehaviour
 		    }
 	    }
     }
+    
+    
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
+	        
             playerIsClose = true;
         }
     }
@@ -120,9 +131,11 @@ public class DialogueTrigger: MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+	        
             playerIsClose = false;
             RemoveText();
         }
     }
+    #endregion
 }
 
