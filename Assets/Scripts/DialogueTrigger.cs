@@ -5,13 +5,18 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 [System.Serializable]
-public class MyArray1
+public class DialogueArray
 {
-	public string[] dialogue;
-	public Sprite   sprite;
-	public string   names;
+	public string[]   dialogue;
+	public Sprite     sprite;
+	public string     names;
+	public GameObject characterObj;
+	public Vector2    cMove;
+	public float      cMoveSpeed;
+
 }
 
+//THE MOVE PART IS UNDER BETA TESTING GUYS NOT RELIABLE 
 
 public class DialogueTrigger: MonoBehaviour
 {
@@ -20,18 +25,21 @@ public class DialogueTrigger: MonoBehaviour
 	public GameObject dialoguePanel;
     public TextMeshProUGUI dialogueText;
     
-    public int npcindex = 0;
-    public int dialogueindex = 0;
+    public int npcIndex = 0;
+    public int dialogueIndex = 0;
 
     public TextMeshProUGUI nPCnameText;
 
     public float wordSpeed;
     public bool  playerIsClose;
     public Image sImage;
+    public bool  noMovement;
     
-    public MyArray1[] array1;
+    public DialogueArray[] dArray;
 
     InputAction nextLineAction;
+
+    
     
     #endregion
 
@@ -40,83 +48,103 @@ public class DialogueTrigger: MonoBehaviour
     void Start()
     {
         dialogueText.text = "";
-        nextLineAction    = InputSystem.actions.FindAction("NextLine");
+        nextLineAction    = InputSystem.actions.FindAction("Interact");
     }
     
-    void Update()
-    {
-	    
-	    
-        sImage.sprite = array1[npcindex].sprite;
-        nPCnameText.text = array1[npcindex].names;
+    void Update() {
 
-        if (nextLineAction.WasPerformedThisFrame() && playerIsClose)
-        {
-	        if (!dialoguePanel.activeInHierarchy)
-	        {
-		        
-		        dialoguePanel.SetActive(true);
-		        StartCoroutine(Typing());
-	        }
-	        else if (dialogueText.text == array1[npcindex].dialogue[dialogueindex])
-	        {
-		        NextLine();
-		        
-	        }
-	        
-        }
-        
-        
-        
-        
+	    InitiateDialogue();
+	    UpdateUI();
+	    MoveToTarget(npcIndex);
+	    CheckMovementLock();
     }
     #endregion
 	
     #region Functions
 
-    private void RemoveText()
+    void InitiateDialogue() {
+	    if (nextLineAction.WasPerformedThisFrame() && playerIsClose)
+	    {
+		    if (!dialoguePanel.activeInHierarchy)
+		    {
+		        
+			    dialoguePanel.SetActive(true);
+			    StartCoroutine(Typing());
+		    }
+		    else if (dialogueText.text == dArray[npcIndex].dialogue[dialogueIndex])
+		    {
+			    NextLine();
+		    }
+	    }
+    }
+    
+    
+
+    private void ResetDialogue()
     {
 	    dialogueText.text = "";
-	    dialogueindex     = 0;
-	    npcindex          = 0;
+	    dialogueIndex     = 0;
+	    npcIndex          = 0;
 	    dialoguePanel.SetActive(false);
     }
 
-    IEnumerator Typing()
-    {
-	    foreach (char letter in array1[npcindex].dialogue[dialogueindex])
-	    {
-		    dialogueText.text += letter;
-		    yield return new WaitForSeconds(wordSpeed);
-	    }
+    private void UpdateUI() {
+	    sImage.sprite    = dArray[npcIndex].sprite;
+	    nPCnameText.text = dArray[npcIndex].names;
     }
+    
+    void MoveToTarget(int index)
+    {
+	    Vector3 cur = dArray[index].characterObj.transform.position;
+
+	    Vector3 target = new Vector3(
+	                                 dArray[index].cMove.x,
+	                                 dArray[index].cMove.y,
+	                                 cur.z
+	                                );
+
+	    dArray[index].characterObj.transform.position =
+		    Vector3.MoveTowards(
+		                        cur,
+		                        target,
+		                        dArray[index].cMoveSpeed * Time.deltaTime   // constant speed
+		                       );
+    }
+
 
     private void NextLine()
     {
-	    if (dialogueindex < array1[npcindex].dialogue.Length - 1)
+	    if (dialogueIndex < dArray[npcIndex].dialogue.Length - 1)
 	    {
-		    dialogueindex++;
+		    dialogueIndex++;
 		    dialogueText.text = "";
 		    StartCoroutine(Typing());
 	    }
 	    else
 	    {
-		    dialogueindex = 0;
+		    dialogueIndex = 0;
 
-		    if (npcindex < array1.Length - 1)
+		    if (npcIndex < dArray.Length - 1)
 		    {
-			    npcindex++;
+			    npcIndex++;
 			    dialogueText.text = "";
 			    StartCoroutine(Typing());
 		    }
 		    else
 		    {
-			    RemoveText();
+			    ResetDialogue();
 		    }
 	    }
     }
-    
-    
+
+    void CheckMovementLock() {
+	    if (noMovement && dialoguePanel.activeInHierarchy)
+	    {
+		    PlayerMovement.Instance.enabled = false;
+	    } else {
+		    PlayerMovement.Instance.enabled = true;
+	    }
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -133,9 +161,22 @@ public class DialogueTrigger: MonoBehaviour
         {
 	        
             playerIsClose = false;
-            RemoveText();
+            ResetDialogue();
         }
     }
+    #endregion
+
+    #region Coroutines
+
+    IEnumerator Typing()
+    {
+	    foreach (char letter in dArray[npcIndex].dialogue[dialogueIndex])
+	    {
+		    dialogueText.text += letter;
+		    yield return new WaitForSeconds(wordSpeed);
+	    }
+    }
+
     #endregion
 }
 

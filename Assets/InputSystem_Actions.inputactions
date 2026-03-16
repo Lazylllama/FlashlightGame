@@ -106,7 +106,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "NextLine",
+                    "name": "Interact",
                     "type": "Button",
                     "id": "094bff28-d744-453f-91ce-aa22e958bbe9",
                     "expectedControlType": "",
@@ -440,7 +440,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "NextLine",
+                    "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
