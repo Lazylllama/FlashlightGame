@@ -5,6 +5,7 @@ namespace FlashlightGame {
 	public static class Lib {
 		#region Fields
 
+		private static LayerMask BoxLayerMask       => LayerMask.GetMask("Box");
 		private static LayerMask GroundLayerMask    => LayerMask.GetMask("Ground");
 		private static LayerMask ClimbWallLayerMask => LayerMask.GetMask("ClimbWall");
 
@@ -90,17 +91,23 @@ namespace FlashlightGame {
 				var origin           = (Vector2)basePosition + Vector2.up * WallCheckDistance;
 				var direction        = positiveX ? Vector2.right : Vector2.left;
 				var climbableWallHit = Physics2D.Raycast(origin, direction, WallCheckDistance, ClimbWallLayerMask);
-				Debug.Log("Origin: " + origin + " Direction: " + direction + " Hit: " + climbableWallHit.collider);
-				if (!climbableWallHit)
-					return new WallClimbPoint() {
-						Position = Vector3.zero,
-						Distance = 0f
-					};
 
-				var centerX = climbableWallHit.point.x + (positiveX ? 0.5f : -0.5f);
-				var getGroundY = Physics2D.Raycast(new Vector2(centerX, climbableWallHit.point.y + 30f),
-				                                   Vector2.down, 30f,
-				                                   GroundLayerMask);
+				var defaultReturn = new WallClimbPoint() {
+					Position = Vector3.zero,
+					Distance = 0f
+				};
+
+				if (!climbableWallHit) return defaultReturn;
+
+				var centerX   = climbableWallHit.point.x + (positiveX ? 0.5f : -0.5f);
+				var rayOrigin = new Vector2(centerX, climbableWallHit.point.y + 300f);
+
+				var getGroundY = Physics2D.Raycast(rayOrigin, Vector2.down, 350f, GroundLayerMask);
+
+				if (!getGroundY)
+					getGroundY = Physics2D.Raycast(rayOrigin, Vector2.down, 350f, BoxLayerMask);
+
+				if (!getGroundY.collider) return defaultReturn;
 
 				return new WallClimbPoint() {
 					Position = new Vector3(

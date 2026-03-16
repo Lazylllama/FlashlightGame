@@ -17,6 +17,7 @@ public class UIController : MonoBehaviour {
 
 	[SerializeField] private CinemachineCamera playerCinemachine;
 	[SerializeField] private CinemachineCamera mainMenuCinemachine;
+	[SerializeField] private CinemachineCamera storyboardBlackCinemachine;
 
 	[SerializeField] private Camera mainCamera;
 	[SerializeField] private Camera mainMenuOverlayCamera;
@@ -40,9 +41,13 @@ public class UIController : MonoBehaviour {
 	#region Functions
 
 	private void SwitchToGameCams() {
-		playerCinemachine.Priority    = 10;
-		mainMenuCinemachine.Priority  = 0;
 		mainMenuOverlayCamera.enabled = false;
+		StartCoroutine(FadeBetweenCams(
+		                               mainMenuCinemachine,
+		                               playerCinemachine,
+		                               3f,
+		                               mainMenuOverlayCamera,
+		                               gameOverlayCamera));
 		gameOverlayCamera.enabled = true;
 	}
 
@@ -81,6 +86,37 @@ public class UIController : MonoBehaviour {
 		yield return new WaitForSecondsRealtime(1.5f);
 		SwitchToGameCams();
 		yield return null;
+	}
+
+	private IEnumerator FadeBetweenCams(
+		CinemachineCamera fromCam,
+		CinemachineCamera toCam,
+		float             duration,
+		Camera            fromOverlay,
+		Camera            toOverlay
+	) {
+		fromCam.Priority    = 0;
+		fromOverlay.enabled = false;
+		toCam.Priority      = 10;
+
+		storyboardBlackCinemachine.Priority = 11;
+
+		yield return new WaitForSecondsRealtime(duration);
+
+		toOverlay.enabled                   = true;
+		storyboardBlackCinemachine.Priority = 0;
+	}
+
+	private IEnumerator FadeBetweenCams(
+		CinemachineCamera fromCam,
+		CinemachineCamera toCam,
+		float             duration
+	) {
+		fromCam.Priority                    = 0;
+		storyboardBlackCinemachine.Priority = 11;
+		toCam.Priority                      = 10;
+		yield return new WaitForSecondsRealtime(duration);
+		storyboardBlackCinemachine.Priority = 0;
 	}
 
 	#endregion
