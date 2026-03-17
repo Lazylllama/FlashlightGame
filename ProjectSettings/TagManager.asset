@@ -8,6 +8,7 @@ TagManager:
   - Ground
   - WeakPoint
   - Mirror
+  - Prism
   layers:
   - Default
   - TransparentFX
@@ -24,8 +25,7 @@ TagManager:
   - MantleWall
   - MainMenuUI
   - Environment
-  - 
-  - 
+  - Prism
   - 
   - 
   - 
