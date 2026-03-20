@@ -63,6 +63,7 @@ public class FlashlightController : MonoBehaviour {
 	private InputAction equipFlashlight1, equipFlashlight2;
 
 	//* States
+	private bool             flashlightRotation;
 	private bool             isFacingRight;
 	private float            intensity;
 	private Light2D          spotLight;
@@ -138,8 +139,8 @@ public class FlashlightController : MonoBehaviour {
 	public void UpdateDirection() {
 		if (PlayerData.Instance) isFacingRight = PlayerData.Instance.IsLookingRight;
 		else flDebug.Log("PlayerData not found, cannot update direction.", DebugLevel.Fatal);
-		if (isFacingRight) transform.localPosition = flashlightPositionWhenFacingRight;
-		else transform.localPosition = flashLightPositionWhenFacingLeft;
+		//if (isFacingRight) transform.localPosition = flashlightPositionWhenFacingRight;
+		//else transform.localPosition = flashLightPositionWhenFacingLeft;
 	}
 
 	private void CheckPlayerInputs() {
@@ -214,8 +215,12 @@ public class FlashlightController : MonoBehaviour {
 			                                     mousePosition.x - transform.position.x) *
 			                         Mathf.Rad2Deg
 		                         );
-
-		transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, cameraAngleZ), lerpTime);
+		if (flashlightRotation != isFacingRight) {
+			transform.rotation = Quaternion.Euler(0f, 0f, cameraAngleZ);
+			flashlightRotation = isFacingRight;
+		} else {
+			transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, cameraAngleZ), lerpTime);	
+		}
 	}
 
 	private void CheckForEnemy() {
@@ -269,8 +274,11 @@ public class FlashlightController : MonoBehaviour {
 	}
 
 	private void DrawNewRay(Vector2 start, Vector2 direction, bool isLightRay = false) {
-		Debug.DrawRay(start, direction * range, Color.red);
+		
 		var hit = Physics2D.Raycast(start, direction, range, excludePlayer);
+		
+		if (hit.collider) Debug.DrawLine(start,hit.point, Color.red);
+		if (!hit.collider) Debug.DrawRay(start, direction * range, Color.red);
 
 		if (isLightRay && !hit) {
 			lightPoints = lightPoints.Append(new Vector3(start.x + direction.x * range ,start.y + direction.y * range, 0)).ToArray();
@@ -286,10 +294,10 @@ public class FlashlightController : MonoBehaviour {
 		
 		if (isLightRay) lightPoints = lightPoints.Append(new Vector3(hit.point.x ,hit.point.y, 0)).ToArray();
 
-		if (!hit || hit.collider.tag is not ("Enemy" or "WeakPoint" or "Mirror")) return;
+		if (!hit || hit.collider.tag is not ("Enemy" or "WeakPoint" or "Prism" or "Mirror")) return;
 
 		switch (hit.collider.tag) {
-			case "Enemy" or "WeakPoint":
+			case "Enemy" or "WeakPoint" or "Prism":
 				if (hitList.TryAdd(hit.collider, 1)) break;
 				hitList[hit.collider]++;
 				break;
@@ -303,17 +311,19 @@ public class FlashlightController : MonoBehaviour {
 	}
 
 	private void DrawNewLine(Vector2 start, Vector2 end, bool isLightRay = false) {
-		//? Gizmo
-		Debug.DrawLine(start, end, Color.red);
 
 		//? Adds all colliders that hit the ray to a Dictionary and counts the number of times they hit.
 		var hit = Physics2D.Linecast(start, end, excludePlayer);
+		
+		//? Gizmo
+		if (hit.collider) Debug.DrawLine(start,hit.point, Color.red);
+		if (!hit.collider) Debug.DrawLine(start, end, Color.red);
 
 		//? Null guard & only process relevant tags
-		if (!hit || hit.collider.tag is not ("Enemy" or "WeakPoint" or "Mirror")) return;
+		if (!hit || hit.collider.tag is not ("Enemy" or "WeakPoint" or "Prism" or "Mirror")) return;
 		
 		switch (hit.collider.tag) {
-			case "Enemy" or "WeakPoint":
+			case "Enemy" or "WeakPoint" or "Prism":
 				if (hitList.TryAdd(hit.collider, 1)) break;
 				hitList[hit.collider]++;
 				break;
@@ -333,10 +343,6 @@ public class FlashlightController : MonoBehaviour {
 			newLightPoints = newLightPoints.Reverse().ToArray();
 			newLightPoints = newLightPoints.Append(point).ToArray();
 		}
-
-		foreach (var point in newLightPoints) {
-			print(point);
-		}
 		freeFormLight.SetShapePath(newLightPoints);
 	}
 
@@ -351,9 +357,12 @@ public class FlashlightController : MonoBehaviour {
 				case "WeakPoint":
 					hit.Key.gameObject.GetComponentInParent<BossController>().Hit(hit.Value / (float)rayAmount);
 					break;
+				case "Prism":
+					hit.Key.gameObject.GetComponent<PrismController>().Hit(hit.Value / (float)rayAmount);
+					break;
 			}
 
-			if (hit.Key.gameObject.tag is "Enemy" or "WeakPoint") removeList.Add(hit.Key);
+			if (hit.Key.gameObject.tag is "Enemy" or "WeakPoint" or "Prism") removeList.Add(hit.Key);
 		}
 
 		foreach (var key in removeList) {
@@ -419,7 +428,7 @@ public class FlashlightController : MonoBehaviour {
 			lightPoints = lightPoints.Append(new Vector3(hit.point.x, hit.point.y, 0)).ToArray();
 		}
 
-		if (hit.collider.gameObject.tag is not ("Enemy" or "WeakPoint" or "Mirror")) return;
+		if (hit.collider.gameObject.tag is not ("Enemy" or "WeakPoint" or "Prism" or "Mirror")) return;
 
 		if (hit.collider.gameObject.CompareTag("Mirror")) {
 			//? enqueue next mirror reflection (use newOrigin as the origin for the next incoming direction)
