@@ -292,7 +292,6 @@ GameObject:
   - component: {fileID: 4511747986509398479}
   - component: {fileID: 1620614184467148823}
   - component: {fileID: 8560574320476866450}
-  - component: {fileID: 3140389970008717060}
   - component: {fileID: 2160721483958690193}
   - component: {fileID: 5886722165635506747}
   m_Layer: 0
@@ -437,36 +436,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &3140389970008717060
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2636493876161159136}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6354dbd65a643984b816f61daa02dc14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  overheadText: {fileID: 3402481771024154487}
-  isGrounded: 0
-  isChasing: 0
-  facingRight: 1
-  detectionRange: 10
-  baseSpeed: 2
-  maxHealth: 100
-  lookPosition: {fileID: 2426106113358387362}
-  groundCheck: {fileID: 7368174170273588092}
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  soundName: 0
-  animatorName: Flap
-  soundInterval: 0.48
-  teleportCooldown: 1.2
-  slowDistance: 2
-  slowFactor: 0.1
 --- !u!50 &2160721483958690193
 Rigidbody2D:
   serializedVersion: 5

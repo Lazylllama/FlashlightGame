@@ -10,13 +10,13 @@ public class FlyingEnemyController : MonoBehaviour {
 	[Header("Refs")]
 	[SerializeField] private TMP_Text overheadText;
 	private Rigidbody2D rb;
-	private LayerMask   wallLayerMask;
+	private LayerMask   wallLayerMask, groundLayer, pathfindingLayer;
+	
 
 	[Header("Enemy Options")]
 	[SerializeField] private bool isGrounded, isChasing, facingRight;
 	[SerializeField] private float     detectionRange, baseSpeed, maxHealth;
 	[SerializeField] private Transform lookPosition,   groundCheck;
-	[SerializeField] private LayerMask groundLayer;
 
 	[Header("Sound")]
 	[SerializeField] private AudioManager.AudioName soundName;
@@ -48,6 +48,8 @@ public class FlyingEnemyController : MonoBehaviour {
 	private void Start() {
 		wallLayerMask = LayerMask.GetMask("ClimbWall","MantleWall", "Ground", "Box", "Wall");
 		groundLayer   = LayerMask.GetMask("Ground");
+		pathfindingLayer = LayerMask.GetMask("Ground", "Box");
+		
 		
 		rb          = GetComponent<Rigidbody2D>();
 		audioSource = GetComponent<AudioSource>();
@@ -64,15 +66,24 @@ public class FlyingEnemyController : MonoBehaviour {
 			print("Pathfinding");
 			return;
 		}
+		CheckForWall();
 		CheckForTarget();
 		UpdateOverheadText();
 		TurnEnemy();
-		CheckForWall();
 		CheckFloatHeight();
 	}
 
 	private void FixedUpdate() {
 		ChaseTarget();
+	}
+	
+	private void OnDrawGizmos() {
+		if (isPathFinding) {
+			Gizmos.color = Color.green;		
+		} else {
+			Gizmos.color = Color.red;
+		}
+		Gizmos.DrawWireSphere(goToPoint, 1);
 	}
 
 	#endregion
@@ -100,15 +111,17 @@ public class FlyingEnemyController : MonoBehaviour {
 			Debug.DrawRay(transform.position, (facingRight? Vector2.right : Vector2.left) * 0.8f, Color.red);
 			return;
 		}
-		if (hit.collider.gameObject.layer == LayerMask.NameToLayer("ClimbWall") || hit.collider.gameObject.layer == LayerMask.NameToLayer("MantleWall")) {
+		if (hit.collider.gameObject.layer == LayerMask.NameToLayer("ClimbWall") || hit.collider.gameObject.layer == LayerMask.NameToLayer("MantleWall") || hit.collider.gameObject.layer == LayerMask.NameToLayer("Box")) {
 			var rayOrigin = new Vector2(transform.position.x + (facingRight? 1.0f : -1.0f), transform.position.y + 300f);
-			var wallHit = Physics2D.Raycast(rayOrigin,Vector2.down, 10000f ,groundLayer);
+			var wallHit = Physics2D.Raycast(rayOrigin,Vector2.down, 10000f ,pathfindingLayer);
 			if (!wallHit.collider) {
+				print("Test1");
 				Debug.DrawRay(rayOrigin,Vector2.down * 10000f, Color.red, 10f);
 				facingRight = !facingRight;
 				return;
 			} 
 			if (wallHit.collider.gameObject.layer == LayerMask.NameToLayer("Ground")) {
+				print("Test2");
 				Debug.DrawLine(rayOrigin, wallHit.point, Color.blue, 10f);
 				goToPoint = new Vector3(wallHit.point.x, wallHit.point.y +1f, transform.position.z);
 				GoToPoint(goToPoint);
@@ -116,6 +129,7 @@ public class FlyingEnemyController : MonoBehaviour {
 			}
 		} 
 		facingRight = !facingRight;
+		print("Test3");
 	}
 
 	private void GoToPoint(Vector3 point) {
@@ -137,7 +151,7 @@ public class FlyingEnemyController : MonoBehaviour {
 		target = (distanceToPlayer <= detectionRange) ? playerPosition : null;
 	}
 
-	private void ChaseTarget() {
+	private void ChaseTarget() {		
 		if (target == null) {
 			enemySpeed         = baseSpeed;
 			isChasing          = false;
@@ -154,6 +168,7 @@ public class FlyingEnemyController : MonoBehaviour {
 	}
 
 	private void TurnEnemy() {
+		if(isPathFinding) return;
 		transform.localScale = facingRight ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1);
 	}
 
