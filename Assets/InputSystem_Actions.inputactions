@@ -106,6 +106,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Interact",
+                    "type": "Button",
+                    "id": "094bff28-d744-453f-91ce-aa22e958bbe9",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "ToggleLever",
                     "type": "Button",
                     "id": "a8dcf462-b70e-4dab-9027-087f3c8c5b74",
@@ -426,12 +435,12 @@
                 },
                 {
                     "name": "",
-                    "id": "1c90109c-595c-42ee-83bd-c189a3b4c7b9",
-                    "path": "",
+                    "id": "c9894422-f83b-42ea-a519-9db6f76b6d7e",
+                    "path": "<Keyboard>/enter",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ToggleLever",
+                    "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
