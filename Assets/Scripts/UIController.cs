@@ -39,7 +39,7 @@ public class UIController : MonoBehaviour {
 
 	#region Functions
 
-	private void SwitchToGameCams() {
+	public void SwitchToGameCams() {
 		playerCinemachine.Priority    = 10;
 		mainMenuCinemachine.Priority  = 0;
 		mainMenuOverlayCamera.enabled = false;
