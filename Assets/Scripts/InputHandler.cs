@@ -15,7 +15,8 @@ public class InputHandler : MonoBehaviour {
 		ToggleModeRight,
 		Flashlight1,
 		Flashlight2,
-		Flashlight3
+		Flashlight3,
+		NextSentence
 	}
 
 	#endregion
@@ -85,6 +86,9 @@ public class InputHandler : MonoBehaviour {
 					break;
 				case InputActions.Flashlight3:
 					PlayerData.Instance.HandleFlashlightModeChange(3);
+					break;
+				case InputActions.NextSentence:
+					ConversationHandler.Instance.SkipButtonPressed();
 					break;
 			}
 		}
