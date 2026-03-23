@@ -55,8 +55,14 @@ public class DebugHandler {
 	}
 
 	private static bool IsFiltered(string message) {
-		var firstWord = message.Split(' ')[0];
-		return LogFilter.Contains(firstWord);
+		var messageWords = message.Split(' ').ToList();
+
+		foreach (var word in messageWords) {
+			if (LogFilter.Contains(word)) return true;
+			if (LogFilter.Contains(word.ToLower())) return true;
+		}
+
+		return false;
 	}
 
 	/// <summary>
@@ -190,12 +196,13 @@ public class DebugHandler {
 	public static bool IsValidationLevelEnabled(ValidationLevel lvl) => Debug.IsValidationLevelEnabled(lvl);
 
 	public static void Break() => Debug.Break();
-	
+
 	public static void DebugBreak() => Debug.DebugBreak();
-	
+
 	public static void LogAssertion(string message) => Debug.LogAssertion(message);
-	
-	public static void LogAssertionFormat(string format, params object[] args) => Debug.LogAssertionFormat(format, args);
-		
+
+	public static void LogAssertionFormat(string format, params object[] args) =>
+		Debug.LogAssertionFormat(format, args);
+
 	#endregion
 }

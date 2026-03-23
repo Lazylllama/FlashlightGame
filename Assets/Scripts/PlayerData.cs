@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using FlashlightGame;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 
 public class PlayerData : MonoBehaviour {
@@ -15,8 +14,7 @@ public class PlayerData : MonoBehaviour {
 	public int  Health  { get; private set; } = 100;
 	public int  Battery { get; private set; } = 100;
 	public bool IsDead  => Health <= 0;
-
-
+	
 	//* Player Data *//
 	private bool isLookingRight;
 	public bool IsLookingRight {
@@ -26,9 +24,8 @@ public class PlayerData : MonoBehaviour {
 
 	//* Player States *//
 	public Dictionary<int, bool> FlashlightModesUnlocked { get; private set; } = new Dictionary<int, bool>() {
-		{ 1, true }, // Mode 1 is always unlocked
-		{ 2, true },
-		{ 3, false }
+		{ 1, true }, // TODO: Implement flashlight pickup
+		{ 2, true }, // TODO: Implement flashlight level up (in-lore)
 	};
 	public bool FlashlightEnabled { get; set; }         = true;
 	public int  FlashlightMode    { get; private set; } = 1;
@@ -67,6 +64,7 @@ public class PlayerData : MonoBehaviour {
 	private void Start() => RegisterInstance(this);
 
 	private void FixedUpdate() {
+		Debug.Log(Battery);
 		HandleBatteryDrain();
 	}
 
@@ -141,13 +139,16 @@ public class PlayerData : MonoBehaviour {
 	//! Private Functions
 	/// Set whether the player is looking right.
 	private void SetIsLookingRight(bool value) {
+		if (!GameController.Instance || !GameController.Instance.InActiveGame) return;
+		
 		isLookingRight = value;
-		var controller = PlayerController.Instance;
+		var controller           = PlayerController.Instance;
 		var flashlightController = FlashlightController.Instance;
-		if (controller != null) {
+		if (controller) {
 			controller.UpdateDirection();
 		}
-		if (flashlightController != null) {
+
+		if (flashlightController) {
 			flashlightController.UpdateDirection();
 		}
 	}
@@ -160,10 +161,11 @@ public class PlayerData : MonoBehaviour {
 
 		Debug.Log("Draining Battery by 1", DebugLevel.Debug);
 
-		Battery           = Mathf.Clamp(Battery--, 0, 100);
-		FlashlightEnabled = Battery > 0;
-		drainTimer        = 0f;
-		
+		Battery           -= 1;
+		Battery           =  Mathf.Clamp(Battery, 0, 100);
+		FlashlightEnabled =  Battery > 0;
+		drainTimer        =  0f;
+
 		UIController.Instance.UpdateUI();
 	}
 
