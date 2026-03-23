@@ -64,7 +64,6 @@ public class PlayerData : MonoBehaviour {
 	private void Start() => RegisterInstance(this);
 
 	private void FixedUpdate() {
-		Debug.Log(Battery);
 		HandleBatteryDrain();
 	}
 

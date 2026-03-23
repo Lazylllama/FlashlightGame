@@ -9,8 +9,9 @@ public class PlayerMovement : MonoBehaviour {
 	#region Fields
 
 	//* Instance
-	public static  PlayerMovement Instance;
-	private static DebugHandler   Debug;
+	public static           PlayerMovement Instance;
+	private static          DebugHandler   Debug;
+	private static readonly int            WalkingDirection = Animator.StringToHash("walkingDirection");
 
 	[Header("Settings")]
 	[SerializeField] private LayerMask groundLayer;
@@ -19,10 +20,12 @@ public class PlayerMovement : MonoBehaviour {
 	private InputAction        moveAction, mantleAction;
 	private Rigidbody2D        playerRb;
 	private ParticleController particleController;
+	private Animator           playerAnimator;
 
 	private static bool IsLookingRight {
 		get => PlayerData.Instance && PlayerData.Instance.IsLookingRight;
 		set {
+			return;
 			if (PlayerData.Instance) {
 				PlayerData.Instance.IsLookingRight = value;
 			}
@@ -68,6 +71,7 @@ public class PlayerMovement : MonoBehaviour {
 
 		playerRb           = GetComponent<Rigidbody2D>();
 		particleController = GetComponentInChildren<ParticleController>();
+		playerAnimator     = GetComponentInChildren<Animator>();
 
 		moveAction   = InputSystem.actions.FindAction("Move");
 		mantleAction = InputSystem.actions.FindAction("MantleClimb");
@@ -78,6 +82,7 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	private void FixedUpdate() {
+		if (!GameController.Instance.InActiveGame) return;
 		InputCheck();
 		PerformMove();
 	}
@@ -115,8 +120,8 @@ public class PlayerMovement : MonoBehaviour {
 		var mantleCheckHit = Lib.Movement.MantleWallCheck(headLevelPosition.position, IsLookingRight);
 		var climbCheckHit  = Lib.Movement.ClimbWallCheck(headLevelPosition.position, IsLookingRight);
 
-		isGrounded     = groundCheckHit;
-		canMantle      = mantleCheckHit.collider;
+		isGrounded = groundCheckHit;
+		canMantle  = mantleCheckHit.collider;
 
 		if (!groundCheckHit) return;
 		currentSurface = surfaceTags.GetValueOrDefault(groundCheckHit.tag, AudioManager.FootstepSurface.Dirt);
@@ -143,8 +148,11 @@ public class PlayerMovement : MonoBehaviour {
 		if (delta != Vector2.zero && Mathf.Abs(delta.x) > 0.1f) {
 			particleController.CrateMovement(delta.x);
 			AudioManager.Instance.PlayFootstepSfx(currentSurface);
+			playerAnimator.SetInteger(WalkingDirection, delta.x < 0 ? 1 : -1);
+		} else {
+			playerAnimator.SetInteger(WalkingDirection, 0);
 		}
-
+		
 		lastPosition = transform.position;
 
 		playerRb.AddForce(Vector2.right * finalForce, ForceMode2D.Force);
