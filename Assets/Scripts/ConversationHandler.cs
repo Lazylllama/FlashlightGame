@@ -29,36 +29,50 @@ public class ConversationHandler : MonoBehaviour {
 	[SerializeField] private float conversationSpeed = 0.05f;
 	
 	//? States
-	private string[] currentDialogue;
+	private Conversation currentConversation;
+	
 	public  bool     playerCanWalk = true;
 	private int      currentDialogueIndex;
 	private bool     isTalking;
-	private int      currentSentenceLength;
+	private int      currentLetter;
+	private bool     skipDialogue;
+	private bool     playerIsTalking;
 	
 	#endregion
 
 	#region Unity Functions
 
-	private void Start() {
+	private void Start() { 
 		var  test = new Conversation();
 		test.Dialogue = new[] {
-			"Hello there!", "How are you doing today?", "Isn't this a nice day?" };
+			"Hello there! aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "How are you doing today?", "Isn't this a nice day?" };
 		test.OtherPartStart = true;
 		test.OtherPartSprite = playerSprite;
 		test.OtherPartName = "Mango";
 		StartConversation(test);
 	}
-
+	
+	private void Awake() => RegisterInstance(this);
+	
 	#endregion
 
 	#region Functions
 
 	public void SkipButtonPressed() {
 		if (isTalking) {
-			currentDialogueIndex = currentSentenceLength;
+			skipDialogue = true;
 		} else {
+			if (playerIsTalking) {
+				playerIsTalking = false;
+				image.sprite = currentConversation.OtherPartSprite;
+				nameBox.text = currentConversation.OtherPartName;
+			} else {
+				playerIsTalking = true;
+				image.sprite = playerSprite;
+				nameBox.text = "Player";
+			}
 			currentDialogueIndex++;
-			StartCoroutine(TypeSentence(currentDialogue[currentDialogueIndex]));
+			StartCoroutine(TypeSentence(currentConversation.Dialogue[currentDialogueIndex]));
 		}
 	}
 
@@ -72,14 +86,16 @@ public class ConversationHandler : MonoBehaviour {
 
 	public void StartConversation(Conversation conversation) {
 		if (conversation == null) throw new ArgumentNullException(nameof(conversation));
-		currentDialogue = conversation.Dialogue;
+		currentConversation = conversation;
 		conversationUI.SetActive(true);
 		textBox.text = "";
 		if (conversation.OtherPartStart) {
+			playerIsTalking = false;
 			image.sprite = conversation.OtherPartSprite;
 			nameBox.text = conversation.OtherPartName;
 			UpdateDialogue(conversation.Dialogue[currentDialogueIndex]);
 		} else {
+			playerIsTalking = true;
 			image.sprite = playerSprite;
 			nameBox.text = "Player";
 			UpdateDialogue(conversation.Dialogue[currentDialogueIndex]);
@@ -89,19 +105,25 @@ public class ConversationHandler : MonoBehaviour {
 	private void UpdateDialogue(string sentence) {
 		if (currentDialogueIndex >= 0) {
 			textBox.text = "";
-			currentSentenceLength = sentence.Length;
 			StartCoroutine(TypeSentence(sentence));
 		}
 	}
 
 	IEnumerator TypeSentence(string sentence) {
-		print("mango");
 		isTalking = true;
-		for (int i = 1; i < sentence.Length; i++) {
+		for (int i = 1; i < sentence.Length; i++) { 
+			print(skipDialogue);
+			if (skipDialogue) {
+				textBox.text = sentence;
+				skipDialogue = false;
+				isTalking = false;
+				yield break;
+			}
 			print(sentence.Substring(0, i));
 			textBox.text = sentence.Substring(0, i);
 			yield return new WaitForSeconds(conversationSpeed);
 		}
+		skipDialogue = false;
 		isTalking = false;
 	}
 
