@@ -6,9 +6,11 @@ using FlashlightGame;
 public class EnemyController : MonoBehaviour {
 	#region Fields
 
+	private static DebugHandler Debug;
+	
 	[Header("Refs")]
-	[SerializeField] private TMP_Text overheadText;
-	private Rigidbody2D rb;
+	[SerializeField] private TMP_Text       overheadText;
+	private                  Rigidbody2D    rb;
 
 	[Header("Enemy Options")]
 	[SerializeField] private bool isGrounded, isChasing, facingRight;
@@ -23,7 +25,7 @@ public class EnemyController : MonoBehaviour {
 
 	[Header("Teleport Settings")]
 	[SerializeField] private float teleportCooldown = 1.2f;
-	private float teleportTimer;
+	private                  float teleportTimer;
 
 	[Header("Slow Down")]
 	[SerializeField] private float slowDistance = 2f;
@@ -41,6 +43,10 @@ public class EnemyController : MonoBehaviour {
 	#endregion
 
 	#region Unity Functions
+
+	private void Awake() {
+		Debug = new DebugHandler("EnemyController");
+	}
 
 	private void Start() {
 		rb          = GetComponent<Rigidbody2D>();
@@ -93,7 +99,7 @@ public class EnemyController : MonoBehaviour {
 
 	private void CheckWall() {
 		var wallHit = Lib.Movement.WallCheck(lookPosition.position, facingRight);
-
+		
 
 		if (!wallHit.collider || isChasing) return;
 
@@ -112,6 +118,7 @@ public class EnemyController : MonoBehaviour {
 
 		var climbPoint = Lib.Movement.GetWallClimbPoint(transform.position, facingRight);
 
+		Debug.Log(climbPoint);
 		if (climbPoint.Position == Vector3.zero) {
 			enemySpeed = baseSpeed;
 			return;
