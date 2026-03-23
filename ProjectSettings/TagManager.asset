@@ -8,6 +8,11 @@ TagManager:
   - Ground
   - WeakPoint
   - Mirror
+  - DirtGround
+  - SandGround
+  - ConcreteGround
+  - WoodGround
+  - GrassGround
   layers:
   - Default
   - TransparentFX
@@ -24,7 +29,6 @@ TagManager:
   - MantleWall
   - MainMenuUI
   - Environment
-  - 
   - 
   - 
   - 
