@@ -41,7 +41,7 @@ public class FlashlightController : MonoBehaviour {
 	[Header("Flashlight Settings")]
 	[SerializeField] private float flashlightWidth = 45;
 	[SerializeField] private int   rayAmount = 100;
-	[SerializeField] private float lerpTime  = 0.04f;
+	[SerializeField] private float lerpTime  = 0.1f;
 
 	[Header("Light Output")]
 	[SerializeField] private Transform lightOutput;
@@ -234,8 +234,7 @@ public class FlashlightController : MonoBehaviour {
 		
 		if (Mathf.Atan2(mousePosition.y - playerTransform.position.y, mousePosition.x - playerTransform.position.x) * Mathf.Rad2Deg > 90 || Mathf.Atan2(mousePosition.y - playerTransform.position.y, mousePosition.x - playerTransform.position.x) * Mathf.Rad2Deg < -90) PlayerData.Instance.IsLookingRight = false;
 		else PlayerData.Instance.IsLookingRight = true;
-		print(Vector2.Angle(playerTransform.position, mousePosition));
-		transform.eulerAngles = new Vector3(0, 0, math.lerp(cameraAngleZ, transform.eulerAngles.z, lerpTime));
+		transform.eulerAngles = new Vector3(0, 0, math.lerp(transform.eulerAngles.z, cameraAngleZ, lerpTime));
 	}
 
 	private void CheckForEnemy() {
@@ -433,7 +432,7 @@ public class FlashlightController : MonoBehaviour {
 		var hit     = Physics2D.Raycast(newOrigin, dirNorm, activePreset.PresetRange, excludePlayer);
 
 
-		if (!hit.collider) Debug.DrawRay(newOrigin, dirNorm * range, Color.red);
+		if (!hit.collider) Debug.DrawRay(newOrigin, dirNorm * activePreset.PresetRange, Color.red);
 		else Debug.DrawLine(newOrigin,hit.point, Color.green);
 		
 		if (isLightRay && !hit) {
