@@ -56,6 +56,8 @@ public class FlashlightController : MonoBehaviour {
 	[SerializeField] private GameObject freeFormLightGameObject;
 
 	//* Refs
+	[SerializeField] private Transform playerTransform;
+	
 	private LayerMask        excludePlayer;
 	private FlashLightPreset laserPreset   = new FlashLightPreset();
 	private FlashLightPreset defaultPreset = new FlashLightPreset();
@@ -76,7 +78,6 @@ public class FlashlightController : MonoBehaviour {
 	// Reflection controls
 	[SerializeField] private int maxReflections = 3; // limit bounce count to avoid infinite loops
 	[SerializeField] private float reflectionOriginOffset = 0.01f; // small offset to avoid immediate re-hit of the same surface
-	private int reflectionDepth;
 
 	private Dictionary<Collider2D, int>         hitList     = new Dictionary<Collider2D, int>();
 	private Dictionary<RaycastObj, ReflectInfo> reflectList = new Dictionary<RaycastObj, ReflectInfo>();
@@ -200,31 +201,20 @@ public class FlashlightController : MonoBehaviour {
 			mousePosition = new Vector2(wp.x, wp.y);
 		}
 
-		//? Only point in the players direction, otherwise mirror
-		switch (isFacingRight) {
-			case true when mousePosition.x  - transform.position.x < 0:
-			case false when mousePosition.x - transform.position.x > 0:
-				mousePosition.x += 2 * (transform.position.x - mousePosition.x);
-				break;
-		}
-
-		//? Rotate the camera around the pivot point
+		//? Rotate the flahlight around the pivot point
 		var cameraAngleZ = -90 + (
 			                         Mathf.Atan2(mousePosition.y - transform.position.y,
 			                                     mousePosition.x - transform.position.x) *
 			                         Mathf.Rad2Deg
 		                         );
-		if (flashlightRotation != isFacingRight) {
-			transform.rotation = Quaternion.Euler(0f, 0f, cameraAngleZ);
-			flashlightRotation = isFacingRight;
-		} else {
-			transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, cameraAngleZ), lerpTime);	
-		}
+		
+		if (Mathf.Atan2(mousePosition.y - playerTransform.position.y, mousePosition.x - playerTransform.position.x) * Mathf.Rad2Deg > 90 || Mathf.Atan2(mousePosition.y - playerTransform.position.y, mousePosition.x - playerTransform.position.x) * Mathf.Rad2Deg < -90) PlayerData.Instance.IsLookingRight = false;
+		else PlayerData.Instance.IsLookingRight = true;
+		print(Vector2.Angle(playerTransform.position, mousePosition));
+		transform.eulerAngles = new Vector3(0, 0, math.lerp(cameraAngleZ, transform.eulerAngles.z, lerpTime));
 	}
 
 	private void CheckForEnemy() {
-		// reset per-frame reflection depth counter
-		reflectionDepth = 0;
 
 		//? Calculates the rotation as a vector2, (0deg = (1,0), 90deg = (0,1), 180deg = (-1,0), 270deg = (0,-1))
 		var rotation = new Vector2(Mathf.Cos(transform.eulerAngles.z * Mathf.Deg2Rad),
@@ -404,11 +394,13 @@ public class FlashlightController : MonoBehaviour {
 		var reflectedDir = Vector2.Reflect(inDir, normal);
 		var newOrigin = hitPoint + normal.normalized * reflectionOriginOffset + reflectedDir * reflectionOriginOffset;
 
-		Debug.DrawRay(newOrigin, reflectedDir * range, Color.yellow);
+		
 
 		var dirNorm = reflectedDir.normalized;
 		var hit     = Physics2D.Raycast(newOrigin, dirNorm, range, excludePlayer);
 
+		if (!hit.collider) Debug.DrawRay(newOrigin, dirNorm * range, Color.red);
+		else Debug.DrawLine(newOrigin,hit.point, Color.green);
 		
 		if (isLightRay && !hit) {
 			lightPoints = lightPoints.Append(new Vector3(newOrigin.x + reflectedDir.x * range ,newOrigin.y + reflectedDir.y * range, 0)).ToArray();
