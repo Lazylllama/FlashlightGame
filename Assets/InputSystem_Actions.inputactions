@@ -79,15 +79,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Flashlight3",
-                    "type": "Button",
-                    "id": "148598e6-d853-4b28-89ef-abe050800265",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "ToggleModeRight",
                     "type": "Button",
                     "id": "ae203860-4684-4f05-8c3e-a70dab33d1bc",
@@ -406,17 +397,6 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "Flashlight2",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "0b7d01eb-10be-43a9-8a02-b8a7f7fe0ffd",
-                    "path": "<Keyboard>/3",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Flashlight3",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

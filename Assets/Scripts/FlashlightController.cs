@@ -41,7 +41,7 @@ public class FlashlightController : MonoBehaviour {
 	[Header("Flashlight Settings")]
 	[SerializeField] private float flashlightWidth = 45;
 	[SerializeField] private int   rayAmount = 100;
-	[SerializeField] private float lerpTime  = 0.1f;
+	[SerializeField] private float lerpTime  = 0.04f;
 
 	[Header("Light Output")]
 	[SerializeField] private Transform lightOutput;
@@ -52,7 +52,7 @@ public class FlashlightController : MonoBehaviour {
 
 	//* Refs
 	[SerializeField] private Transform playerTransform;
-	
+
 	private LayerMask        excludePlayer;
 	private FlashLightPreset laserPreset, defaultPreset, disabledPreset;
 
@@ -140,7 +140,7 @@ public class FlashlightController : MonoBehaviour {
 
 
 	private void Update() {
-		UpdateFlashlight();
+		LerpFlashlight(FlashlightEnabled ? equippedFlashlight : disabledPreset);
 		UpdateFlashlightPosition();
 		CheckPlayerInputs();
 		UpdateSpotlight();
@@ -187,10 +187,6 @@ public class FlashlightController : MonoBehaviour {
 		};
 	}
 
-	private void UpdateFlashlight() {
-		LerpFlashlight(!FlashlightEnabled ? disabledPreset : equippedFlashlight);
-	}
-
 	private void UpdateSpotlight() {
 		spotLight.pointLightOuterAngle  = activePreset.PresetBeamWidth * 2;
 		spotLight.color                 = activePreset.PresetColor;
@@ -234,7 +230,7 @@ public class FlashlightController : MonoBehaviour {
 		
 		if (Mathf.Atan2(mousePosition.y - playerTransform.position.y, mousePosition.x - playerTransform.position.x) * Mathf.Rad2Deg > 90 || Mathf.Atan2(mousePosition.y - playerTransform.position.y, mousePosition.x - playerTransform.position.x) * Mathf.Rad2Deg < -90) PlayerData.Instance.IsLookingRight = false;
 		else PlayerData.Instance.IsLookingRight = true;
-		transform.eulerAngles = new Vector3(0, 0, math.lerp(transform.eulerAngles.z, cameraAngleZ, lerpTime));
+		transform.eulerAngles = new Vector3(0, 0, math.lerp(cameraAngleZ, transform.eulerAngles.z, lerpTime));
 	}
 
 	private void CheckForEnemy() {
@@ -426,7 +422,6 @@ public class FlashlightController : MonoBehaviour {
 		var reflectedDir = Vector2.Reflect(inDir, normal);
 		var newOrigin = hitPoint + normal.normalized * reflectionOriginOffset + reflectedDir * reflectionOriginOffset;
 
-		
 
 		var dirNorm = reflectedDir.normalized;
 		var hit     = Physics2D.Raycast(newOrigin, dirNorm, activePreset.PresetRange, excludePlayer);
