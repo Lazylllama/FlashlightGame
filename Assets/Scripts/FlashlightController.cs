@@ -87,7 +87,7 @@ public class FlashlightController : MonoBehaviour {
 	#region Unity Functions
 
 	private void Awake() {
-		fsDebug = new DebugHandler("PlayerMovement");
+		fsDebug = new DebugHandler("FlashlightController");
 
 		//* Instance
 		if (Instance != null && Instance != this) {
