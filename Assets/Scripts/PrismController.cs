@@ -68,7 +68,8 @@ public class PrismController : MonoBehaviour
 		foreach (var hit in hitList) {
 			switch (hit.Key.gameObject.tag) {
 				case "Enemy":
-					hit.Key.gameObject.GetComponent<EnemyController>().UpdateHealth(hit.Value * damageMultiplier / (float)rayAmount);
+					if(hit.Key.gameObject.GetComponent<EnemyController>()) hit.Key.gameObject.GetComponent<EnemyController>().UpdateHealth(hit.Value / (float)rayAmount);
+					else hit.Key.gameObject.GetComponent<FlyingEnemyController>().UpdateHealth(hit.Value / (float)rayAmount);
 					break;
 				case "WeakPoint":
 					hit.Key.gameObject.GetComponentInParent<BossController>().Hit(hit.Value * damageMultiplier / (float)rayAmount);
