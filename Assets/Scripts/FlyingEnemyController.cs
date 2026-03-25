@@ -46,7 +46,7 @@ public class FlyingEnemyController : MonoBehaviour {
 	#region Unity Functions
 
 	private void Start() {
-		wallLayerMask = LayerMask.GetMask("ClimbWall","MantleWall", "Ground", "Box", "Wall");
+		wallLayerMask = LayerMask.GetMask("MantleWall", "Ground", "Box", "Wall");
 		groundLayer   = LayerMask.GetMask("Ground");
 		pathfindingLayer = LayerMask.GetMask("Ground", "Box");
 		
@@ -110,7 +110,7 @@ public class FlyingEnemyController : MonoBehaviour {
 			Debug.DrawRay(transform.position, (facingRight? Vector2.right : Vector2.left) * 0.8f, Color.red);
 			return;
 		}
-		if (hit.collider.gameObject.layer == LayerMask.NameToLayer("ClimbWall") || hit.collider.gameObject.layer == LayerMask.NameToLayer("MantleWall") || hit.collider.gameObject.layer == LayerMask.NameToLayer("Box")) {
+		if (hit.collider.gameObject.layer == LayerMask.NameToLayer("MantleWall") || hit.collider.gameObject.layer == LayerMask.NameToLayer("Box")) {
 			var rayOrigin = new Vector2(transform.position.x + (facingRight? 1.0f : -1.0f), transform.position.y + 300f);
 			var wallHit = Physics2D.Raycast(rayOrigin,Vector2.down, 10000f ,pathfindingLayer);
 			if (!wallHit.collider) {

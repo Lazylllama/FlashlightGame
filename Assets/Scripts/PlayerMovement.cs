@@ -74,7 +74,7 @@ public class PlayerMovement : MonoBehaviour {
 		playerAnimator     = GetComponentInChildren<Animator>();
 
 		moveAction   = InputSystem.actions.FindAction("Move");
-		mantleAction = InputSystem.actions.FindAction("MantleClimb");
+		mantleAction = InputSystem.actions.FindAction("Mantle");
 	}
 
 	private void Update() {
@@ -118,7 +118,6 @@ public class PlayerMovement : MonoBehaviour {
 	private void RaycastChecks() {
 		var groundCheckHit = Lib.Movement.GroundCheck(groundCheckPosition.position, groundCheckRadius);
 		var mantleCheckHit = Lib.Movement.MantleWallCheck(headLevelPosition.position, IsLookingRight);
-		var climbCheckHit  = Lib.Movement.ClimbWallCheck(headLevelPosition.position, IsLookingRight);
 
 		isGrounded = groundCheckHit;
 		canMantle  = mantleCheckHit.collider;
@@ -152,7 +151,7 @@ public class PlayerMovement : MonoBehaviour {
 		} else {
 			playerAnimator.SetInteger(WalkingDirection, 0);
 		}
-		
+
 		lastPosition = transform.position;
 
 		playerRb.AddForce(Vector2.right * finalForce, ForceMode2D.Force);
@@ -180,7 +179,7 @@ public class PlayerMovement : MonoBehaviour {
 	#region Coroutines
 
 	private IEnumerator MantleRoutine() {
-		var mantle = Lib.Movement.GetWallClimbPoint(transform.position, IsLookingRight);
+		var mantle = Lib.Movement.GetWallMantlePoint(transform.position, IsLookingRight);
 
 		if (mantle.Position == Vector3.zero) {
 			Debug.Log("Mantle point invalid, cancelling mantle.", DebugLevel.Warning);

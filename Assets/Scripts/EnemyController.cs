@@ -65,7 +65,7 @@ public class EnemyController : MonoBehaviour {
 		CheckForTarget();
 		UpdateOverheadText();
 		TurnEnemy();
-		CheckClimbableWall();
+		CheckMantleWall();
 		CheckWall();
 	}
 
@@ -110,25 +110,24 @@ public class EnemyController : MonoBehaviour {
 		};
 	}
 
-	private void CheckClimbableWall() {
+	private void CheckMantleWall() {
 		canTeleport = false;
 
-		if (!Lib.Movement.ClimbWallCheck(lookPosition.position, facingRight) ||
-		    !Lib.Movement.MantleWallCheck(lookPosition.position, facingRight)) return;
+		if (!Lib.Movement.MantleWallCheck(lookPosition.position, facingRight)) return;
 
-		var climbPoint = Lib.Movement.GetWallClimbPoint(transform.position, facingRight);
+		var mantlePoint = Lib.Movement.GetWallMantlePoint(transform.position, facingRight);
 
-		Debug.Log(climbPoint);
-		if (climbPoint.Position == Vector3.zero) {
+		Debug.Log(mantlePoint);
+		if (mantlePoint.Position == Vector3.zero) {
 			enemySpeed = baseSpeed;
 			return;
 		}
 
-		teleportPoint = climbPoint.Position;
+		teleportPoint = mantlePoint.Position;
 		canTeleport   = true;
 
 
-		if (climbPoint.Distance < slowDistance) {
+		if (mantlePoint.Distance < slowDistance) {
 			enemySpeed = baseSpeed * slowFactor;
 			//fade out
 		} else {

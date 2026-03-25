@@ -5,9 +5,9 @@ namespace FlashlightGame {
 	public static class Lib {
 		#region Fields
 
-		private static LayerMask BoxLayerMask       => LayerMask.GetMask("Box");
-		private static LayerMask GroundLayerMask    => LayerMask.GetMask("Ground");
-		private static LayerMask ClimbWallLayerMask => LayerMask.GetMask("ClimbWall");
+		private static LayerMask BoxLayerMask        => LayerMask.GetMask("Box");
+		private static LayerMask GroundLayerMask     => LayerMask.GetMask("Ground");
+		private static LayerMask MantleWallLayerMask => LayerMask.GetMask("MantleWall");
 		//* Refs
 		private static bool GizmosEnabled => true;
 
@@ -15,7 +15,7 @@ namespace FlashlightGame {
 
 		#region Structs
 
-		public struct WallClimbPoint {
+		public struct WallMantlePoint {
 			public Vector3 Position;
 			public float   Distance;
 		}
@@ -56,17 +56,7 @@ namespace FlashlightGame {
 			/// <returns>RaycastHit2D</returns>
 			public static RaycastHit2D MantleWallCheck(Vector3 origin, bool positiveX) =>
 				Physics2D.Raycast(origin, positiveX ? Vector2.right : Vector2.left, WallCheckDistance,
-				                  ClimbWallLayerMask);
-
-			/// <summary>
-			/// Check if a climbable wall is in front of the origin points look direction.
-			/// </summary>
-			/// <param name="origin">Where to check from</param>
-			/// <param name="positiveX">Positive X means isLookingRight</param>
-			/// <returns>RaycastHit2D</returns>
-			public static RaycastHit2D ClimbWallCheck(Vector3 origin, bool positiveX) =>
-				Physics2D.Raycast(origin, positiveX ? Vector2.right : Vector2.left, WallCheckDistance,
-				                  ClimbWallLayerMask);
+				                  MantleWallLayerMask);
 
 			/// <summary>
 			/// Check if a ground layer wall is in front of the origin points look direction.
@@ -78,27 +68,26 @@ namespace FlashlightGame {
 				Physics2D.Raycast(origin, positiveX ? Vector2.right : Vector2.left, WallCheckDistance,
 				                  GroundLayerMask);
 
-
 			/// <summary>
-			/// Returns the position and distance to the top of the nearest climbable wall from the given base position.
+			/// Returns the position and distance to the top of the nearest mantle-able wall from the given base position.
 			/// </summary>
 			/// <param name="basePosition">Where to originate from</param>
 			/// <param name="positiveX">Positive X means isLookingRight</param>
-			/// <returns>Lib.WallClimbPoint | Returns Position as Vector3.zero and Distance as 0f if no available point.</returns>
-			public static WallClimbPoint GetWallClimbPoint(Vector3 basePosition, bool positiveX) {
-				var origin           = (Vector2)basePosition + Vector2.up * WallCheckDistance;
-				var direction        = positiveX ? Vector2.right : Vector2.left;
-				var climbableWallHit = Physics2D.Raycast(origin, direction, WallCheckDistance, ClimbWallLayerMask);
+			/// <returns>Lib.WallMantlePoint | Returns Position as Vector3.zero and Distance as 0f if no available point.</returns>
+			public static WallMantlePoint GetWallMantlePoint(Vector3 basePosition, bool positiveX) {
+				var origin        = (Vector2)basePosition + Vector2.up * WallCheckDistance;
+				var direction     = positiveX ? Vector2.right : Vector2.left;
+				var mantleWallHit = Physics2D.Raycast(origin, direction, WallCheckDistance, MantleWallLayerMask);
 
-				var defaultReturn = new WallClimbPoint() {
+				var defaultReturn = new WallMantlePoint() {
 					Position = Vector3.zero,
 					Distance = 0f
 				};
 
-				if (!climbableWallHit) return defaultReturn;
+				if (!mantleWallHit) return defaultReturn;
 
-				var centerX   = climbableWallHit.point.x + (positiveX ? 0.5f : -0.5f);
-				var rayOrigin = new Vector2(centerX, climbableWallHit.point.y + 300f);
+				var centerX   = mantleWallHit.point.x + (positiveX ? 0.5f : -0.5f);
+				var rayOrigin = new Vector2(centerX, mantleWallHit.point.y + 300f);
 
 				var getGroundY = Physics2D.Raycast(rayOrigin, Vector2.down, 350f, GroundLayerMask);
 
@@ -107,13 +96,13 @@ namespace FlashlightGame {
 
 				if (!getGroundY.collider) return defaultReturn;
 
-				return new WallClimbPoint() {
+				return new WallMantlePoint() {
 					Position = new Vector3(
 					                       centerX,
 					                       getGroundY.point.y + WallTeleportOffsetY,
 					                       basePosition.z
 					                      ),
-					Distance = climbableWallHit.distance
+					Distance = mantleWallHit.distance
 				};
 			}
 		}
