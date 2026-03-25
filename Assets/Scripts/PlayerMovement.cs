@@ -11,23 +11,25 @@ public class PlayerMovement : MonoBehaviour {
 	//* Instance
 	public static           PlayerMovement Instance;
 	private static          DebugHandler   Debug;
+	
+	//* Hash
 	private static readonly int            WalkingDirection = Animator.StringToHash("walkingDirection");
 
 	[Header("Settings")]
 	[SerializeField] private LayerMask groundLayer;
 
 	//* Refs
-	private InputAction        moveAction, mantleAction;
+	private InputAction        moveAction;
 	private Rigidbody2D        playerRb;
 	private ParticleController particleController;
 	private Animator           playerAnimator;
-
-	private static bool IsLookingRight {
-		get => PlayerData.Instance && PlayerData.Instance.IsLookingRight;
+	
+	//? Aiming right and walking left will cause the player to walk blindly/backwards.
+	private static bool IsWalkingRight {
+		get => PlayerData.Instance && PlayerData.Instance.IsWalkingRight;
 		set {
-			return;
 			if (PlayerData.Instance) {
-				PlayerData.Instance.IsLookingRight = value;
+				PlayerData.Instance.IsWalkingRight = value;
 			}
 		}
 	}
@@ -74,7 +76,6 @@ public class PlayerMovement : MonoBehaviour {
 		playerAnimator     = GetComponentInChildren<Animator>();
 
 		moveAction   = InputSystem.actions.FindAction("Move");
-		mantleAction = InputSystem.actions.FindAction("Mantle");
 	}
 
 	private void Update() {
@@ -95,11 +96,11 @@ public class PlayerMovement : MonoBehaviour {
 		Gizmos.DrawWireSphere(groundCheckPosition.position, groundCheckRadius);
 
 		//? Wall Check
-		Gizmos.color = Lib.Movement.WallCheck(headLevelPosition.position, IsLookingRight).collider
+		Gizmos.color = Lib.Movement.WallCheck(headLevelPosition.position, IsWalkingRight).collider
 			               ? Color.green
 			               : Color.red;
 		Gizmos.DrawLine(headLevelPosition.position,
-		                headLevelPosition.position + (IsLookingRight ? Vector3.right : Vector3.left) *
+		                headLevelPosition.position + (IsWalkingRight ? Vector3.right : Vector3.left) *
 		                Lib.Movement.WallCheckDistance);
 	}
 
@@ -117,7 +118,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	private void RaycastChecks() {
 		var groundCheckHit = Lib.Movement.GroundCheck(groundCheckPosition.position, groundCheckRadius);
-		var mantleCheckHit = Lib.Movement.MantleWallCheck(headLevelPosition.position, IsLookingRight);
+		var mantleCheckHit = Lib.Movement.MantleWallCheck(headLevelPosition.position, IsWalkingRight);
 
 		isGrounded = groundCheckHit;
 		canMantle  = mantleCheckHit.collider;
@@ -128,13 +129,11 @@ public class PlayerMovement : MonoBehaviour {
 
 	private void InputCheck() {
 		moveInputVal = moveAction.ReadValue<Vector2>();
-		IsLookingRight = moveInputVal.x switch {
-			< 0 when IsLookingRight  => false,
-			> 0 when !IsLookingRight => true,
-			_                        => IsLookingRight
+		IsWalkingRight = moveInputVal.x switch {
+			< 0 when IsWalkingRight  => false,
+			> 0 when !IsWalkingRight => true,
+			_                        => IsWalkingRight
 		};
-
-		if (mantleAction.WasPressedThisFrame()) Mantle();
 	}
 
 	private void PerformMove() {
@@ -164,7 +163,10 @@ public class PlayerMovement : MonoBehaviour {
 		});
 	}
 
-	private void Mantle() {
+	/// <summary>
+	/// Called by InputHandler, attempts to mantle.
+	/// </summary>
+	public void Mantle() {
 		Debug.LogKv("Mantle", DebugLevel.Debug, new object[] {
 			"isGrounded", isGrounded,
 			"canMantle", canMantle
@@ -179,7 +181,7 @@ public class PlayerMovement : MonoBehaviour {
 	#region Coroutines
 
 	private IEnumerator MantleRoutine() {
-		var mantle = Lib.Movement.GetWallMantlePoint(transform.position, IsLookingRight);
+		var mantle = Lib.Movement.GetWallMantlePoint(transform.position, IsWalkingRight);
 
 		if (mantle.Position == Vector3.zero) {
 			Debug.Log("Mantle point invalid, cancelling mantle.", DebugLevel.Warning);

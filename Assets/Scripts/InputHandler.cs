@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FlashlightGame;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,10 +12,11 @@ public class InputHandler : MonoBehaviour {
 		ToggleFlashlight,
 		ToggleModeLeft,
 		ToggleModeRight,
+		NextSentence,
 		Flashlight1,
 		Flashlight2,
 		Flashlight3,
-		NextSentence
+		Mantle
 	}
 
 	#endregion
@@ -25,7 +25,7 @@ public class InputHandler : MonoBehaviour {
 
 	private static DebugHandler Debug;
 
-	private Dictionary<InputActions, InputAction> inputActionsList = new();
+	private readonly Dictionary<InputActions, InputAction> inputActionsList = new();
 
 	#endregion
 
@@ -59,8 +59,7 @@ public class InputHandler : MonoBehaviour {
 
 	private void CheckForTriggeredActions() {
 		foreach (var kvp in inputActionsList.Where(kvp => kvp.Value.WasPressedThisFrame())) {
-			Debug.Log($"Action '{kvp.Key.ToString()}' was triggered", DebugLevel.Debug,
-			          new object[] { });
+			Debug.Log($"Action '{kvp.Key.ToString()}' was triggered", DebugLevel.Debug);
 			switch (kvp.Key) {
 				case InputActions.ToggleFlashlight:
 					if (PlayerData.Instance.Battery < 0) {
@@ -90,6 +89,11 @@ public class InputHandler : MonoBehaviour {
 				case InputActions.NextSentence:
 					if (PlayerData.Instance.IsTalking) ConversationHandler.Instance.SkipButtonPressed();
 					break;
+				case InputActions.Mantle:
+					PlayerMovement.Instance.Mantle();
+					break;
+				default:
+					throw new Exception("Unhandled InputAction: " + kvp.Key);
 			}
 		}
 	}

@@ -6,17 +6,14 @@ using UnityEngine;
 public class ParallaxLayer {
 	//? Settings
 	[Range(0, 1)] public float speedMultiplier;
-	public               bool  infiniteVertical   = false;
 	public               bool  infiniteHorizontal = true;
 
 	//? Layer
 	public Transform transform;
-	
+
 	//? Refs
 	[HideInInspector] public List<Transform> tiles = new List<Transform>();
 	[HideInInspector] public float           textureSizeX;
-	[HideInInspector] public float           textureSizeY;
-	[HideInInspector] public float           lockedZ;
 }
 
 
@@ -32,7 +29,7 @@ public class ParallaxController : MonoBehaviour {
 	[SerializeField] private ParallaxLayer[] layers;
 
 	[Header("Settings")]
-	[SerializeField] private float offsetX = 0f, offsetY = 0f;
+	[SerializeField] private float offsetX = 0f;
 
 	//? States
 	private Vector3 prevCamPos;
@@ -71,13 +68,11 @@ public class ParallaxController : MonoBehaviour {
 			}
 
 			layer.textureSizeX = spriteRenderer.bounds.size.x;
-			layer.textureSizeY = spriteRenderer.bounds.size.y;
-			layer.lockedZ      = layer.transform.position.z;
 		}
 
-		if (Mathf.Abs(offsetX) > 0f || Mathf.Abs(offsetY) > 0f) {
+		if (Mathf.Abs(offsetX) > 0f) {
 			foreach (var layer in layers) {
-				if (layer.transform != null) layer.transform.position += new Vector3(offsetX, offsetY, 0f);
+				if (layer.transform != null) layer.transform.position += new Vector3(offsetX, 0f, 0f);
 			}
 		}
 	}
@@ -87,10 +82,7 @@ public class ParallaxController : MonoBehaviour {
 		var delta = playerCam.transform.position - prevCamPos;
 
 		foreach (var layer in layers) {
-			var mov = new Vector3(
-			                      delta.x * layer.speedMultiplier,
-			                      delta.y,
-			                      0);
+			var mov = new Vector3(delta.x * layer.speedMultiplier, 0, 0);
 
 			layer.transform.position += mov;
 
@@ -113,29 +105,6 @@ public class ParallaxController : MonoBehaviour {
 						tile.position += new Vector3(totalWidth, 0, 0);
 					} else if (distX >= totalWidth / 2f) {
 						tile.position += new Vector3(-totalWidth, 0, 0);
-					}
-				}
-			}
-
-			if (layer.infiniteVertical && layer.textureSizeY > 0f) {
-				//? Avoid problems...
-				var minY = float.MaxValue;
-				var maxY = float.MinValue;
-				foreach (var t in layer.tiles) {
-					minY = Mathf.Min(minY, t.position.y);
-					maxY = Mathf.Max(maxY, t.position.y);
-				}
-
-				var totalHeight = (maxY - minY) + layer.textureSizeY;
-				if (totalHeight <= 0f) continue;
-
-				foreach (var tile in layer.tiles) {
-					var distY = tile.position.y - playerCam.transform.position.y;
-
-					if (distY <= -totalHeight / 2f) {
-						tile.position += new Vector3(0, totalHeight, 0);
-					} else if (distY >= totalHeight / 2f) {
-						tile.position += new Vector3(0, -totalHeight, 0);
 					}
 				}
 			}

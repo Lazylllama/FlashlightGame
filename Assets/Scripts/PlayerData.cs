@@ -14,8 +14,14 @@ public class PlayerData : MonoBehaviour {
 	public int  Health  { get; private set; } = 100;
 	public int  Battery { get; private set; } = 100;
 	public bool IsDead  => Health <= 0;
-	
+
 	//* Player Data *//
+	private bool isWalkingRight;
+	public bool IsWalkingRight {
+		set => isWalkingRight = value;
+		get => isWalkingRight;
+	}
+
 	private bool isLookingRight;
 	public bool IsLookingRight {
 		set => SetIsLookingRight(value);
@@ -30,6 +36,7 @@ public class PlayerData : MonoBehaviour {
 	public bool FlashlightEnabled { get; set; }         = true;
 	public int  FlashlightMode    { get; private set; } = 1;
 	public bool IsTalking         { get; set; }         = false;
+
 	//* Mood States *//
 	//? Relieved   = player is at a checkpoint.
 	//? Frightened = player is/was recently in danger.
@@ -139,7 +146,7 @@ public class PlayerData : MonoBehaviour {
 	/// Set whether the player is looking right.
 	private void SetIsLookingRight(bool value) {
 		if (!GameController.Instance || !GameController.Instance.InActiveGame) return;
-		
+
 		isLookingRight = value;
 		var controller           = PlayerController.Instance;
 		var flashlightController = FlashlightController.Instance;

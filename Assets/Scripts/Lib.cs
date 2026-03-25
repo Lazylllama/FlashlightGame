@@ -52,7 +52,7 @@ namespace FlashlightGame {
 			/// Check if a mantle-able wall is in front of the origin points look direction.
 			/// </summary>
 			/// <param name="origin">Where to check from</param>
-			/// <param name="positiveX">Positive X means isLookingRight</param>
+			/// <param name="positiveX">Positive X means isWalkingRight</param>
 			/// <returns>RaycastHit2D</returns>
 			public static RaycastHit2D MantleWallCheck(Vector3 origin, bool positiveX) =>
 				Physics2D.Raycast(origin, positiveX ? Vector2.right : Vector2.left, WallCheckDistance,
@@ -62,7 +62,7 @@ namespace FlashlightGame {
 			/// Check if a ground layer wall is in front of the origin points look direction.
 			/// </summary>
 			/// <param name="origin">Where to check from</param>
-			/// <param name="positiveX">Positive X means isLookingRight</param>
+			/// <param name="positiveX">Positive X means isWalkingRight</param>
 			/// <returns>RaycastHit2D</returns>
 			public static RaycastHit2D WallCheck(Vector3 origin, bool positiveX) =>
 				Physics2D.Raycast(origin, positiveX ? Vector2.right : Vector2.left, WallCheckDistance,
@@ -72,7 +72,7 @@ namespace FlashlightGame {
 			/// Returns the position and distance to the top of the nearest mantle-able wall from the given base position.
 			/// </summary>
 			/// <param name="basePosition">Where to originate from</param>
-			/// <param name="positiveX">Positive X means isLookingRight</param>
+			/// <param name="positiveX">Positive X means isWalkingRight</param>
 			/// <returns>Lib.WallMantlePoint | Returns Position as Vector3.zero and Distance as 0f if no available point.</returns>
 			public static WallMantlePoint GetWallMantlePoint(Vector3 basePosition, bool positiveX) {
 				var origin        = (Vector2)basePosition + Vector2.up * WallCheckDistance;
