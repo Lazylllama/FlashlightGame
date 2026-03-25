@@ -146,9 +146,8 @@ public class PlayerData : MonoBehaviour {
 	//! Private Functions
 	/// Set whether the player is looking right.
 	private void SetIsLookingRight(bool value) {
-		print("TEST1");
 		if (!GameController.Instance || !GameController.Instance.InActiveGame) return;
-		print("TEST2");
+
 		isLookingRight = value;
 
 		var controller           = PlayerController.Instance;

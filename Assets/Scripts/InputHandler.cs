@@ -15,7 +15,6 @@ public class InputHandler : MonoBehaviour {
 		NextSentence,
 		Flashlight1,
 		Flashlight2,
-		Flashlight3,
 		Mantle
 	}
 
@@ -76,9 +75,6 @@ public class InputHandler : MonoBehaviour {
 					break;
 				case InputActions.Flashlight2:
 					PlayerData.Instance.HandleFlashlightModeChange(2);
-					break;
-				case InputActions.Flashlight3:
-					PlayerData.Instance.HandleFlashlightModeChange(3);
 					break;
 				case InputActions.NextSentence:
 					if (PlayerData.Instance.IsTalking) ConversationHandler.Instance.SkipButtonPressed();
