@@ -234,7 +234,7 @@ public class FlashlightController : MonoBehaviour {
 		
 		if (Mathf.Atan2(mousePosition.y - playerTransform.position.y, mousePosition.x - playerTransform.position.x) * Mathf.Rad2Deg > 90 || Mathf.Atan2(mousePosition.y - playerTransform.position.y, mousePosition.x - playerTransform.position.x) * Mathf.Rad2Deg < -90) PlayerData.Instance.IsLookingRight = false;
 		else PlayerData.Instance.IsLookingRight = true;
-		transform.eulerAngles = new Vector3(0, 0, math.lerp(transform.eulerAngles.z, cameraAngleZ, lerpTime));
+		transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, cameraAngleZ, lerpTime));
 	}
 
 	private void CheckForEnemy() {
