@@ -11,11 +11,12 @@ public class ParallaxLayer {
 
 	//? Layer
 	public Transform transform;
-
+	
 	//? Refs
 	[HideInInspector] public List<Transform> tiles = new List<Transform>();
 	[HideInInspector] public float           textureSizeX;
 	[HideInInspector] public float           textureSizeY;
+	[HideInInspector] public float           lockedZ;
 }
 
 
@@ -29,6 +30,9 @@ public class ParallaxController : MonoBehaviour {
 
 	[Header("Layers")]
 	[SerializeField] private ParallaxLayer[] layers;
+
+	[Header("Settings")]
+	[SerializeField] private float offsetX = 0f, offsetY = 0f;
 
 	//? States
 	private Vector3 prevCamPos;
@@ -68,49 +72,76 @@ public class ParallaxController : MonoBehaviour {
 
 			layer.textureSizeX = spriteRenderer.bounds.size.x;
 			layer.textureSizeY = spriteRenderer.bounds.size.y;
+			layer.lockedZ      = layer.transform.position.z;
+		}
+
+		if (Mathf.Abs(offsetX) > 0f || Mathf.Abs(offsetY) > 0f) {
+			foreach (var layer in layers) {
+				if (layer.transform != null) layer.transform.position += new Vector3(offsetX, offsetY, 0f);
+			}
 		}
 	}
 
 	private void LateUpdate() {
+		if (!GameController.Instance.InActiveGame) return;
 		var delta = playerCam.transform.position - prevCamPos;
 
 		foreach (var layer in layers) {
 			var mov = new Vector3(
 			                      delta.x * layer.speedMultiplier,
-			                      delta.y * layer.speedMultiplier,
+			                      delta.y,
 			                      0);
 
 			layer.transform.position += mov;
 
 			if (layer.infiniteHorizontal && layer.textureSizeX > 0f) {
+				//? Avoid problems...
+				var minX = float.MaxValue;
+				var maxX = float.MinValue;
+				foreach (var t in layer.tiles) {
+					minX = Mathf.Min(minX, t.position.x);
+					maxX = Mathf.Max(maxX, t.position.x);
+				}
+
+				var totalWidth = (maxX - minX) + layer.textureSizeX;
+				if (totalWidth <= 0f) continue;
+
 				foreach (var tile in layer.tiles) {
 					var distX = tile.position.x - playerCam.transform.position.x;
 
-					//? If the tile is too far to the left, move it to the right end of the layer, and vice versa
-					// Should work in theory i hope (plz work)
-					if (Mathf.Abs(distX) >= layer.textureSizeX) {
-						tile.position += new Vector3(-layer.textureSizeX * layer.tiles.Count, 0, 0);
-					} else if (Mathf.Abs(distX) <= -layer.textureSizeX) {
-						tile.position += new Vector3(layer.textureSizeX * layer.tiles.Count, 0, 0);
+					if (distX <= -totalWidth / 2f) {
+						tile.position += new Vector3(totalWidth, 0, 0);
+					} else if (distX >= totalWidth / 2f) {
+						tile.position += new Vector3(-totalWidth, 0, 0);
 					}
 				}
 			}
 
 			if (layer.infiniteVertical && layer.textureSizeY > 0f) {
+				//? Avoid problems...
+				var minY = float.MaxValue;
+				var maxY = float.MinValue;
+				foreach (var t in layer.tiles) {
+					minY = Mathf.Min(minY, t.position.y);
+					maxY = Mathf.Max(maxY, t.position.y);
+				}
+
+				var totalHeight = (maxY - minY) + layer.textureSizeY;
+				if (totalHeight <= 0f) continue;
+
 				foreach (var tile in layer.tiles) {
 					var distY = tile.position.y - playerCam.transform.position.y;
 
-					//? If the tile is too far down, move it to the top end of the layer, and vice versa
-					if (Mathf.Abs(distY) >= layer.textureSizeY) {
-						tile.position += new Vector3(0, -layer.textureSizeY * layer.tiles.Count, 0);
-					} else if (Mathf.Abs(distY) <= -layer.textureSizeY) {
-						tile.position += new Vector3(0, layer.textureSizeY * layer.tiles.Count, 0);
+					if (distY <= -totalHeight / 2f) {
+						tile.position += new Vector3(0, totalHeight, 0);
+					} else if (distY >= totalHeight / 2f) {
+						tile.position += new Vector3(0, -totalHeight, 0);
 					}
 				}
 			}
-
-			prevCamPos = playerCam.transform.position;
 		}
+
+		prevCamPos = playerCam.transform.position;
 	}
 
 	#endregion

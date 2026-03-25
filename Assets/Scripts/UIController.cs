@@ -48,7 +48,10 @@ public class UIController : MonoBehaviour {
 		                               3f,
 		                               mainMenuOverlayCamera,
 		                               gameOverlayCamera));
-		StartCoroutine(DelayFunction(3f, () => gameOverlayCamera.enabled = true));
+		StartCoroutine(DelayFunction(3f, () => {
+			                                 gameOverlayCamera.enabled            = true;
+			                                 GameController.Instance.InActiveGame = true;
+		                                 }));
 	}
 
 	private static void RegisterInstance(UIController instance) {
@@ -118,7 +121,7 @@ public class UIController : MonoBehaviour {
 		yield return new WaitForSecondsRealtime(duration);
 		storyboardBlackCinemachine.Priority = 0;
 	}
-	
+
 	private IEnumerator DelayFunction(float delay, System.Action action) {
 		yield return new WaitForSecondsRealtime(delay);
 		action();

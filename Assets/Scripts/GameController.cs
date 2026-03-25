@@ -8,7 +8,7 @@ public class GameController : MonoBehaviour {
 	private static DebugHandler   Debug;
 
 	//* Data *//
-	public bool InActiveGame { get; private set; } = false;
+	public bool InActiveGame { get; set; } = false;
 
 	//* State *//
 
@@ -28,7 +28,6 @@ public class GameController : MonoBehaviour {
 
 	public void StartNewGame() {
 		Debug.Log("Starting new game...", DebugLevel.Debug);
-		InActiveGame = true;
 		UIController.Instance.InitiatePlayerFall();
 	}
 
