@@ -36,7 +36,6 @@ public class ConversationHandler : MonoBehaviour {
 	private bool     isTalking;
 	private int      currentLetter;
 	private bool     skipDialogue;
-	private bool     playerIsTalking;
 	
 	#endregion
 
@@ -47,7 +46,7 @@ public class ConversationHandler : MonoBehaviour {
 		test.Dialogue = new[] {
 			"Hello there! aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "How are you doing today?", "Isn't this a nice day?" };
 		test.OtherPartStart = true;
-		test.OtherPartSprite = playerSprite;
+		test.OtherPartSprite = otherPartSprite;
 		test.OtherPartName = "Mango";
 		StartConversation(test);
 	}
@@ -59,21 +58,28 @@ public class ConversationHandler : MonoBehaviour {
 	#region Functions
 
 	public void SkipButtonPressed() {
+		if (currentDialogueIndex >= currentConversation.Dialogue.Length - 1) {
+			FinishConversation();
+			return;
+		}
 		if (isTalking) {
 			skipDialogue = true;
 		} else {
-			if (playerIsTalking) {
-				playerIsTalking = false;
+			if (isTalking) {
+				isTalking = false;
 				image.sprite = currentConversation.OtherPartSprite;
+				
 				nameBox.text = currentConversation.OtherPartName;
 			} else {
-				playerIsTalking = true;
+				isTalking = true;
 				image.sprite = playerSprite;
 				nameBox.text = "Player";
 			}
 			currentDialogueIndex++;
 			StartCoroutine(TypeSentence(currentConversation.Dialogue[currentDialogueIndex]));
 		}
+		
+		
 	}
 
 	private void RegisterInstance(ConversationHandler instance) {
@@ -89,13 +95,12 @@ public class ConversationHandler : MonoBehaviour {
 		currentConversation = conversation;
 		conversationUI.SetActive(true);
 		textBox.text = "";
+		PlayerData.Instance.IsTalking = true;
 		if (conversation.OtherPartStart) {
-			playerIsTalking = false;
 			image.sprite = conversation.OtherPartSprite;
 			nameBox.text = conversation.OtherPartName;
 			UpdateDialogue(conversation.Dialogue[currentDialogueIndex]);
 		} else {
-			playerIsTalking = true;
 			image.sprite = playerSprite;
 			nameBox.text = "Player";
 			UpdateDialogue(conversation.Dialogue[currentDialogueIndex]);
@@ -112,19 +117,29 @@ public class ConversationHandler : MonoBehaviour {
 	IEnumerator TypeSentence(string sentence) {
 		isTalking = true;
 		for (int i = 1; i < sentence.Length; i++) { 
-			print(skipDialogue);
 			if (skipDialogue) {
 				textBox.text = sentence;
 				skipDialogue = false;
 				isTalking = false;
 				yield break;
 			}
-			print(sentence.Substring(0, i));
 			textBox.text = sentence.Substring(0, i);
 			yield return new WaitForSeconds(conversationSpeed);
 		}
 		skipDialogue = false;
 		isTalking = false;
+	}
+
+	private void FinishConversation() {
+		isTalking = false;
+		skipDialogue = false;
+		conversationUI.SetActive(false);
+		currentDialogueIndex = 0;
+		currentConversation = null;
+		currentLetter = 0;
+		textBox.text = "";
+		nameBox.text = "";
+		image.sprite = null;
 	}
 
 	#endregion

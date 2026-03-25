@@ -23,6 +23,7 @@ public class PlayerMovement : MonoBehaviour {
 	private static bool IsLookingRight {
 		get => PlayerData.Instance && PlayerData.Instance.IsLookingRight;
 		set {
+			return;
 			if (PlayerData.Instance) {
 				PlayerData.Instance.IsLookingRight = value;
 			}

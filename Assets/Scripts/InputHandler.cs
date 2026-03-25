@@ -88,7 +88,7 @@ public class InputHandler : MonoBehaviour {
 					PlayerData.Instance.HandleFlashlightModeChange(3);
 					break;
 				case InputActions.NextSentence:
-					ConversationHandler.Instance.SkipButtonPressed();
+					if (PlayerData.Instance.IsTalking) ConversationHandler.Instance.SkipButtonPressed();
 					break;
 			}
 		}

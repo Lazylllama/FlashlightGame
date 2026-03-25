@@ -63,7 +63,6 @@ public class FlyingEnemyController : MonoBehaviour {
 	private void Update() {
 		if (isPathFinding) {
 			GoToPoint(goToPoint);
-			print("Pathfinding");
 			return;
 		}
 		CheckForWall();
@@ -115,13 +114,11 @@ public class FlyingEnemyController : MonoBehaviour {
 			var rayOrigin = new Vector2(transform.position.x + (facingRight? 1.0f : -1.0f), transform.position.y + 300f);
 			var wallHit = Physics2D.Raycast(rayOrigin,Vector2.down, 10000f ,pathfindingLayer);
 			if (!wallHit.collider) {
-				print("Test1");
 				Debug.DrawRay(rayOrigin,Vector2.down * 10000f, Color.red, 10f);
 				facingRight = !facingRight;
 				return;
 			} 
 			if (wallHit.collider.gameObject.layer == LayerMask.NameToLayer("Ground")) {
-				print("Test2");
 				Debug.DrawLine(rayOrigin, wallHit.point, Color.blue, 10f);
 				goToPoint = new Vector3(wallHit.point.x, wallHit.point.y +1f, transform.position.z);
 				GoToPoint(goToPoint);
@@ -129,12 +126,16 @@ public class FlyingEnemyController : MonoBehaviour {
 			}
 		} 
 		facingRight = !facingRight;
-		print("Test3");
 	}
 
 	private void GoToPoint(Vector3 point) {
 		isPathFinding = true;
 		if (transform.position.y >= point.y) {
+			if (transform.position.x - point.x < (facingRight ? -1 : 1) * 0.2f) {
+				rb.linearVelocityY = 0;
+				rb.linearVelocityX = (facingRight ? 1 : -1);
+				return;
+			}
 			isPathFinding = false;
 			rb.linearVelocityY = 0;
 			return;

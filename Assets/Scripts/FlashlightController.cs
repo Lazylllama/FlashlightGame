@@ -108,7 +108,6 @@ public class FlashlightController : MonoBehaviour {
 		laserPreset.PresetDensity     = 1.5f;
 		laserPreset.PresetBeamWidth   = 0.1f;
 		laserPreset.PresetRange       = 100f;
-		print(laserPreset.PresetRange);
 		laserPreset.PresetIntensity   = 20f;
 		laserPreset.PresetColor       = new Color(1, 0, 0, 1);
 		defaultPreset.PresetDensity   = 1.5f;
@@ -318,7 +317,7 @@ public class FlashlightController : MonoBehaviour {
 		//? Gizmo
 		if (hit.collider) Debug.DrawLine(start,hit.point, Color.red);
 		if (!hit.collider) Debug.DrawLine(start, end, Color.red);
-
+		
 		//? Null guard & only process relevant tags
 		if (!hit || hit.collider.tag is not ("Enemy" or "WeakPoint" or "Prism" or "Mirror")) return;
 		
@@ -413,10 +412,8 @@ public class FlashlightController : MonoBehaviour {
 		
 		if (isLightRay && !hit) {
 			lightPoints = lightPoints.Append(new Vector3(newOrigin.x + reflectedDir.x * range ,newOrigin.y + reflectedDir.y * range, 0)).ToArray();
-			print("Rizz");
 			SetLightPosition(lightPoints);
 		} else if (isLightRay && !hit.collider.gameObject.CompareTag("Mirror")) {
-			print("Gyatt");
 			lightPoints = lightPoints.Append(new Vector3(hit.point.x, hit.point.y, 0)).ToArray();
 			SetLightPosition(lightPoints);
 		}
@@ -424,7 +421,6 @@ public class FlashlightController : MonoBehaviour {
 		if (!hit || hit.collider == sourceCollider) return;
 
 		if (isLightRay) {
-			print("Mango");
 			lightPoints = lightPoints.Append(new Vector3(hit.point.x, hit.point.y, 0)).ToArray();
 		}
 

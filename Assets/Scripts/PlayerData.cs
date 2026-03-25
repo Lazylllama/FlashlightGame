@@ -29,7 +29,7 @@ public class PlayerData : MonoBehaviour {
 	};
 	public bool FlashlightEnabled { get; set; }         = true;
 	public int  FlashlightMode    { get; private set; } = 1;
-
+	public bool IsTalking         { get; set; }         = false;
 	//* Mood States *//
 	//? Relieved   = player is at a checkpoint.
 	//? Frightened = player is/was recently in danger.
@@ -64,7 +64,6 @@ public class PlayerData : MonoBehaviour {
 	private void Start() => RegisterInstance(this);
 
 	private void FixedUpdate() {
-		Debug.Log(Battery);
 		HandleBatteryDrain();
 	}
 
