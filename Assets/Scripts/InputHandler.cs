@@ -62,13 +62,7 @@ public class InputHandler : MonoBehaviour {
 			Debug.Log($"Action '{kvp.Key.ToString()}' was triggered", DebugLevel.Debug);
 			switch (kvp.Key) {
 				case InputActions.ToggleFlashlight:
-					if (PlayerData.Instance.Battery < 0) {
-						Debug.LogKv("Battery Empty", DebugLevel.Debug, new object[] {
-							"Battery Level", PlayerData.Instance.Battery
-						});
-						break;
-					}
-
+					//* Let the player turn it on even though the flashlight is dead just as a feature, it will be disabled automatically right after.
 					PlayerData.Instance.FlashlightEnabled = !PlayerData.Instance.FlashlightEnabled;
 					break;
 				case InputActions.ToggleModeLeft:

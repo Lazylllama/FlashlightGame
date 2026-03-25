@@ -33,12 +33,13 @@ public class PlayerData : MonoBehaviour {
 		{ 1, true }, // TODO: Implement flashlight pickup
 		{ 2, true }, // TODO: Implement flashlight level up (in-lore)
 	};
-	public bool FlashlightEnabled { get; set; }         = true;
+
+	public bool IsTalking         { get; set; }
+	public bool FlashlightEnabled { get; set; }
 	public int  FlashlightMode    { get; private set; } = 1;
-	public bool IsTalking         { get; set; }         = false;
 
 	//* Mood States *//
-	//? Relieved   = player is at a checkpoint.
+	//? Relieved = player is at a checkpoint.
 	//? Frightened = player is/was recently in danger.
 	public bool Frightened { get; set; } = false;
 	public bool Relieved   { get; set; } = false;
@@ -149,6 +150,7 @@ public class PlayerData : MonoBehaviour {
 		if (!GameController.Instance || !GameController.Instance.InActiveGame) return;
 		print("TEST2");
 		isLookingRight = value;
+
 		var controller           = PlayerController.Instance;
 		var flashlightController = FlashlightController.Instance;
 		if (controller) {
@@ -161,12 +163,13 @@ public class PlayerData : MonoBehaviour {
 	}
 
 	private void HandleBatteryDrain() {
+		//* Return before timer to avoid abusing timer by turning flashlight on off repeatedly...
+		if (!FlashlightEnabled) return;
+
 		//? Timer
 		drainTimer += Time.deltaTime;
 
-		if (!FlashlightEnabled || batteryDrainInterval > drainTimer) return;
-
-		Debug.Log("Draining Battery by 1", DebugLevel.Debug);
+		if (batteryDrainInterval > drainTimer) return;
 
 		Battery           -= 1;
 		Battery           =  Mathf.Clamp(Battery, 0, 100);
