@@ -112,7 +112,7 @@ GameObject:
   - component: {fileID: 8938937570483269785}
   m_Layer: 6
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -150,6 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   batteryDrainInterval: 1
+  invulnerabiltyTime: 1
 --- !u!114 &8851002494661578932
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5129,7 +5130,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1164619786127058633
 Transform:
   m_ObjectHideFlags: 0
@@ -19994,7 +19995,7 @@ Transform:
   m_GameObject: {fileID: 8947315786924848605}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.6427876, w: 0.7660445}
-  m_LocalPosition: {x: 1.249, y: 0.172, z: 0}
+  m_LocalPosition: {x: 1.3084568, y: 0.33353463, z: 0}
   m_LocalScale: {x: 0.25464, y: 0.4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -20016,13 +20017,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FlashlightController
   flashlightWidth: 0.1
   rayAmount: 100
-  lerpTime: 0.04
+  lerpTime: 0.1
   lightOutput: {fileID: 4936669862843185341}
   spotLightGameObject: {fileID: 3960592807234988282}
   freeFormLightGameObject: {fileID: 0}
   playerTransform: {fileID: 1277423520945956340}
   maxReflections: 3
-  reflectionOriginOffset: 0.01
+  reflectionOriginOffset: 0.1
 --- !u!1818360608 &3372813745512499410
 PositionConstraint:
   m_ObjectHideFlags: 0
@@ -20041,7 +20042,7 @@ PositionConstraint:
   m_Active: 1
   m_IsLocked: 1
   m_Sources:
-  - sourceTransform: {fileID: 0}
+  - sourceTransform: {fileID: 3367631746986487787}
     weight: 1
 --- !u!1001 &6032306488810343915
 PrefabInstance:
@@ -20111,5 +20112,10 @@ PrefabInstance:
 --- !u!4 &589429047341042224 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6600337871609808859, guid: 5aadd893fd70b344f87bfc408462933f, type: 3}
+  m_PrefabInstance: {fileID: 6032306488810343915}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3367631746986487787 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9010354791853203968, guid: 5aadd893fd70b344f87bfc408462933f, type: 3}
   m_PrefabInstance: {fileID: 6032306488810343915}
   m_PrefabAsset: {fileID: 0}
