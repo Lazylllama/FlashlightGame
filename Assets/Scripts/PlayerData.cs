@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using FlashlightGame;
 using UnityEngine;
@@ -37,6 +38,7 @@ public class PlayerData : MonoBehaviour {
 	public bool IsTalking         { get; set; }
 	public bool FlashlightEnabled { get; set; }
 	public int  FlashlightMode    { get; private set; } = 1;
+	public bool IsInvulnerable    { get; private set; } = false;
 
 	//* Mood States *//
 	//? Relieved = player is at a checkpoint.
@@ -57,6 +59,7 @@ public class PlayerData : MonoBehaviour {
 
 	//* Options *//
 	[SerializeField] private float batteryDrainInterval = 1f;
+	[SerializeField] private float invulnerabiltyTime   = 1f;
 
 	//* States *//
 	private float drainTimer;
@@ -85,13 +88,13 @@ public class PlayerData : MonoBehaviour {
 	/// </summary>
 	/// <param name="difference">-100 to +100 Health Points</param>
 	public void UpdateHealth(int difference) {
-		UIController.Instance.UpdateUI();
-		Health = Mathf.Clamp(Health + difference, 0, 100);
+		Health += difference;
+		Health =  Mathf.Clamp(Health, 0, 100);
+		
 		UIController.Instance.UpdateUI();
 
-		if (IsDead) {
-			OnDeath();
-		}
+		if (IsDead) OnDeath(); 
+		else StartCoroutine(MakeInvulnerable());
 	}
 
 	private void OnDeath() {
@@ -197,6 +200,16 @@ public class PlayerData : MonoBehaviour {
 
 			Debug.Log("PlayerData initialized.");
 		}
+	}
+
+	#endregion
+
+	#region Coroutines
+
+	private IEnumerator MakeInvulnerable() {
+		IsInvulnerable = true;
+		yield return new WaitForSeconds(invulnerabiltyTime);
+		IsInvulnerable = false;
 	}
 
 	#endregion
