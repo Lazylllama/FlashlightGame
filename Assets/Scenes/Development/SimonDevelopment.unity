@@ -2732,30 +2732,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 2498006059729689194}
-    - target: {fileID: 6278820509196297006, guid: 6a54e9ddf2852c74f97c2423f276c074, type: 3}
-      propertyPath: mainCamera
-      value: 
-      objectReference: {fileID: 711819907}
-    - target: {fileID: 6278820509196297006, guid: 6a54e9ddf2852c74f97c2423f276c074, type: 3}
-      propertyPath: gameOverlayCamera
-      value: 
-      objectReference: {fileID: 888702354}
-    - target: {fileID: 6278820509196297006, guid: 6a54e9ddf2852c74f97c2423f276c074, type: 3}
-      propertyPath: playerCinemachine
-      value: 
-      objectReference: {fileID: 751278573}
-    - target: {fileID: 6278820509196297006, guid: 6a54e9ddf2852c74f97c2423f276c074, type: 3}
-      propertyPath: mainMenuCinemachine
-      value: 
-      objectReference: {fileID: 1135948176}
-    - target: {fileID: 6278820509196297006, guid: 6a54e9ddf2852c74f97c2423f276c074, type: 3}
-      propertyPath: mainMenuOverlayCamera
-      value: 
-      objectReference: {fileID: 477286361}
-    - target: {fileID: 6278820509196297006, guid: 6a54e9ddf2852c74f97c2423f276c074, type: 3}
-      propertyPath: storyboardBlackCinemachine
-      value: 
-      objectReference: {fileID: 7129769611564417423}
     - target: {fileID: 6600948469112346253, guid: 6a54e9ddf2852c74f97c2423f276c074, type: 3}
       propertyPath: m_Name
       value: '[UI] Canvases'
@@ -2800,6 +2776,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8498158645983091892, guid: 6a54e9ddf2852c74f97c2423f276c074, type: 3}
+      propertyPath: mainCamera
+      value: 
+      objectReference: {fileID: 711819907}
+    - target: {fileID: 8498158645983091892, guid: 6a54e9ddf2852c74f97c2423f276c074, type: 3}
+      propertyPath: gameOverlayCamera
+      value: 
+      objectReference: {fileID: 888702354}
+    - target: {fileID: 8498158645983091892, guid: 6a54e9ddf2852c74f97c2423f276c074, type: 3}
+      propertyPath: playerCinemachine
+      value: 
+      objectReference: {fileID: 751278573}
+    - target: {fileID: 8498158645983091892, guid: 6a54e9ddf2852c74f97c2423f276c074, type: 3}
+      propertyPath: mainMenuCinemachine
+      value: 
+      objectReference: {fileID: 1135948176}
+    - target: {fileID: 8498158645983091892, guid: 6a54e9ddf2852c74f97c2423f276c074, type: 3}
+      propertyPath: mainMenuOverlayCamera
+      value: 
+      objectReference: {fileID: 477286361}
+    - target: {fileID: 8498158645983091892, guid: 6a54e9ddf2852c74f97c2423f276c074, type: 3}
+      propertyPath: storyboardBlackCinemachine
+      value: 
+      objectReference: {fileID: 7129769611564417423}
     - target: {fileID: 8945261528938755241, guid: 6a54e9ddf2852c74f97c2423f276c074, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
