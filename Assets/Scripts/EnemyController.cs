@@ -7,10 +7,10 @@ public class EnemyController : MonoBehaviour {
 	#region Fields
 
 	private static DebugHandler Debug;
-	
+
 	[Header("Refs")]
-	[SerializeField] private TMP_Text       overheadText;
-	private                  Rigidbody2D    rb;
+	[SerializeField] private TMP_Text overheadText;
+	private Rigidbody2D rb;
 
 	[Header("Enemy Options")]
 	[SerializeField] private bool isGrounded, isChasing, facingRight;
@@ -25,7 +25,7 @@ public class EnemyController : MonoBehaviour {
 
 	[Header("Teleport Settings")]
 	[SerializeField] private float teleportCooldown = 1.2f;
-	private                  float teleportTimer;
+	private float teleportTimer;
 
 	[Header("Slow Down")]
 	[SerializeField] private float slowDistance = 2f;
@@ -49,13 +49,22 @@ public class EnemyController : MonoBehaviour {
 	}
 
 	private void Start() {
-		rb          = GetComponent<Rigidbody2D>();
-		audioSource = GetComponent<AudioSource>();
-		animator    = GetComponent<Animator>();
-		health      = maxHealth;
-		enemySpeed  = baseSpeed;
+		rb            = GetComponent<Rigidbody2D>();
+		audioSource   = GetComponent<AudioSource>();
+		animator      = GetComponent<Animator>();
+		health        = maxHealth;
+		enemySpeed    = baseSpeed;
+		startPosition = transform.position;
 
 		if (soundInterval > 0) StartCoroutine(SoundRoutine());
+	}
+
+	public void ResetEnemy() {
+		health             = maxHealth;
+		transform.position = startPosition;
+		rb.linearVelocity  = Vector2.zero;
+		isChasing          = false;
+		gameObject.SetActive(true);
 	}
 
 	private void Update() {
@@ -65,12 +74,18 @@ public class EnemyController : MonoBehaviour {
 		CheckForTarget();
 		UpdateOverheadText();
 		TurnEnemy();
-		CheckClimbableWall();
+		CheckMantleWall();
 		CheckWall();
 	}
 
 	private void FixedUpdate() {
 		ChaseTarget();
+	}
+	
+	private void OnCollisionEnter2D(Collision2D other) {
+		if (PlayerData.Instance.IsInvulnerable == false && other.gameObject.CompareTag("Player")) {
+			PlayerData.Instance.UpdateHealth(25);
+		}
 	}
 
 	#endregion
@@ -99,7 +114,7 @@ public class EnemyController : MonoBehaviour {
 
 	private void CheckWall() {
 		var wallHit = Lib.Movement.WallCheck(lookPosition.position, facingRight);
-		
+
 
 		if (!wallHit.collider || isChasing) return;
 
@@ -110,25 +125,24 @@ public class EnemyController : MonoBehaviour {
 		};
 	}
 
-	private void CheckClimbableWall() {
+	private void CheckMantleWall() {
 		canTeleport = false;
 
-		if (!Lib.Movement.ClimbWallCheck(lookPosition.position, facingRight) ||
-		    !Lib.Movement.MantleWallCheck(lookPosition.position, facingRight)) return;
+		if (!Lib.Movement.MantleWallCheck(lookPosition.position, facingRight)) return;
 
-		var climbPoint = Lib.Movement.GetWallClimbPoint(transform.position, facingRight);
+		var mantlePoint = Lib.Movement.GetWallMantlePoint(transform.position, facingRight);
 
-		Debug.Log(climbPoint);
-		if (climbPoint.Position == Vector3.zero) {
+		Debug.Log(mantlePoint);
+		if (mantlePoint.Position == Vector3.zero) {
 			enemySpeed = baseSpeed;
 			return;
 		}
 
-		teleportPoint = climbPoint.Position;
+		teleportPoint = mantlePoint.Position;
 		canTeleport   = true;
 
 
-		if (climbPoint.Distance < slowDistance) {
+		if (mantlePoint.Distance < slowDistance) {
 			enemySpeed = baseSpeed * slowFactor;
 			//fade out
 		} else {
@@ -178,7 +192,7 @@ public class EnemyController : MonoBehaviour {
 		health -= amount;
 		UpdateOverheadText();
 
-		if (health <= 0) Destroy(gameObject);
+		if (health <= 0) gameObject.SetActive(false);
 	}
 
 	private void OnDrawGizmos() {
@@ -188,6 +202,8 @@ public class EnemyController : MonoBehaviour {
 		if (!canTeleport) return;
 		Gizmos.DrawSphere(teleportPoint, 0.15f);
 	}
+
+	private Vector3 startPosition;
 
 	#endregion
 

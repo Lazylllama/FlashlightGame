@@ -12,9 +12,7 @@ public class GameController : MonoBehaviour {
 
 	//* Data *//
 	public bool InActiveGame { get; set; } = false;
-
 	
-
 	//* State *//
 
 	#endregion
@@ -33,7 +31,6 @@ public class GameController : MonoBehaviour {
 
 	public void StartNewGame() {
 		Debug.Log("Starting new game...", DebugLevel.Debug);
-		InActiveGame = true;
 		UIController.Instance.InitiatePlayerFall();
 	}
 	

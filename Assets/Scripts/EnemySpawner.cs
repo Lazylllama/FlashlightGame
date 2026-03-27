@@ -31,6 +31,12 @@ public class EnemySpawner : MonoBehaviour {
 		SpawnEnemy();
 	}
 
+	private void OnCollisionEnter2D(Collision2D other) {
+		if (other.gameObject.CompareTag("Player")) {
+			PlayerData.Instance.UpdateHealth(25);
+		}
+	}
+
 	private void SpawnEnemy() {
 		// ? Check if we can spawn an enemy (max limit and spawn interval)
 		if (MaxEnemiesReached() || timeSinceLastSpawn < spawnInterval) return;

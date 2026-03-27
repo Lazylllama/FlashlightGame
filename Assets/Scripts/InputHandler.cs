@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FlashlightGame;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,9 +12,10 @@ public class InputHandler : MonoBehaviour {
 		ToggleFlashlight,
 		ToggleModeLeft,
 		ToggleModeRight,
+		NextSentence,
 		Flashlight1,
 		Flashlight2,
-		Flashlight3
+		Mantle
 	}
 
 	#endregion
@@ -24,7 +24,7 @@ public class InputHandler : MonoBehaviour {
 
 	private static DebugHandler Debug;
 
-	private Dictionary<InputActions, InputAction> inputActionsList = new();
+	private readonly Dictionary<InputActions, InputAction> inputActionsList = new();
 
 	#endregion
 
@@ -58,17 +58,10 @@ public class InputHandler : MonoBehaviour {
 
 	private void CheckForTriggeredActions() {
 		foreach (var kvp in inputActionsList.Where(kvp => kvp.Value.WasPressedThisFrame())) {
-			Debug.Log($"Action '{kvp.Key.ToString()}' was triggered", DebugLevel.Debug,
-			          new object[] { });
+			Debug.Log($"Action '{kvp.Key.ToString()}' was triggered", DebugLevel.Debug);
 			switch (kvp.Key) {
 				case InputActions.ToggleFlashlight:
-					if (PlayerData.Instance.Battery < 0) {
-						Debug.LogKv("Battery Empty", DebugLevel.Debug, new object[] {
-							"Battery Level", PlayerData.Instance.Battery
-						});
-						break;
-					}
-
+					//* Let the player turn it on even though the flashlight is dead just as a feature, it will be disabled automatically right after.
 					PlayerData.Instance.FlashlightEnabled = !PlayerData.Instance.FlashlightEnabled;
 					break;
 				case InputActions.ToggleModeLeft:
@@ -83,9 +76,14 @@ public class InputHandler : MonoBehaviour {
 				case InputActions.Flashlight2:
 					PlayerData.Instance.HandleFlashlightModeChange(2);
 					break;
-				case InputActions.Flashlight3:
-					PlayerData.Instance.HandleFlashlightModeChange(3);
+				case InputActions.NextSentence:
+					if (PlayerData.Instance.IsTalking) ConversationHandler.Instance.SkipButtonPressed();
 					break;
+				case InputActions.Mantle:
+					PlayerMovement.Instance.Mantle();
+					break;
+				default:
+					throw new Exception("Unhandled InputAction: " + kvp.Key);
 			}
 		}
 	}

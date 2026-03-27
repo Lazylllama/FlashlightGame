@@ -100,7 +100,6 @@ public class DialogueTrigger: MonoBehaviour
 	    else
 	    {
 		    dialogueIndex = 0;
-
 		    if (npcIndex < dArray.Length - 1)
 		    {
 			    npcIndex++;

@@ -1,8 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using FlashlightGame;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 
 public class PlayerData : MonoBehaviour {
@@ -16,8 +16,13 @@ public class PlayerData : MonoBehaviour {
 	public int  Battery { get; set; } = 100;
 	public bool IsDead  => Health <= 0;
 
-
 	//* Player Data *//
+	private bool isWalkingRight;
+	public bool IsWalkingRight {
+		set => isWalkingRight = value;
+		get => isWalkingRight;
+	}
+
 	private bool isLookingRight;
 	public bool IsLookingRight {
 		set => SetIsLookingRight(value);
@@ -26,15 +31,17 @@ public class PlayerData : MonoBehaviour {
 
 	//* Player States *//
 	public Dictionary<int, bool> FlashlightModesUnlocked { get; private set; } = new Dictionary<int, bool>() {
-		{ 1, true }, // Mode 1 is always unlocked
-		{ 2, true },
-		{ 3, false }
+		{ 1, true }, // TODO: Implement flashlight pickup
+		{ 2, true }, // TODO: Implement flashlight level up (in-lore)
 	};
-	public bool FlashlightEnabled { get; set; }         = true;
+
+	public bool IsTalking         { get; set; }
+	public bool FlashlightEnabled { get; set; }
 	public int  FlashlightMode    { get; private set; } = 1;
+	public bool IsInvulnerable    { get; private set; } = false;
 
 	//* Mood States *//
-	//? Relieved   = player is at a checkpoint.
+	//? Relieved = player is at a checkpoint.
 	//? Frightened = player is/was recently in danger.
 	public bool Frightened { get; set; } = false;
 	public bool Relieved   { get; set; } = false;
@@ -52,6 +59,7 @@ public class PlayerData : MonoBehaviour {
 
 	//* Options *//
 	[SerializeField] private float batteryDrainInterval = 1f;
+	[SerializeField] private float invulnerabiltyTime   = 1f;
 
 	//* States *//
 	private float drainTimer;
@@ -79,9 +87,19 @@ public class PlayerData : MonoBehaviour {
 	/// Update the player's battery by the specified difference. Clamps between 0 and 100.
 	/// </summary>
 	/// <param name="difference">-100 to +100 Health Points</param>
-	private void UpdateHealth(int difference) {
+	public void UpdateHealth(int difference) {
+		Health += difference;
+		Health =  Mathf.Clamp(Health, 0, 100);
+		
 		UIController.Instance.UpdateUI();
-		Health = Mathf.Clamp(Health + difference, 0, 100);
+
+		if (IsDead) OnDeath(); 
+		else StartCoroutine(MakeInvulnerable());
+	}
+
+	private void OnDeath() {
+		Debug.Log("Player died, respawning...");
+		RespawnManager.Instance.Respawn(PlayerMovement.Instance.gameObject);
 	}
 
 	/// <summary>
@@ -141,29 +159,35 @@ public class PlayerData : MonoBehaviour {
 	//! Private Functions
 	/// Set whether the player is looking right.
 	private void SetIsLookingRight(bool value) {
+		if (!GameController.Instance || !GameController.Instance.InActiveGame) return;
+
 		isLookingRight = value;
-		var controller = PlayerController.Instance;
+
+		var controller           = PlayerController.Instance;
 		var flashlightController = FlashlightController.Instance;
-		if (controller != null) {
+		if (controller) {
 			controller.UpdateDirection();
 		}
-		if (flashlightController != null) {
+
+		if (flashlightController) {
 			flashlightController.UpdateDirection();
 		}
 	}
 
 	private void HandleBatteryDrain() {
+		//* Return before timer to avoid abusing timer by turning flashlight on off repeatedly...
+		if (!FlashlightEnabled) return;
+
 		//? Timer
 		drainTimer += Time.deltaTime;
 
-		if (!FlashlightEnabled || batteryDrainInterval > drainTimer) return;
+		if (batteryDrainInterval > drainTimer) return;
 
-		Debug.Log("Draining Battery by 1", DebugLevel.Debug);
+		Battery           -= 1;
+		Battery           =  Mathf.Clamp(Battery, 0, 100);
+		FlashlightEnabled =  Battery > 0;
+		drainTimer        =  0f;
 
-		Battery           = Mathf.Clamp(Battery--, 0, 100);
-		FlashlightEnabled = Battery > 0;
-		drainTimer        = 0f;
-		
 		UIController.Instance.UpdateUI();
 	}
 
@@ -176,6 +200,16 @@ public class PlayerData : MonoBehaviour {
 
 			Debug.Log("PlayerData initialized.");
 		}
+	}
+
+	#endregion
+
+	#region Coroutines
+
+	private IEnumerator MakeInvulnerable() {
+		IsInvulnerable = true;
+		yield return new WaitForSeconds(invulnerabiltyTime);
+		IsInvulnerable = false;
 	}
 
 	#endregion

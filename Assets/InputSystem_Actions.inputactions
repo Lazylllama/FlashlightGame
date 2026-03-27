@@ -16,7 +16,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "MantleClimb",
+                    "name": "Mantle",
                     "type": "Button",
                     "id": "852140f2-7766-474d-8707-702459ba45f3",
                     "expectedControlType": "",
@@ -79,15 +79,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Flashlight3",
-                    "type": "Button",
-                    "id": "148598e6-d853-4b28-89ef-abe050800265",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "ToggleModeRight",
                     "type": "Button",
                     "id": "ae203860-4684-4f05-8c3e-a70dab33d1bc",
@@ -118,6 +109,15 @@
                     "name": "ToggleLever",
                     "type": "Button",
                     "id": "a8dcf462-b70e-4dab-9027-087f3c8c5b74",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "NextSentence",
+                    "type": "Button",
+                    "id": "ca90bbc4-f948-46bb-8e39-34523b895034",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -319,7 +319,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "MantleClimb",
+                    "action": "Mantle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -330,7 +330,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "MantleClimb",
+                    "action": "Mantle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -402,17 +402,6 @@
                 },
                 {
                     "name": "",
-                    "id": "0b7d01eb-10be-43a9-8a02-b8a7f7fe0ffd",
-                    "path": "<Keyboard>/3",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Flashlight3",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "abfa2788-b627-4146-acc8-3b373cc4f196",
                     "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
@@ -441,6 +430,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "62c82340-f2df-4bb9-96d8-87ac8e54960f",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "NextSentence",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
