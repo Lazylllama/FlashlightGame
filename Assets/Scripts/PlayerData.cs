@@ -12,8 +12,8 @@ public class PlayerData : MonoBehaviour {
 	private static DebugHandler Debug;
 
 	//* Player Stats *//
-	public int  Health  { get; private set; } = 100;
-	public int  Battery { get; private set; } = 100;
+	public int  Health  { get; set; }         = 100;
+	public int  Battery { get; set; } = 100;
 	public bool IsDead  => Health <= 0;
 
 	//* Player Data *//
