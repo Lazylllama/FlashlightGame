@@ -172,37 +172,36 @@ public class DebugHandler {
 
 	#region Compatibility
 
-	public static void DrawRay(Vector3 start, Vector3 dir, Color color, float duration = 0, bool depthTest = true) =>
+	public void DrawRay(Vector3 start, Vector3 dir, Color color, float duration = 0, bool depthTest = true) =>
 		Debug.DrawRay(start, dir, color, duration, depthTest);
 
-	public static void DrawLine(Vector3 start, Vector3 end, Color color, float duration = 0, bool depthTest = true) =>
+	public void DrawLine(Vector3 start, Vector3 end, Color color, float duration = 0, bool depthTest = true) =>
 		Debug.DrawLine(start, end, color, duration, depthTest);
 
-	public static void Assert(bool condition, string message) => Debug.Assert(condition, message);
+	public void Assert(bool condition, string message) => Debug.Assert(condition, message);
 
-	public static void AssertFormat(bool condition, string format, params object[] args) =>
+	public void AssertFormat(bool condition, string format, params object[] args) =>
 		Debug.AssertFormat(condition, format, args);
 
-	public static void LogErrorFormat(string format, params object[] args) => Debug.LogErrorFormat(format, args);
+	public void LogErrorFormat(string format, params object[] args) => Debug.LogErrorFormat(format, args);
 
-	public static void LogWarningFormat(string format, params object[] args) => Debug.LogWarningFormat(format, args);
+	public void LogWarningFormat(string format, params object[] args) => Debug.LogWarningFormat(format, args);
 
-	public static void LogFormat(string format, params object[] args) => Debug.LogFormat(format, args);
+	public void LogFormat(string format, params object[] args) => Debug.LogFormat(format, args);
 
-	public static Debug.StartupLog[] RetrieveStartupLogs() => Debug.RetrieveStartupLogs();
+	public Debug.StartupLog[] RetrieveStartupLogs() => Debug.RetrieveStartupLogs();
 
-	public static void ClearDeveloperConsole() => Debug.ClearDeveloperConsole();
+	public void ClearDeveloperConsole() => Debug.ClearDeveloperConsole();
 
-	public static bool IsValidationLevelEnabled(ValidationLevel lvl) => Debug.IsValidationLevelEnabled(lvl);
+	public bool IsValidationLevelEnabled(ValidationLevel lvl) => Debug.IsValidationLevelEnabled(lvl);
 
-	public static void Break() => Debug.Break();
+	public void Break() => Debug.Break();
 
-	public static void DebugBreak() => Debug.DebugBreak();
+	public void DebugBreak() => Debug.DebugBreak();
 
-	public static void LogAssertion(string message) => Debug.LogAssertion(message);
+	public void LogAssertion(string message) => Debug.LogAssertion(message);
 
-	public static void LogAssertionFormat(string format, params object[] args) =>
-		Debug.LogAssertionFormat(format, args);
+	public void LogAssertionFormat(string format, params object[] args) => Debug.LogAssertionFormat(format, args);
 
 	#endregion
 }
