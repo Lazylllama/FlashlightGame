@@ -1,16 +1,13 @@
 fileFormatVersion: 2
-guid: 4b3f02415c8c1884d89786210f099828
+guid: b112f9d8b6229c042b45ad85642f255f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5876301747861196741
-    second: fini TILES_0
+      213: 419375476068300193
+    second: icon-512.png_0
   - first:
-      213: -1711690477923150164
-    second: fini TILES_1
-  - first:
-      213: 6813692751098977464
-    second: fini TILES_2
+      213: 5826724387753316434
+    second: icon-512.png_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -52,7 +49,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -106,13 +103,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: fini TILES_0
+      name: icon-512.png_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1920
-        height: 219
+        width: 483
+        height: 482
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -121,20 +118,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5cf06424e41dc8150800000000000000
-      internalID: 5876301747861196741
+      spriteID: 1a5bf8606cbe1d500800000000000000
+      internalID: 419375476068300193
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: fini TILES_1
+      name: icon-512.png_1
       rect:
         serializedVersion: 2
-        x: 148
-        y: 206
-        width: 6
-        height: 8
+        x: 482
+        y: 91
+        width: 19
+        height: 103
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -143,30 +140,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ca6d8f9449ade38e0800000000000000
-      internalID: -1711690477923150164
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: fini TILES_2
-      rect:
-        serializedVersion: 2
-        x: 1235
-        y: 204
-        width: 6
-        height: 7
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 8bc98e5e4791f8e50800000000000000
-      internalID: 6813692751098977464
+      spriteID: 250542895feacd050800000000000000
+      internalID: 5826724387753316434
       vertices: []
       indices: 
       edges: []
@@ -175,7 +150,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -185,9 +160,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      fini TILES_0: 5876301747861196741
-      fini TILES_1: -1711690477923150164
-      fini TILES_2: 6813692751098977464
+      icon-512.png_0: 419375476068300193
+      icon-512.png_1: 5826724387753316434
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

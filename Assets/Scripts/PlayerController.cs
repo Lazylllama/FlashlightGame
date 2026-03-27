@@ -28,9 +28,6 @@ public class PlayerController : MonoBehaviour {
 		playerSprite = GetComponentInChildren<SpriteRenderer>();
 		playerRb     = GetComponent<Rigidbody2D>();
 
-		//* Freeze Player in place *//
-		playerRb.bodyType = RigidbodyType2D.Static;
-
 		UpdateDirection();
 	}
 
@@ -45,13 +42,6 @@ public class PlayerController : MonoBehaviour {
 		if (!PlayerData.Instance) return;
 		var rotationY = PlayerData.Instance.IsLookingRight ? 0 : 180;
 		playerSprite.transform.rotation = new Quaternion(0, rotationY, 0, 0);
-	}
-
-	/// <summary>
-	/// Set the player back to dynamic body type
-	/// </summary>
-	public void StartFall() {
-		playerRb.bodyType = RigidbodyType2D.Dynamic;
 	}
 
 	#endregion

@@ -112,7 +112,6 @@ public class SaveController : MonoBehaviour {
 
             playerObj.transform.position = saveData.playerPosition;
             UIController.Instance.SwitchToGameCams();
-            PlayerController.Instance.StartFall();
             PlayerData.Instance.Health = saveData.health;
             PlayerData.Instance.Battery = saveData.battery;
             PlayerData.Instance.IsLookingRight = saveData.isLookingRight;
