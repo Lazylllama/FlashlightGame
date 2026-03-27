@@ -13,11 +13,15 @@ public class EnemyController : MonoBehaviour {
 	private                  Rigidbody2D    rb;
 
 	[Header("Enemy Options")]
-	[SerializeField] private bool           isGrounded,     isChasing,  facingRight;
-	[SerializeField] private float          detectionRange, baseSpeed, maxHealth;
-	[SerializeField] private Transform      lookPosition,   groundCheck;
-	[SerializeField] private LayerMask      groundLayer;
-	
+	[SerializeField] private bool isGrounded, isChasing, facingRight;
+	[SerializeField] private float     detectionRange, baseSpeed, maxHealth;
+	[SerializeField] private Transform lookPosition,   groundCheck;
+	[SerializeField] private LayerMask groundLayer;
+
+	[Header("Sound")]
+	[SerializeField] private AudioManager.AudioName soundName;
+	[SerializeField] private string animatorName;
+	[SerializeField] private float  soundInterval;
 
 	[Header("Teleport Settings")]
 	[SerializeField] private float teleportCooldown = 1.2f;
@@ -29,10 +33,12 @@ public class EnemyController : MonoBehaviour {
 
 
 	//* States
-	private Vector3  teleportPoint;
-	private Vector2? target;
-	private float    health, enemySpeed;
-	private bool     canTeleport;
+	private AudioSource audioSource;
+	private Animator    animator;
+	private Vector2?    target;
+	private Vector3     teleportPoint;
+	private float       health, enemySpeed;
+	private bool        canTeleport;
 
 	#endregion
 
@@ -43,9 +49,13 @@ public class EnemyController : MonoBehaviour {
 	}
 
 	private void Start() {
-		rb         = GetComponent<Rigidbody2D>();
-		health     = maxHealth;
-		enemySpeed = baseSpeed;
+		rb          = GetComponent<Rigidbody2D>();
+		audioSource = GetComponent<AudioSource>();
+		animator    = GetComponent<Animator>();
+		health      = maxHealth;
+		enemySpeed  = baseSpeed;
+
+		if (soundInterval > 0) StartCoroutine(SoundRoutine());
 	}
 
 	private void Update() {
@@ -91,21 +101,21 @@ public class EnemyController : MonoBehaviour {
 		var wallHit = Lib.Movement.WallCheck(lookPosition.position, facingRight);
 		
 
-		if (wallHit.collider != null && !isChasing) {
-			if (facingRight && isGrounded) {
-				facingRight = false;
-			} else if (!facingRight && isGrounded) {
-				facingRight = true;
-			}
-		}
+		if (!wallHit.collider || isChasing) return;
+
+		facingRight = facingRight switch {
+			true when isGrounded  => false,
+			false when isGrounded => true,
+			_                     => facingRight
+		};
 	}
 
 	private void CheckClimbableWall() {
 		canTeleport = false;
-		
+
 		if (!Lib.Movement.ClimbWallCheck(lookPosition.position, facingRight) ||
 		    !Lib.Movement.MantleWallCheck(lookPosition.position, facingRight)) return;
-		
+
 		var climbPoint = Lib.Movement.GetWallClimbPoint(transform.position, facingRight);
 
 		Debug.Log(climbPoint);
@@ -182,6 +192,26 @@ public class EnemyController : MonoBehaviour {
 	#endregion
 
 	#region Coroutines
+
+	private IEnumerator SoundRoutine() {
+		var interval = Mathf.Max(0.01f, soundInterval);
+
+		// repeat while the enemy is alive
+		while (health > 0f) {
+			Debug.Log("Playing enemy sound.");
+
+			if (audioSource) {
+				if (animator && animatorName.Length > 0)
+					animator.SetTrigger(animatorName);
+				AudioManager.Instance.PlaySfx(soundName, audioSource);
+			} else {
+				Debug.LogWarning("AudioSource component missing on EnemyController. Sound will not play.");
+			}
+
+			// wait for the configured interval before playing again
+			yield return new WaitForSeconds(interval);
+		}
+	}
 
 	#endregion
 }
