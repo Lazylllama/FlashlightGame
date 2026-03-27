@@ -1,4 +1,6 @@
 using FlashlightGame;
+using TMPro;
+using UnityEditor.U2D.Tooling.Analyzer;
 using UnityEngine;
 
 public class GameController : MonoBehaviour {
@@ -6,10 +8,11 @@ public class GameController : MonoBehaviour {
 
 	public static  GameController Instance;
 	private static DebugHandler   Debug;
+	
 
 	//* Data *//
 	public bool InActiveGame { get; set; } = false;
-
+	
 	//* State *//
 
 	#endregion
@@ -30,6 +33,8 @@ public class GameController : MonoBehaviour {
 		Debug.Log("Starting new game...", DebugLevel.Debug);
 		UIController.Instance.InitiatePlayerFall();
 	}
+	
+	
 
 	/// Register the PlayerData instance.
 	private static void RegisterInstance(GameController instance) {

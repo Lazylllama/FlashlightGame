@@ -175,6 +175,11 @@ public class PlayerMovement : MonoBehaviour {
 		if (!isGrounded || !canMantle || mantleRoutineState != null) return;
 		mantleRoutineState = StartCoroutine(MantleRoutine());
 	}
+	
+	public void Respawn(Vector3 position) {
+		playerRb.linearVelocity = Vector2.zero;
+		transform.position      = position;
+	}
 
 	#endregion
 

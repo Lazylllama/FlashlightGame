@@ -10,10 +10,6 @@ public class DialogueArray
 	public string[]   dialogue;
 	public Sprite     sprite;
 	public string     names;
-	public GameObject characterObj;
-	public Vector2    cMove;
-	public float      cMoveSpeed;
-
 }
 
 //THE MOVE PART IS UNDER BETA TESTING GUYS NOT RELIABLE 
@@ -55,7 +51,6 @@ public class DialogueTrigger: MonoBehaviour
 
 	    InitiateDialogue();
 	    UpdateUI();
-	    MoveToTarget(npcIndex);
 	    CheckMovementLock();
     }
     #endregion
@@ -93,24 +88,6 @@ public class DialogueTrigger: MonoBehaviour
 	    nPCnameText.text = dArray[npcIndex].names;
     }
     
-    void MoveToTarget(int index)
-    {
-	    Vector3 cur = dArray[index].characterObj.transform.position;
-
-	    Vector3 target = new Vector3(
-	                                 dArray[index].cMove.x,
-	                                 dArray[index].cMove.y,
-	                                 cur.z
-	                                );
-
-	    dArray[index].characterObj.transform.position =
-		    Vector3.MoveTowards(
-		                        cur,
-		                        target,
-		                        dArray[index].cMoveSpeed * Time.deltaTime   // constant speed
-		                       );
-    }
-
 
     private void NextLine()
     {

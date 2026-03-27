@@ -10,31 +10,47 @@ public class ParticleController : MonoBehaviour {
 
 	[Header("Settings")]
 	[Range(-20f, 20.0f)] [SerializeField] private float afterMovement;
-	[Range(0, 0.2f)] [SerializeField] private float dustPeriod;
-	[Range(-5f, 5f)] [SerializeField]  private float dustLocalOffsetY;
+	[Range(0,    0.2f)] [SerializeField] private float dustPeriod;
+	[Range(-5f,  5f)] [SerializeField]   private float dustLocalOffsetY;
 
 	//* State *//
 	private float counter;
-	private bool  onGround;
+	private int   groundCount;
+	private bool  OnGround => groundCount > 0;
+	private int   groundLayer;
 
 	#endregion
+
 	#region Unity Functions
 
+	private void Awake() {
+		groundLayer = LayerMask.NameToLayer("Ground");
+	}
+
 	private void OnTriggerEnter2D(Collider2D collision) {
-		if (!collision.CompareTag("Ground")) return;
+		if (collision.gameObject.layer != groundLayer) return;
+
 
 		// ? Emit fall particles
-		foreach (var particle in fallParticles) {
-			particle.Play();
+		if (groundCount == 0) {
+			foreach (var particle in fallParticles) {
+				particle.Play();
+			}
+
+			counter = 0;
 		}
 
-		onGround = true;
+		groundCount++;
+
+		Debug.Log($"On Ground (count: {groundCount})");
 	}
 
 	private void OnTriggerExit2D(Collider2D collision) {
-		if (collision.CompareTag("Ground")) {
-			onGround = false;
-		}
+		if (collision.gameObject.layer != groundLayer) return;
+		groundCount = Mathf.Max(0, groundCount - 1);
+
+
+		Debug.Log($"On Ground (count: {groundCount})");
 	}
 
 	#endregion
@@ -50,18 +66,19 @@ public class ParticleController : MonoBehaviour {
 
 		//? Update counter
 		counter += Time.deltaTime;
-		
-		if (!onGround || counter <= dustPeriod) return;
+		if (!OnGround || counter <= dustPeriod) return;
 
 		//? Move dust particles to the correct side and emit
 		foreach (var particle in dustParticles) {
 			particle.transform.localPosition = new Vector3(-Mathf.Sign(deltaX) * afterMovement, dustLocalOffsetY, 0);
 
 			particle.Emit(1);
+			
 		}
 
 		//? Reset counter
 		counter = 0;
 	}
+
 	#endregion
 }

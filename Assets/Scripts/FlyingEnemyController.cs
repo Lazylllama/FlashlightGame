@@ -48,7 +48,7 @@ public class FlyingEnemyController : MonoBehaviour {
 	
 	private void OnCollisionEnter2D(Collision2D other) {
 		if (PlayerData.Instance.IsInvulnerable == false && other.gameObject.CompareTag("Player")) {
-			PlayerData.Instance.UpdateHealth(25);
+			PlayerData.Instance.UpdateHealth(-25);
 		}
 	}
 	

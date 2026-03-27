@@ -40,7 +40,7 @@ public class UIController : MonoBehaviour {
 
 	#region Functions
 
-	private void SwitchToGameCams() {
+	public void SwitchToGameCams() {
 		mainMenuOverlayCamera.enabled = false;
 		StartCoroutine(FadeBetweenCams(
 		                               mainMenuCinemachine,

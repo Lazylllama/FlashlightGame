@@ -12,8 +12,8 @@ public class PlayerData : MonoBehaviour {
 	private static DebugHandler Debug;
 
 	//* Player Stats *//
-	public int  Health  { get; private set; } = 100;
-	public int  Battery { get; private set; } = 100;
+	public int  Health  { get; set; }         = 100;
+	public int  Battery { get; set; } = 100;
 	public bool IsDead  => Health <= 0;
 
 	//* Player Data *//
@@ -88,12 +88,18 @@ public class PlayerData : MonoBehaviour {
 	/// </summary>
 	/// <param name="difference">-100 to +100 Health Points</param>
 	public void UpdateHealth(int difference) {
+		Health += difference;
+		Health =  Mathf.Clamp(Health, 0, 100);
+		
 		UIController.Instance.UpdateUI();
 
-		Health += difference;
-		Health = Mathf.Clamp(Health, 0, 100);
+		if (IsDead) OnDeath(); 
+		else StartCoroutine(MakeInvulnerable());
+	}
 
-		StartCoroutine(MakeInvulnerable());
+	private void OnDeath() {
+		Debug.Log("Player died, respawning...");
+		RespawnManager.Instance.Respawn(PlayerMovement.Instance.gameObject);
 	}
 
 	/// <summary>
