@@ -88,9 +88,11 @@ public class PlayerData : MonoBehaviour {
 	/// </summary>
 	/// <param name="difference">-100 to +100 Health Points</param>
 	public void UpdateHealth(int difference) {
-		print("UPDATED HEALTH!!!");
 		UIController.Instance.UpdateUI();
-		Health = Mathf.Clamp(Health + difference, 0, 100);
+
+		Health += difference;
+		Health = Mathf.Clamp(Health, 0, 100);
+
 		StartCoroutine(MakeInvulnerable());
 	}
 
@@ -195,6 +197,7 @@ public class PlayerData : MonoBehaviour {
 	}
 
 	#endregion
+
 	#region Coroutines
 
 	private IEnumerator MakeInvulnerable() {
@@ -202,5 +205,6 @@ public class PlayerData : MonoBehaviour {
 		yield return new WaitForSeconds(invulnerabiltyTime);
 		IsInvulnerable = false;
 	}
+
 	#endregion
 }
