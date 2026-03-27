@@ -7,10 +7,10 @@ public class EnemyController : MonoBehaviour {
 	#region Fields
 
 	private static DebugHandler Debug;
-	
+
 	[Header("Refs")]
-	[SerializeField] private TMP_Text       overheadText;
-	private                  Rigidbody2D    rb;
+	[SerializeField] private TMP_Text overheadText;
+	private Rigidbody2D rb;
 
 	[Header("Enemy Options")]
 	[SerializeField] private bool isGrounded, isChasing, facingRight;
@@ -25,7 +25,7 @@ public class EnemyController : MonoBehaviour {
 
 	[Header("Teleport Settings")]
 	[SerializeField] private float teleportCooldown = 1.2f;
-	private                  float teleportTimer;
+	private float teleportTimer;
 
 	[Header("Slow Down")]
 	[SerializeField] private float slowDistance = 2f;
@@ -49,13 +49,22 @@ public class EnemyController : MonoBehaviour {
 	}
 
 	private void Start() {
-		rb          = GetComponent<Rigidbody2D>();
-		audioSource = GetComponent<AudioSource>();
-		animator    = GetComponent<Animator>();
-		health      = maxHealth;
-		enemySpeed  = baseSpeed;
+		rb            = GetComponent<Rigidbody2D>();
+		audioSource   = GetComponent<AudioSource>();
+		animator      = GetComponent<Animator>();
+		health        = maxHealth;
+		enemySpeed    = baseSpeed;
+		startPosition = transform.position;
 
 		if (soundInterval > 0) StartCoroutine(SoundRoutine());
+	}
+
+	public void ResetEnemy() {
+		health             = maxHealth;
+		transform.position = startPosition;
+		rb.linearVelocity  = Vector2.zero;
+		isChasing          = false;
+		gameObject.SetActive(true);
 	}
 
 	private void Update() {
@@ -99,7 +108,7 @@ public class EnemyController : MonoBehaviour {
 
 	private void CheckWall() {
 		var wallHit = Lib.Movement.WallCheck(lookPosition.position, facingRight);
-		
+
 
 		if (!wallHit.collider || isChasing) return;
 
@@ -177,7 +186,7 @@ public class EnemyController : MonoBehaviour {
 		health -= amount;
 		UpdateOverheadText();
 
-		if (health <= 0) Destroy(gameObject);
+		if (health <= 0) gameObject.SetActive(false);
 	}
 
 	private void OnDrawGizmos() {
@@ -187,6 +196,8 @@ public class EnemyController : MonoBehaviour {
 		if (!canTeleport) return;
 		Gizmos.DrawSphere(teleportPoint, 0.15f);
 	}
+
+	private Vector3 startPosition;
 
 	#endregion
 

@@ -84,9 +84,19 @@ public class PlayerData : MonoBehaviour {
 	/// Update the player's battery by the specified difference. Clamps between 0 and 100.
 	/// </summary>
 	/// <param name="difference">-100 to +100 Health Points</param>
-	private void UpdateHealth(int difference) {
+	public void UpdateHealth(int difference) {
 		UIController.Instance.UpdateUI();
 		Health = Mathf.Clamp(Health + difference, 0, 100);
+		UIController.Instance.UpdateUI();
+
+		if (IsDead) {
+			OnDeath();
+		}
+	}
+
+	private void OnDeath() {
+		Debug.Log("Player died, respawning...");
+		RespawnManager.Instance.Respawn(PlayerMovement.Instance.gameObject);
 	}
 
 	/// <summary>
