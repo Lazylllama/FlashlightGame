@@ -24,7 +24,7 @@ TagManager:
   - Box
   - Particles
   - FlashlightIgnore
-  - 
+  - Prism
   - Wall
   - MantleWall
   - MainMenuUI
@@ -50,11 +50,11 @@ TagManager:
   - name: Background
     uniqueID: 368273135
     locked: 0
-  - name: Default
-    uniqueID: 0
-    locked: 0
   - name: Ground
     uniqueID: 2062636261
+    locked: 0
+  - name: Default
+    uniqueID: 0
     locked: 0
   - name: Foreground
     uniqueID: 3446458155

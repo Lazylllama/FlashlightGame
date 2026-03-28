@@ -19,7 +19,8 @@ public class EnemyManager : MonoBehaviour {
 		                                                );
 
 		foreach (var enemy in enemies) {
-			enemy.ResetEnemy();
+			//* Conflict or sum shit idk
+			//enemy.ResetEnemy();
 		}
 	}
 }

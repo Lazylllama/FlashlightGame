@@ -43,6 +43,8 @@ public class ConversationHandler : MonoBehaviour {
 
 	private void Start() { 
 		var  test = new Conversation();
+		
+		// lär dig instatio
 		test.Dialogue = new[] {
 			"Hello there! aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "How are you doing today?", "Isn't this a nice day?" };
 		test.OtherPartStart = true;
