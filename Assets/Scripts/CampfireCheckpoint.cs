@@ -18,7 +18,6 @@ public class CampfireCheckpoint : MonoBehaviour
 			if (interactAction.WasPerformedThisFrame()) {
 				bool isActive = saveMenu.activeSelf;
 				saveMenu.SetActive(!isActive);
-				SaveController.Instance.UpdateSlotTexts();
 			}
 		}
 	}
