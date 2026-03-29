@@ -53,6 +53,7 @@ public class SaveControllerUI : MonoBehaviour
 	IEnumerator ShowMessageRoutine()
 	{
 		savedGameText.text = "Saved Game!";
+		AudioManager.Instance.PlaySfx(AudioManager.AudioName.SavedGame, 0.9f);
 
 		yield return new WaitForSeconds(2f);
 
