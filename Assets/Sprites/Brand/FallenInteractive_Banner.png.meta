@@ -1,0 +1,559 @@
+fileFormatVersion: 2
+guid: b534ca64ecd0d2b41801d922aa53f4af
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 4193979864201575852
+    second: FallenInteractive_Banner_0
+  - first:
+      213: 7540482691501474692
+    second: FallenInteractive_Banner_1
+  - first:
+      213: 1951702307798968629
+    second: FallenInteractive_Banner_2
+  - first:
+      213: 6174199594593859656
+    second: FallenInteractive_Banner_3
+  - first:
+      213: -4397009078063590469
+    second: FallenInteractive_Banner_4
+  - first:
+      213: 9153440013525241153
+    second: FallenInteractive_Banner_5
+  - first:
+      213: 6789234093432923975
+    second: FallenInteractive_Banner_6
+  - first:
+      213: -6423361426868612237
+    second: FallenInteractive_Banner_7
+  - first:
+      213: 6873002719609681238
+    second: FallenInteractive_Banner_8
+  - first:
+      213: 4975459571562955991
+    second: FallenInteractive_Banner_9
+  - first:
+      213: 4355237261512224498
+    second: FallenInteractive_Banner_10
+  - first:
+      213: -4151983626266987317
+    second: FallenInteractive_Banner_11
+  - first:
+      213: -6604667330965614811
+    second: FallenInteractive_Banner_12
+  - first:
+      213: -1422600417264783835
+    second: FallenInteractive_Banner_13
+  - first:
+      213: 7420118519337926341
+    second: FallenInteractive_Banner_14
+  - first:
+      213: -7230310012372003001
+    second: FallenInteractive_Banner_15
+  - first:
+      213: 1173753780348523466
+    second: FallenInteractive_Banner_16
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: FallenInteractive_Banner_0
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 174
+        width: 247
+        height: 255
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cad30e04772043a30800000000000000
+      internalID: 4193979864201575852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FallenInteractive_Banner_1
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 174
+        width: 269
+        height: 259
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4834de58e0d25a860800000000000000
+      internalID: 7540482691501474692
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FallenInteractive_Banner_2
+      rect:
+        serializedVersion: 2
+        x: 546
+        y: 174
+        width: 257
+        height: 255
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 539eaab88e6d51b10800000000000000
+      internalID: 1951702307798968629
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FallenInteractive_Banner_3
+      rect:
+        serializedVersion: 2
+        x: 819
+        y: 174
+        width: 257
+        height: 255
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 848b028a1d92fa550800000000000000
+      internalID: 6174199594593859656
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FallenInteractive_Banner_4
+      rect:
+        serializedVersion: 2
+        x: 1092
+        y: 174
+        width: 259
+        height: 255
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bb31ad33a8faaf2c0800000000000000
+      internalID: -4397009078063590469
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FallenInteractive_Banner_5
+      rect:
+        serializedVersion: 2
+        x: 1365
+        y: 174
+        width: 273
+        height: 255
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14dc40ff13d870f70800000000000000
+      internalID: 9153440013525241153
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FallenInteractive_Banner_6
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 1
+        width: 84
+        height: 138
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7476a04ef64383e50800000000000000
+      internalID: 6789234093432923975
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FallenInteractive_Banner_7
+      rect:
+        serializedVersion: 2
+        x: 94
+        y: 1
+        width: 166
+        height: 138
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 373dc8f80d2abd6a0800000000000000
+      internalID: -6423361426868612237
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FallenInteractive_Banner_8
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 1
+        width: 161
+        height: 138
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 655f0aa0f8fc16f50800000000000000
+      internalID: 6873002719609681238
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FallenInteractive_Banner_9
+      rect:
+        serializedVersion: 2
+        x: 409
+        y: 1
+        width: 169
+        height: 138
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d4c3558e126c0540800000000000000
+      internalID: 4975459571562955991
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FallenInteractive_Banner_10
+      rect:
+        serializedVersion: 2
+        x: 575
+        y: 1
+        width: 151
+        height: 138
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2fe2bfcd639e07c30800000000000000
+      internalID: 4355237261512224498
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FallenInteractive_Banner_11
+      rect:
+        serializedVersion: 2
+        x: 744
+        y: 1
+        width: 154
+        height: 138
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc43e1bd3e03166c0800000000000000
+      internalID: -4151983626266987317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FallenInteractive_Banner_12
+      rect:
+        serializedVersion: 2
+        x: 893
+        y: 0
+        width: 183
+        height: 141
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 52fca263e028754a0800000000000000
+      internalID: -6604667330965614811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FallenInteractive_Banner_13
+      rect:
+        serializedVersion: 2
+        x: 1055
+        y: 1
+        width: 162
+        height: 138
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 52e2c9f2578e14ce0800000000000000
+      internalID: -1422600417264783835
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FallenInteractive_Banner_14
+      rect:
+        serializedVersion: 2
+        x: 1234
+        y: 1
+        width: 84
+        height: 138
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5ce3f68da7e89f660800000000000000
+      internalID: 7420118519337926341
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FallenInteractive_Banner_15
+      rect:
+        serializedVersion: 2
+        x: 1313
+        y: 1
+        width: 167
+        height: 138
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 747dd900a57c8ab90800000000000000
+      internalID: -7230310012372003001
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FallenInteractive_Banner_16
+      rect:
+        serializedVersion: 2
+        x: 1472
+        y: 1
+        width: 169
+        height: 138
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac3127b28d20a4010800000000000000
+      internalID: 1173753780348523466
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      FallenInteractive_Banner_0: 4193979864201575852
+      FallenInteractive_Banner_1: 7540482691501474692
+      FallenInteractive_Banner_10: 4355237261512224498
+      FallenInteractive_Banner_11: -4151983626266987317
+      FallenInteractive_Banner_12: -6604667330965614811
+      FallenInteractive_Banner_13: -1422600417264783835
+      FallenInteractive_Banner_14: 7420118519337926341
+      FallenInteractive_Banner_15: -7230310012372003001
+      FallenInteractive_Banner_16: 1173753780348523466
+      FallenInteractive_Banner_2: 1951702307798968629
+      FallenInteractive_Banner_3: 6174199594593859656
+      FallenInteractive_Banner_4: -4397009078063590469
+      FallenInteractive_Banner_5: 9153440013525241153
+      FallenInteractive_Banner_6: 6789234093432923975
+      FallenInteractive_Banner_7: -6423361426868612237
+      FallenInteractive_Banner_8: 6873002719609681238
+      FallenInteractive_Banner_9: 4975459571562955991
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

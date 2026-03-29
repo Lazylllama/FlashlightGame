@@ -2,20 +2,21 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using FlashlightGame;
+using Unity.Mathematics;
 
 public class EnemyController : MonoBehaviour {
 	#region Fields
 
 	private static DebugHandler Debug;
-
+	
 	[Header("Refs")]
-	[SerializeField] private TMP_Text overheadText;
-	private Rigidbody2D rb;
+	[SerializeField] private TMP_Text       overheadText;
+	private                  Rigidbody2D rb;
 
 	[Header("Enemy Options")]
-	[SerializeField] private bool isGrounded, isChasing, facingRight;
-	[SerializeField] private float     detectionRange, baseSpeed, maxHealth;
-	[SerializeField] private Transform lookPosition,   groundCheck;
+	[SerializeField] private bool isGrounded, isChasing, facingRight, flyingEnemy;
+	[SerializeField] private float     detectionRange, baseSpeed, maxHealth, floatHeight;
+	[SerializeField] private Transform lookPosition,   groundCheck, borderLeft, borderRight;
 	[SerializeField] private LayerMask groundLayer;
 
 	[Header("Sound")]
@@ -25,7 +26,7 @@ public class EnemyController : MonoBehaviour {
 
 	[Header("Teleport Settings")]
 	[SerializeField] private float teleportCooldown = 1.2f;
-	private float teleportTimer;
+	private                  float teleportTimer;
 
 	[Header("Slow Down")]
 	[SerializeField] private float slowDistance = 2f;
@@ -36,9 +37,10 @@ public class EnemyController : MonoBehaviour {
 	private AudioSource audioSource;
 	private Animator    animator;
 	private Vector2?    target;
-	private Vector3     teleportPoint;
+	private Vector3     teleportPoint, pathFindPoint, borderLeftPos, borderRightPos;
 	private float       health, enemySpeed;
 	private bool        canTeleport;
+	private Coroutine   teleportRoutineState, pathfindingRoutineState;
 
 	#endregion
 
@@ -49,33 +51,29 @@ public class EnemyController : MonoBehaviour {
 	}
 
 	private void Start() {
-		rb            = GetComponent<Rigidbody2D>();
-		audioSource   = GetComponent<AudioSource>();
-		animator      = GetComponent<Animator>();
-		health        = maxHealth;
-		enemySpeed    = baseSpeed;
-		startPosition = transform.position;
+		rb             = GetComponent<Rigidbody2D>();
+		audioSource    = GetComponent<AudioSource>();
+		animator       = GetComponent<Animator>();
+		health         = maxHealth;
+		enemySpeed     = baseSpeed;
+		borderLeftPos  = borderLeft.position;
+		borderRightPos = borderRight.position;
+
+		if (flyingEnemy) rb.gravityScale = 0;
 
 		if (soundInterval > 0) StartCoroutine(SoundRoutine());
 	}
 
-	public void ResetEnemy() {
-		health             = maxHealth;
-		transform.position = startPosition;
-		rb.linearVelocity  = Vector2.zero;
-		isChasing          = false;
-		gameObject.SetActive(true);
-	}
-
 	private void Update() {
 		isGrounded = Lib.Movement.GroundCheck(groundCheck.position, 0.2f);
-		LedgeCheck();
-		HandleTeleport();
 		CheckForTarget();
 		UpdateOverheadText();
 		TurnEnemy();
 		CheckMantleWall();
 		CheckWall();
+		CheckBorder();
+		if(!flyingEnemy) LedgeCheck();
+		if (flyingEnemy) CheckFloatHeight();
 	}
 
 	private void FixedUpdate() {
@@ -84,13 +82,21 @@ public class EnemyController : MonoBehaviour {
 	
 	private void OnCollisionEnter2D(Collision2D other) {
 		if (PlayerData.Instance.IsInvulnerable == false && other.gameObject.CompareTag("Player")) {
-			PlayerData.Instance.UpdateHealth(-25);
+			PlayerData.Instance.UpdateHealth(25);
 		}
 	}
 
 	#endregion
 
 	#region Functions
+
+	private void CheckBorder() {
+		if (transform.position.x < borderLeftPos.x) {
+			facingRight = true;
+		} else if (transform.position.x > borderRightPos.x) {
+			facingRight = false;
+		}
+	}
 
 	private void CheckForTarget() {
 		var playerPosition   = PlayerMovement.Instance.transform.position;
@@ -114,9 +120,9 @@ public class EnemyController : MonoBehaviour {
 
 	private void CheckWall() {
 		var wallHit = Lib.Movement.WallCheck(lookPosition.position, facingRight);
+		
 
-
-		if (!wallHit.collider || isChasing) return;
+		if (!wallHit.collider || isChasing || teleportRoutineState != null) return;
 
 		facingRight = facingRight switch {
 			true when isGrounded  => false,
@@ -126,10 +132,9 @@ public class EnemyController : MonoBehaviour {
 	}
 
 	private void CheckMantleWall() {
-		canTeleport = false;
-
+		if (teleportRoutineState != null || pathfindingRoutineState != null) return;
 		if (!Lib.Movement.MantleWallCheck(lookPosition.position, facingRight)) return;
-
+		
 		var mantlePoint = Lib.Movement.GetWallMantlePoint(transform.position, facingRight);
 
 		Debug.Log(mantlePoint);
@@ -138,8 +143,21 @@ public class EnemyController : MonoBehaviour {
 			return;
 		}
 
-		teleportPoint = mantlePoint.Position;
-		canTeleport   = true;
+		if (!flyingEnemy) {
+			teleportPoint        = mantlePoint.Position;
+			teleportRoutineState = StartCoroutine(HandleTeleport());
+		} else {
+			var pathfindHit = Physics2D.Raycast(mantlePoint.Position, Vector2.down, 10000f, groundLayer);
+			if (!pathfindHit.collider) {
+				print("ERROR: Pathfind ground not found!");
+				return;
+			}
+			pathFindPoint = new Vector3(pathfindHit.point.x, pathfindHit.point.y + floatHeight, transform.position.z);
+			print("Start pathfinding!");
+			pathfindingRoutineState = StartCoroutine(HandlePathFinding());
+		}
+		
+		
 
 
 		if (mantlePoint.Distance < slowDistance) {
@@ -148,20 +166,6 @@ public class EnemyController : MonoBehaviour {
 		} else {
 			enemySpeed = baseSpeed;
 		}
-	}
-
-	private void HandleTeleport() {
-		if (!canTeleport) {
-			teleportTimer = 0f;
-			return;
-		}
-
-		teleportTimer += Time.deltaTime;
-
-		if (teleportTimer < teleportCooldown) return;
-		transform.position = teleportPoint;
-
-		teleportTimer = 0f;
 	}
 
 	private void ChaseTarget() {
@@ -192,18 +196,38 @@ public class EnemyController : MonoBehaviour {
 		health -= amount;
 		UpdateOverheadText();
 
-		if (health <= 0) gameObject.SetActive(false);
+		if (health <= 0) Destroy(gameObject);
+	}
+
+	private void CheckFloatHeight() {
+		if (pathfindingRoutineState != null) return;
+		var hit = Physics2D.Raycast(transform.position, Vector2.down, 10000f, groundLayer);
+		if (!hit.collider) {
+			print("ERROR: Float ground not found!");
+			return;
+		}
+
+		var desiredY = hit.point.y + floatHeight;
+		if (transform.position.y < desiredY - 0.1f) {
+			rb.linearVelocityY = baseSpeed;
+		} else if (transform.position.y > desiredY + 0.1f) {
+			rb.linearVelocityY = -baseSpeed;
+		} else {
+			rb.linearVelocityY = 0;
+		}
 	}
 
 	private void OnDrawGizmos() {
 		Gizmos.color = Color.green;
 		Gizmos.DrawWireSphere(transform.position, detectionRange);
-
+		
+		Gizmos.color = Color.rebeccaPurple;
+		Gizmos.DrawSphere(pathFindPoint, 1.0f);
+		Gizmos.color = Color.green;
+		
 		if (!canTeleport) return;
 		Gizmos.DrawSphere(teleportPoint, 0.15f);
 	}
-
-	private Vector3 startPosition;
 
 	#endregion
 
@@ -227,6 +251,39 @@ public class EnemyController : MonoBehaviour {
 			// wait for the configured interval before playing again
 			yield return new WaitForSeconds(interval);
 		}
+	}
+	
+	private IEnumerator HandleTeleport() {
+		yield return new WaitForSecondsRealtime(teleportCooldown);
+
+		transform.position = teleportPoint;
+
+		teleportTimer        = 0f;
+		teleportRoutineState = null;
+	}
+
+	private IEnumerator HandlePathFinding() {
+		bool finishedX = false, finishedY = false;
+		while (!(finishedY && finishedX)) {
+			print("Pathfinding!");
+			if (transform.position.y < pathFindPoint.y) rb.linearVelocityY = baseSpeed;
+			else {
+				print("YFinished!");
+				rb.linearVelocityY = 0;
+				finishedY          = true;
+			}
+			if (math.abs(transform.position.x - pathFindPoint.x) > 0.1f) {
+				rb.linearVelocityX = facingRight ? baseSpeed : -baseSpeed;
+			} else {
+				print("XFinished!");
+				rb.linearVelocityX = 0;
+				finishedX          = true;
+			}
+
+			yield return new WaitForEndOfFrame();
+		}
+
+		pathfindingRoutineState = null;
 	}
 
 	#endregion

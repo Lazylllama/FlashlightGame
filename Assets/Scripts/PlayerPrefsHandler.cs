@@ -17,6 +17,8 @@ public class PlayerPrefsHandler : MonoBehaviour {
 			"DebugLevel", "Warning"
 		}, {
 			"LogFilter", ""
+		}, {
+			"SkipIntroFade", false
 		}
 	};
 

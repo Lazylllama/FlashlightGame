@@ -19,40 +19,52 @@ public class ConversationHandler : MonoBehaviour {
 	public static ConversationHandler Instance;
 
 	[Header("Refs")]
-	[SerializeField] private GameObject      conversationUI;
+	[SerializeField] private GameObject conversationUI;
 	[SerializeField] private TextMeshProUGUI textBox;
 	[SerializeField] private TextMeshProUGUI nameBox;
 	[SerializeField] private Image           image;
 	[SerializeField] private Sprite          playerSprite, otherPartSprite;
-	
+
 	//? Settings
 	[SerializeField] private float conversationSpeed = 0.05f;
-	
+
 	//? States
 	private Conversation currentConversation;
-	
-	public  bool     playerCanWalk = true;
-	private int      currentDialogueIndex;
-	private bool     isTalking;
-	private int      currentLetter;
-	private bool     skipDialogue;
-	
+
+	public  bool playerCanWalk = true;
+	private int  currentDialogueIndex;
+	private bool isTalking;
+	private int  currentLetter;
+	private bool skipDialogue;
+
 	#endregion
 
 	#region Unity Functions
 
-	private void Start() { 
-		var  test = new Conversation();
-		test.Dialogue = new[] {
-			"Hello there! aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "How are you doing today?", "Isn't this a nice day?" };
-		test.OtherPartStart = true;
-		test.OtherPartSprite = otherPartSprite;
-		test.OtherPartName = "Mango";
+	private void Start() {
+		// lär dig instationata och använda klasser i c# du idiot
+		// test.Dialogue = new[] {
+		// 	"Hello there! aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "How are you doing today?", "Isn't this a nice day?" };
+		// test.OtherPartStart = true;
+		// test.OtherPartSprite = otherPartSprite;
+		// test.OtherPartName = "Mango";
+
+		var test = new Conversation() {
+			Dialogue = new[] {
+				"Hella there! aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				"How are you doing today?", "Isn't this a nice day?",
+				"Inte när thino inte kan instatiata klasser rätt jävla idiot"
+			},
+			OtherPartStart = true,
+			OtherPartSprite = otherPartSprite,
+			OtherPartName   = "Mango"
+		};
+
 		StartConversation(test);
 	}
-	
+
 	private void Awake() => RegisterInstance(this);
-	
+
 	#endregion
 
 	#region Functions
@@ -62,24 +74,24 @@ public class ConversationHandler : MonoBehaviour {
 			FinishConversation();
 			return;
 		}
+
 		if (isTalking) {
 			skipDialogue = true;
 		} else {
 			if (isTalking) {
-				isTalking = false;
+				isTalking    = false;
 				image.sprite = currentConversation.OtherPartSprite;
-				
+
 				nameBox.text = currentConversation.OtherPartName;
 			} else {
-				isTalking = true;
+				isTalking    = true;
 				image.sprite = playerSprite;
 				nameBox.text = "Player";
 			}
+
 			currentDialogueIndex++;
 			StartCoroutine(TypeSentence(currentConversation.Dialogue[currentDialogueIndex]));
 		}
-		
-		
 	}
 
 	private void RegisterInstance(ConversationHandler instance) {
@@ -94,7 +106,7 @@ public class ConversationHandler : MonoBehaviour {
 		if (conversation == null) throw new ArgumentNullException(nameof(conversation));
 		currentConversation = conversation;
 		conversationUI.SetActive(true);
-		textBox.text = "";
+		textBox.text                  = "";
 		PlayerData.Instance.IsTalking = true;
 		if (conversation.OtherPartStart) {
 			image.sprite = conversation.OtherPartSprite;
@@ -116,30 +128,32 @@ public class ConversationHandler : MonoBehaviour {
 
 	IEnumerator TypeSentence(string sentence) {
 		isTalking = true;
-		for (int i = 1; i < sentence.Length; i++) { 
+		for (int i = 1; i < sentence.Length; i++) {
 			if (skipDialogue) {
 				textBox.text = sentence;
 				skipDialogue = false;
-				isTalking = false;
+				isTalking    = false;
 				yield break;
 			}
+
 			textBox.text = sentence.Substring(0, i);
 			yield return new WaitForSeconds(conversationSpeed);
 		}
+
 		skipDialogue = false;
-		isTalking = false;
+		isTalking    = false;
 	}
 
 	private void FinishConversation() {
-		isTalking = false;
+		isTalking    = false;
 		skipDialogue = false;
 		conversationUI.SetActive(false);
 		currentDialogueIndex = 0;
-		currentConversation = null;
-		currentLetter = 0;
-		textBox.text = "";
-		nameBox.text = "";
-		image.sprite = null;
+		currentConversation  = null;
+		currentLetter        = 0;
+		textBox.text         = "";
+		nameBox.text         = "";
+		image.sprite         = null;
 	}
 
 	#endregion

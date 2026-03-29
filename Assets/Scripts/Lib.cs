@@ -24,10 +24,13 @@ namespace FlashlightGame {
 
 		#region Classes
 
+		public static class Game {
+		}
+
 		public static class Movement {
 			//* Constants
 			//? Public for gizmos etc
-			public const  float WallCheckDistance   = 1f;
+			public const  float WallCheckDistance   = 1.0f;
 			private const float WallTeleportOffsetY = 2f;
 
 			/// <summary>
@@ -54,9 +57,14 @@ namespace FlashlightGame {
 			/// <param name="origin">Where to check from</param>
 			/// <param name="positiveX">Positive X means isWalkingRight</param>
 			/// <returns>RaycastHit2D</returns>
-			public static RaycastHit2D MantleWallCheck(Vector3 origin, bool positiveX) =>
-				Physics2D.Raycast(origin, positiveX ? Vector2.right : Vector2.left, WallCheckDistance,
-				                  MantleWallLayerMask);
+			public static RaycastHit2D MantleWallCheck(Vector3 origin, bool positiveX) {
+				var hit = Physics2D.Raycast(origin, positiveX ? Vector2.right : Vector2.left, WallCheckDistance,
+				                            MantleWallLayerMask);
+				if (!hit.collider)
+					Debug.DrawRay(origin, positiveX ? Vector2.right : Vector2.left * WallCheckDistance, Color.blue);
+				else Debug.DrawLine(origin, hit.point, Color.purple);
+				return hit;
+			}
 
 			/// <summary>
 			/// Check if a ground layer wall is in front of the origin points look direction.
@@ -78,6 +86,8 @@ namespace FlashlightGame {
 				var origin        = (Vector2)basePosition + Vector2.up * WallCheckDistance;
 				var direction     = positiveX ? Vector2.right : Vector2.left;
 				var mantleWallHit = Physics2D.Raycast(origin, direction, WallCheckDistance, MantleWallLayerMask);
+				if (!mantleWallHit.collider) Debug.DrawRay(origin, direction * WallCheckDistance, Color.blue);
+				else Debug.DrawLine(origin, mantleWallHit.point, Color.purple);
 
 				var defaultReturn = new WallMantlePoint() {
 					Position = Vector3.zero,

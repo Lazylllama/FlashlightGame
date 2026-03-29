@@ -8,11 +8,11 @@ public class GameController : MonoBehaviour {
 
 	public static  GameController Instance;
 	private static DebugHandler   Debug;
-	
+
 
 	//* Data *//
 	public bool InActiveGame { get; set; } = false;
-	
+
 	//* State *//
 
 	#endregion
@@ -31,10 +31,9 @@ public class GameController : MonoBehaviour {
 
 	public void StartNewGame() {
 		Debug.Log("Starting new game...", DebugLevel.Debug);
-		UIController.Instance.InitiatePlayerFall();
+		UIController.Instance.InitiateGameStart();
 	}
-	
-	
+
 
 	/// Register the PlayerData instance.
 	private static void RegisterInstance(GameController instance) {

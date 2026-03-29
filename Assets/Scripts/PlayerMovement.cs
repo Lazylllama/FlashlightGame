@@ -15,9 +15,6 @@ public class PlayerMovement : MonoBehaviour {
 	//* Hash
 	private static readonly int            WalkingDirection = Animator.StringToHash("walkingDirection");
 
-	[Header("Settings")]
-	[SerializeField] private LayerMask groundLayer;
-
 	//* Refs
 	private InputAction        moveAction;
 	private Rigidbody2D        playerRb;
