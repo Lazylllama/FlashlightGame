@@ -3,7 +3,7 @@ using UnityEngine;
 public class RespawnManager : MonoBehaviour {
 	public static RespawnManager Instance { get; private set; }
 
-	private Vector3 respawnPoint;
+	public Vector3 respawnPoint;
 
 	private void Awake() {
 		if (Instance != null && Instance != this) {

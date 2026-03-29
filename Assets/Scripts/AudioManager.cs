@@ -22,7 +22,7 @@ public class AudioManager : MonoBehaviour {
 
 	//? Map index to names
 	public enum AudioName {
-		WingFlap, //0
+		SavedGame, // 0
 	};
 
 	public enum FootstepSurface {

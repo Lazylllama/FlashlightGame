@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,19 +8,20 @@ public class PlayerMovement : MonoBehaviour {
 	#region Fields
 
 	//* Instance
-	public static           PlayerMovement Instance;
-	private static          DebugHandler   Debug;
-	
+	public static  PlayerMovement Instance;
+	private static DebugHandler   Debug;
+
 	//* Hash
-	private static readonly int            WalkingDirection = Animator.StringToHash("walkingDirection");
+	private static readonly int WalkingDirection = Animator.StringToHash("walkingDirection");
 
 	//* Refs
 	private InputAction        moveAction;
 	private Rigidbody2D        playerRb;
 	private ParticleController particleController;
 	private Animator           playerAnimator;
-	
+
 	//? Aiming right and walking left will cause the player to walk blindly/backwards.
+	private static bool IsLookingRight => PlayerData.Instance && PlayerData.Instance.IsLookingRight;
 	private static bool IsWalkingRight {
 		get => PlayerData.Instance && PlayerData.Instance.IsWalkingRight;
 		set {
@@ -72,7 +72,9 @@ public class PlayerMovement : MonoBehaviour {
 		particleController = GetComponentInChildren<ParticleController>();
 		playerAnimator     = GetComponentInChildren<Animator>();
 
-		moveAction   = InputSystem.actions.FindAction("Move");
+		moveAction = InputSystem.actions.FindAction("Move");
+
+		lastPosition = transform.position;
 	}
 
 	private void Update() {
@@ -137,13 +139,18 @@ public class PlayerMovement : MonoBehaviour {
 		var inputSpeed      = moveInputVal.x * maxSpeed;
 		var speedDifference = inputSpeed - playerRb.linearVelocityX;
 		var finalForce      = speedDifference * acceleration;
+		
+		var movement = (Vector2)transform.position - lastPosition;
+		var moveX = movement.x;
 
-		var delta = Vector2.Normalize(lastPosition - (Vector2)transform.position);
+		if (Mathf.Abs(moveX) > 0.1f) {
+			// If moving in the same direction the player is looking it's "forward" (1), otherwise "backward" (-1)
+			var movingRight = moveX > 0f;
+			var walkDirection = movingRight == IsLookingRight ? 1 : -1;
 
-		if (delta != Vector2.zero && Mathf.Abs(delta.x) > 0.1f) {
-			particleController.CrateMovement(delta.x);
+			particleController.CrateMovement(moveX);
 			AudioManager.Instance.PlayFootstepSfx(currentSurface);
-			playerAnimator.SetInteger(WalkingDirection, delta.x < 0 ? 1 : -1);
+			playerAnimator.SetInteger(WalkingDirection, walkDirection);
 		} else {
 			playerAnimator.SetInteger(WalkingDirection, 0);
 		}
@@ -172,7 +179,7 @@ public class PlayerMovement : MonoBehaviour {
 		if (!isGrounded || !canMantle || mantleRoutineState != null) return;
 		mantleRoutineState = StartCoroutine(MantleRoutine());
 	}
-	
+
 	public void Respawn(Vector3 position) {
 		playerRb.linearVelocity = Vector2.zero;
 		transform.position      = position;
