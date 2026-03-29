@@ -1,6 +1,4 @@
 using FlashlightGame;
-using TMPro;
-using UnityEditor.U2D.Tooling.Analyzer;
 using UnityEngine;
 
 public class GameController : MonoBehaviour {
