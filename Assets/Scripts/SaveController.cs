@@ -86,7 +86,6 @@ public class SaveController : MonoBehaviour {
 			PlayerData.Instance.Battery                    = saveData.battery;
 			PlayerData.Instance.IsLookingRight             = saveData.isLookingRight;
 			UIController.Instance.SwitchToGameCams();
-			PlayerController.Instance.StartFall();
 			GameController.Instance.InActiveGame = true;
 
 		} catch (Exception e) {
