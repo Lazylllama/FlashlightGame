@@ -163,9 +163,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b83d0c7054e3964089638a3a87c0976, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 8
   maxSpeed: 16
   acceleration: 5
   groundCheckPosition: {fileID: 3770971208982464766}
@@ -10061,7 +10058,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 1237660001
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: -2
   m_MaskInteraction: 0
   m_RenderMode: 0
@@ -15038,7 +15035,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 1887157377
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: -2
   m_MaskInteraction: 0
   m_RenderMode: 0
@@ -19934,7 +19931,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 1237660001
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: -2
   m_MaskInteraction: 0
   m_RenderMode: 0
@@ -19981,7 +19978,7 @@ GameObject:
   - component: {fileID: 3372813745512499410}
   m_Layer: 0
   m_Name: Flashlight
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19995,7 +19992,7 @@ Transform:
   m_GameObject: {fileID: 8947315786924848605}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.6427876, w: 0.7660445}
-  m_LocalPosition: {x: 1.3084568, y: 0.33353463, z: 0}
+  m_LocalPosition: {x: 1.3084568, y: 0.3335344, z: 0}
   m_LocalScale: {x: 0.25464, y: 0.4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -20052,6 +20049,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1277423520945956340}
     m_Modifications:
+    - target: {fileID: 172744983620587992, guid: 5aadd893fd70b344f87bfc408462933f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.30028385
+      objectReference: {fileID: 0}
+    - target: {fileID: 172744983620587992, guid: 5aadd893fd70b344f87bfc408462933f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.18327741
+      objectReference: {fileID: 0}
     - target: {fileID: 4497971423650885022, guid: 5aadd893fd70b344f87bfc408462933f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
