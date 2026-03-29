@@ -153,6 +153,7 @@ public class EnemyController : MonoBehaviour {
 				return;
 			}
 			pathFindPoint = new Vector3(pathfindHit.point.x, pathfindHit.point.y + floatHeight, transform.position.z);
+			print("Start pathfinding!");
 			pathfindingRoutineState = StartCoroutine(HandlePathFinding());
 		}
 		
@@ -199,6 +200,7 @@ public class EnemyController : MonoBehaviour {
 	}
 
 	private void CheckFloatHeight() {
+		if (pathfindingRoutineState != null) return;
 		var hit = Physics2D.Raycast(transform.position, Vector2.down, 10000f, groundLayer);
 		if (!hit.collider) {
 			print("ERROR: Float ground not found!");
@@ -218,7 +220,11 @@ public class EnemyController : MonoBehaviour {
 	private void OnDrawGizmos() {
 		Gizmos.color = Color.green;
 		Gizmos.DrawWireSphere(transform.position, detectionRange);
-
+		
+		Gizmos.color = Color.rebeccaPurple;
+		Gizmos.DrawSphere(pathFindPoint, 1.0f);
+		Gizmos.color = Color.green;
+		
 		if (!canTeleport) return;
 		Gizmos.DrawSphere(teleportPoint, 0.15f);
 	}
@@ -259,14 +265,17 @@ public class EnemyController : MonoBehaviour {
 	private IEnumerator HandlePathFinding() {
 		bool finishedX = false, finishedY = false;
 		while (!(finishedY && finishedX)) {
+			print("Pathfinding!");
 			if (transform.position.y < pathFindPoint.y) rb.linearVelocityY = baseSpeed;
 			else {
+				print("YFinished!");
 				rb.linearVelocityY = 0;
 				finishedY          = true;
 			}
 			if (math.abs(transform.position.x - pathFindPoint.x) > 0.1f) {
 				rb.linearVelocityX = facingRight ? baseSpeed : -baseSpeed;
 			} else {
+				print("XFinished!");
 				rb.linearVelocityX = 0;
 				finishedX          = true;
 			}
