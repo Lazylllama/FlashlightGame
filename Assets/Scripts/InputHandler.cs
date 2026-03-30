@@ -15,7 +15,8 @@ public class InputHandler : MonoBehaviour {
 		NextSentence,
 		Flashlight1,
 		Flashlight2,
-		Mantle
+		Mantle,
+		Crank
 	}
 
 	#endregion
@@ -82,8 +83,12 @@ public class InputHandler : MonoBehaviour {
 				case InputActions.Mantle:
 					PlayerMovement.Instance.Mantle();
 					break;
+				case InputActions.Crank:
+					PlayerData.Instance.Crank();
+					break;
 				default:
-					throw new Exception("Unhandled InputAction: " + kvp.Key);
+					Debug.LogException(new Exception("Unhandled InputAction: " + kvp.Key));
+					break;
 			}
 		}
 	}

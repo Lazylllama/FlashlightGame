@@ -13,7 +13,7 @@ public class PlayerData : MonoBehaviour {
 
 	//* Player Stats *//
 	public int  Health  { get; set; }         = 100;
-	public int  Battery { get; set; } = 100;
+	public int  Battery { get; set; } = 25;
 	public bool IsDead  => Health <= 0;
 
 	//* Player Data *//
@@ -28,6 +28,8 @@ public class PlayerData : MonoBehaviour {
 		set => SetIsLookingRight(value);
 		get => isLookingRight;
 	}
+
+	private bool lowBattery;
 
 	//* Player States *//
 	public Dictionary<int, bool> FlashlightModesUnlocked { get; private set; } = new Dictionary<int, bool>() {
@@ -83,6 +85,19 @@ public class PlayerData : MonoBehaviour {
 	#region Functions
 
 	//! Public Functions
+	/// <summary>
+	/// Crank that flashlight.
+	/// </summary>
+	public void Crank() {
+		if (Battery >= 100) Debug.Log("Battery is full, cannot crank flashlight.");
+		Battery += 1;
+		Battery =  Mathf.Clamp(Battery, 0, 100);
+		UIController.Instance.UpdateUI();
+		if (Battery <= 20 || !lowBattery) return;
+		lowBattery = false;
+		FlashlightController.Instance.LowBatteryWarning(false);
+	}
+	
 	/// <summary>
 	/// Update the player's battery by the specified difference. Clamps between 0 and 100.
 	/// </summary>
@@ -187,8 +202,12 @@ public class PlayerData : MonoBehaviour {
 		Battery           =  Mathf.Clamp(Battery, 0, 100);
 		FlashlightEnabled =  Battery > 0;
 		drainTimer        =  0f;
-
+		
 		UIController.Instance.UpdateUI();
+		
+		if (Battery > 20 || lowBattery) return;
+		lowBattery = true;
+		FlashlightController.Instance.LowBatteryWarning(true);
 	}
 
 	/// Register the PlayerData instance.

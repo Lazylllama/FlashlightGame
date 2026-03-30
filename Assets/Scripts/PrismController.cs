@@ -49,13 +49,9 @@ public class PrismController : MonoBehaviour
 		
 		if (hit.collider) Debug.DrawLine(start,hit.point, Color.red, 100);
 		if (!hit.collider) Debug.DrawRay(start, direction * range, Color.red, 100);
-
 		
-		print("test1");
 		if (!hit || hit.collider.tag is not ("Enemy" or "WeakPoint")) return;
-		print("test2");
 		if (hit.collider.gameObject.CompareTag("Enemy") || hit.collider.gameObject.CompareTag("WeakPoint")) {
-			print("test3");
 			if (hitList.TryAdd(hit.collider, 1)) return; 
 			hitList[hit.collider]++;
 		}
