@@ -122,7 +122,7 @@ public class EnemyController : MonoBehaviour {
 		var wallHit = Lib.Movement.WallCheck(lookPosition.position, facingRight);
 		
 
-		if (!wallHit.collider || isChasing || teleportRoutineState != null) return;
+		if (!wallHit.collider || isChasing || teleportRoutineState != null || pathfindingRoutineState != null) return;
 
 		facingRight = facingRight switch {
 			true when isGrounded  => false,
@@ -153,7 +153,6 @@ public class EnemyController : MonoBehaviour {
 				return;
 			}
 			pathFindPoint = new Vector3(pathfindHit.point.x, pathfindHit.point.y + floatHeight, transform.position.z);
-			print("Start pathfinding!");
 			pathfindingRoutineState = StartCoroutine(HandlePathFinding());
 		}
 		
@@ -169,6 +168,7 @@ public class EnemyController : MonoBehaviour {
 	}
 
 	private void ChaseTarget() {
+		if (pathfindingRoutineState != null) return;
 		if (target == null) {
 			enemySpeed         = baseSpeed;
 			isChasing          = false;
@@ -221,10 +221,6 @@ public class EnemyController : MonoBehaviour {
 		Gizmos.color = Color.green;
 		Gizmos.DrawWireSphere(transform.position, detectionRange);
 		
-		Gizmos.color = Color.rebeccaPurple;
-		Gizmos.DrawSphere(pathFindPoint, 1.0f);
-		Gizmos.color = Color.green;
-		
 		if (!canTeleport) return;
 		Gizmos.DrawSphere(teleportPoint, 0.15f);
 	}
@@ -255,36 +251,30 @@ public class EnemyController : MonoBehaviour {
 	
 	private IEnumerator HandleTeleport() {
 		yield return new WaitForSecondsRealtime(teleportCooldown);
-
 		transform.position = teleportPoint;
-
 		teleportTimer        = 0f;
 		teleportRoutineState = null;
 	}
 
 	private IEnumerator HandlePathFinding() {
 		bool finishedX = false, finishedY = false;
-		while (!(finishedY && finishedX)) {
-			print("Pathfinding!");
-			if (transform.position.y < pathFindPoint.y) rb.linearVelocityY = baseSpeed;
+		while (!finishedX || !finishedY) {
+			if (transform.position.y < pathFindPoint.y) {
+				rb.linearVelocityY = baseSpeed;
+			}
 			else {
-				print("YFinished!");
 				rb.linearVelocityY = 0;
 				finishedY          = true;
 			}
 			if (math.abs(transform.position.x - pathFindPoint.x) > 0.1f) {
 				rb.linearVelocityX = facingRight ? baseSpeed : -baseSpeed;
 			} else {
-				print("XFinished!");
 				rb.linearVelocityX = 0;
 				finishedX          = true;
 			}
-
-			yield return new WaitForEndOfFrame();
+			yield return new WaitForFixedUpdate();
 		}
-
 		pathfindingRoutineState = null;
 	}
-
 	#endregion
 }
