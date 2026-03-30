@@ -20,7 +20,6 @@ public class Campfire : MonoBehaviour {
 	private void Update() {
 		if (playerInRange && Keyboard.current.eKey.wasPressedThisFrame && !isResting) {
 			StartCoroutine(RestRoutine());
-			SaveController.Instance.SaveGame();
 		}
 	}
 	
@@ -58,13 +57,16 @@ public class Campfire : MonoBehaviour {
 		RespawnManager.Instance.SetRespawnPoint(transform.position);
 		PlayerData.Instance.Relieved = true;
 		Debug.Log("PlayerData.Relieved");
-		SaveController.Instance.SaveGame();
-		Debug.Log("resting at campfire and saved game");
 		yield return new WaitForSeconds(0.2f);
 		PlayerData.Instance.Relieved = false;
 		Debug.Log("PlayerData.NotRelieved");
 
 		yield return ScreenFader.Instance.FadeIn(0.3f);
+		
+		yield return new WaitForSeconds(0.2f);
+		SaveController.Instance.SaveGame();
+		SaveControllerUI.Instance.ShowMessage();
+		AudioManager.Instance.PlaySfx(AudioManager.AudioName.SavedGame, 1f); //? audio/sfx/game/ui/confirm 10 or 11?
 
 
 		isResting = false;
