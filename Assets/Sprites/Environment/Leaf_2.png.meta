@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 4c2997ca5ae8bb148b4193dfd5e33372
+guid: bfb22cc4cf9140040b3d3c6c6db697ac
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3284441441598985716
-    second: LeafThing_0
+      213: -6286207176316867015
+    second: Leaf_2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -48,7 +48,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: LeafThing_0
+      name: Leaf_2_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 555
-        height: 364
+        x: 24
+        y: 150
+        width: 73
+        height: 67
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c0aabeb19e15b62d0800000000000000
-      internalID: -3284441441598985716
+      spriteID: 93e2f1ff0e7e2c8a0800000000000000
+      internalID: -6286207176316867015
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      LeafThing_0: -3284441441598985716
+      Leaf_2_0: -6286207176316867015
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

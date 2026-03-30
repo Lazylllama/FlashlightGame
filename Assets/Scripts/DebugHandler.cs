@@ -106,16 +106,16 @@ public class DebugHandler {
 	}
 
 	/// <summary>
-	/// Log a message together with no level. Defaults to DebugLevel.Info.
+	/// Log a message together with no level. Defaults to DebugLevel.Debug.
 	/// </summary>
 	/// <param name="message">string</param>
-	public void Log(string message) => LogInternal(message, DebugLevel.Info);
+	public void Log(string message) => LogInternal(message, DebugLevel.Debug);
 
 	/// <summary>
 	/// Handle cases where the given object isn't a string.
 	/// </summary>
 	/// <param name="message">Object that can be converted using ToString()</param>
-	public void Log(object message) => LogInternal(message.ToString(), DebugLevel.Info);
+	public void Log(object message) => LogInternal(message.ToString(), DebugLevel.Debug);
 
 	/// <summary>
 	/// Log a warning message.

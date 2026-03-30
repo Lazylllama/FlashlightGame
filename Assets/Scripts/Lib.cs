@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 // ReSharper disable CheckNamespace
 namespace FlashlightGame {
@@ -8,8 +9,12 @@ namespace FlashlightGame {
 		private static LayerMask BoxLayerMask        => LayerMask.GetMask("Box");
 		private static LayerMask GroundLayerMask     => LayerMask.GetMask("Ground");
 		private static LayerMask MantleWallLayerMask => LayerMask.GetMask("MantleWall");
+
 		//* Refs
 		private static bool GizmosEnabled => true;
+
+		//* States
+		public static InputType CurrentInputType => InputType.Unknown;
 
 		#endregion
 
@@ -20,9 +25,26 @@ namespace FlashlightGame {
 			public float   Distance;
 		}
 
+		public enum InputType {
+			KeyboardMouse,
+			Xbox,
+			PlayStation,
+			SteamDeck,
+			Unknown
+		}
+
 		#endregion
 
 		#region Classes
+
+		// public class Input {
+		// 	public UnityEvent CurrentInputTypeChanged = new UnityEvent();
+		//
+		// 	private void OnCurrentInputTypeChanged() {
+		// 		Debug.Log("Test");
+		// 	}
+		//
+		// }
 
 		public static class Game {
 		}
