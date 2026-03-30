@@ -22,6 +22,12 @@ public class SaveControllerUI : MonoBehaviour
 			Instance = this;
 		}
 	}
+	
+	public void OnLoadButtonPressed()
+	{
+		SaveController.Instance.LoadGame();
+		UIController.Instance.SwitchToGameCams();
+	}
 
 	
 	public void InitiateLoadMenu() {
@@ -46,17 +52,35 @@ public class SaveControllerUI : MonoBehaviour
 		if (messageRoutine != null) {
 			StopCoroutine(messageRoutine);
 		}
-
 		messageRoutine = StartCoroutine(ShowMessageRoutine());
+		
 	}
 	
 	IEnumerator ShowMessageRoutine()
 	{
-		savedGameText.text = "Saved Game!";
-		AudioManager.Instance.PlaySfx(AudioManager.AudioName.SavedGame, 0.9f);
-
+		StartCoroutine(FadeInAndOut());
 		yield return new WaitForSeconds(2f);
-
-		savedGameText.text = "";
 	}
+	
+	IEnumerator FadeInAndOut()
+	{
+		Color color = savedGameText.color;
+
+		// Fade in
+		while (color.a < 1)
+		{
+			color.a    += Time.deltaTime;
+			savedGameText.color =  color;
+			yield return null;
+		}
+
+		// Fade out
+		while (color.a > 0)
+		{
+			color.a    -= Time.deltaTime;
+			savedGameText.color =  color;
+			yield return null;
+		}
+	}
+	
 }

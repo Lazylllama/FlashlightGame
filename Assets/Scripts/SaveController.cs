@@ -6,63 +6,70 @@ using UnityEngine;
 
 public class SaveController : MonoBehaviour {
 
+	private const int CurrentVersion = 1;
+	
 	private string saveFilePath;
 
-	public GameObject playerObj;
+	private GameObject playerObj;
 
 	public static SaveController Instance;
 	
 
-	private void Awake() => RegisterInstance(this);
+	private void Awake() {
+		RegisterInstance(this);
+		saveFilePath = Path.Combine(Application.persistentDataPath, "saveData.json");
+	}
 		
 
-	void Start()
-	{
-		playerObj= GameObject.FindWithTag("Player");
-		saveFilePath = Path.Combine(Application.persistentDataPath, "saveData.json");
+	void Start() {
+		CachePlayer();
 		Debug.Log(saveFilePath);
+		
+	}
+	private GameObject CachePlayer()
+	{
+		if (playerObj == null)
+			playerObj = GameObject.FindGameObjectWithTag("Player");
+		return playerObj;
 	}
 
 	public void SaveGame() {
-		if (PlayerData.Instance == null)
-		{
-			Debug.LogError("PlayerData instance is null!");
-			return;
-		}
 		
-		if (!NullCheck())
+		if (!AreRequiredInstancesReady())
 		{
 			Debug.LogError("Cannot load game one or more required scripts are missing!");
 			return;
 		}
 		
 		SaveData saveData = new SaveData {
+			
+			version = CurrentVersion,
+			
 			checkpointPosition      = RespawnManager.Instance.respawnPoint,
 			health                  = PlayerData.Instance.Health,
 			battery                 = PlayerData.Instance.Battery,
 			isLookingRight          = PlayerData.Instance.IsLookingRight,
-			timeCreatedTicks        = DateTime.Now.Ticks
+			timeCreatedTicks        = DateTime.Now.Ticks // For SaveControllerUI to display last save time yes
 		};
 		try {
 			File.WriteAllText(saveFilePath, JsonUtility.ToJson(saveData));
-			SaveControllerUI.Instance.ShowMessage();
 		} catch (Exception e) {
 			Debug.LogError($"Failed to save game: {e.Message}");
 		}
 		
 	}
+	
 
 	public void LoadGame() {
 		if (!File.Exists(saveFilePath)) {
 			Debug.Log("No save file found!");
 			return;
 		}
-		if (!NullCheck())
+		if (!AreRequiredInstancesReady())
 		{
 			Debug.LogError("Cannot load game one or more required scripts are missing!");
 			return;
 		}
-		playerObj= GameObject.FindWithTag("Player");
 
 		try {
 			string json = File.ReadAllText(saveFilePath);
@@ -73,20 +80,31 @@ public class SaveController : MonoBehaviour {
 			}
 
 			SaveData saveData = JsonUtility.FromJson<SaveData>(json);
+			
+			
 
 			if (saveData == null) {
 				Debug.LogError("Failed to find save data!");
 				return;
 			}
 			
+			if (saveData.version > CurrentVersion)
+			{
+				Debug.LogWarning("Save is from a newer version, cannot load."); //  We lowkey have no plans to update the save data format but this is here just in case
+				return;
+			}
+
+			if (saveData.version < CurrentVersion)
+			{
+				Debug.LogWarning("Old save version, cannot load."); // This too.
+				return;
+			}
 			
 			
-			playerObj.transform.position                   = saveData.checkpointPosition;
 			PlayerData.Instance.Health                     = saveData.health;
 			PlayerData.Instance.Battery                    = saveData.battery;
 			PlayerData.Instance.IsLookingRight             = saveData.isLookingRight;
-			UIController.Instance.SwitchToGameCams();
-			GameController.Instance.InActiveGame = true;
+			CachePlayer().transform.position = saveData.checkpointPosition;
 
 		} catch (Exception e) {
 			Debug.LogError($"Error loading save file: {e.Message}");
@@ -94,7 +112,7 @@ public class SaveController : MonoBehaviour {
 
 	}
 
-	public string GetSaveFilePath()
+	public string GetSaveFilePath() // Used by SaveControllerUI to check if save file exists and display last save time yeee
 	{
 		return saveFilePath;
 	}
@@ -123,11 +141,11 @@ public class SaveController : MonoBehaviour {
 		}
 	}
 
-	private bool NullCheck()
+	private bool AreRequiredInstancesReady()
 	{
 		var allGood = true;
 
-		if (playerObj == null)
+		if (CachePlayer() == null)
 		{
 			Debug.LogWarning("Player object not assigned!");
 			allGood = false;
@@ -138,22 +156,10 @@ public class SaveController : MonoBehaviour {
 			Debug.LogWarning("PlayerData instance not found!");
 			allGood = false;
 		}
-
-		if (UIController.Instance == null)
+		
+		if (RespawnManager.Instance == null)
 		{
-			Debug.LogWarning("UIController instance not found!");
-			allGood = false;
-		}
-
-		if (PlayerController.Instance == null)
-		{
-			Debug.LogWarning("PlayerController instance not found!");
-			allGood = false;
-		}
-
-		if (GameController.Instance == null)
-		{
-			Debug.LogWarning("GameController instance not found!");
+			Debug.LogWarning("RespawnManager instance not found!");
 			allGood = false;
 		}
 
