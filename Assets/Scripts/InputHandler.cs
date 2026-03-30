@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FlashlightGame;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class InputHandler : MonoBehaviour {
@@ -23,6 +24,8 @@ public class InputHandler : MonoBehaviour {
 
 	#region Fields
 
+	public UnityEvent<Lib.InputType> inputChange;
+
 	private static DebugHandler Debug;
 
 	private readonly Dictionary<InputActions, InputAction> inputActionsList = new();
@@ -33,15 +36,28 @@ public class InputHandler : MonoBehaviour {
 
 	private void Awake() {
 		Debug = new DebugHandler("InputHandler");
+
+		if (inputChange == null) {
+			inputChange = new UnityEvent<Lib.InputType>();
+			Debug.Log("Initialized inputChange UnityEvent.");
+		}
 	}
 
-	private void Start() => FindActions();
+	private void Start() {
+		FindActions();
+
+		inputChange.AddListener(OnInputChange);
+	}
 
 	private void Update() => CheckForTriggeredActions();
 
 	#endregion
 
 	#region Functions
+
+	private void OnInputChange(Lib.InputType inputType) {
+		Debug.Log("Input lowk changed to " + inputType, DebugLevel.Info);
+	}
 
 	private void FindActions() {
 		foreach (InputActions action in Enum.GetValues(typeof(InputActions))) {
