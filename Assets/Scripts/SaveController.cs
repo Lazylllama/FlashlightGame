@@ -40,19 +40,21 @@ public class SaveController : MonoBehaviour {
 			Debug.LogError("Cannot load game one or more required scripts are missing!");
 			return;
 		}
+
+		PlayerData.Instance.CheckpointPosition = playerObj.transform.position;
 		
 		SaveData saveData = new SaveData {
-			
 			version = CurrentVersion,
 			
-			checkpointPosition      = RespawnManager.Instance.respawnPoint,
-			health                  = PlayerData.Instance.Health,
-			battery                 = PlayerData.Instance.Battery,
-			isLookingRight          = PlayerData.Instance.IsLookingRight,
-			timeCreatedTicks        = DateTime.Now.Ticks // For SaveControllerUI to display last save time yes
+			checkpointPosition = PlayerData.Instance.CheckpointPosition,
+			health             = PlayerData.Instance.Health,
+			battery            = PlayerData.Instance.Battery,
+			isLookingRight     = PlayerData.Instance.IsLookingRight,
+			timeCreatedTicks   = DateTime.Now.Ticks // For SaveControllerUI to display last save time yes
 		};
 		try {
 			File.WriteAllText(saveFilePath, JsonUtility.ToJson(saveData));
+			
 		} catch (Exception e) {
 			Debug.LogError($"Failed to save game: {e.Message}");
 		}
@@ -157,12 +159,6 @@ public class SaveController : MonoBehaviour {
 			allGood = false;
 		}
 		
-		if (RespawnManager.Instance == null)
-		{
-			Debug.LogWarning("RespawnManager instance not found!");
-			allGood = false;
-		}
-
 		return allGood;
 	}
 	

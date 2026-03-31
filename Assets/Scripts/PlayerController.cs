@@ -43,6 +43,15 @@ public class PlayerController : MonoBehaviour {
 		var rotationY = PlayerData.Instance.IsLookingRight ? 0 : 180;
 		playerSprite.transform.rotation = new Quaternion(0, rotationY, 0, 0);
 	}
+	
+	/// <summary>
+	/// Respawn player at last checkpoint
+	/// </summary>
+	public void RespawnPlayer(bool tpToCheckpoint = true) {
+		if (!PlayerData.Instance) return;
+		if (tpToCheckpoint) transform.position = PlayerData.Instance.CheckpointPosition;
+		PlayerData.Instance.UpdateHealth(+100);
+	}
 
 	#endregion
 }

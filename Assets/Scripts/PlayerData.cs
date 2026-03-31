@@ -28,6 +28,8 @@ public class PlayerData : MonoBehaviour {
 		set => SetIsLookingRight(value);
 		get => isLookingRight;
 	}
+	
+	public Vector2 CheckpointPosition { get; set; }
 
 	//* Player States *//
 	public Dictionary<int, bool> FlashlightModesUnlocked { get; private set; } = new Dictionary<int, bool>() {
@@ -99,7 +101,6 @@ public class PlayerData : MonoBehaviour {
 
 	private void OnDeath() {
 		Debug.Log("Player died, respawning...");
-		RespawnManager.Instance.Respawn(PlayerMovement.Instance.gameObject);
 	}
 
 	/// <summary>

@@ -54,7 +54,6 @@ public class Campfire : MonoBehaviour {
 		}
 
 		yield return ScreenFader.Instance.FadeOut(0.6f);
-		RespawnManager.Instance.SetRespawnPoint(transform.position);
 		PlayerData.Instance.Relieved = true;
 		Debug.Log("PlayerData.Relieved");
 		yield return new WaitForSeconds(0.2f);
