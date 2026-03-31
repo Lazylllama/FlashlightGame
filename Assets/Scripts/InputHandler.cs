@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FlashlightGame;
-using NUnit.Framework;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -11,20 +9,23 @@ using UnityEngine.InputSystem;
 public class InputHandler : MonoBehaviour {
 	#region Types
 
+	//! DO NOT CHANGE ORDER, DO NOT REMOVE!
+	//? ONLY ADD TO END OR YOU ARE THE ONE REMAPPING ALL THE INPUTS AFTERWARD!
 	public enum InputActions {
-		ToggleFlashlight,
-		ToggleModeLeft,
-		ToggleModeRight,
-		Flashlight1,
-		Flashlight2,
-		Mantle,
-		CrankKeyboard,
-		CrankLeft,
-		CrankRight,
-		NextSentence,
-		Interact,
-		Leap,
-		FlashlightDirection
+		ToggleFlashlight,    // Button North / Y / Triangle / F (keyboard)
+		ToggleModeLeft,      // LEFT TOP BUTTON / LB / L1
+		ToggleModeRight,     // RIGHT TOP BUTTON / RB / R1
+		Flashlight1,         // 1
+		Flashlight2,         // 2
+		Mantle,              // Left Stick Up / W (keyboard)
+		CrankKeyboard,       // Space
+		CrankLeft,           // LEFT TRIGGER / LT / L2
+		CrankRight,          // RIGHT TRIGGER / RT / R2
+		NextSentence,        // Button South / A / Cross / Enter (keyboard)
+		Interact,            // Button South / A / Cross / E (keyboard)
+		Leap,                // Button West / X / Square / Left Shift (keyboard) [Prelimiary, maybe change soon]
+		FlashlightDirection, // Right Stick 2D Vector
+		Move,                // Left Stick 2D Vector / WASD 2D Vector (keyboard)
 	}
 
 	#endregion
@@ -39,6 +40,10 @@ public class InputHandler : MonoBehaviour {
 	[SerializeField] private InputSpriteAtlas xboxAtlas;
 	[SerializeField] private InputSpriteAtlas playstationAtlas;
 	[SerializeField] private InputSpriteAtlas steamDeckAtlas;
+
+	// TODO(@lazylllama): Add to player prefs
+	public static float MoveInputDeadZone = 0.05f;
+	public static float LookInputDeadZone = 0.05f;
 
 	public Lib.InputType             CurrentInputType { get; private set; } = Lib.InputType.KeyboardMouse;
 	public UnityEvent<Lib.InputType> inputChange;
@@ -87,19 +92,30 @@ public class InputHandler : MonoBehaviour {
 	#region Functions
 
 	public Sprite GetSprite(InputActions action) {
-		if (inputAtlases.TryGetValue(CurrentInputType, out var atlas) && atlas != null)
-			return atlas.GetInputSprite(action);
+		if (inputAtlases.TryGetValue(CurrentInputType, out var atlas) && atlas)
+			return atlas.GetInputSprite(action) ?? invalidFlairSprite;
 
 		return invalidFlairSprite;
 	}
-	
-	public bool WasPressedThisFrame(InputActions action) => inputActionsList[action].WasPressedThisFrame();
-	public Vector2 ReadValue(InputActions action) => inputActionsList[action].ReadValue<Vector2>();
+
+	public Sprite GetInputLogoSprite() {
+		if (inputAtlases.TryGetValue(CurrentInputType, out var atlas) && atlas)
+			return atlas.GetInputLogoSprite() ?? invalidFlairSprite;
+
+		return invalidFlairSprite;
+	}
+
+	public bool    WasPressedThisFrame(InputActions action) => inputActionsList[action].WasPressedThisFrame();
+	public Vector2 ReadValue(InputActions           action) => inputActionsList[action].ReadValue<Vector2>();
 
 	private void HandleInputChange(object obj, InputActionChange context) {
 		if (context != InputActionChange.ActionPerformed) return;
 		if (obj is not InputAction action) return;
-
+		
+		var activeControl = action.activeControl.ToString();
+		
+		if (activeControl.Contains("UI/Point") || activeControl.Contains("Mouse/position")) return;
+		
 		var control = action.activeControl;
 		if (control == null) return;
 
@@ -130,23 +146,21 @@ public class InputHandler : MonoBehaviour {
 
 	private void CheckForTriggeredActions() {
 		foreach (var kvp in inputActionsList.Where(kvp => kvp.Value.WasPressedThisFrame())) {
+			//? Use the UI controls
+			if (!GameController.Instance.InActiveGame) return;
+
 			Debug.Log($"Action '{kvp.Key.ToString()}' was triggered", DebugLevel.Debug);
+
 			switch (kvp.Key) {
 				case InputActions.ToggleFlashlight:
 					//* Let the player turn it on even though the flashlight is dead just as a feature, it will be disabled automatically right after.
 					PlayerData.Instance.FlashlightEnabled = !PlayerData.Instance.FlashlightEnabled;
 					break;
-				case InputActions.ToggleModeLeft:
-					PlayerData.Instance.HandleFlashlightModeChange(false);
+				case InputActions.ToggleModeLeft or InputActions.ToggleModeRight:
+					PlayerData.Instance.HandleFlashlightModeChange(kvp.Key == InputActions.ToggleModeRight);
 					break;
-				case InputActions.ToggleModeRight:
-					PlayerData.Instance.HandleFlashlightModeChange(true);
-					break;
-				case InputActions.Flashlight1:
-					PlayerData.Instance.HandleFlashlightModeChange(1);
-					break;
-				case InputActions.Flashlight2:
-					PlayerData.Instance.HandleFlashlightModeChange(2);
+				case InputActions.Flashlight1 or InputActions.Flashlight2:
+					PlayerData.Instance.HandleFlashlightModeChange(kvp.Key == InputActions.Flashlight2 ? 2 : 1);
 					break;
 				case InputActions.NextSentence:
 					if (PlayerData.Instance.IsTalking) ConversationHandler.Instance.SkipButtonPressed();
@@ -157,18 +171,16 @@ public class InputHandler : MonoBehaviour {
 				case InputActions.CrankKeyboard:
 					PlayerData.Instance.Crank();
 					break;
-				case InputActions.CrankLeft:
-					PlayerData.Instance.Crank(false);
-					break;
-				case InputActions.CrankRight:
-					PlayerData.Instance.Crank(true);
+				case InputActions.CrankLeft or InputActions.CrankRight:
+					PlayerData.Instance.Crank(kvp.Key == InputActions.CrankRight);
 					break;
 				case InputActions.Interact:
 				case InputActions.Leap:
 				case InputActions.FlashlightDirection:
+				case InputActions.Move:
 					break;
 				default:
-					throw new ArgumentOutOfRangeException();
+					throw new ArgumentOutOfRangeException(kvp.Key.ToString());
 			}
 		}
 	}

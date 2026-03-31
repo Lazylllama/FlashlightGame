@@ -13,20 +13,23 @@ MonoBehaviour:
   m_Name: KeyboardMouseSpriteAtlas
   m_EditorClassIdentifier: Assembly-CSharp::InputSpriteAtlas
   inputType: 0
+  inputIcon: {fileID: 21300000, guid: 955442fdd6ce4d84ca687e9432bffc40, type: 3}
   inputSprites:
   - inputName: 0
-    sprite: {fileID: 9110193363383228911, guid: 79242d7c5e73a534b94046c022f4ad28, type: 3}
-  - inputName: 4
-    sprite: {fileID: 1169628926362166760, guid: 79242d7c5e73a534b94046c022f4ad28, type: 3}
-  - inputName: 5
-    sprite: {fileID: 1769592720266743063, guid: 79242d7c5e73a534b94046c022f4ad28, type: 3}
+    sprite: {fileID: 21300000, guid: 48ca43987270df24ea97d644bdd0e821, type: 3}
   - inputName: 3
-    sprite: {fileID: -6383833780333300513, guid: 79242d7c5e73a534b94046c022f4ad28, type: 3}
+    sprite: {fileID: 21300000, guid: 22812aa0297f61f439679c1c7970e90f, type: 3}
+  - inputName: 4
+    sprite: {fileID: 21300000, guid: 594b7737b0b54214bb99efdedf6a6537, type: 3}
+  - inputName: 5
+    sprite: {fileID: 21300000, guid: fcc8cf488b93e3141aab7c52d3bb30e6, type: 3}
   - inputName: 6
-    sprite: {fileID: 7289802953590706526, guid: 79242d7c5e73a534b94046c022f4ad28, type: 3}
-  - inputName: 7
-    sprite: {fileID: 8663880549826984434, guid: 79242d7c5e73a534b94046c022f4ad28, type: 3}
+    sprite: {fileID: 21300000, guid: 9a454d85b6bab2d4a8b7896506c8ba13, type: 3}
   - inputName: 10
-    sprite: {fileID: -6383833780333300513, guid: 79242d7c5e73a534b94046c022f4ad28, type: 3}
+    sprite: {fileID: 21300000, guid: de5a9441fc6cbfb459449f7d289e71f9, type: 3}
+  - inputName: 9
+    sprite: {fileID: 21300000, guid: 5189e1146e374f64db58f063e87a06e1, type: 3}
   - inputName: 11
-    sprite: {fileID: 5218654445434042854, guid: 79242d7c5e73a534b94046c022f4ad28, type: 3}
+    sprite: {fileID: 21300000, guid: dd283f4f915501a47970e7c95b37a017, type: 3}
+  - inputName: 13
+    sprite: {fileID: 21300000, guid: 9a9e4153c5fe4334c80e78770fde38a1, type: 3}

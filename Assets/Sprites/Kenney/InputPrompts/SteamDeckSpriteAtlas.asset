@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: SteamDeckSpriteAtlas
   m_EditorClassIdentifier: Assembly-CSharp::InputSpriteAtlas
   inputType: 3
+  inputIcon: {fileID: 21300000, guid: 85790ff7933823e408a48d4620e0b577, type: 3}
   inputSprites: []

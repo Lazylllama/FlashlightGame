@@ -57,7 +57,7 @@ public class FlashlightController : MonoBehaviour {
 
 	private LayerMask        excludePlayer;
 	private FlashLightPreset laserPreset, defaultPreset, disabledPreset;
-	
+
 	private static bool FlashlightEnabled {
 		get => PlayerData.Instance && PlayerData.Instance.FlashlightEnabled;
 		set => throw new NotImplementedException();
@@ -73,7 +73,7 @@ public class FlashlightController : MonoBehaviour {
 	private Vector3[]        lightPoints        = { };
 	private Vector3          flashlightPositionWhenFacingRight;
 	private Vector3          flashLightPositionWhenFacingLeft;
-	
+
 	private Coroutine flashlightCoroutine;
 
 	// Active Flashlight Preset
@@ -132,7 +132,7 @@ public class FlashlightController : MonoBehaviour {
 			PresetBeamWidth = 20f,
 			PresetRange     = 10f,
 			PresetIntensity = 7f,
-			PresetColor     = new Color(0.5f, 0.1f, 0.55f, 1)
+			PresetColor     = new Color(1f, 1f, 1f, 1)
 		};
 
 		//* Disabled flashlight default (nothing)
@@ -146,10 +146,9 @@ public class FlashlightController : MonoBehaviour {
 	}
 
 
-
 	private void Update() {
 		if (!isListening) Initialize();
-		
+
 		UpdateFlashlight();
 		UpdateFlashlightPosition();
 		CheckPlayerInputs();
@@ -176,22 +175,16 @@ public class FlashlightController : MonoBehaviour {
 		InputHandler.Instance.inputChange.AddListener(OnInputChange);
 		isListening = true;
 	}
-	
+
 	private void OnInputChange(Lib.InputType newType) {
 		isGamepad = newType is not (Lib.InputType.KeyboardMouse or Lib.InputType.Unknown);
 	}
-	
+
 	private void CheckPlayerInputs() {
-		Debug.Log(InputHandler.Instance.ReadValue(InputHandler.InputActions.FlashlightDirection));
 		if (!PlayerData.Instance) return;
 		equippedFlashlight = PlayerData.Instance.FlashlightMode == 1 ? defaultPreset : laserPreset;
-		if (equippedFlashlight == laserPreset) {
-			freeFormLightGameObject.SetActive(true);
-			spotLightGameObject.SetActive(false);
-		} else {
-			freeFormLightGameObject.SetActive(false);
-			spotLightGameObject.SetActive(true);
-		}
+		freeFormLightGameObject.SetActive(equippedFlashlight == laserPreset);
+		spotLightGameObject.SetActive(equippedFlashlight     != laserPreset);
 	}
 
 	private void LerpFlashlight(FlashLightPreset targetPreset) {
@@ -221,8 +214,9 @@ public class FlashlightController : MonoBehaviour {
 
 	private void UpdateFlashlightPosition() {
 		float cameraAngleZ = 0;
-		if(!isGamepad) {
-			// TODO(@th1n0-i): Double check and also flipping sides is kinda annoying
+		if (!isGamepad) {
+			var playerPos = playerTransform.position;
+
 			//? Gets mouse position in screen
 			var mousePositionOnScreen = InputSystem.actions["point"].ReadValue<Vector2>();
 
@@ -248,26 +242,37 @@ public class FlashlightController : MonoBehaviour {
 				mousePosition = new Vector2(wp.x, wp.y);
 			}
 
-			//? Rotate the flahlight around the pivot point
+			//? Rotate the flashlight around the pivot point
 			cameraAngleZ = -90 + (
-				                         Mathf.Atan2(mousePosition.y - transform.position.y,
-				                                     mousePosition.x - transform.position.x) *
-				                         Mathf.Rad2Deg
-			                         );
-			if (Mathf.Atan2(mousePosition.y - playerTransform.position.y, mousePosition.x - playerTransform.position.x) *
-			    Mathf.Rad2Deg > 90 ||
-			    Mathf.Atan2(mousePosition.y - playerTransform.position.y, mousePosition.x - playerTransform.position.x) *
-			    Mathf.Rad2Deg < -90) PlayerData.Instance.IsLookingRight = false;
-			else PlayerData.Instance.IsLookingRight                     = true;
+				                     Mathf.Atan2(mousePosition.y - transform.position.y,
+				                                 mousePosition.x - transform.position.x) *
+				                     Mathf.Rad2Deg
+			                     );
+			if (Mathf.Atan2(mousePosition.y - playerPos.y,
+			                mousePosition.x - playerPos.x) * Mathf.Rad2Deg > 90 ||
+			    Mathf.Atan2(mousePosition.y - playerPos.y,
+			                mousePosition.x - playerPos.x) * Mathf.Rad2Deg < -90)
+				PlayerData.Instance.IsLookingRight  = false;
+			else PlayerData.Instance.IsLookingRight = true;
 		} else {
-			cameraAngleZ = Vector2.Angle(Vector2.up,
-			                             InputHandler.Instance.ReadValue(InputHandler.InputActions
-				                                                             .FlashlightDirection));
-			print(cameraAngleZ);
-		}
-		
+			var deadZone = InputHandler.LookInputDeadZone;
+			var input    = InputHandler.Instance.ReadValue(InputHandler.InputActions.FlashlightDirection);
 
-		
+			if (Mathf.Abs(input.x) < deadZone || Mathf.Abs(input.y) < deadZone) return;
+
+			var dir = InputHandler.Instance.ReadValue(InputHandler.InputActions.FlashlightDirection);
+			if (dir.sqrMagnitude < 1e-6f) {
+				cameraAngleZ = transform.eulerAngles.z;
+			} else {
+				cameraAngleZ = -90f + Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+			}
+
+			if (Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg > 90 ||
+			    Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg < -90) PlayerData.Instance.IsLookingRight = false;
+			else PlayerData.Instance.IsLookingRight                                                 = true;
+		}
+
+
 		transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, cameraAngleZ, lerpTime));
 	}
 
@@ -510,8 +515,9 @@ public class FlashlightController : MonoBehaviour {
 	}
 
 	#endregion
-	
+
 	#region IEnumerator
+
 	private IEnumerator Flicker() {
 		while (true) {
 			if (!FlashlightEnabled) {
@@ -527,5 +533,6 @@ public class FlashlightController : MonoBehaviour {
 			yield return new WaitForSeconds(Random.Range(0.2f, 1f));
 		}
 	}
+
 	#endregion
 }

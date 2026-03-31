@@ -6334,7 +6334,7 @@ ParticleSystem:
     serializedVersion: 2
     enabled: 1
     mode: 1
-    timeMode: 0
+    timeMode: 1
     fps: 30
     frameOverTime:
       serializedVersion: 2
@@ -6345,19 +6345,19 @@ ParticleSystem:
         serializedVersion: 2
         m_Curve:
         - serializedVersion: 3
-          time: 0
+          time: 0.41054916
           value: 0
           inSlope: 0
-          outSlope: 1
+          outSlope: 0
           tangentMode: 0
           weightedMode: 0
           inWeight: 0.33333334
           outWeight: 0.33333334
         - serializedVersion: 3
-          time: 1
+          time: 0.6298218
           value: 1
           inSlope: 1
-          outSlope: 0
+          outSlope: 1
           tangentMode: 0
           weightedMode: 0
           inWeight: 0.33333334
@@ -6442,7 +6442,7 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    speedRange: {x: 0, y: 1}
+    speedRange: {x: 0, y: 3}
     tilesX: 1
     tilesY: 1
     animationType: 0
@@ -6451,7 +6451,9 @@ ParticleSystem:
     uvChannelMask: -1
     rowMode: 1
     sprites:
-    - sprite: {fileID: -3284441441598985716, guid: 4c2997ca5ae8bb148b4193dfd5e33372, type: 3}
+    - sprite: {fileID: 7736981234850162795, guid: 17946f66cad7bc44cbb903cecb441ad5, type: 3}
+    - sprite: {fileID: -6286207176316867015, guid: bfb22cc4cf9140040b3d3c6c6db697ac, type: 3}
+    - sprite: {fileID: -8063922607749010115, guid: cc320a2d08b73244c9f8651efeaf5def, type: 3}
     flipU: 0
     flipV: 0
   VelocityModule:

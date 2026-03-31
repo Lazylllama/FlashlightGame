@@ -16,6 +16,7 @@ public class InputSpriteAtlas : ScriptableObject {
 
 	private Dictionary<InputHandler.InputActions, Sprite> inputSpriteDict;
 
+	[SerializeField] private Sprite inputIcon;
 	[SerializeField] private List<InputSprite> inputSprites;
 
 	#endregion
@@ -36,6 +37,8 @@ public class InputSpriteAtlas : ScriptableObject {
 		if (inputSpriteDict == null || !sprite) MapSprites();
 		return sprite;
 	}
+
+	public Sprite GetInputLogoSprite() => inputIcon ? inputIcon : null;
 
 	#endregion
 }

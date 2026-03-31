@@ -28,7 +28,7 @@ public class PlayerData : MonoBehaviour {
 		set => SetIsLookingRight(value);
 		get => isLookingRight;
 	}
-	
+
 	public Vector2 CheckpointPosition { get; set; }
 
 	private bool lowBattery;
@@ -205,15 +205,8 @@ public class PlayerData : MonoBehaviour {
 
 		isLookingRight = value;
 
-		var controller           = PlayerController.Instance;
-		var flashlightController = FlashlightController.Instance;
-		if (controller) {
-			controller.UpdateDirection();
-		}
-
-		if (flashlightController) {
-			flashlightController.UpdateDirection();
-		}
+		if (PlayerController.Instance) PlayerController.Instance.UpdateDirection();
+		if (FlashlightController.Instance) FlashlightController.Instance.UpdateDirection();
 	}
 
 	private void HandleBatteryDrain() {

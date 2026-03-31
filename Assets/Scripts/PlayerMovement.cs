@@ -15,7 +15,6 @@ public class PlayerMovement : MonoBehaviour {
 	private static readonly int WalkingDirection = Animator.StringToHash("walkingDirection");
 
 	//* Refs
-	private InputAction        moveAction;
 	private Rigidbody2D        playerRb;
 	private ParticleController particleController;
 	private Animator           playerAnimator;
@@ -51,11 +50,9 @@ public class PlayerMovement : MonoBehaviour {
 	[SerializeField] private Transform headLevelPosition;
 
 	//* States
-	private bool                         isGrounded;
-	private bool                         canMantle;
+	private bool                         isGrounded, canMantle;
 	private Coroutine                    mantleRoutineState;
-	private Vector2                      moveInputVal;
-	private Vector2                      lastPosition;
+	private Vector2                      moveInputVal, lastPosition;
 	private AudioManager.FootstepSurface currentSurface;
 
 	#endregion
@@ -71,8 +68,6 @@ public class PlayerMovement : MonoBehaviour {
 		playerRb           = GetComponent<Rigidbody2D>();
 		particleController = GetComponentInChildren<ParticleController>();
 		playerAnimator     = GetComponentInChildren<Animator>();
-
-		moveAction = InputSystem.actions.FindAction("Move");
 
 		lastPosition = transform.position;
 	}
@@ -127,7 +122,7 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	private void InputCheck() {
-		moveInputVal = moveAction.ReadValue<Vector2>();
+		moveInputVal = InputHandler.Instance.ReadValue(InputHandler.InputActions.Move);
 		IsWalkingRight = moveInputVal.x switch {
 			< 0 when IsWalkingRight  => false,
 			> 0 when !IsWalkingRight => true,
@@ -139,13 +134,13 @@ public class PlayerMovement : MonoBehaviour {
 		var inputSpeed      = moveInputVal.x * maxSpeed;
 		var speedDifference = inputSpeed - playerRb.linearVelocityX;
 		var finalForce      = speedDifference * acceleration;
-		
-		var movement = (Vector2)transform.position - lastPosition;
-		var moveX = movement.x;
 
-		if (Mathf.Abs(moveX) > 0.1f) {
+		var movement = (Vector2)transform.position - lastPosition;
+		var moveX    = movement.x;
+
+		if (Mathf.Abs(moveX) > 0.05f) {
 			// If moving in the same direction the player is looking, it's "forward" (1), otherwise "backward" (-1)
-			var movingRight = moveX > 0f;
+			var movingRight   = moveX > 0f;
 			var walkDirection = movingRight == IsLookingRight ? 1 : -1;
 
 			particleController.CrateMovement(moveX);

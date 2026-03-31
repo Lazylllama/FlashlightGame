@@ -57,14 +57,14 @@ public class UIController : MonoBehaviour {
 		var duration = SkipIntroFade ? 0f : 3f;
 		mainMenuOverlayCamera.enabled = false;
 		mainMenuUI.SetActive(false);
-		
+
 		StartCoroutine(FadeBetweenCams(
 		                               mainMenuCinemachine,
 		                               playerCinemachine,
 		                               duration,
 		                               mainMenuOverlayCamera,
 		                               gameOverlayCamera));
-		
+
 		StartCoroutine(DelayFunction(Math.Clamp(duration - 1f, 0f, float.MaxValue),
 		                             () => {
 			                             gameOverlayCamera.enabled            = true;
@@ -108,6 +108,19 @@ public class UIController : MonoBehaviour {
 	/// <param name="pauseGame">defaults to false</param>
 	public void FadeToBlack(float duration, bool pauseGame = false) {
 		StartCoroutine(BlackScreenFadeout(duration, pauseGame));
+	}
+
+	/// <summary>
+	/// Exit the game 
+	/// </summary>
+	public void ExitGame() {
+		Debug.Log("ExitGame has been called, bye.", DebugLevel.Fatal);
+		
+		#if UNITY_EDITOR
+		UnityEditor.EditorApplication.isPlaying = false;
+		#endif
+		
+		Application.Quit();
 	}
 
 	#endregion

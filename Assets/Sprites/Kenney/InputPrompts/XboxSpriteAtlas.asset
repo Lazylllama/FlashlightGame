@@ -13,20 +13,27 @@ MonoBehaviour:
   m_Name: XboxSpriteAtlas
   m_EditorClassIdentifier: Assembly-CSharp::InputSpriteAtlas
   inputType: 1
+  inputIcon: {fileID: 21300000, guid: fd831145b77d8c94881aee5507ad8d32, type: 3}
   inputSprites:
   - inputName: 0
-    sprite: {fileID: -8310185283633015101, guid: 53d0080b88c3e814d9fe59ea11a02e8b, type: 3}
+    sprite: {fileID: 21300000, guid: e9986881a44db1d4182d6e6bbac9e877, type: 3}
   - inputName: 1
-    sprite: {fileID: 7450282252732944647, guid: 53d0080b88c3e814d9fe59ea11a02e8b, type: 3}
-  - inputName: 3
-    sprite: {fileID: 1262325094928231847, guid: 53d0080b88c3e814d9fe59ea11a02e8b, type: 3}
-  - inputName: 6
-    sprite: {fileID: 3399299904106808259, guid: 53d0080b88c3e814d9fe59ea11a02e8b, type: 3}
+    sprite: {fileID: 21300000, guid: f1a1177aac32fc54e9f5f4f30f2110d4, type: 3}
+  - inputName: 2
+    sprite: {fileID: 21300000, guid: 18f58aedec84dd74583a7d8269a1256c, type: 3}
+  - inputName: 5
+    sprite: {fileID: 21300000, guid: 9a06dbb691077f241830e259af48c4bf, type: 3}
   - inputName: 8
-    sprite: {fileID: 5843897673625882504, guid: 53d0080b88c3e814d9fe59ea11a02e8b, type: 3}
-  - inputName: 9
-    sprite: {fileID: 6722789181546519580, guid: 53d0080b88c3e814d9fe59ea11a02e8b, type: 3}
+    sprite: {fileID: 21300000, guid: 079df3ba2646d5540a0634cddda5b86f, type: 3}
+  - inputName: 7
+    sprite: {fileID: 21300000, guid: 93f670a3597c4e1459f93f9c71c34ee3, type: 3}
   - inputName: 10
-    sprite: {fileID: 1262325094928231847, guid: 53d0080b88c3e814d9fe59ea11a02e8b, type: 3}
+    sprite: {fileID: 21300000, guid: 7f9d545babed413488671542236fd558, type: 3}
   - inputName: 11
-    sprite: {fileID: 6351292998385785399, guid: 53d0080b88c3e814d9fe59ea11a02e8b, type: 3}
+    sprite: {fileID: 21300000, guid: c149c5eca46093943baf9e431b330451, type: 3}
+  - inputName: 9
+    sprite: {fileID: 21300000, guid: 7f9d545babed413488671542236fd558, type: 3}
+  - inputName: 13
+    sprite: {fileID: 21300000, guid: 0c3157f8e78cac04a8bbea412f775f4a, type: 3}
+  - inputName: 12
+    sprite: {fileID: 21300000, guid: 7251539252f027a48a07d8076136f475, type: 3}

@@ -44,3 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dab13dd3c42cc6849a8a048319221af8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InputHandler
+  invalidFlairSprite: {fileID: 21300000, guid: 681a9327fc9b15e42bc5b6f5b7987d97, type: 3}
+  keyboardAtlas: {fileID: 11400000, guid: ae5470c292ce0284ea9c1145d711b443, type: 2}
+  xboxAtlas: {fileID: 11400000, guid: 106fdfa330d803c49b2310264f88a379, type: 2}
+  playstationAtlas: {fileID: 11400000, guid: abd86851c6840764fae8bbfab87f01e9, type: 2}
+  steamDeckAtlas: {fileID: 11400000, guid: 7bd8caf8e9dd3dd4fb6588d68f06666d, type: 2}
+  inputChange:
+    m_PersistentCalls:
+      m_Calls: []

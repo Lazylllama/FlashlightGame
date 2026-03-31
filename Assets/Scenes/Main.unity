@@ -1627,7 +1627,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d758e381fee61504ab7fec3ee6995183, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  respawnPoint: {x: 0, y: 0, z: 0}
 --- !u!4 &531814325
 Transform:
   m_ObjectHideFlags: 0
@@ -2288,66 +2287,6 @@ PrefabInstance:
       propertyPath: Target.TrackingTarget
       value: 
       objectReference: {fileID: 534364195}
-    - target: {fileID: 8084457758272101929, guid: b4e441cda9e145e49814695a9bf9a453, type: 3}
-      propertyPath: UVModule.mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8084457758272101929, guid: b4e441cda9e145e49814695a9bf9a453, type: 3}
-      propertyPath: UVModule.cycles
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8084457758272101929, guid: b4e441cda9e145e49814695a9bf9a453, type: 3}
-      propertyPath: UVModule.timeMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8084457758272101929, guid: b4e441cda9e145e49814695a9bf9a453, type: 3}
-      propertyPath: UVModule.speedRange.y
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8084457758272101929, guid: b4e441cda9e145e49814695a9bf9a453, type: 3}
-      propertyPath: UVModule.startFrame.scalar
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8084457758272101929, guid: b4e441cda9e145e49814695a9bf9a453, type: 3}
-      propertyPath: UVModule.sprites.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8084457758272101929, guid: b4e441cda9e145e49814695a9bf9a453, type: 3}
-      propertyPath: UVModule.sprites.Array.data[0].sprite
-      value: 
-      objectReference: {fileID: 7736981234850162795, guid: 17946f66cad7bc44cbb903cecb441ad5, type: 3}
-    - target: {fileID: 8084457758272101929, guid: b4e441cda9e145e49814695a9bf9a453, type: 3}
-      propertyPath: UVModule.sprites.Array.data[1].sprite
-      value: 
-      objectReference: {fileID: -6286207176316867015, guid: bfb22cc4cf9140040b3d3c6c6db697ac, type: 3}
-    - target: {fileID: 8084457758272101929, guid: b4e441cda9e145e49814695a9bf9a453, type: 3}
-      propertyPath: UVModule.sprites.Array.data[2].sprite
-      value: 
-      objectReference: {fileID: -8063922607749010115, guid: cc320a2d08b73244c9f8651efeaf5def, type: 3}
-    - target: {fileID: 8084457758272101929, guid: b4e441cda9e145e49814695a9bf9a453, type: 3}
-      propertyPath: UVModule.frameOverTime.maxCurve.m_Curve.Array.data[0].time
-      value: 0.41054916
-      objectReference: {fileID: 0}
-    - target: {fileID: 8084457758272101929, guid: b4e441cda9e145e49814695a9bf9a453, type: 3}
-      propertyPath: UVModule.frameOverTime.maxCurve.m_Curve.Array.data[1].time
-      value: 0.6298218
-      objectReference: {fileID: 0}
-    - target: {fileID: 8084457758272101929, guid: b4e441cda9e145e49814695a9bf9a453, type: 3}
-      propertyPath: UVModule.frameOverTime.maxCurve.m_Curve.Array.data[0].value
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8084457758272101929, guid: b4e441cda9e145e49814695a9bf9a453, type: 3}
-      propertyPath: UVModule.frameOverTime.maxCurve.m_Curve.Array.data[1].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8084457758272101929, guid: b4e441cda9e145e49814695a9bf9a453, type: 3}
-      propertyPath: UVModule.frameOverTime.maxCurve.m_Curve.Array.data[0].outSlope
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8084457758272101929, guid: b4e441cda9e145e49814695a9bf9a453, type: 3}
-      propertyPath: UVModule.frameOverTime.maxCurve.m_Curve.Array.data[1].outSlope
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 9071384862457871270, guid: b4e441cda9e145e49814695a9bf9a453, type: 3}
       propertyPath: m_Name
       value: '[CAM] Player Cinemachine'
@@ -2830,34 +2769,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: '[CTRL] InputHandler'
       objectReference: {fileID: 0}
-    - target: {fileID: 4644611681175676151, guid: 3aab91ca2f7016e43ad856211b979ad1, type: 3}
-      propertyPath: xboxAtlas
-      value: 
-      objectReference: {fileID: 11400000, guid: 106fdfa330d803c49b2310264f88a379, type: 2}
-    - target: {fileID: 4644611681175676151, guid: 3aab91ca2f7016e43ad856211b979ad1, type: 3}
-      propertyPath: keyboardAtlas
-      value: 
-      objectReference: {fileID: 11400000, guid: ae5470c292ce0284ea9c1145d711b443, type: 2}
-    - target: {fileID: 4644611681175676151, guid: 3aab91ca2f7016e43ad856211b979ad1, type: 3}
-      propertyPath: steamDeckAtlas
-      value: 
-      objectReference: {fileID: 11400000, guid: 7bd8caf8e9dd3dd4fb6588d68f06666d, type: 2}
-    - target: {fileID: 4644611681175676151, guid: 3aab91ca2f7016e43ad856211b979ad1, type: 3}
-      propertyPath: playstationAtlas
-      value: 
-      objectReference: {fileID: 11400000, guid: d67a2b9d0b77bf34ba4ac06d97d46466, type: 2}
-    - target: {fileID: 4644611681175676151, guid: 3aab91ca2f7016e43ad856211b979ad1, type: 3}
-      propertyPath: invalidFlairSprite
-      value: 
-      objectReference: {fileID: 7495453200534094228, guid: 0fe14be6969af6b478230fa168133481, type: 3}
-    - target: {fileID: 4644611681175676151, guid: 3aab91ca2f7016e43ad856211b979ad1, type: 3}
-      propertyPath: inputChange.m_PersistentCalls.m_Calls.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4644611681175676151, guid: 3aab91ca2f7016e43ad856211b979ad1, type: 3}
-      propertyPath: inputChange.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 5694233269213522529, guid: 3aab91ca2f7016e43ad856211b979ad1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 11.36087
@@ -2982,6 +2893,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!20 &1534252095 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 7514387800876803248, guid: 3820ac79424500e4590164b9a8d9307d, type: 3}
+  m_PrefabInstance: {fileID: 711819905}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1797920501
 GameObject:
   m_ObjectHideFlags: 0
@@ -5626,10 +5542,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 888702354}
-    - target: {fileID: 3792811268031788957, guid: 6a54e9ddf2852c74f97c2423f276c074, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+    - target: {fileID: 2544039889035438092, guid: 6a54e9ddf2852c74f97c2423f276c074, type: 3}
+      propertyPath: m_Camera
       value: 
-      objectReference: {fileID: 2498006059729689194}
+      objectReference: {fileID: 1534252095}
     - target: {fileID: 6600948469112346253, guid: 6a54e9ddf2852c74f97c2423f276c074, type: 3}
       propertyPath: m_Name
       value: '[UI] Canvases'
@@ -5698,10 +5614,6 @@ PrefabInstance:
       propertyPath: storyboardBlackCinemachine
       value: 
       objectReference: {fileID: 7129769611564417423}
-    - target: {fileID: 8808818140124453776, guid: 6a54e9ddf2852c74f97c2423f276c074, type: 3}
-      propertyPath: m_TagString
-      value: MainMenuUI
-      objectReference: {fileID: 0}
     - target: {fileID: 8945261528938755241, guid: 6a54e9ddf2852c74f97c2423f276c074, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
