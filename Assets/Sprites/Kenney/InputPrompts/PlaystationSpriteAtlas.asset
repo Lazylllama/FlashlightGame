@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cca499c3e5a81344a3b98c2af46ecb6, type: 3}
+  m_Name: PlaystationSpriteAtlas
+  m_EditorClassIdentifier: Assembly-CSharp::InputSpriteAtlas
+  inputType: 2
+  inputSprites:
+  - inputName: 0
+    sprite: {fileID: -7953971926945648795, guid: 432ccaee0863f6f47b268240c768b3be, type: 3}
+  - inputName: 1
+    sprite: {fileID: 5503948432854367734, guid: 432ccaee0863f6f47b268240c768b3be, type: 3}
+  - inputName: 3
+    sprite: {fileID: 822954956425627804, guid: 432ccaee0863f6f47b268240c768b3be, type: 3}
+  - inputName: 6
+    sprite: {fileID: 3473373225014898107, guid: 432ccaee0863f6f47b268240c768b3be, type: 3}
+  - inputName: 8
+    sprite: {fileID: -5173370040508019918, guid: 432ccaee0863f6f47b268240c768b3be, type: 3}
+  - inputName: 9
+    sprite: {fileID: 7018099325343747883, guid: 432ccaee0863f6f47b268240c768b3be, type: 3}
+  - inputName: 10
+    sprite: {fileID: 822954956425627804, guid: 432ccaee0863f6f47b268240c768b3be, type: 3}
+  - inputName: 11
+    sprite: {fileID: -5748224593759713679, guid: 432ccaee0863f6f47b268240c768b3be, type: 3}

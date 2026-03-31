@@ -7,41 +7,30 @@ public class Campfire : MonoBehaviour {
 	private bool isResting;
 
 	[Header("Refs")]
-	[SerializeField] private GameObject prompt;
+	[SerializeField] private GameObject inputIcon;
 
 	private bool playerInRange;
-	
-	public static Campfire Instance;
 
 	public bool inMenu;
 
-	private void Awake() => RegisterInstance(this);
-
 	private void Update() {
-		if (playerInRange && Keyboard.current.eKey.wasPressedThisFrame && !isResting) {
+		if (playerInRange && InputHandler.Instance.WasPressedThisFrame(InputHandler.InputActions.Interact) &&
+		    !isResting) {
 			StartCoroutine(RestRoutine());
 		}
 	}
-	
+
 	private void OnTriggerEnter2D(Collider2D collision) {
 		if (!collision.CompareTag("Player")) return;
 		playerInRange = true;
 
-		prompt.SetActive(true);
+		inputIcon.SetActive(true);
 	}
 
 	private void OnTriggerExit2D(Collider2D collision) {
 		if (!collision.CompareTag("Player")) return;
 		playerInRange = false;
-		prompt.SetActive(false);
-	}
-
-	private static void RegisterInstance(Campfire instance) {
-		if (Instance && Instance != instance) {
-			Destroy(instance.gameObject);
-		} else {
-			Instance = instance;
-		}
+		inputIcon.SetActive(false);
 	}
 
 	private IEnumerator RestRoutine() {
@@ -62,7 +51,7 @@ public class Campfire : MonoBehaviour {
 		Debug.Log("PlayerData.NotRelieved");
 
 		yield return ScreenFader.Instance.FadeIn(0.3f);
-		
+
 		yield return new WaitForSeconds(0.2f);
 		SaveController.Instance.SaveGame();
 		SaveControllerUI.Instance.ShowMessage();

@@ -12,7 +12,7 @@ public class PlayerData : MonoBehaviour {
 	private static DebugHandler Debug;
 
 	//* Player Stats *//
-	public int  Health  { get; set; }         = 100;
+	public int  Health  { get; set; } = 100;
 	public int  Battery { get; set; } = 25;
 	public bool IsDead  => Health <= 0;
 
@@ -65,6 +65,7 @@ public class PlayerData : MonoBehaviour {
 
 	//* States *//
 	private float drainTimer;
+	private bool  lastCrankWasRight;
 
 	#endregion
 
@@ -89,15 +90,40 @@ public class PlayerData : MonoBehaviour {
 	/// Crank that flashlight.
 	/// </summary>
 	public void Crank() {
-		if (Battery >= 100) Debug.Log("Battery is full, cannot crank flashlight.");
+		if (Battery >= 100) {
+			Debug.Log("Battery is full, cannot crank flashlight.");
+			return;
+		}
+
+		CrankLogic();
+	}
+
+	public void Crank(bool rightButton) {
+		if (Battery >= 100) {
+			Debug.Log("Battery is full, cannot crank flashlight.");
+			return;
+		}
+
+		if (rightButton && lastCrankWasRight) {
+			Debug.Log("Pressed right crank but last crank was also right, ignoring.");
+			return;
+		}
+
+		lastCrankWasRight = rightButton;
+
+		CrankLogic();
+	}
+
+	private void CrankLogic() {
 		Battery += 1;
 		Battery =  Mathf.Clamp(Battery, 0, 100);
+
 		UIController.Instance.UpdateUI();
 		if (Battery <= 20 || !lowBattery) return;
 		lowBattery = false;
 		FlashlightController.Instance.LowBatteryWarning(false);
 	}
-	
+
 	/// <summary>
 	/// Update the player's battery by the specified difference. Clamps between 0 and 100.
 	/// </summary>
@@ -105,10 +131,10 @@ public class PlayerData : MonoBehaviour {
 	public void UpdateHealth(int difference) {
 		Health += difference;
 		Health =  Mathf.Clamp(Health, 0, 100);
-		
+
 		UIController.Instance.UpdateUI();
 
-		if (IsDead) OnDeath(); 
+		if (IsDead) OnDeath();
 		else StartCoroutine(MakeInvulnerable());
 	}
 
@@ -202,9 +228,9 @@ public class PlayerData : MonoBehaviour {
 		Battery           =  Mathf.Clamp(Battery, 0, 100);
 		FlashlightEnabled =  Battery > 0;
 		drainTimer        =  0f;
-		
+
 		UIController.Instance.UpdateUI();
-		
+
 		if (Battery > 20 || lowBattery) return;
 		lowBattery = true;
 		FlashlightController.Instance.LowBatteryWarning(true);
