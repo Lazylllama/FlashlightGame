@@ -160,11 +160,11 @@ public class PlayerMovement : MonoBehaviour {
 		playerRb.AddForce(Vector2.right * finalForce, ForceMode2D.Force);
 
 		//! TODO(@lazylllama): Do not include in prod builds :)
-		Debug.LogKv("PerformMove", DebugLevel.Debug, new object[] {
-			"inputSpeed", inputSpeed,
-			"speedDifference", speedDifference,
-			"finalForce", finalForce
-		});
+		// Debug.LogKv("PerformMove", DebugLevel.Debug, new object[] {
+		// 	"inputSpeed", inputSpeed,
+		// 	"speedDifference", speedDifference,
+		// 	"finalForce", finalForce
+		// });
 	}
 
 	/// <summary>

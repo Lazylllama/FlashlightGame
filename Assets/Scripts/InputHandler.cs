@@ -23,7 +23,8 @@ public class InputHandler : MonoBehaviour {
 		CrankRight,
 		NextSentence,
 		Interact,
-		Leap
+		Leap,
+		FlashlightDirection
 	}
 
 	#endregion
@@ -93,6 +94,7 @@ public class InputHandler : MonoBehaviour {
 	}
 	
 	public bool WasPressedThisFrame(InputActions action) => inputActionsList[action].WasPressedThisFrame();
+	public Vector2 ReadValue(InputActions action) => inputActionsList[action].ReadValue<Vector2>();
 
 	private void HandleInputChange(object obj, InputActionChange context) {
 		if (context != InputActionChange.ActionPerformed) return;
@@ -155,13 +157,15 @@ public class InputHandler : MonoBehaviour {
 				case InputActions.CrankKeyboard:
 					PlayerData.Instance.Crank();
 					break;
-				case InputActions.Interact:
-				case InputActions.Leap:
 				case InputActions.CrankLeft:
 					PlayerData.Instance.Crank(false);
 					break;
 				case InputActions.CrankRight:
 					PlayerData.Instance.Crank(true);
+					break;
+				case InputActions.Interact:
+				case InputActions.Leap:
+				case InputActions.FlashlightDirection:
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();

@@ -85,6 +85,8 @@ public class FlashlightController : MonoBehaviour {
 	private float reflectionOriginOffset = 0.01f; // small offset to avoid immediate re-hit of the same surface
 
 	// States
+	private          bool                                isListening = false;
+	private          bool                                isGamepad   = false;
 	private readonly Dictionary<Collider2D, int>         hitList     = new Dictionary<Collider2D, int>();
 	private readonly Dictionary<RaycastObj, ReflectInfo> reflectList = new Dictionary<RaycastObj, ReflectInfo>();
 
@@ -144,7 +146,10 @@ public class FlashlightController : MonoBehaviour {
 	}
 
 
+
 	private void Update() {
+		if (!isListening) Initialize();
+		
 		UpdateFlashlight();
 		UpdateFlashlightPosition();
 		CheckPlayerInputs();
@@ -166,7 +171,18 @@ public class FlashlightController : MonoBehaviour {
 		//else transform.localPosition = flashLightPositionWhenFacingLeft;
 	}
 
+	private void Initialize() {
+		if (!InputHandler.Instance) return;
+		InputHandler.Instance.inputChange.AddListener(OnInputChange);
+		isListening = true;
+	}
+	
+	private void OnInputChange(Lib.InputType newType) {
+		isGamepad = newType is not (Lib.InputType.KeyboardMouse or Lib.InputType.Unknown);
+	}
+	
 	private void CheckPlayerInputs() {
+		Debug.Log(InputHandler.Instance.ReadValue(InputHandler.InputActions.FlashlightDirection));
 		if (!PlayerData.Instance) return;
 		equippedFlashlight = PlayerData.Instance.FlashlightMode == 1 ? defaultPreset : laserPreset;
 		if (equippedFlashlight == laserPreset) {
@@ -204,44 +220,54 @@ public class FlashlightController : MonoBehaviour {
 	}
 
 	private void UpdateFlashlightPosition() {
-		// TODO(@th1n0-i): Double check and also flipping sides is kinda annoying
-		//? Gets mouse position in screen
-		var mousePositionOnScreen = InputSystem.actions["point"].ReadValue<Vector2>();
+		float cameraAngleZ = 0;
+		if(!isGamepad) {
+			// TODO(@th1n0-i): Double check and also flipping sides is kinda annoying
+			//? Gets mouse position in screen
+			var mousePositionOnScreen = InputSystem.actions["point"].ReadValue<Vector2>();
 
-		//? Get main camera
-		var cam = Camera.main;
-		if (!cam) return;
+			//? Get main camera
+			var cam = Camera.main;
+			if (!cam) return;
 
-		Vector2 mousePosition;
+			Vector2 mousePosition;
 
-		//* Unity discussions my savior :pray:
-		// TODO: Simplify even more, lowkey too tired
-		var ray    = cam.ScreenPointToRay(new Vector3(mousePositionOnScreen.x, mousePositionOnScreen.y, 0f));
-		var planeZ = transform.position.z;
-		var t      = (planeZ - ray.origin.z) / ray.direction.z;
+			//* Unity discussions my savior :pray:
+			// TODO: Simplify even more, lowkey too tired
+			var ray    = cam.ScreenPointToRay(new Vector3(mousePositionOnScreen.x, mousePositionOnScreen.y, 0f));
+			var planeZ = transform.position.z;
+			var t      = (planeZ - ray.origin.z) / ray.direction.z;
 
-		if (!Mathf.Approximately(ray.direction.z, 0f) && t > 0f) {
-			var worldPoint = ray.GetPoint(t);
-			mousePosition = new Vector2(worldPoint.x, worldPoint.y);
+			if (!Mathf.Approximately(ray.direction.z, 0f) && t > 0f) {
+				var worldPoint = ray.GetPoint(t);
+				mousePosition = new Vector2(worldPoint.x, worldPoint.y);
+			} else {
+				var screenZ = cam.WorldToScreenPoint(transform.position).z;
+				if (screenZ <= 0f) screenZ = 10f;
+				var wp = cam.ScreenToWorldPoint(new Vector3(mousePositionOnScreen.x, mousePositionOnScreen.y, screenZ));
+				mousePosition = new Vector2(wp.x, wp.y);
+			}
+
+			//? Rotate the flahlight around the pivot point
+			cameraAngleZ = -90 + (
+				                         Mathf.Atan2(mousePosition.y - transform.position.y,
+				                                     mousePosition.x - transform.position.x) *
+				                         Mathf.Rad2Deg
+			                         );
+			if (Mathf.Atan2(mousePosition.y - playerTransform.position.y, mousePosition.x - playerTransform.position.x) *
+			    Mathf.Rad2Deg > 90 ||
+			    Mathf.Atan2(mousePosition.y - playerTransform.position.y, mousePosition.x - playerTransform.position.x) *
+			    Mathf.Rad2Deg < -90) PlayerData.Instance.IsLookingRight = false;
+			else PlayerData.Instance.IsLookingRight                     = true;
 		} else {
-			var screenZ = cam.WorldToScreenPoint(transform.position).z;
-			if (screenZ <= 0f) screenZ = 10f;
-			var wp = cam.ScreenToWorldPoint(new Vector3(mousePositionOnScreen.x, mousePositionOnScreen.y, screenZ));
-			mousePosition = new Vector2(wp.x, wp.y);
+			cameraAngleZ = Vector2.Angle(Vector2.up,
+			                             InputHandler.Instance.ReadValue(InputHandler.InputActions
+				                                                             .FlashlightDirection));
+			print(cameraAngleZ);
 		}
+		
 
-		//? Rotate the flahlight around the pivot point
-		var cameraAngleZ = -90 + (
-			                         Mathf.Atan2(mousePosition.y - transform.position.y,
-			                                     mousePosition.x - transform.position.x) *
-			                         Mathf.Rad2Deg
-		                         );
-
-		if (Mathf.Atan2(mousePosition.y - playerTransform.position.y, mousePosition.x - playerTransform.position.x) *
-		    Mathf.Rad2Deg > 90 ||
-		    Mathf.Atan2(mousePosition.y - playerTransform.position.y, mousePosition.x - playerTransform.position.x) *
-		    Mathf.Rad2Deg < -90) PlayerData.Instance.IsLookingRight = false;
-		else PlayerData.Instance.IsLookingRight                     = true;
+		
 		transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, cameraAngleZ, lerpTime));
 	}
 

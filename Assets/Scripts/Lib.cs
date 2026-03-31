@@ -13,10 +13,7 @@ namespace FlashlightGame {
 
 		//* Refs
 		private static bool GizmosEnabled => true;
-
-		//* States
-		public static InputType CurrentInputType => InputType.Unknown;
-
+		
 		#endregion
 
 		#region Structs, Enums, Constants
