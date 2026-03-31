@@ -2176,6 +2176,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4955166068768820226, guid: 3820ac79424500e4590164b9a8d9307d, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 188383
+      objectReference: {fileID: 0}
     - target: {fileID: 6382515027411411204, guid: 3820ac79424500e4590164b9a8d9307d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -20.8

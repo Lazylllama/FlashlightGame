@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7cca499c3e5a81344a3b98c2af46ecb6, type: 3}
-  m_Name: PlayStationSpriteAtlas
+  m_Name: PlaystationSpriteAtlas
   m_EditorClassIdentifier: Assembly-CSharp::InputSpriteAtlas
   inputType: 2
   inputIcon: {fileID: 21300000, guid: 556001e6cf2e0914bb1c8fa669a81877, type: 3}

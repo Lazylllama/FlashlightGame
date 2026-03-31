@@ -69,6 +69,11 @@ public class InputHandler : MonoBehaviour {
 			Debug.Log("Initialized inputChange UnityEvent.");
 		}
 
+		if (onInteract == null) {
+			onInteract = new UnityEvent();
+			Debug.Log("Initialized onInteract UnityEvent.");
+		}
+
 		inputAtlases = new Dictionary<Lib.InputType, InputSpriteAtlas> {
 			{ Lib.InputType.KeyboardMouse, keyboardAtlas },
 			{ Lib.InputType.Xbox, xboxAtlas },
