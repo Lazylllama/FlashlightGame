@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class SaveController : MonoBehaviour {
 
+	#region FIelds
+
 	private const int CurrentVersion = 1;
 	
 	private string saveFilePath;
@@ -14,7 +16,10 @@ public class SaveController : MonoBehaviour {
 
 	public static SaveController Instance;
 	
+	#endregion
 
+	#region Unity Functions
+	
 	private void Awake() {
 		RegisterInstance(this);
 		saveFilePath = Path.Combine(Application.persistentDataPath, "saveData.json");
@@ -26,6 +31,11 @@ public class SaveController : MonoBehaviour {
 		Debug.Log(saveFilePath);
 		
 	}
+	
+	#endregion
+
+	#region Functions
+	
 	private GameObject CachePlayer()
 	{
 		if (playerObj == null)
@@ -82,14 +92,12 @@ public class SaveController : MonoBehaviour {
 			}
 
 			SaveData saveData = JsonUtility.FromJson<SaveData>(json);
-			
-			
 
 			if (saveData == null) {
 				Debug.LogError("Failed to find save data!");
 				return;
 			}
-			
+
 			if (saveData.version > CurrentVersion)
 			{
 				Debug.LogWarning("Save is from a newer version, cannot load."); //  We lowkey have no plans to update the save data format but this is here just in case
@@ -113,12 +121,12 @@ public class SaveController : MonoBehaviour {
 		}
 
 	}
+	
 
 	public string GetSaveFilePath() // Used by SaveControllerUI to check if save file exists and display last save time yeee
 	{
 		return saveFilePath;
 	}
-
 	
 	
 	private static void RegisterInstance(SaveController instance) {
@@ -161,5 +169,5 @@ public class SaveController : MonoBehaviour {
 		
 		return allGood;
 	}
-	
+	#endregion
 }
