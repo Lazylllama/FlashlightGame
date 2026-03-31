@@ -32,7 +32,7 @@ TagManager:
   - Environment
   - Parallax
   - DevOverlayUI
-  - 
+  - InputSprite
   - 
   - 
   - 
@@ -54,11 +54,14 @@ TagManager:
   - name: Ground
     uniqueID: 2062636261
     locked: 0
-  - name: Default
-    uniqueID: 0
-    locked: 0
   - name: Environment
     uniqueID: 913800641
+    locked: 0
+  - name: InputSprite
+    uniqueID: 4282094937
+    locked: 0
+  - name: Default
+    uniqueID: 0
     locked: 0
   - name: Foreground
     uniqueID: 3446458155

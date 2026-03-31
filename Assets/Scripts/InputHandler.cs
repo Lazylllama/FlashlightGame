@@ -47,6 +47,7 @@ public class InputHandler : MonoBehaviour {
 
 	public Lib.InputType             CurrentInputType { get; private set; } = Lib.InputType.KeyboardMouse;
 	public UnityEvent<Lib.InputType> inputChange;
+	public UnityEvent                onInteract;
 	public string CurrentInputTypeDisplayName =>
 		Lib.InputTypeDisplayName.GetValueOrDefault(CurrentInputType, "Unknown");
 
@@ -175,6 +176,8 @@ public class InputHandler : MonoBehaviour {
 					PlayerData.Instance.Crank(kvp.Key == InputActions.CrankRight);
 					break;
 				case InputActions.Interact:
+					onInteract.Invoke();
+					break;
 				case InputActions.Leap:
 				case InputActions.FlashlightDirection:
 				case InputActions.Move:

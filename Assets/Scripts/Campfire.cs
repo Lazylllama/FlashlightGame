@@ -1,62 +1,62 @@
 using System;
 using System.Collections;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Campfire : MonoBehaviour {
-	private bool isResting;
+	private SpriteRenderer spriteRenderer;
+	private GameObject     player;
+	private bool           isResting;
+	private float          dist;
 
-	[Header("Refs")]
-	[SerializeField] private GameObject inputIcon;
+	private static DebugHandler Debug;
 
-	private bool playerInRange;
+	[Range(0, 30)] [SerializeField] private float maxDist = 8f;
 
-	public bool inMenu;
-
-	private void Update() {
-		if (playerInRange && InputHandler.Instance.WasPressedThisFrame(InputHandler.InputActions.Interact) &&
-		    !isResting) {
-			StartCoroutine(RestRoutine());
-		}
+	private void Awake() {
+		Debug = new DebugHandler("Campfire - " + Vector2.Normalize(transform.position));
+		InputHandler.Instance.onInteract.AddListener(HandleInteract);
 	}
 
-	private void OnTriggerEnter2D(Collider2D collision) {
-		if (!collision.CompareTag("Player")) return;
-		playerInRange = true;
-
-		inputIcon.SetActive(true);
+	private void Start() {
+		player         = GameObject.FindGameObjectWithTag("Player");
+		spriteRenderer = GetComponent<SpriteRenderer>();
 	}
 
-	private void OnTriggerExit2D(Collider2D collision) {
-		if (!collision.CompareTag("Player")) return;
-		playerInRange = false;
-		inputIcon.SetActive(false);
+	private void FixedUpdate() {
+		if (!player) Start();
+
+		dist = Vector2.Distance(player.transform.position, transform.position);
+
+		if (dist < maxDist) spriteRenderer.color = new Color(1f, 1f, 1f, Math.Clamp(1f - (dist / maxDist), 0f, 1f));
+	}
+
+	private void HandleInteract() {
+		if (maxDist / 2 < dist) return;
+		
+		Debug.Log("In-range and ready to rest");
+		
+		StartCoroutine(RestRoutine());
 	}
 
 	private IEnumerator RestRoutine() {
 		if (isResting) yield break;
 		isResting = true;
-
-
-		while (ScreenFader.Instance == null) {
-			yield return null;
-		}
-
-		yield return ScreenFader.Instance.FadeOut(0.6f);
+		
 		PlayerData.Instance.Relieved = true;
-		Debug.Log("PlayerData.Relieved");
+		
 		yield return new WaitForSeconds(0.2f);
+		
 		PlayerData.Instance.Relieved = false;
-		Debug.Log("PlayerData.NotRelieved");
 
 		yield return ScreenFader.Instance.FadeIn(0.3f);
-
 		yield return new WaitForSeconds(0.2f);
+		
 		SaveController.Instance.SaveGame();
 		SaveControllerUI.Instance.ShowMessage();
 		AudioManager.Instance.PlaySfx(AudioManager.AudioName.SavedGame, 1f); //? audio/sfx/game/ui/confirm 10 or 11?
-
-
+		
 		isResting = false;
 	}
 }

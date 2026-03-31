@@ -3,6 +3,8 @@ using System.Collections;
 using FlashlightGame;
 using UnityEngine;
 using Unity.Cinemachine;
+using Unity.VisualScripting;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UIController : MonoBehaviour {
@@ -24,9 +26,13 @@ public class UIController : MonoBehaviour {
 	[SerializeField] private Camera mainMenuOverlayCamera;
 	[SerializeField] private Camera gameOverlayCamera;
 
+	[SerializeField] private GameObject startButtonMainMenu;
+	//[SerializeField] private Button returnButtonEscMenu;
+
 	private GameObject mainMenuUI;
 
 	//* State *//
+	private bool isInitialized;
 	public  bool IsInMenu     { get; private set; } = true;
 	private bool InActiveGame => GameController.Instance.InActiveGame;
 
@@ -45,13 +51,39 @@ public class UIController : MonoBehaviour {
 		if (!mainMenuUI)
 			Debug.LogException(new
 				                   Exception("MainMenuUI not found in scene. Please ensure there is a GameObject with the tag 'MainMenuUI'."));
+
+		EventSystem.current.firstSelectedGameObject = startButtonMainMenu;
 	}
 
-	private void Start() => RegisterInstance(this);
+	private void Start()    => RegisterInstance(this);
+	private void OnEnable() => Initialize();
+
+	private void OnDisable() {
+		if (!isInitialized || !InputHandler.Instance) return;
+		InputHandler.Instance.inputChange.RemoveListener(OnInputChanged);
+	}
+
+	private void FixedUpdate() {
+		if (!isInitialized) Initialize();
+	}
 
 	#endregion
 
 	#region Functions
+
+	private void Initialize() {
+		if (isInitialized || !InputHandler.Instance) return;
+		InputHandler.Instance.inputChange.AddListener(OnInputChanged);
+		isInitialized = true;
+	}
+
+	private void OnInputChanged(Lib.InputType newType) {
+		Debug.Log("Input type changed to " + newType, DebugLevel.Debug);
+		if (GameController.Instance.InActiveGame || newType == Lib.InputType.KeyboardMouse) return;
+		Debug.Log("Input type changed to " + newType + ", resetting selected UI element.", DebugLevel.Debug,
+		          EventSystem.current.currentSelectedGameObject);
+		EventSystem.current.SetSelectedGameObject(startButtonMainMenu);
+	}
 
 	public void SwitchToGameCams() {
 		var duration = SkipIntroFade ? 0f : 3f;
@@ -115,11 +147,11 @@ public class UIController : MonoBehaviour {
 	/// </summary>
 	public void ExitGame() {
 		Debug.Log("ExitGame has been called, bye.", DebugLevel.Fatal);
-		
+
 		#if UNITY_EDITOR
 		UnityEditor.EditorApplication.isPlaying = false;
 		#endif
-		
+
 		Application.Quit();
 	}
 
