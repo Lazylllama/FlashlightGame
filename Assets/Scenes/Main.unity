@@ -2249,11 +2249,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1357524861124581957, guid: b4e441cda9e145e49814695a9bf9a453, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -13.686561
+      value: -14.391549
       objectReference: {fileID: 0}
     - target: {fileID: 1357524861124581957, guid: b4e441cda9e145e49814695a9bf9a453, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.8681598
+      value: 5.045527
       objectReference: {fileID: 0}
     - target: {fileID: 1357524861124581957, guid: b4e441cda9e145e49814695a9bf9a453, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5429,6 +5429,18 @@ PrefabInstance:
       propertyPath: playerCam
       value: 
       objectReference: {fileID: 895846447}
+    - target: {fileID: 871852752679099331, guid: 756104732f56db249a26905bcb680269, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 871852752679099331, guid: 756104732f56db249a26905bcb680269, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 871852752679099331, guid: 756104732f56db249a26905bcb680269, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -10
+      objectReference: {fileID: 0}
     - target: {fileID: 1893991801169772997, guid: 756104732f56db249a26905bcb680269, type: 3}
       propertyPath: m_LocalPosition.x
       value: -17.99649
@@ -5550,6 +5562,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1534252095}
+    - target: {fileID: 3137551213863528412, guid: 6a54e9ddf2852c74f97c2423f276c074, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6600948469112346253, guid: 6a54e9ddf2852c74f97c2423f276c074, type: 3}
       propertyPath: m_Name
       value: '[UI] Canvases'
@@ -6015,12 +6031,20 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 1277423520945956340, guid: 47bc0420e8e23c743906c565842d62c0, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1277423520945956340, guid: 47bc0420e8e23c743906c565842d62c0, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1277423520945956340, guid: 47bc0420e8e23c743906c565842d62c0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -16.28
+      value: -16.834988
       objectReference: {fileID: 0}
     - target: {fileID: 1277423520945956340, guid: 47bc0420e8e23c743906c565842d62c0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.88
+      value: 2.0573673
       objectReference: {fileID: 0}
     - target: {fileID: 1277423520945956340, guid: 47bc0420e8e23c743906c565842d62c0, type: 3}
       propertyPath: m_LocalPosition.z
@@ -6058,6 +6082,14 @@ PrefabInstance:
       propertyPath: freeFormLightGameObject
       value: 
       objectReference: {fileID: 868360161}
+    - target: {fileID: 6095902756367772043, guid: 47bc0420e8e23c743906c565842d62c0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.3084562
+      objectReference: {fileID: 0}
+    - target: {fileID: 6095902756367772043, guid: 47bc0420e8e23c743906c565842d62c0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.33353433
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
