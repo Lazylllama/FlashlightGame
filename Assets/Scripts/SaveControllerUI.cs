@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class SaveControllerUI : MonoBehaviour
 {
+	#region Fields
+	
 	public  TextMeshProUGUI savedGameText;
 	private Coroutine       messageRoutine;
 	public  GameObject      loadMenu;
@@ -13,7 +15,9 @@ public class SaveControllerUI : MonoBehaviour
 	
 	public static SaveControllerUI Instance;
 	
-	
+	#endregion
+
+	#region Unity Functions
 	
 	private void Awake() {
 		if (Instance != null && Instance != this) {
@@ -22,6 +26,10 @@ public class SaveControllerUI : MonoBehaviour
 			Instance = this;
 		}
 	}
+	
+	#endregion
+
+	#region Functions
 	
 	public void OnLoadButtonPressed()
 	{
@@ -55,6 +63,9 @@ public class SaveControllerUI : MonoBehaviour
 		messageRoutine = StartCoroutine(ShowMessageRoutine());
 		
 	}
+	#endregion
+
+	#region Coroutines
 	
 	IEnumerator ShowMessageRoutine()
 	{
@@ -65,16 +76,14 @@ public class SaveControllerUI : MonoBehaviour
 	IEnumerator FadeInAndOut()
 	{
 		Color color = savedGameText.color;
-
-		// Fade in
+		
 		while (color.a < 1)
 		{
 			color.a    += Time.deltaTime;
 			savedGameText.color =  color;
 			yield return null;
 		}
-
-		// Fade out
+		
 		while (color.a > 0)
 		{
 			color.a    -= Time.deltaTime;
@@ -82,5 +91,5 @@ public class SaveControllerUI : MonoBehaviour
 			yield return null;
 		}
 	}
-	
+	#endregion
 }
