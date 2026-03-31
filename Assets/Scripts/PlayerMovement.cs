@@ -144,7 +144,7 @@ public class PlayerMovement : MonoBehaviour {
 		var moveX = movement.x;
 
 		if (Mathf.Abs(moveX) > 0.1f) {
-			// If moving in the same direction the player is looking it's "forward" (1), otherwise "backward" (-1)
+			// If moving in the same direction the player is looking, it's "forward" (1), otherwise "backward" (-1)
 			var movingRight = moveX > 0f;
 			var walkDirection = movingRight == IsLookingRight ? 1 : -1;
 

@@ -20,9 +20,9 @@ public class EnemyController : MonoBehaviour {
 	[SerializeField] private LayerMask groundLayer;
 
 	[Header("Sound")]
-	[SerializeField] private AudioManager.AudioName soundName;
 	[SerializeField] private string animatorName;
-	[SerializeField] private float  soundInterval;
+	[SerializeField] private float     soundInterval;
+	[SerializeField] private AudioClip flap;
 
 	[Header("Teleport Settings")]
 	[SerializeField] private float teleportCooldown = 1.2f;
@@ -136,8 +136,7 @@ public class EnemyController : MonoBehaviour {
 		if (!Lib.Movement.MantleWallCheck(lookPosition.position, facingRight)) return;
 		
 		var mantlePoint = Lib.Movement.GetWallMantlePoint(transform.position, facingRight);
-
-		Debug.Log(mantlePoint);
+		
 		if (mantlePoint.Position == Vector3.zero) {
 			enemySpeed = baseSpeed;
 			return;
@@ -149,7 +148,7 @@ public class EnemyController : MonoBehaviour {
 		} else {
 			var pathfindHit = Physics2D.Raycast(mantlePoint.Position, Vector2.down, 10000f, groundLayer);
 			if (!pathfindHit.collider) {
-				print("ERROR: Pathfind ground not found!");
+				Debug.LogError("ERROR: Pathfind ground not found!");
 				return;
 			}
 			pathFindPoint = new Vector3(pathfindHit.point.x, pathfindHit.point.y + floatHeight, transform.position.z);
@@ -203,7 +202,7 @@ public class EnemyController : MonoBehaviour {
 		if (pathfindingRoutineState != null) return;
 		var hit = Physics2D.Raycast(transform.position, Vector2.down, 10000f, groundLayer);
 		if (!hit.collider) {
-			print("ERROR: Float ground not found!");
+			Debug.LogError("ERROR: Float ground not found!");
 			return;
 		}
 
@@ -234,12 +233,9 @@ public class EnemyController : MonoBehaviour {
 
 		// repeat while the enemy is alive
 		while (health > 0f) {
-			Debug.Log("Playing enemy sound.");
-
 			if (audioSource) {
-				if (animator && animatorName.Length > 0)
-					animator.SetTrigger(animatorName);
-				AudioManager.Instance.PlaySfx(soundName, audioSource);
+				if (animator && animatorName.Length > 0) animator.SetTrigger(animatorName);
+				audioSource.PlayOneShot(flap);
 			} else {
 				Debug.LogWarning("AudioSource component missing on EnemyController. Sound will not play.");
 			}

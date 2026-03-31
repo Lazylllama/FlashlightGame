@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
@@ -6,6 +7,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
 using FlashlightGame;
+using Random = UnityEngine.Random;
 
 public class FlashLightPreset {
 	public float PresetDensity;
@@ -55,7 +57,7 @@ public class FlashlightController : MonoBehaviour {
 
 	private LayerMask        excludePlayer;
 	private FlashLightPreset laserPreset, defaultPreset, disabledPreset;
-
+	
 	private static bool FlashlightEnabled {
 		get => PlayerData.Instance && PlayerData.Instance.FlashlightEnabled;
 		set => throw new NotImplementedException();
@@ -71,6 +73,8 @@ public class FlashlightController : MonoBehaviour {
 	private Vector3[]        lightPoints        = { };
 	private Vector3          flashlightPositionWhenFacingRight;
 	private Vector3          flashLightPositionWhenFacingLeft;
+	
+	private Coroutine flashlightCoroutine;
 
 	// Active Flashlight Preset
 	private FlashLightPreset activePreset = new FlashLightPreset();
@@ -471,5 +475,31 @@ public class FlashlightController : MonoBehaviour {
 		}
 	}
 
+	public void LowBatteryWarning(bool isLow) {
+		if (isLow) {
+			flashlightCoroutine = StartCoroutine(Flicker());
+		} else {
+			StopCoroutine(flashlightCoroutine);
+		}
+	}
+
+	#endregion
+	
+	#region IEnumerator
+	private IEnumerator Flicker() {
+		while (true) {
+			if (!FlashlightEnabled) {
+				yield return null;
+				continue;
+			}
+
+			Light2D targetLight = equippedFlashlight == laserPreset ? freeFormLight : spotLight;
+
+			targetLight.enabled = false;
+			yield return new WaitForSeconds(Random.Range(0.05f, 0.1f));
+			targetLight.enabled = true;
+			yield return new WaitForSeconds(Random.Range(0.2f, 1f));
+		}
+	}
 	#endregion
 }

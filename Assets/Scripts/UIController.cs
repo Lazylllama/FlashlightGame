@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using FlashlightGame;
 using UnityEngine;
@@ -23,18 +24,27 @@ public class UIController : MonoBehaviour {
 	[SerializeField] private Camera mainMenuOverlayCamera;
 	[SerializeField] private Camera gameOverlayCamera;
 
+	private GameObject mainMenuUI;
+
 	//* State *//
-	public bool IsInMenu { get; private set; } = true;
+	public  bool IsInMenu     { get; private set; } = true;
+	private bool InActiveGame => GameController.Instance.InActiveGame;
 
 	//* PlayerPrefs *//
-	private static bool SkipIntroFade => FBPP.GetBool("SkipIntroFade");
+	//private static bool SkipIntroFade => FBPP.GetBool("SkipIntroFade");
+	private static bool SkipIntroFade => true; //? Temp hardcoded cause it lowk looks better...
 
 	#endregion
 
 	#region Unity Functions
 
 	private void Awake() {
-		Debug = new DebugHandler("UIController");
+		Debug      = new DebugHandler("UIController");
+		mainMenuUI = GameObject.FindGameObjectWithTag("MainMenuUI");
+
+		if (!mainMenuUI)
+			Debug.LogException(new
+				                   Exception("MainMenuUI not found in scene. Please ensure there is a GameObject with the tag 'MainMenuUI'."));
 	}
 
 	private void Start() => RegisterInstance(this);
@@ -44,14 +54,18 @@ public class UIController : MonoBehaviour {
 	#region Functions
 
 	public void SwitchToGameCams() {
+		var duration = SkipIntroFade ? 0f : 3f;
 		mainMenuOverlayCamera.enabled = false;
+		mainMenuUI.SetActive(false);
+		
 		StartCoroutine(FadeBetweenCams(
 		                               mainMenuCinemachine,
 		                               playerCinemachine,
-		                               SkipIntroFade ? 0f : 3f,
+		                               duration,
 		                               mainMenuOverlayCamera,
 		                               gameOverlayCamera));
-		StartCoroutine(DelayFunction(SkipIntroFade ? 0f : 3f,
+		
+		StartCoroutine(DelayFunction(Math.Clamp(duration - 1f, 0f, float.MaxValue),
 		                             () => {
 			                             gameOverlayCamera.enabled            = true;
 			                             GameController.Instance.InActiveGame = true;

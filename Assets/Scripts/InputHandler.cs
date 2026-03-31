@@ -2,29 +2,53 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FlashlightGame;
+using NUnit.Framework;
+using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class InputHandler : MonoBehaviour {
 	#region Types
 
-	private enum InputActions {
+	public enum InputActions {
 		ToggleFlashlight,
 		ToggleModeLeft,
 		ToggleModeRight,
-		NextSentence,
 		Flashlight1,
 		Flashlight2,
-		Mantle
+		Mantle,
+		CrankKeyboard,
+		CrankLeft,
+		CrankRight,
+		NextSentence,
+		Interact,
+		Leap
 	}
 
 	#endregion
 
 	#region Fields
 
-	private static DebugHandler Debug;
+	[Header("Flairs")]
+	[SerializeField] private Sprite invalidFlairSprite;
 
-	private readonly Dictionary<InputActions, InputAction> inputActionsList = new();
+	[Header("Input Atlases")]
+	[SerializeField] private InputSpriteAtlas keyboardAtlas;
+	[SerializeField] private InputSpriteAtlas xboxAtlas;
+	[SerializeField] private InputSpriteAtlas playstationAtlas;
+	[SerializeField] private InputSpriteAtlas steamDeckAtlas;
+
+	public Lib.InputType             CurrentInputType { get; private set; } = Lib.InputType.KeyboardMouse;
+	public UnityEvent<Lib.InputType> inputChange;
+	public string CurrentInputTypeDisplayName =>
+		Lib.InputTypeDisplayName.GetValueOrDefault(CurrentInputType, "Unknown");
+
+	private static DebugHandler Debug;
+	public static  InputHandler Instance;
+
+	private readonly Dictionary<InputActions, InputAction>       inputActionsList = new();
+	private          Dictionary<Lib.InputType, InputSpriteAtlas> inputAtlases     = new();
 
 	#endregion
 
@@ -32,15 +56,61 @@ public class InputHandler : MonoBehaviour {
 
 	private void Awake() {
 		Debug = new DebugHandler("InputHandler");
+
+		if (inputChange == null) {
+			inputChange = new UnityEvent<Lib.InputType>();
+			Debug.Log("Initialized inputChange UnityEvent.");
+		}
+
+		inputAtlases = new Dictionary<Lib.InputType, InputSpriteAtlas> {
+			{ Lib.InputType.KeyboardMouse, keyboardAtlas },
+			{ Lib.InputType.Xbox, xboxAtlas },
+			{ Lib.InputType.PlayStation, playstationAtlas },
+			{ Lib.InputType.SteamDeck, steamDeckAtlas }
+		};
+
+		foreach (var atlas in inputAtlases.Values.Where(atlas => atlas)) atlas.MapSprites();
 	}
 
-	private void Start() => FindActions();
+	private void Start() {
+		RegisterInstance(this);
+		FindActions();
+	}
 
-	private void Update() => CheckForTriggeredActions();
+	private void OnEnable()  => InputSystem.onActionChange += HandleInputChange;
+	private void OnDisable() => InputSystem.onActionChange -= HandleInputChange;
+	private void Update()    => CheckForTriggeredActions();
 
 	#endregion
 
 	#region Functions
+
+	public Sprite GetSprite(InputActions action) {
+		if (inputAtlases.TryGetValue(CurrentInputType, out var atlas) && atlas != null)
+			return atlas.GetInputSprite(action);
+
+		return invalidFlairSprite;
+	}
+	
+	public bool WasPressedThisFrame(InputActions action) => inputActionsList[action].WasPressedThisFrame();
+
+	private void HandleInputChange(object obj, InputActionChange context) {
+		if (context != InputActionChange.ActionPerformed) return;
+		if (obj is not InputAction action) return;
+
+		var control = action.activeControl;
+		if (control == null) return;
+
+		var newInputType        = Lib.Input.RevealDevice(control.device);
+		var newInputDisplayName = Lib.InputTypeDisplayName.GetValueOrDefault(newInputType, "Unknown");
+
+		if (CurrentInputType == newInputType) return;
+
+		CurrentInputType = newInputType;
+		inputChange.Invoke(CurrentInputType);
+
+		Debug.Log($"Input type changed to {newInputDisplayName}", DebugLevel.Info);
+	}
 
 	private void FindActions() {
 		foreach (InputActions action in Enum.GetValues(typeof(InputActions))) {
@@ -82,9 +152,30 @@ public class InputHandler : MonoBehaviour {
 				case InputActions.Mantle:
 					PlayerMovement.Instance.Mantle();
 					break;
+				case InputActions.CrankKeyboard:
+					PlayerData.Instance.Crank();
+					break;
+				case InputActions.Interact:
+				case InputActions.Leap:
+				case InputActions.CrankLeft:
+					PlayerData.Instance.Crank(false);
+					break;
+				case InputActions.CrankRight:
+					PlayerData.Instance.Crank(true);
+					break;
 				default:
-					throw new Exception("Unhandled InputAction: " + kvp.Key);
+					throw new ArgumentOutOfRangeException();
 			}
+		}
+	}
+
+	private static void RegisterInstance(InputHandler instance) {
+		if (Instance && Instance != instance) {
+			Destroy(instance.gameObject);
+		} else {
+			Instance = instance;
+
+			Debug.Log("PlayerData initialized.");
 		}
 	}
 

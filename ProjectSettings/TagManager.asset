@@ -13,6 +13,7 @@ TagManager:
   - ConcreteGround
   - WoodGround
   - GrassGround
+  - MainMenuUI
   layers:
   - Default
   - TransparentFX
