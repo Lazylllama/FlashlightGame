@@ -598,7 +598,9 @@ PlayerSettings:
   webGLCloseOnQuit: 0
   webWasm2023: 0
   webEnableSubmoduleStrippingCompatibility: 0
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    Server: APP4543970
+    Standalone: STEAMWORKS_NET;APP4543970
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:

@@ -1,0 +1,23 @@
+{
+    "name": "UXExamplesAssembly",
+    "rootNamespace": "",
+    "references": [
+        "GUID:58d42c70423577947911995925414405",
+        "GUID:f5702ca0318eb1942af8daf18131f44d"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.heathen.systemcore",
+            "expression": "",
+            "define": "HE_SYSCORE"
+        }
+    ],
+    "noEngineReferences": false
+}
