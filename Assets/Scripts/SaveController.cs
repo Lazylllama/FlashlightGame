@@ -1,11 +1,12 @@
 using System;
-using System.Collections;
 using System.IO;
-using TMPro;
 using UnityEngine;
+using System.Security.Cryptography;
+using System.Text;
 
 public class SaveController : MonoBehaviour {
 
+	
 	#region FIelds
 
 	private const int CurrentVersion = 1;
@@ -16,13 +17,15 @@ public class SaveController : MonoBehaviour {
 
 	public static SaveController Instance;
 	
+	private const string EncryptionKey = "nellaFScuto_126!";
+	
 	#endregion
 
 	#region Unity Functions
 	
 	private void Awake() {
 		RegisterInstance(this);
-		saveFilePath = Path.Combine(Application.persistentDataPath, "saveData.json");
+		saveFilePath = Path.Combine(Application.persistentDataPath, "saveData.dat");
 	}
 		
 
@@ -41,6 +44,56 @@ public class SaveController : MonoBehaviour {
 		if (playerObj == null)
 			playerObj = GameObject.FindGameObjectWithTag("Player");
 		return playerObj;
+	}
+	public SaveData GetSaveData()
+	{
+		if (!File.Exists(saveFilePath)) return null;
+    
+		try {
+			string json = Decrypt(File.ReadAllText(saveFilePath));
+			return JsonUtility.FromJson<SaveData>(json);
+		} catch {
+			return null;
+		}
+	}
+	
+	private string Encrypt(string plainText)
+	{
+		using var aes = Aes.Create();
+		var       key = Encoding.UTF8.GetBytes(EncryptionKey.PadRight(16).Substring(0, 16));
+		aes.Key = key;
+		aes.GenerateIV();
+
+		using var encryptor   = aes.CreateEncryptor();
+		var       plainBytes  = Encoding.UTF8.GetBytes(plainText);
+		var       cipherBytes = encryptor.TransformFinalBlock(plainBytes, 0, plainBytes.Length);
+
+		// Prepend IV to the cipher so we can decrypt later
+		var result = new byte[aes.IV.Length + cipherBytes.Length];
+		aes.IV.CopyTo(result, 0);
+		cipherBytes.CopyTo(result, aes.IV.Length);
+
+		return Convert.ToBase64String(result);
+	}
+
+	private string Decrypt(string cipherText)
+	{
+		var fullBytes = Convert.FromBase64String(cipherText);
+    
+		using var aes = Aes.Create();
+		var       key = Encoding.UTF8.GetBytes(EncryptionKey.PadRight(16).Substring(0, 16));
+		aes.Key = key;
+
+		// Extract the IV from the front of the data
+		var iv     = new byte[16];
+		var cipher = new byte[fullBytes.Length - 16];
+		Array.Copy(fullBytes, 0,  iv,     0, 16);
+		Array.Copy(fullBytes, 16, cipher, 0, cipher.Length);
+		aes.IV = iv;
+
+		using var decryptor  = aes.CreateDecryptor();
+		var       plainBytes = decryptor.TransformFinalBlock(cipher, 0, cipher.Length);
+		return Encoding.UTF8.GetString(plainBytes);
 	}
 
 	public void SaveGame() {
@@ -63,7 +116,7 @@ public class SaveController : MonoBehaviour {
 			timeCreatedTicks   = DateTime.Now.Ticks // For SaveControllerUI to display last save time yes
 		};
 		try {
-			File.WriteAllText(saveFilePath, JsonUtility.ToJson(saveData));
+			File.WriteAllText(saveFilePath, Encrypt(JsonUtility.ToJson(saveData)));
 			
 		} catch (Exception e) {
 			Debug.LogError($"Failed to save game: {e.Message}");
@@ -72,42 +125,42 @@ public class SaveController : MonoBehaviour {
 	}
 	
 
-	public void LoadGame() {
+	public bool LoadGame() {
 		if (!File.Exists(saveFilePath)) {
 			Debug.Log("No save file found!");
-			return;
+			return false;
 		}
 		if (!AreRequiredInstancesReady())
 		{
 			Debug.LogError("Cannot load game one or more required scripts are missing!");
-			return;
+			return false;
 		}
 
 		try {
-			string json = File.ReadAllText(saveFilePath);
+			string json = Decrypt(File.ReadAllText(saveFilePath));
 
 			if (string.IsNullOrEmpty(json)) {
 				Debug.LogError("Save file is empty!");
-				return;
+				return false;
 			}
 
 			SaveData saveData = JsonUtility.FromJson<SaveData>(json);
 
 			if (saveData == null) {
 				Debug.LogError("Failed to find save data!");
-				return;
+				return false;
 			}
 
 			if (saveData.version > CurrentVersion)
 			{
 				Debug.LogWarning("Save is from a newer version, cannot load."); //  We lowkey have no plans to update the save data format but this is here just in case
-				return;
+				return false;
 			}
 
 			if (saveData.version < CurrentVersion)
 			{
 				Debug.LogWarning("Old save version, cannot load."); // This too.
-				return;
+				return false;
 			}
 			
 			
@@ -115,9 +168,11 @@ public class SaveController : MonoBehaviour {
 			PlayerData.Instance.Battery                    = saveData.battery;
 			PlayerData.Instance.IsLookingRight             = saveData.isLookingRight;
 			CachePlayer().transform.position = saveData.checkpointPosition;
+			return true;
 
 		} catch (Exception e) {
 			Debug.LogError($"Error loading save file: {e.Message}");
+			return false;
 		}
 
 	}

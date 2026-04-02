@@ -5687,7 +5687,19 @@ PrefabInstance:
     - target: {fileID: 4306927048632010158, guid: 6a54e9ddf2852c74f97c2423f276c074, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 43015365}
+      objectReference: {fileID: 1430430773}
+    - target: {fileID: 4306927048632010158, guid: 6a54e9ddf2852c74f97c2423f276c074, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnDeleteButtonPressed
+      objectReference: {fileID: 0}
+    - target: {fileID: 4306927048632010158, guid: 6a54e9ddf2852c74f97c2423f276c074, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SaveControllerUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4770088962708624990, guid: 6a54e9ddf2852c74f97c2423f276c074, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6600948469112346253, guid: 6a54e9ddf2852c74f97c2423f276c074, type: 3}
       propertyPath: m_Name
       value: '[UI] Canvases'
