@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using FlashlightGame;
 using UnityEngine;
-
+using Random = UnityEngine.Random;
 
 public class PlayerData : MonoBehaviour {
 	#region Fields
@@ -17,13 +17,9 @@ public class PlayerData : MonoBehaviour {
 	public bool IsDead  => Health <= 0;
 
 	//* Player Data *//
-	private bool isWalkingRight;
-	public bool IsWalkingRight {
-		set => isWalkingRight = value;
-		get => isWalkingRight;
-	}
+	public bool IsWalkingRight { set; get; } = true;
 
-	private bool isLookingRight;
+	private bool isLookingRight = true;
 	public bool IsLookingRight {
 		set => SetIsLookingRight(value);
 		get => isLookingRight;
@@ -63,11 +59,11 @@ public class PlayerData : MonoBehaviour {
 
 	//* Options *//
 	[SerializeField] private float batteryDrainInterval = 1f;
-	[SerializeField] private float invulnerabiltyTime   = 1f;
+	[SerializeField] private float invulnerabilityTime  = 1f;
 
 	//* States *//
 	private float drainTimer;
-	private bool  lastCrankWasRight;
+	private bool  lastCrankWasRight; // Controller Specific
 
 	#endregion
 
@@ -117,7 +113,7 @@ public class PlayerData : MonoBehaviour {
 	}
 
 	private void CrankLogic() {
-		Battery += 1;
+		Battery += Random.Range(1, 3);
 		Battery =  Mathf.Clamp(Battery, 0, 100);
 
 		UIController.Instance.UpdateUI();
@@ -206,7 +202,6 @@ public class PlayerData : MonoBehaviour {
 		isLookingRight = value;
 
 		if (PlayerController.Instance) PlayerController.Instance.UpdateDirection();
-		if (FlashlightController.Instance) FlashlightController.Instance.UpdateDirection();
 	}
 
 	private void HandleBatteryDrain() {
@@ -247,7 +242,7 @@ public class PlayerData : MonoBehaviour {
 
 	private IEnumerator MakeInvulnerable() {
 		IsInvulnerable = true;
-		yield return new WaitForSeconds(invulnerabiltyTime);
+		yield return new WaitForSeconds(invulnerabilityTime);
 		IsInvulnerable = false;
 	}
 

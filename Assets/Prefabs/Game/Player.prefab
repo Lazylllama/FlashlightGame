@@ -10058,7 +10058,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 1237660001
-  m_SortingLayer: 5
+  m_SortingLayer: 4
   m_SortingOrder: -2
   m_MaskInteraction: 0
   m_RenderMode: 0
@@ -15035,7 +15035,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 1887157377
-  m_SortingLayer: 4
+  m_SortingLayer: 3
   m_SortingOrder: -2
   m_MaskInteraction: 0
   m_RenderMode: 0
@@ -19931,7 +19931,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 1237660001
-  m_SortingLayer: 5
+  m_SortingLayer: 4
   m_SortingOrder: -2
   m_MaskInteraction: 0
   m_RenderMode: 0
@@ -19992,7 +19992,7 @@ Transform:
   m_GameObject: {fileID: 8947315786924848605}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.6427876, w: 0.7660445}
-  m_LocalPosition: {x: 1.3084568, y: 0.3335344, z: 0}
+  m_LocalPosition: {x: 1.3562087, y: 0.7228426, z: 0}
   m_LocalScale: {x: 0.25464, y: 0.4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -20015,12 +20015,34 @@ MonoBehaviour:
   flashlightWidth: 0.1
   rayAmount: 100
   lerpTime: 0.1
+  maxReflections: 3
+  reflectionOriginOffset: 0.1
+  playerTransform: {fileID: 1277423520945956340}
+  armLeft: {fileID: 0}
+  armRight: {fileID: 0}
+  armLeftOffset: {x: 0, y: 0, z: 0}
+  armRightOffset: {x: 0, y: 0, z: 0}
   lightOutput: {fileID: 4936669862843185341}
   spotLightGameObject: {fileID: 3960592807234988282}
   freeFormLightGameObject: {fileID: 0}
-  playerTransform: {fileID: 1277423520945956340}
-  maxReflections: 3
-  reflectionOriginOffset: 0.1
+  laserPreset:
+    density: 1.5
+    beamWidth: 0.1
+    range: 100
+    intensity: 20
+    color: {r: 1, g: 0, b: 0, a: 1}
+  defaultPreset:
+    density: 1.5
+    beamWidth: 20
+    range: 10
+    intensity: 7
+    color: {r: 1, g: 1, b: 1, a: 1}
+  disabledPreset:
+    density: 0
+    beamWidth: 0
+    range: 0
+    intensity: 0
+    color: {r: 1, g: 1, b: 1, a: 0}
 --- !u!1818360608 &3372813745512499410
 PositionConstraint:
   m_ObjectHideFlags: 0
@@ -20049,22 +20071,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1277423520945956340}
     m_Modifications:
-    - target: {fileID: 172744983620587992, guid: 5aadd893fd70b344f87bfc408462933f, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.30028385
-      objectReference: {fileID: 0}
-    - target: {fileID: 172744983620587992, guid: 5aadd893fd70b344f87bfc408462933f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.18327741
-      objectReference: {fileID: 0}
-    - target: {fileID: 4497971423650885022, guid: 5aadd893fd70b344f87bfc408462933f, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4497971423650885022, guid: 5aadd893fd70b344f87bfc408462933f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6600337871609808859, guid: 5aadd893fd70b344f87bfc408462933f, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.3

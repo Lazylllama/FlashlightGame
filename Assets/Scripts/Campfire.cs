@@ -33,7 +33,7 @@ public class Campfire : MonoBehaviour {
 
 	private void OnDisable() {
 		if (!isInitialized) return;
-		InputHandler.Instance.onInteract.RemoveListener(HandleInteract);
+		InputHandler.Instance.onActionBtnTriggered.RemoveListener(HandleOnActionBtnTriggered);
 	}
 
 	private void FixedUpdate() {
@@ -53,12 +53,13 @@ public class Campfire : MonoBehaviour {
 	private void Initialize() {
 		if (!InputHandler.Instance || isInitialized) return;
 
-		InputHandler.Instance.onInteract.AddListener(HandleInteract);
+		InputHandler.Instance.onActionBtnTriggered.AddListener(HandleOnActionBtnTriggered);
 
 		isInitialized = true;
 	}
 
-	private void HandleInteract() {
+	private void HandleOnActionBtnTriggered(InputHandler.InputActions action) {
+		if (action      != InputHandler.InputActions.Interact) return;
 		if (maxDist / 2 < dist) return;
 
 		Debug.Log("In-range and ready to rest");

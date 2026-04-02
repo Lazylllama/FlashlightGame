@@ -46,8 +46,8 @@ public class InputHandler : MonoBehaviour {
 	public static float LookInputDeadZone = 0.05f;
 
 	public Lib.InputType             CurrentInputType { get; private set; } = Lib.InputType.KeyboardMouse;
+	public UnityEvent<InputActions>  onActionBtnTriggered;
 	public UnityEvent<Lib.InputType> inputChange;
-	public UnityEvent                onInteract;
 	public string CurrentInputTypeDisplayName =>
 		Lib.InputTypeDisplayName.GetValueOrDefault(CurrentInputType, "Unknown");
 
@@ -69,16 +69,17 @@ public class InputHandler : MonoBehaviour {
 			Debug.Log("Initialized inputChange UnityEvent.");
 		}
 
-		if (onInteract == null) {
-			onInteract = new UnityEvent();
-			Debug.Log("Initialized onInteract UnityEvent.");
+		if (onActionBtnTriggered == null) {
+			onActionBtnTriggered = new UnityEvent<InputActions>();
+			Debug.Log("Initialized onActionBtnTriggered UnityEvent.");
 		}
 
 		inputAtlases = new Dictionary<Lib.InputType, InputSpriteAtlas> {
 			{ Lib.InputType.KeyboardMouse, keyboardAtlas },
 			{ Lib.InputType.Xbox, xboxAtlas },
 			{ Lib.InputType.PlayStation, playstationAtlas },
-			{ Lib.InputType.SteamDeck, steamDeckAtlas }
+			{ Lib.InputType.SteamDeck, steamDeckAtlas },
+			{ Lib.InputType.Unknown, xboxAtlas }
 		};
 
 		foreach (var atlas in inputAtlases.Values.Where(atlas => atlas)) atlas.MapSprites();
@@ -117,11 +118,12 @@ public class InputHandler : MonoBehaviour {
 	private void HandleInputChange(object obj, InputActionChange context) {
 		if (context != InputActionChange.ActionPerformed) return;
 		if (obj is not InputAction action) return;
-		
+
 		var activeControl = action.activeControl.ToString();
-		
+
+		// Avoid changing input type when interacting with UI elements or when the mouse position is being read, as these can trigger on both keyboard/mouse and gamepad inputs.
 		if (activeControl.Contains("UI/Point") || activeControl.Contains("Mouse/position")) return;
-		
+
 		var control = action.activeControl;
 		if (control == null) return;
 
@@ -157,6 +159,9 @@ public class InputHandler : MonoBehaviour {
 
 			Debug.Log($"Action '{kvp.Key.ToString()}' was triggered", DebugLevel.Debug);
 
+			// Send button trigger
+			if (kvp.Value.type == InputActionType.Button) onActionBtnTriggered.Invoke(kvp.Key);
+
 			switch (kvp.Key) {
 				case InputActions.ToggleFlashlight:
 					//* Let the player turn it on even though the flashlight is dead just as a feature, it will be disabled automatically right after.
@@ -181,8 +186,6 @@ public class InputHandler : MonoBehaviour {
 					PlayerData.Instance.Crank(kvp.Key == InputActions.CrankRight);
 					break;
 				case InputActions.Interact:
-					onInteract.Invoke();
-					break;
 				case InputActions.Leap:
 				case InputActions.FlashlightDirection:
 				case InputActions.Move:
