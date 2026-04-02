@@ -1,5 +1,6 @@
 using System;
 using Discord;
+using FlashlightGame;
 using UnityEngine;
 
 public class DiscordRichPresence : MonoBehaviour {
@@ -8,6 +9,8 @@ public class DiscordRichPresence : MonoBehaviour {
 	private static DebugHandler Debug;
 
 	private Discord.Discord discord;
+
+	private bool isInitialized;
 
 	#endregion
 
@@ -18,21 +21,38 @@ public class DiscordRichPresence : MonoBehaviour {
 	}
 
 	private void Start() {
-		discord = new Discord.Discord(1488935054846722280, (ulong)Discord.CreateFlags.NoRequireDiscord);
+		if (isInitialized) return;
+
+		try {
+			discord = new Discord.Discord(1488935054846722280, (ulong)CreateFlags.NoRequireDiscord);
+		} catch (Exception e) {
+			Debug.LogWarning($"Failed to initialize Discord Rich Presence. {e.Message}");
+		} finally {
+			if (discord != null) {
+				isInitialized = true;
+				Debug.Log($"Recognized running Discord Client", DebugLevel.Info);
+			}
+		}
+
 		UpdateActivity();
 	}
 
 	private void Update() {
-		discord.RunCallbacks();
+		if (!isInitialized) return;
+		discord?.RunCallbacks();
 	}
 
-	private void OnDisable() => discord.Dispose();
+	private void OnDisable() {
+		if (!isInitialized) return;
+		discord.Dispose();
+	}
 
 	#endregion
 
 	#region Functions
 
 	private void UpdateActivity() {
+		if (!isInitialized) return;
 		var activityManager = discord.GetActivityManager();
 		var activity = new Discord.Activity {
 			State   = "Scouting",

@@ -79,7 +79,7 @@ namespace FlashlightGame {
 		public static class Movement {
 			//* Constants
 			//? Public for gizmos etc
-			public const float WallCheckDistance   = 1.0f;
+			public const float WallCheckDistance   = 1.5f;
 			private const float WallTeleportOffsetY = 2f;
 
 			/// <summary>

@@ -169,7 +169,7 @@ public class PlayerMovement : MonoBehaviour {
 		Debug.LogKv("Mantle", DebugLevel.Debug, new object[] {
 			"isGrounded", isGrounded,
 			"canMantle", canMantle
-		});
+		}); 	
 
 		if (!isGrounded || !canMantle || mantleRoutineState != null) return;
 		mantleRoutineState = StartCoroutine(MantleRoutine());

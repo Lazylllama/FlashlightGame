@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "com.daniel-geo.unityhackatime": "https://github.com/daniel-geo/unity-hackatime.git#package",
+    "com.discord.game-sdk": "3.1.0",
     "com.heathen.steamworks": "file:C:/UnityPackages/SourceRepo/Unity/ToolkitSource/Assets/Toolkits/com.heathen.steamworks",
     "com.heathen.ux": "file:C:/UnityPackages/SourceRepo/Unity/ToolkitSource/Assets/Toolkits/com.heathen.ux",
     "com.richtools.filebasedplayerprefs": "https://github.com/richardelms/FileBasedPlayerPrefs.git",
@@ -58,14 +59,15 @@
     "com.unity.modules.video": "1.0.0",
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
-    "com.unity.modules.xr": "1.0.0",
-    "com.discord.game-sdk": "2.5.6"
+    "com.unity.modules.xr": "1.0.0"
   },
   "scopedRegistries": [
     {
       "name": "Hourai Teahouse",
       "url": "https://upm.houraiteahouse.net",
-      "scopes": ["com.discord"]
+      "scopes": [
+        "com.discord"
+      ]
     }
   ]
 }

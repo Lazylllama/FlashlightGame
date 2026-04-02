@@ -10,6 +10,9 @@ public class PlayerController : MonoBehaviour {
 	//* Refs
 	private SpriteRenderer playerSprite;
 	private Rigidbody2D    playerRb;
+	
+	//* State
+	private bool isInitialized;
 
 	#endregion
 
@@ -22,8 +25,6 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		Instance = this;
-		
-		SaveController.RegisterPlayer(gameObject);
 	}
 
 	private void Start() {
@@ -31,6 +32,12 @@ public class PlayerController : MonoBehaviour {
 		playerRb     = GetComponent<Rigidbody2D>();
 
 		UpdateDirection();
+	}
+
+	private void Update() {
+		if (!SaveController.Instance || isInitialized) return;
+		SaveController.RegisterPlayer(gameObject);
+		isInitialized = true;
 	}
 
 	#endregion
@@ -45,7 +52,7 @@ public class PlayerController : MonoBehaviour {
 		var rotationY = PlayerData.Instance.IsLookingRight ? 0 : 180;
 		playerSprite.transform.rotation = new Quaternion(0, rotationY, 0, 0);
 	}
-	
+
 	/// <summary>
 	/// Respawn player at last checkpoint
 	/// </summary>
