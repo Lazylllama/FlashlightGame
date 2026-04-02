@@ -143,7 +143,8 @@ public class PlayerMovement : MonoBehaviour {
 			var movingRight   = moveX > 0f;
 			var walkDirection = movingRight == IsLookingRight ? 1 : -1;
 
-			particleController.CrateMovement(moveX);
+			//? Particles very broken
+			//particleController.CrateMovement(moveX);
 			AudioManager.Instance.PlayFootstepSfx(currentSurface);
 			playerAnimator.SetInteger(WalkingDirection, walkDirection);
 		} else {
@@ -169,7 +170,7 @@ public class PlayerMovement : MonoBehaviour {
 		Debug.LogKv("Mantle", DebugLevel.Debug, new object[] {
 			"isGrounded", isGrounded,
 			"canMantle", canMantle
-		}); 	
+		});
 
 		if (!isGrounded || !canMantle || mantleRoutineState != null) return;
 		mantleRoutineState = StartCoroutine(MantleRoutine());
