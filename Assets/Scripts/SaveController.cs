@@ -100,7 +100,7 @@ public class SaveController : MonoBehaviour {
 		
 		if (!AreRequiredInstancesReady())
 		{
-			Debug.LogError("Cannot load game one or more required scripts are missing!");
+			Debug.LogError("Cannot save game one or more required scripts are missing!");
 			return;
 		}
 
