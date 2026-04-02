@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		Instance = this;
+		
+		SaveController.RegisterPlayer(gameObject);
 	}
 
 	private void Start() {

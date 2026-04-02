@@ -30,14 +30,16 @@ public class SaveController : MonoBehaviour {
 		
 
 	void Start() {
-		CachePlayer();
 		Debug.Log(saveFilePath);
-		
 	}
 	
 	#endregion
 
 	#region Functions
+	
+	public static void RegisterPlayer(GameObject player) {
+		Instance.playerObj = player;
+	}
 	
 	private GameObject CachePlayer()
 	{
@@ -113,7 +115,7 @@ public class SaveController : MonoBehaviour {
 			health             = PlayerData.Instance.Health,
 			battery            = PlayerData.Instance.Battery,
 			isLookingRight     = PlayerData.Instance.IsLookingRight,
-			timeCreatedTicks   = DateTime.Now.Ticks // For SaveControllerUI to display last save time yes
+			lastSavedTicks     = DateTime.Now.Ticks // For SaveControllerUI to display last save time yes
 		};
 		try {
 			File.WriteAllText(saveFilePath, Encrypt(JsonUtility.ToJson(saveData)));

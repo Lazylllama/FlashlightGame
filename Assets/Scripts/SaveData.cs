@@ -8,5 +8,5 @@ public class SaveData {
 	public int     battery;
 	public bool    isLookingRight;
 	public Vector3 checkpointPosition;
-	public long    timeCreatedTicks;
+	public long    lastSavedTicks;
 }

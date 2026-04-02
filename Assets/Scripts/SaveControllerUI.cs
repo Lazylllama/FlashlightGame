@@ -60,7 +60,7 @@ public class SaveControllerUI : MonoBehaviour
 
 		var saveData = SaveController.Instance.GetSaveData();
 
-		DateTime date = new DateTime(saveData.timeCreatedTicks);
+		DateTime date = new DateTime(saveData.lastSavedTicks);
 		lastTimeSavedText.text = $"Last Saved: {date:yyyy-MM-dd HH:mm:ss}";
 	}
 	
