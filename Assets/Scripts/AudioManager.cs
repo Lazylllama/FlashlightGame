@@ -1,8 +1,10 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.Cinemachine;
+using FlashlightGame;
+using FMOD.Studio;
 using UnityEngine;
+using FMODUnity;
+
 
 public class AudioManager : MonoBehaviour {
 	#region Fields
@@ -10,21 +12,7 @@ public class AudioManager : MonoBehaviour {
 	public static  AudioManager Instance;
 	private static DebugHandler debug;
 
-	[SerializeField] private float stepInterval;
-
-	//? Clip list public to be able to get the length of a clip in other scripts
-	[SerializeField] public  List<AudioClip> audioClipList;
-	[SerializeField] public  List<AudioClip> stepsClipList;
-	[SerializeField] private AudioSource     sfxSource;
-
-	private          Dictionary<FootstepSurface, List<AudioClip>> stepsClips = new();
-	private readonly Dictionary<AudioName, AudioClip>             audioClips = new();
-
-	//? Map index to names
-	public enum AudioName {
-		SavedGame, // 0
-		Unlock, // 1
-	};
+	private Bus masterBus, musicBus, ambienceBus, sfxBus, uiBus;
 
 	public enum FootstepSurface {
 		Concrete,
@@ -34,10 +22,21 @@ public class AudioManager : MonoBehaviour {
 		Wood
 	}
 
+	public enum MusicTrack {
+		MainMenu,
+		Game
+	}
+
+	private readonly List<EventInstance> eventInstances = new();
+
+	private EventInstance ambienceEventInstance, musicEventInstance;
+
 	//* States *//
 	private Coroutine footstepCoroutine;
 
 	#endregion
+
+	private void OnDestroy() => CleanUp();
 
 	private void Awake() {
 		if (Instance != null && Instance != this) {
@@ -47,97 +46,119 @@ public class AudioManager : MonoBehaviour {
 
 		Instance = this;
 
-		InitializeDictionary();
+		masterBus   = RuntimeManager.GetBus("bus:/");
+		musicBus    = RuntimeManager.GetBus("bus:/Music");
+		ambienceBus = RuntimeManager.GetBus("bus:/Ambience");
+		sfxBus      = RuntimeManager.GetBus("bus:/SFX");
+		uiBus       = RuntimeManager.GetBus("bus:/UI");
 	}
 
 	private void Start() {
-		stepsClips = new Dictionary<FootstepSurface, List<AudioClip>> {
-			{ FootstepSurface.Concrete, stepsClipList.GetRange(0, 8) },
-			{ FootstepSurface.Dirt, stepsClipList.GetRange(7,     5) },
-			{ FootstepSurface.Grass, stepsClipList.GetRange(12,   5) },
-			{ FootstepSurface.Sand, stepsClipList.GetRange(17,    8) },
-			{ FootstepSurface.Wood, stepsClipList.GetRange(25,    5) }
-		};
+		InitializeMusic(FMODEvents.Instance.gameMusic);
+
+		SetAmbienceParameter("wind_intensity", 0.2f);
 	}
 
-	private void InitializeDictionary() {
-		for (var i = 0; i < audioClipList.Count; i++) {
-			if (i < System.Enum.GetValues(typeof(AudioName)).Length) {
-				audioClips[(AudioName)i] = audioClipList[i];
-			}
-		}
+	private void Update() {
+		masterBus.setVolume(Preferences.Mixer.MasterVolume);
+		musicBus.setVolume(Preferences.Mixer.MusicVolume);
+		ambienceBus.setVolume(Preferences.Mixer.AmbienceVolume);
+		sfxBus.setVolume(Preferences.Mixer.SfxVolume);
+		uiBus.setVolume(Preferences.Mixer.UIVolume);
+	}
+
+	#region Functions
+
+	/// <summary>
+	/// Handles all Audio initialization that needs to be done when the game starts. Called from UIController on game init.
+	/// </summary>
+	public void GameStarted() {
+		SetMusicTrack(AudioManager.MusicTrack.Game);
+
+		InitializeAmbience(FMODEvents.Instance.crowsAmbience);
+		InitializeAmbience(FMODEvents.Instance.forestWindAmbience);
 	}
 
 	/// <summary>
-	/// Plays a sound effect
+	/// Play a sound once from a position
 	/// </summary>
-	/// <param name="audioName">Audio Clip Name - AudioManager.AudioName[]</param>
-	/// <param name="volume">Sound Volume - 0 to 1 (float)</param>
-	public void PlaySfx(AudioName audioName, float volume = 1f) {
-		if (audioClips.TryGetValue(audioName, out var clip)) {
-			sfxSource.PlayOneShot(clip, volume);
-		} else {
-			Debug.LogWarning($"AudioClip {audioName} not found in AudioManager dictionary!");
-		}
+	/// <param name="sound"></param>
+	/// <param name="worldPosition"></param>
+	public void PlayOneShot(EventReference sound, Vector3 worldPosition) {
+		RuntimeManager.PlayOneShot(sound, worldPosition);
 	}
 
 	/// <summary>
-	/// Plays a sound effect
+	/// Change a parameter in the ambience event instance
 	/// </summary>
-	/// <param name="audioName">Audio Clip Name - AudioManager.AudioName[]</param>
-	/// <param name="src">AudioSource</param>
-	/// <param name="volume">Sound Volume - 0 to 1 (float)</param>
-	public void PlaySfx(AudioName audioName, AudioSource src, float volume = 1f) {
-		if (audioClips.TryGetValue(audioName, out var clip) && src != null) {
-			src.PlayOneShot(clip, volume);
-		} else {
-			Debug.LogWarning($"AudioClip {audioName} not found in AudioManager dictionary!");
-		}
+	/// <param name="paramName">FMOD Parameter</param>
+	/// <param name="value"></param>
+	public void SetAmbienceParameter(string paramName, float value) {
+		ambienceEventInstance.setParameterByName(paramName, value);
 	}
 
 	/// <summary>
-	/// Plays a sound effect
+	/// Change the MusicTrack parameter in the music event instance.
 	/// </summary>
-	/// <param name="audioName">Audio Clip Name - AudioManager.AudioName[]</param>
-	/// <param name="point">Vector2</param>
-	/// <param name="volume">Sound Volume - 0 to 1 (float)</param>
-	public void PlaySfxAtPoint(AudioName audioName, Vector2 point, float volume = 1f) {
-		if (point.IsNaN()) {
-			Debug.LogWarning($"Invalid point provided for PlaySfxAtPoint: {point}");
-			return;
-		}
-
-		if (audioClips.TryGetValue(audioName, out var clip)) {
-			AudioSource.PlayClipAtPoint(clip, point, volume);
-		} else {
-			Debug.LogWarning($"AudioClip {audioName} not found in AudioManager dictionary!");
-		}
+	/// <param name="track">AudioManager.MusicTrack</param>
+	public void SetMusicTrack(MusicTrack track) {
+		musicEventInstance.setParameterByName("MusicTrack", (int)track);
 	}
 
 	/// <summary>
-	/// Play a footstep sound effect based on the surface type. Routine based delay.
+	/// Set bus volume in FMOD and preferences.
 	/// </summary>
-	/// <param name="surface">FootstepSurface</param>
-	/// <param name="volume">0-1</param>
-	public void PlayFootstepSfx(FootstepSurface surface, float volume = 1f) {
-		if (footstepCoroutine != null) return;
-		footstepCoroutine = StartCoroutine(PlayFootstepSfxCoroutine(surface, volume));
+	/// <param name="type"></param>
+	/// <param name="value"></param>
+	/// <exception cref="ArgumentOutOfRangeException"></exception>
+	public void SetBusVolume(BusSlider.BusType type, float value) {
+		switch (type) {
+			case BusSlider.BusType.UI:
+				uiBus.setVolume(value);
+				Preferences.Mixer.UIVolume = value;
+				break;
+			case BusSlider.BusType.Sfx:
+				sfxBus.setVolume(value);
+				Preferences.Mixer.SfxVolume = value;
+				break;
+			case BusSlider.BusType.Music:
+				musicBus.setVolume(value);
+				Preferences.Mixer.MusicVolume = value;
+				break;
+			case BusSlider.BusType.Master:
+				ambienceBus.setVolume(value);
+				Preferences.Mixer.MasterVolume = value;
+				break;
+			case BusSlider.BusType.Ambience:
+				ambienceBus.setVolume(value);
+				Preferences.Mixer.AmbienceVolume = value;
+				break;
+			default:
+				throw new ArgumentOutOfRangeException(nameof(type), type, null);
+		}
 	}
 
+	private void InitializeAmbience(EventReference ambienceEvent) {
+		ambienceEventInstance = CreateInstance(ambienceEvent);
+		ambienceEventInstance.start();
+	}
 
-	#region Coroutines
+	private void InitializeMusic(EventReference musicEvent) {
+		musicEventInstance = CreateInstance(musicEvent);
+		musicEventInstance.start();
+	}
 
-	private IEnumerator PlayFootstepSfxCoroutine(FootstepSurface surface, float volume = 1f) {
-		if (stepsClips.TryGetValue(surface, out var clips) && clips.Count > 0) {
-			var clip = clips[UnityEngine.Random.Range(0, clips.Count)];
-			sfxSource.PlayOneShot(clip, volume);
-		} else {
-			Debug.LogWarning($"No footstep clips found for surface: {surface}");
+	private EventInstance CreateInstance(EventReference eventReference) {
+		var eventInstance = RuntimeManager.CreateInstance(eventReference);
+		eventInstances.Add(eventInstance);
+		return eventInstance;
+	}
+
+	private void CleanUp() {
+		foreach (var instance in eventInstances) {
+			instance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+			instance.release();
 		}
-
-		yield return new WaitForSeconds(stepInterval);
-
-		footstepCoroutine = null;
 	}
 
 	#endregion

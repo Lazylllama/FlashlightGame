@@ -5138,7 +5138,7 @@ Transform:
   m_GameObject: {fileID: 3960592807234988282}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.063, y: -0.266, z: -2}
+  m_LocalPosition: {x: -0.135, y: -0.527, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10059,7 +10059,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 1237660001
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: -2
   m_MaskInteraction: 0
   m_RenderMode: 0
@@ -10118,7 +10118,7 @@ Transform:
   m_GameObject: {fileID: 4295775074873238092}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.085, y: -0.306, z: 0}
+  m_LocalPosition: {x: -0.135, y: -0.648, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10151,7 +10151,7 @@ Transform:
   m_GameObject: {fileID: 5943134315723315929}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.449, z: 0}
+  m_LocalPosition: {x: -0.5, y: -0.449, z: 0}
   m_LocalScale: {x: 0.94425, y: 0.62950003, z: 0.94425}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -15036,7 +15036,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 1887157377
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: -2
   m_MaskInteraction: 0
   m_RenderMode: 0
@@ -19932,7 +19932,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 1237660001
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: -2
   m_MaskInteraction: 0
   m_RenderMode: 0
@@ -19993,7 +19993,7 @@ Transform:
   m_GameObject: {fileID: 8947315786924848605}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.6427876, w: 0.7660445}
-  m_LocalPosition: {x: 1.5265278, y: -0.023779914, z: 0}
+  m_LocalPosition: {x: 1.0473092, y: -0.023779914, z: 0}
   m_LocalScale: {x: 0.25464, y: 0.4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -20080,6 +20080,14 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.17806038
       objectReference: {fileID: 0}
+    - target: {fileID: 4670732808845207686, guid: 5aadd893fd70b344f87bfc408462933f, type: 3}
+      propertyPath: m_SortingLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4670732808845207686, guid: 5aadd893fd70b344f87bfc408462933f, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 307310415
+      objectReference: {fileID: 0}
     - target: {fileID: 6114512240882053423, guid: 5aadd893fd70b344f87bfc408462933f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.39665902
@@ -20102,7 +20110,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6600337871609808859, guid: 5aadd893fd70b344f87bfc408462933f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.47921863
       objectReference: {fileID: 0}
     - target: {fileID: 6600337871609808859, guid: 5aadd893fd70b344f87bfc408462933f, type: 3}
       propertyPath: m_LocalPosition.y

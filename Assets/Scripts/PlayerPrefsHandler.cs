@@ -9,7 +9,8 @@ using UnityEngine;
 public class PlayerPrefsHandler : MonoBehaviour {
 	#region Fields
 
-	private static DebugHandler Debug;
+	public static  PlayerPrefsHandler Instance;
+	private static DebugHandler       Debug;
 	private static Dictionary<string, object> configurationSchema = new Dictionary<string, object>() {
 		{
 			"TargetFrameRate", 60
@@ -28,6 +29,13 @@ public class PlayerPrefsHandler : MonoBehaviour {
 
 	private void Awake() {
 		Debug = new DebugHandler("PlayerPrefsHandler");
+
+		if (Instance == null) {
+			Instance = this;
+		} else {
+			Destroy(gameObject);
+			return;
+		}
 
 		var config = new FBPPConfig() {
 			SaveFileName     = "preferences.cfg",
@@ -58,9 +66,8 @@ public class PlayerPrefsHandler : MonoBehaviour {
 	/// <summary>
 	/// Save player preferences to file.
 	/// </summary>
-	public void SavePreferences() {
-		FBPP.Save();
-	}
+	public void SavePreferences() => FBPP.Save();
+
 
 	/// <summary>
 	/// Reset player preferences by deleting all saved data then saving.
@@ -68,6 +75,20 @@ public class PlayerPrefsHandler : MonoBehaviour {
 	public void ResetPreferences() {
 		FBPP.DeleteAll();
 		CheckMissingKeysAndSave();
+	}
+
+	/// <summary>
+	/// Update value without saving, requires saving afterward.
+	/// </summary>
+	/// <param name="busType">BusSlider.BusType</param>
+	/// <param name="value">0-1 float</param>
+	public static void UpdateBusValue(BusSlider.BusType busType, float value) {
+		if (value is > 1 or < 0) {
+			Debug.LogError($"Invalid volume value: {value}. Must be between 0 and 1.");
+			return;
+		}
+
+		AudioManager.Instance.SetBusVolume(busType, value);
 	}
 
 	private void CheckMissingKeysAndSave() {

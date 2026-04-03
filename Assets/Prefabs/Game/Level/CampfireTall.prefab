@@ -495,6 +495,7 @@ GameObject:
   - component: {fileID: 6633643395630381494}
   - component: {fileID: 8886693495734656047}
   - component: {fileID: 7261015886425277287}
+  - component: {fileID: 8708853708255833621}
   m_Layer: 0
   m_Name: LanternLight
   m_TagString: Untagged
@@ -589,6 +590,37 @@ PositionConstraint:
   m_Sources:
   - sourceTransform: {fileID: 5542102370834094225}
     weight: 1
+--- !u!114 &8708853708255833621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5549739513710875632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioEventEmitter
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -648401898
+      Data2: 1119667008
+      Data3: 444881807
+      Data4: -641499992
+    Path: event:/Ambience/CampfireIdle
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &5782616484242126447
 GameObject:
   m_ObjectHideFlags: 0

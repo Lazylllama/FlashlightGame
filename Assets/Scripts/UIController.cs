@@ -6,6 +6,7 @@ using UnityEngine;
 using Unity.Cinemachine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using FMODUnity;
 
 public class UIController : MonoBehaviour {
 	#region Fields
@@ -22,6 +23,7 @@ public class UIController : MonoBehaviour {
 	[SerializeField] private Image healthFill;
 	[SerializeField] private Image batteryFill;
 
+	[SerializeField] private GameObject      settingsMenu;
 	[SerializeField] private GameObject      loadMenu;
 	[SerializeField] private TextMeshProUGUI loadMenuLastSavedDate;
 
@@ -40,7 +42,6 @@ public class UIController : MonoBehaviour {
 
 	[Header("UI Animators")]
 	[SerializeField] private Animator savingGameUIAnimator;
-
 
 	private GameObject mainMenuUI;
 
@@ -89,7 +90,7 @@ public class UIController : MonoBehaviour {
 
 		InputHandler.Instance.inputChange.AddListener(OnInputChanged);
 		UpdateUI();
-		UpdateSaveDataMenu();
+		UpdateLoadMenu();
 
 		isInitialized = true;
 	}
@@ -113,8 +114,8 @@ public class UIController : MonoBehaviour {
 		savingGameUIAnimator.SetBool(IsSavingGame, true);
 
 		StartCoroutine(Lib.DelayFunction(3f, () => {
-			                                     AudioManager.Instance.PlaySfx(AudioManager.AudioName.SavedGame,
-			                                                                   1f); //? audio/sfx/game/ui/confirm 10 or 11?
+			                                     AudioManager.Instance.PlayOneShot(FMODEvents.Instance.savedGame,
+					                                      mainCamera.transform.position);
 			                                     savingGameUIAnimator.SetBool(IsSavingGame, false);
 		                                     }));
 	}
@@ -201,20 +202,36 @@ public class UIController : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Set the Load/Save Menu to active or inactive.
+	/// Set the Load Menu to active or inactive.
 	/// </summary>
 	/// <param name="newState">New open state of the UI, default true.</param>
-	public void SetLoadSaveMenu(bool newState = true) {
-		UpdateSaveDataMenu();
+	public void SetLoadMenu(bool newState = true) {
+		UpdateLoadMenu();
 		loadMenu.SetActive(newState);
+
+		if (newState) return;
+		EventSystem.current.SetSelectedGameObject(startButtonMainMenu);
 	}
+
+	/// <summary>
+	/// Set the settings
+	/// </summary>
+	/// <param name="newState"></param>
+	public void SetSettingsMenu(bool newState = true) {
+		settingsMenu.SetActive(newState);
+
+		if (newState) return;
+		EventSystem.current.SetSelectedGameObject(startButtonMainMenu);
+		PlayerPrefsHandler.Instance.SavePreferences();
+	}
+
 
 	/// <summary>
 	/// Delete the current save game.
 	/// </summary>
 	public void DeleteSaveGame() {
 		SaveController.Instance.DeleteSave();
-		UpdateSaveDataMenu();
+		UpdateLoadMenu();
 	}
 
 	/// <summary>
@@ -222,14 +239,14 @@ public class UIController : MonoBehaviour {
 	/// </summary>
 	public void LoadSaveGame() {
 		var loaded = SaveController.Instance.LoadGame();
-		if (loaded) SwitchToGameCams();
+		if (loaded) StartCoroutine(GameStartSequence());
 	}
 
 	/// <summary>
-	/// Update the Save Data Menu with the last saved date.
+	/// Update the Load Menu with the last saved date.
 	/// </summary>
-	private void UpdateSaveDataMenu() {
-		Debug.Log("Updating Save Data Menu");
+	private void UpdateLoadMenu() {
+		Debug.Log("Updating Load Menu");
 
 		var saveData = SaveController.Instance.GetSaveData();
 
@@ -247,6 +264,7 @@ public class UIController : MonoBehaviour {
 
 	private IEnumerator GameStartSequence() {
 		yield return new WaitForSecondsRealtime(1f);
+		AudioManager.Instance.GameStarted();
 		SwitchToGameCams();
 		yield return null;
 	}
