@@ -38,7 +38,6 @@ public class Campfire : MonoBehaviour {
 
 	private void FixedUpdate() {
 		if (!player) Start();
-
 		if (!isInitialized) Initialize();
 
 		dist = Vector2.Distance(player.transform.position, transform.position);
@@ -80,8 +79,7 @@ public class Campfire : MonoBehaviour {
 		// yield return ScreenFader.Instance.FadeIn(0.3f);
 		// yield return new WaitForSeconds(0.2f);
 
-		SaveController.Instance.SaveGame();
-		SaveControllerUI.Instance.ShowMessage();
+		UIController.Instance.SaveGame();
 		AudioManager.Instance.PlaySfx(AudioManager.AudioName.SavedGame, 1f); //? audio/sfx/game/ui/confirm 10 or 11?
 
 		isResting = false;

@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Text;
+using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,13 +11,15 @@ namespace FlashlightGame {
 	public static class Lib {
 		#region Fields
 
+		private const string AesEncryptionKey = "JustGoBackToPlayingTheGame...";
+
 		private static LayerMask BoxLayerMask        => LayerMask.GetMask("Box");
 		private static LayerMask GroundLayerMask     => LayerMask.GetMask("Ground");
 		private static LayerMask MantleWallLayerMask => LayerMask.GetMask("MantleWall");
 
 		//* Refs
 		private static bool GizmosEnabled => true;
-		
+
 		#endregion
 
 		#region Structs, Enums, Constants
@@ -41,7 +47,62 @@ namespace FlashlightGame {
 
 		#endregion
 
+		#region Utils
+
+		/// <summary>
+		/// Delay a function call using Coroutines.
+		/// </summary>
+		/// <param name="delay">Delay in realtime seconds</param>
+		/// <param name="action">Callback ex: () => Debug.Log("Finished")</param>
+		/// <returns>Coroutine</returns>
+		public static IEnumerator DelayFunction(float delay, System.Action action) {
+			yield return new WaitForSecondsRealtime(delay);
+			action();
+		}
+
+		#endregion
+
 		#region Classes
+
+		// ReSharper disable once InconsistentNaming
+		public static class AES {
+			public static string Encrypt(string plainText) {
+				using var aes = Aes.Create();
+				var       key = Encoding.UTF8.GetBytes(AesEncryptionKey.PadRight(16).Substring(0, 16));
+				aes.Key = key;
+				aes.GenerateIV();
+
+				using var encryptor   = aes.CreateEncryptor();
+				var       plainBytes  = Encoding.UTF8.GetBytes(plainText);
+				var       cipherBytes = encryptor.TransformFinalBlock(plainBytes, 0, plainBytes.Length);
+
+				// Prepend IV to the cipher so we can decrypt later
+				var result = new byte[aes.IV.Length + cipherBytes.Length];
+				aes.IV.CopyTo(result, 0);
+				cipherBytes.CopyTo(result, aes.IV.Length);
+
+				return Convert.ToBase64String(result);
+			}
+
+			public static string Decrypt(string cipherText) {
+				var fullBytes = Convert.FromBase64String(cipherText);
+
+				using var aes = Aes.Create();
+				var       key = Encoding.UTF8.GetBytes(AesEncryptionKey.PadRight(16).Substring(0, 16));
+				aes.Key = key;
+
+				// Extract the IV from the front of the data
+				var iv     = new byte[16];
+				var cipher = new byte[fullBytes.Length - 16];
+				Array.Copy(fullBytes, 0,  iv,     0, 16);
+				Array.Copy(fullBytes, 16, cipher, 0, cipher.Length);
+				aes.IV = iv;
+
+				using var decryptor  = aes.CreateDecryptor();
+				var       plainBytes = decryptor.TransformFinalBlock(cipher, 0, cipher.Length);
+				return Encoding.UTF8.GetString(plainBytes);
+			}
+		}
 
 		public static class Input {
 			public static InputType RevealDevice(InputDevice device) {
@@ -79,7 +140,7 @@ namespace FlashlightGame {
 		public static class Movement {
 			//* Constants
 			//? Public for gizmos etc
-			public const float WallCheckDistance   = 1.5f;
+			public const  float WallCheckDistance   = 1.5f;
 			private const float WallTeleportOffsetY = 2f;
 
 			/// <summary>
