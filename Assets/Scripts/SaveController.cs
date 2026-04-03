@@ -127,6 +127,7 @@ public class SaveController : MonoBehaviour {
 			PlayerData.Instance.Battery        = saveData.battery;
 			PlayerData.Instance.IsLookingRight = saveData.isLookingRight;
 			CachePlayer().transform.position   = saveData.checkpointPosition;
+			UIController.Instance.UpdateUI();
 			return true;
 		} catch (Exception e) {
 			Debug.LogError($"Error loading save file: {e.Message}");

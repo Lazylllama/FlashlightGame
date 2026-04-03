@@ -115,7 +115,7 @@ public class UIController : MonoBehaviour {
 		StartCoroutine(Lib.DelayFunction(3f, () => { savingGameUIAnimator.SetBool(IsSavingGame, false); }));
 	}
 
-	public void SwitchToGameCams() {
+	private void SwitchToGameCams() {
 		var duration = SkipIntroFade ? 0f : 3f;
 		mainMenuOverlayCamera.enabled = false;
 		mainMenuUI.SetActive(false);
