@@ -80,8 +80,6 @@ public class Campfire : MonoBehaviour {
 		// yield return new WaitForSeconds(0.2f);
 
 		UIController.Instance.SaveGame();
-		AudioManager.Instance.PlaySfx(AudioManager.AudioName.SavedGame, 1f); //? audio/sfx/game/ui/confirm 10 or 11?
-
 		isResting = false;
 	}
 

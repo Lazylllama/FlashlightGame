@@ -53,7 +53,7 @@ public class PlayerMovement : MonoBehaviour {
 	private bool                         isGrounded, canMantle;
 	private Coroutine                    mantleRoutineState;
 	private Vector2                      moveInputVal, lastPosition;
-	private AudioManager.FootstepSurface currentSurface;
+	public AudioManager.FootstepSurface currentSurface;
 
 	#endregion
 
@@ -145,7 +145,9 @@ public class PlayerMovement : MonoBehaviour {
 
 			//? Particles very broken
 			//particleController.CrateMovement(moveX);
-			AudioManager.Instance.PlayFootstepSfx(currentSurface);
+			
+			//? Moved to anim events
+			//AudioManager.Instance.PlayFootstepSfx(currentSurface);
 			playerAnimator.SetInteger(WalkingDirection, walkDirection);
 		} else {
 			playerAnimator.SetInteger(WalkingDirection, 0);

@@ -112,7 +112,11 @@ public class UIController : MonoBehaviour {
 
 		savingGameUIAnimator.SetBool(IsSavingGame, true);
 
-		StartCoroutine(Lib.DelayFunction(3f, () => { savingGameUIAnimator.SetBool(IsSavingGame, false); }));
+		StartCoroutine(Lib.DelayFunction(3f, () => {
+			                                     AudioManager.Instance.PlaySfx(AudioManager.AudioName.SavedGame,
+			                                                                   1f); //? audio/sfx/game/ui/confirm 10 or 11?
+			                                     savingGameUIAnimator.SetBool(IsSavingGame, false);
+		                                     }));
 	}
 
 	private void SwitchToGameCams() {

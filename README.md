@@ -30,7 +30,9 @@
 
 ## Licensing
 
-- **Source code and non-graphic assets:** CC BY-NC 4.0  
+- **Source code and non-graphic assets:** CC BY-NC 4.0
 - **Graphics assets (`/Assets/Sprites`):** CC BY-NC-ND 4.0
+- **Music assets (`/Assets/Music`):** CC BY-NC-ND 4.0
+- **SFX assets (`/Assets/Audio`):** See respective OCs' licenses
 
 Please see the LICENSE.md files for full details.

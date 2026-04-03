@@ -23,6 +23,7 @@ public class AudioManager : MonoBehaviour {
 	//? Map index to names
 	public enum AudioName {
 		SavedGame, // 0
+		Unlock, // 1
 	};
 
 	public enum FootstepSurface {
