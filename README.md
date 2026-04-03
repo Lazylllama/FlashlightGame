@@ -5,13 +5,7 @@
 
 ## Audio Assets
 > [!IMPORTANT]
-> Many audio assets are **NOT** included in this repository due to licenses on the audio. The game is able to run without these assets, but if you want to get your hands on theese audio files, follow theese steps.
-
-1. Purchase the assets from the OCs
-
-2. Fill the existing folder structure
-   1. Extract the zips until you get to the root of the folder.
-   2. Drag and drop the root of the folders you downloaded into the appropriate folder in the repository. (There are .gitkeeps in place to guide you)
+> Many audio assets are **NOT** included in this repository due to licensing restrictions on the audio. The game is able to run without these assets just from the build folder, but if you want to get your hands on theese audio files, see credits.
   
 ## Generative AI/LLM Disclaimer
 > [!NOTE]
