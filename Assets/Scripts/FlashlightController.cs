@@ -222,8 +222,8 @@ public class FlashlightController : MonoBehaviour {
 
 			//? Rotate the flashlight around the pivot point
 			cameraAngleZ = -90 + (
-				                     Mathf.Atan2(mousePosition.y - transform.position.y,
-				                                 mousePosition.x - transform.position.x) *
+				                     Mathf.Atan2(mousePosition.y - playerTransform.position.y,
+				                                 mousePosition.x - playerTransform.position.x) *
 				                     Mathf.Rad2Deg
 			                     );
 			if (Mathf.Atan2(mousePosition.y - playerPos.y,
