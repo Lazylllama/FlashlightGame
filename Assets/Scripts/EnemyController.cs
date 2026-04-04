@@ -9,14 +9,14 @@ public class EnemyController : MonoBehaviour {
 	#region Fields
 
 	private static DebugHandler Debug;
-	
+
 	[Header("Refs")]
-	[SerializeField] private TMP_Text       overheadText;
-	private                  Rigidbody2D rb;
+	[SerializeField] private TMP_Text overheadText;
+	private Rigidbody2D rb;
 
 	[Header("Enemy Options")]
 	[SerializeField] private bool isGrounded, isChasing, facingRight, flyingEnemy;
-	[SerializeField] private float     detectionRange, baseSpeed, maxHealth, floatHeight;
+	[SerializeField] private float     detectionRange, baseSpeed,   maxHealth,  floatHeight;
 	[SerializeField] private Transform lookPosition,   groundCheck, borderLeft, borderRight;
 	[SerializeField] private LayerMask groundLayer;
 
@@ -27,7 +27,7 @@ public class EnemyController : MonoBehaviour {
 
 	[Header("Teleport Settings")]
 	[SerializeField] private float teleportCooldown = 1.2f;
-	private                  float teleportTimer;
+	private float teleportTimer;
 
 	[Header("Slow Down")]
 	[SerializeField] private float slowDistance = 2f;
@@ -40,9 +40,11 @@ public class EnemyController : MonoBehaviour {
 	private AudioSource audioSource;
 	private Animator    animator;
 	private Vector2?    target;
-	private Vector3     teleportPoint, pathFindPoint, borderLeftPos, borderRightPos, spawnPoint;
-	private float       health, enemySpeed;
-	private bool        canTeleport, collidingWithPlayer;
+	private Vector3     teleportPoint,        pathFindPoint, borderLeftPos, borderRightPos, spawnPoint;
+	private float       health,               enemySpeed;
+	private bool        canTeleport;
+	private int         playerCollisionCount;
+	private bool        collidingWithPlayer;
 	private Coroutine   teleportRoutineState, pathfindingRoutineState;
 
 	#endregion
@@ -61,7 +63,7 @@ public class EnemyController : MonoBehaviour {
 		enemySpeed     = baseSpeed;
 		borderLeftPos  = borderLeft.position;
 		borderRightPos = borderRight.position;
-		spawnPoint =  transform.position;
+		spawnPoint     = transform.position;
 
 		if (flyingEnemy) rb.gravityScale = 0;
 
@@ -86,16 +88,31 @@ public class EnemyController : MonoBehaviour {
 		if (collidingWithPlayer && !PlayerData.Instance.IsInvulnerable) {
 			print("I am the evil enemy and I am obviously touching the player rn!");
 			PlayerData.Instance.UpdateHealth(-20);
-		} 
+		}
 	}
 
 	private void FixedUpdate() {
 		ChaseTarget();
 	}
-	
-	private void OnCollisionEnter2D(Collision2D other) => collidingWithPlayer = other.gameObject.CompareTag("Player");
-	private void OnCollisionExit2D(Collision2D other) => collidingWithPlayer = !other.gameObject.CompareTag("Player");
-	
+
+	private void OnCollisionEnter2D(Collision2D other) {
+		print($"Collided with: {other.gameObject.name}");
+		// Only treat collisions with the Player tag as relevant. Use a counter
+		// in case the player has multiple colliders so we don't flip the flag
+		// incorrectly when one of the colliders exits.
+		if (other.gameObject != null && other.gameObject.CompareTag("Player")) {
+			playerCollisionCount++;
+			collidingWithPlayer = playerCollisionCount > 0;
+		}
+	}
+
+	private void OnCollisionExit2D(Collision2D other)
+	{
+		if (other.gameObject != null && other.gameObject.CompareTag("Player")) {
+			playerCollisionCount = Mathf.Max(0, playerCollisionCount - 1);
+			collidingWithPlayer = playerCollisionCount > 0;
+		}
+	}
 
 	#endregion
 
@@ -131,7 +148,7 @@ public class EnemyController : MonoBehaviour {
 
 	private void CheckWall() {
 		var wallHit = Lib.Movement.WallCheck(lookPosition.position, facingRight);
-		
+
 
 		if (!wallHit.collider || isChasing || teleportRoutineState != null || pathfindingRoutineState != null) return;
 
@@ -145,9 +162,9 @@ public class EnemyController : MonoBehaviour {
 	private void CheckMantleWall() {
 		if (teleportRoutineState != null || pathfindingRoutineState != null) return;
 		if (!Lib.Movement.MantleWallCheck(lookPosition.position, facingRight)) return;
-		
+
 		var mantlePoint = Lib.Movement.GetWallMantlePoint(transform.position, facingRight);
-		
+
 		if (mantlePoint.Position == Vector3.zero) {
 			enemySpeed = baseSpeed;
 			return;
@@ -162,11 +179,10 @@ public class EnemyController : MonoBehaviour {
 				Debug.LogError("ERROR: Pathfind ground not found!");
 				return;
 			}
+
 			pathFindPoint = new Vector3(pathfindHit.point.x, pathfindHit.point.y + floatHeight, transform.position.z);
 			pathfindingRoutineState = StartCoroutine(HandlePathFinding());
 		}
-		
-		
 
 
 		if (mantlePoint.Distance < slowDistance) {
@@ -208,7 +224,9 @@ public class EnemyController : MonoBehaviour {
 
 		if (health <= 0) {
 			gameObject.SetActive(false);
-		};
+		}
+
+		;
 	}
 
 	private void CheckFloatHeight() {
@@ -238,12 +256,13 @@ public class EnemyController : MonoBehaviour {
 		target                  = null;
 		isChasing               = false;
 		collidingWithPlayer     = false;
+		playerCollisionCount    = 0;
 	}
 
 	private void OnDrawGizmos() {
 		Gizmos.color = Color.green;
 		Gizmos.DrawWireSphere(transform.position, detectionRange);
-		
+
 		if (!canTeleport) return;
 		Gizmos.DrawSphere(teleportPoint, 0.15f);
 	}
@@ -268,10 +287,10 @@ public class EnemyController : MonoBehaviour {
 			yield return new WaitForSeconds(interval);
 		}
 	}
-	
+
 	private IEnumerator HandleTeleport() {
 		yield return new WaitForSecondsRealtime(teleportCooldown);
-		transform.position = teleportPoint;
+		transform.position   = teleportPoint;
 		teleportTimer        = 0f;
 		teleportRoutineState = null;
 	}
@@ -281,20 +300,23 @@ public class EnemyController : MonoBehaviour {
 		while (!finishedX || !finishedY) {
 			if (transform.position.y < pathFindPoint.y) {
 				rb.linearVelocityY = baseSpeed;
-			}
-			else {
+			} else {
 				rb.linearVelocityY = 0;
 				finishedY          = true;
 			}
+
 			if (math.abs(transform.position.x - pathFindPoint.x) > 0.1f) {
 				rb.linearVelocityX = facingRight ? baseSpeed : -baseSpeed;
 			} else {
 				rb.linearVelocityX = 0;
 				finishedX          = true;
 			}
+
 			yield return new WaitForFixedUpdate();
 		}
+
 		pathfindingRoutineState = null;
 	}
+
 	#endregion
 }
