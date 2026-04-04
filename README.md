@@ -5,7 +5,7 @@
 
 ## Audio Assets
 > [!IMPORTANT]
-> Many audio assets are **NOT** included in this repository due to licensing restrictions on the audio. The game is able to run without these assets just from the build folder, but if you want to get your hands on theese audio files, see credits.
+> Many audio assets are **NOT** included in this repository due to licensing restrictions on the audio hence the FMOD project is in a separate repository. The game is able to run without this project just from the build folder (/BanksFMOD), but if you want to get your hands on theese audio files, see credits!
   
 ## Generative AI/LLM Disclaimer
 > [!NOTE]
