@@ -113,23 +113,23 @@ public class AudioManager : MonoBehaviour {
 	/// <exception cref="ArgumentOutOfRangeException"></exception>
 	public void SetBusVolume(BusSlider.BusType type, float value) {
 		switch (type) {
-			case BusSlider.BusType.UI:
+			case BusSlider.BusType.UIVolume:
 				uiBus.setVolume(value);
 				Preferences.Mixer.UIVolume = value;
 				break;
-			case BusSlider.BusType.Sfx:
+			case BusSlider.BusType.SfxVolume:
 				sfxBus.setVolume(value);
 				Preferences.Mixer.SfxVolume = value;
 				break;
-			case BusSlider.BusType.Music:
+			case BusSlider.BusType.MusicVolume:
 				musicBus.setVolume(value);
 				Preferences.Mixer.MusicVolume = value;
 				break;
-			case BusSlider.BusType.Master:
+			case BusSlider.BusType.MasterVolume:
 				ambienceBus.setVolume(value);
 				Preferences.Mixer.MasterVolume = value;
 				break;
-			case BusSlider.BusType.Ambience:
+			case BusSlider.BusType.AmbienceVolume:
 				ambienceBus.setVolume(value);
 				Preferences.Mixer.AmbienceVolume = value;
 				break;

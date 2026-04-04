@@ -20,6 +20,16 @@ public class PlayerPrefsHandler : MonoBehaviour {
 			"LogFilter", ""
 		}, {
 			"SkipIntroFade", false
+		}, {
+			"MasterVolume", 0.5f
+		}, {
+			"MusicVolume", 1f
+		}, {
+			"SfxVolume", 1f
+		}, {
+			"AmbienceVolume", 1f
+		}, {
+			"UIVolume", 1f
 		}
 	};
 
@@ -89,6 +99,7 @@ public class PlayerPrefsHandler : MonoBehaviour {
 		}
 
 		AudioManager.Instance.SetBusVolume(busType, value);
+		FBPP.SetFloat(busType.ToString(), value);
 	}
 
 	private void CheckMissingKeysAndSave() {
@@ -142,6 +153,13 @@ public class PlayerPrefsHandler : MonoBehaviour {
 		                                         .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
 		                                         .Select(s => s.Trim())
 		                                         .ToList();
+
+		//? Audio Buses
+		Preferences.Mixer.MasterVolume   = FBPP.GetFloat("MasterVolume",   1f);
+		Preferences.Mixer.MusicVolume    = FBPP.GetFloat("MusicVolume",    1f);
+		Preferences.Mixer.SfxVolume      = FBPP.GetFloat("SfxVolume",      1f);
+		Preferences.Mixer.UIVolume       = FBPP.GetFloat("UIVolume",       1f);
+		Preferences.Mixer.AmbienceVolume = FBPP.GetFloat("AmbienceVolume", 1f);
 	}
 
 	#endregion

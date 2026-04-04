@@ -1,16 +1,15 @@
 using System;
 using FlashlightGame;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class BusSlider : MonoBehaviour {
 	public enum BusType {
-		UI,
-		Sfx,
-		Music,
-		Master,
-		Ambience
+		UIVolume,
+		SfxVolume,
+		MusicVolume,
+		MasterVolume,
+		AmbienceVolume
 	}
 
 	[SerializeField] private BusType busType;
@@ -23,19 +22,19 @@ public class BusSlider : MonoBehaviour {
 
 	private void Update() {
 		switch (busType) {
-			case BusType.Master:
+			case BusType.MasterVolume:
 				slider.value = Preferences.Mixer.MasterVolume;
 				break;
-			case BusType.UI:
+			case BusType.UIVolume:
 				slider.value = Preferences.Mixer.UIVolume;
 				break;
-			case BusType.Sfx:
+			case BusType.SfxVolume:
 				slider.value = Preferences.Mixer.SfxVolume;
 				break;
-			case BusType.Music:
+			case BusType.MusicVolume:
 				slider.value = Preferences.Mixer.MusicVolume;
 				break;
-			case BusType.Ambience:
+			case BusType.AmbienceVolume:
 				slider.value = Preferences.Mixer.AmbienceVolume;
 				break;
 			default:
@@ -45,5 +44,4 @@ public class BusSlider : MonoBehaviour {
 	}
 
 	public void OnSliderValueChanged() => PlayerPrefsHandler.UpdateBusValue(busType, slider.value);
-	
 }
