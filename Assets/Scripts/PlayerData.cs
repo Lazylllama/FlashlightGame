@@ -10,6 +10,8 @@ public class PlayerData : MonoBehaviour {
 
 	public static  PlayerData   Instance;
 	private static DebugHandler Debug;
+	//* Respawn *//
+	[SerializeField] private List<EnemyController> enemyControllers;
 
 	//* Player Stats *//
 	public int  Health  { get; set; } = 100;
@@ -137,7 +139,24 @@ public class PlayerData : MonoBehaviour {
 	}
 
 	private void OnDeath() {
-		Debug.Log("Player died, respawning...");
+		RespawnEnemies();
+		RespawnPlayer(); //!To be called when the player presses respawn!
+	}
+
+	private void RespawnEnemies() {
+		for (int i = 0; i < enemyControllers.Count; i++) {
+			enemyControllers[i].Respawn();
+		}
+	}
+
+	private void RespawnPlayer() {
+		var saveData = SaveController.Instance.GetSaveData();
+
+		Health             = 100;
+		Battery            = 100;
+		transform.position = saveData.checkpointPosition;
+		
+		UIController.Instance.UpdateUI();
 	}
 
 	/// <summary>

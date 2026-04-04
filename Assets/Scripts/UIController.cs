@@ -7,6 +7,7 @@ using Unity.Cinemachine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using FMODUnity;
+using UnityEngine.SceneManagement;
 
 public class UIController : MonoBehaviour {
 	#region Fields
@@ -240,6 +241,13 @@ public class UIController : MonoBehaviour {
 	public void LoadSaveGame() {
 		var loaded = SaveController.Instance.LoadGame();
 		if (loaded) StartCoroutine(GameStartSequence());
+	}
+	
+	/// <summary>
+	/// Reloads the current scene.
+	/// </summary>
+	public void ReloadScene() {
+		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
 
 	/// <summary>

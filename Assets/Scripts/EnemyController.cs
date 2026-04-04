@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -32,14 +33,16 @@ public class EnemyController : MonoBehaviour {
 	[SerializeField] private float slowDistance = 2f;
 	[SerializeField] private float slowFactor = 0.5f;
 
+	[SerializeField] private bool shouldRespawn;
+
 
 	//* States
 	private AudioSource audioSource;
 	private Animator    animator;
 	private Vector2?    target;
-	private Vector3     teleportPoint, pathFindPoint, borderLeftPos, borderRightPos;
+	private Vector3     teleportPoint, pathFindPoint, borderLeftPos, borderRightPos, spawnPoint;
 	private float       health, enemySpeed;
-	private bool        canTeleport;
+	private bool        canTeleport, collidingWithPlayer;
 	private Coroutine   teleportRoutineState, pathfindingRoutineState;
 
 	#endregion
@@ -58,6 +61,7 @@ public class EnemyController : MonoBehaviour {
 		enemySpeed     = baseSpeed;
 		borderLeftPos  = borderLeft.position;
 		borderRightPos = borderRight.position;
+		spawnPoint =  transform.position;
 
 		if (flyingEnemy) rb.gravityScale = 0;
 
@@ -72,19 +76,26 @@ public class EnemyController : MonoBehaviour {
 		CheckMantleWall();
 		CheckWall();
 		CheckBorder();
-		if(!flyingEnemy) LedgeCheck();
+		if (!flyingEnemy) LedgeCheck();
 		if (flyingEnemy) CheckFloatHeight();
+
+		if (shouldRespawn) {
+			Respawn();
+		}
+
+		if (collidingWithPlayer && !PlayerData.Instance.IsInvulnerable) {
+			print("I am the evil enemy and I am obviously touching the player rn!");
+			PlayerData.Instance.UpdateHealth(-20);
+		} 
 	}
 
 	private void FixedUpdate() {
 		ChaseTarget();
 	}
 	
-	private void OnCollisionEnter2D(Collision2D other) {
-		if (PlayerData.Instance.IsInvulnerable == false && other.gameObject.CompareTag("Player")) {
-			PlayerData.Instance.UpdateHealth(25);
-		}
-	}
+	private void OnCollisionEnter2D(Collision2D other) => collidingWithPlayer = other.gameObject.CompareTag("Player");
+	private void OnCollisionExit2D(Collision2D other) => collidingWithPlayer = !other.gameObject.CompareTag("Player");
+	
 
 	#endregion
 
@@ -195,7 +206,9 @@ public class EnemyController : MonoBehaviour {
 		health -= amount;
 		UpdateOverheadText();
 
-		if (health <= 0) Destroy(gameObject);
+		if (health <= 0) {
+			gameObject.SetActive(false);
+		};
 	}
 
 	private void CheckFloatHeight() {
@@ -214,6 +227,17 @@ public class EnemyController : MonoBehaviour {
 		} else {
 			rb.linearVelocityY = 0;
 		}
+	}
+
+	public void Respawn() {
+		gameObject.SetActive(true);
+		transform.position      = spawnPoint;
+		health                  = maxHealth;
+		pathfindingRoutineState = null;
+		teleportRoutineState    = null;
+		target                  = null;
+		isChasing               = false;
+		collidingWithPlayer     = false;
 	}
 
 	private void OnDrawGizmos() {
