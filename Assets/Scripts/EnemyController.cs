@@ -40,8 +40,8 @@ public class EnemyController : MonoBehaviour {
 	private AudioSource audioSource;
 	private Animator    animator;
 	private Vector2?    target;
-	private Vector3     teleportPoint,        pathFindPoint, borderLeftPos, borderRightPos, spawnPoint;
-	private float       health,               enemySpeed;
+	private Vector3     teleportPoint, pathFindPoint, borderLeftPos, borderRightPos, spawnPoint;
+	private float       health,        enemySpeed;
 	private bool        canTeleport;
 	private int         playerCollisionCount;
 	private bool        collidingWithPlayer;
@@ -86,7 +86,6 @@ public class EnemyController : MonoBehaviour {
 		}
 
 		if (collidingWithPlayer && !PlayerData.Instance.IsInvulnerable) {
-			print("I am the evil enemy and I am obviously touching the player rn!");
 			PlayerData.Instance.UpdateHealth(-20);
 		}
 	}
@@ -96,21 +95,16 @@ public class EnemyController : MonoBehaviour {
 	}
 
 	private void OnCollisionEnter2D(Collision2D other) {
-		print($"Collided with: {other.gameObject.name}");
-		// Only treat collisions with the Player tag as relevant. Use a counter
-		// in case the player has multiple colliders so we don't flip the flag
-		// incorrectly when one of the colliders exits.
 		if (other.gameObject != null && other.gameObject.CompareTag("Player")) {
 			playerCollisionCount++;
 			collidingWithPlayer = playerCollisionCount > 0;
 		}
 	}
 
-	private void OnCollisionExit2D(Collision2D other)
-	{
+	private void OnCollisionExit2D(Collision2D other) {
 		if (other.gameObject != null && other.gameObject.CompareTag("Player")) {
 			playerCollisionCount = Mathf.Max(0, playerCollisionCount - 1);
-			collidingWithPlayer = playerCollisionCount > 0;
+			collidingWithPlayer  = playerCollisionCount > 0;
 		}
 	}
 

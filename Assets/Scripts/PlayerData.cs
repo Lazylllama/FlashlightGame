@@ -138,6 +138,12 @@ public class PlayerData : MonoBehaviour {
 		else StartCoroutine(MakeInvulnerable());
 	}
 
+	public void UpdateHealth(int difference, Vector3 hitSource) {
+		UpdateHealth(difference);
+
+		PlayerController.Instance.HandleKnockback(hitSource, 1f);
+	}
+
 	private void OnDeath() {
 		RespawnEnemies();
 		RespawnPlayer(); //!To be called when the player presses respawn!
@@ -155,7 +161,7 @@ public class PlayerData : MonoBehaviour {
 		Health             = 100;
 		Battery            = 100;
 		transform.position = saveData.checkpointPosition;
-		
+
 		UIController.Instance.UpdateUI();
 	}
 

@@ -115,8 +115,7 @@ public class UIController : MonoBehaviour {
 		savingGameUIAnimator.SetBool(IsSavingGame, true);
 
 		StartCoroutine(Lib.DelayFunction(3f, () => {
-			                                     AudioManager.Instance.PlayOneShot(FMODEvents.Instance.savedGame,
-					                                      mainCamera.transform.position);
+			                                     AudioManager.Instance.PlayOneShot(FMODEvents.Instance.savedGame, mainCamera.transform.position);
 			                                     savingGameUIAnimator.SetBool(IsSavingGame, false);
 		                                     }));
 	}
@@ -264,6 +263,13 @@ public class UIController : MonoBehaviour {
 			var date = new DateTime(saveData.lastSavedTicks);
 			loadMenuLastSavedDate.text = $"Last Saved: {date:yyyy-MM-dd HH:mm:ss}";
 		}
+	}
+
+	/// <summary>
+	/// Play a button press sound.
+	/// </summary>
+	public void ButtonPressSound() {
+		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.buttonPress, mainCamera.transform.position);
 	}
 
 	#endregion

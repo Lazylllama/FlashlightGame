@@ -1,0 +1,637 @@
+fileFormatVersion: 2
+guid: 79bec50f6a4818f438ddb7b32e5ca070
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5948113484541739040
+    second: FINN_CUTUP_FINISHED_normal_0
+  - first:
+      213: 5000553116032771813
+    second: FINN_CUTUP_FINISHED_normal_1
+  - first:
+      213: -7217583072123289402
+    second: FINN_CUTUP_FINISHED_normal_2
+  - first:
+      213: 4576890992176209935
+    second: FINN_CUTUP_FINISHED_normal_3
+  - first:
+      213: 2697874414592626449
+    second: FINN_CUTUP_FINISHED_normal_4
+  - first:
+      213: -2819407032868339160
+    second: FINN_CUTUP_FINISHED_normal_5
+  - first:
+      213: 5374448375412568053
+    second: FINN_CUTUP_FINISHED_normal_6
+  - first:
+      213: 5775780467853108984
+    second: FINN_CUTUP_FINISHED_normal_7
+  - first:
+      213: 5381052886153085796
+    second: FINN_CUTUP_FINISHED_normal_8
+  - first:
+      213: 1373473498742286116
+    second: FINN_CUTUP_FINISHED_normal_9
+  - first:
+      213: 266163960693918390
+    second: FINN_CUTUP_FINISHED_normal_10
+  - first:
+      213: 7152254546895086139
+    second: FINN_CUTUP_FINISHED_normal_11
+  - first:
+      213: -6116199153411733591
+    second: FINN_CUTUP_FINISHED_normal_12
+  - first:
+      213: -345225320456077853
+    second: FINN_CUTUP_FINISHED_normal_13
+  - first:
+      213: -4950595902451235002
+    second: FINN_CUTUP_FINISHED_normal_14
+  - first:
+      213: -5490156346100659428
+    second: FINN_CUTUP_FINISHED_normal_15
+  - first:
+      213: 91133613213837037
+    second: FINN_CUTUP_FINISHED_normal_16
+  - first:
+      213: 1959968347223716169
+    second: FINN_CUTUP_FINISHED_normal_17
+  - first:
+      213: -554489268923174457
+    second: FINN_CUTUP_FINISHED_normal_18
+  - first:
+      213: -2796813534735220153
+    second: FINN_CUTUP_FINISHED_normal_19
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    sRGBTexture: 0
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 0
+  spriteTessellationDetail: -1
+  textureType: 1
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: FINN_CUTUP_FINISHED_normal_0
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 446
+        width: 210
+        height: 169
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02042d123b1fb8250800000000000000
+      internalID: 5948113484541739040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FINN_CUTUP_FINISHED_normal_1
+      rect:
+        serializedVersion: 2
+        x: 245
+        y: 492
+        width: 90
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5e62b91a098856540800000000000000
+      internalID: 5000553116032771813
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FINN_CUTUP_FINISHED_normal_2
+      rect:
+        serializedVersion: 2
+        x: 340
+        y: 533
+        width: 64
+        height: 111
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c00831bf6ef5db90800000000000000
+      internalID: -7217583072123289402
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FINN_CUTUP_FINISHED_normal_3
+      rect:
+        serializedVersion: 2
+        x: 428
+        y: 553
+        width: 38
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f002954ab12648f30800000000000000
+      internalID: 4576890992176209935
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FINN_CUTUP_FINISHED_normal_4
+      rect:
+        serializedVersion: 2
+        x: 402
+        y: 507
+        width: 26
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 11f88627c76c07520800000000000000
+      internalID: 2697874414592626449
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FINN_CUTUP_FINISHED_normal_5
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 363
+        width: 200
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82205a0dd347fd8d0800000000000000
+      internalID: -2819407032868339160
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FINN_CUTUP_FINISHED_normal_6
+      rect:
+        serializedVersion: 2
+        x: 265
+        y: 370
+        width: 75
+        height: 116
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5ff24288250e59a40800000000000000
+      internalID: 5374448375412568053
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FINN_CUTUP_FINISHED_normal_7
+      rect:
+        serializedVersion: 2
+        x: 363
+        y: 381
+        width: 114
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f6260febb1b72050800000000000000
+      internalID: 5775780467853108984
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FINN_CUTUP_FINISHED_normal_8
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 244
+        width: 57
+        height: 115
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 463ceb407175daa40800000000000000
+      internalID: 5381052886153085796
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FINN_CUTUP_FINISHED_normal_9
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 257
+        width: 68
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42762f0cede8f0310800000000000000
+      internalID: 1373473498742286116
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FINN_CUTUP_FINISHED_normal_10
+      rect:
+        serializedVersion: 2
+        x: 251
+        y: 279
+        width: 119
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ba0c2946ba91b300800000000000000
+      internalID: 266163960693918390
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FINN_CUTUP_FINISHED_normal_11
+      rect:
+        serializedVersion: 2
+        x: 391
+        y: 282
+        width: 26
+        height: 97
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b32aadabd99e14360800000000000000
+      internalID: 7152254546895086139
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FINN_CUTUP_FINISHED_normal_12
+      rect:
+        serializedVersion: 2
+        x: 441
+        y: 301
+        width: 56
+        height: 59
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a749556645ee1ba0800000000000000
+      internalID: -6116199153411733591
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FINN_CUTUP_FINISHED_normal_13
+      rect:
+        serializedVersion: 2
+        x: 59
+        y: 135
+        width: 52
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3edbebe6663853bf0800000000000000
+      internalID: -345225320456077853
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FINN_CUTUP_FINISHED_normal_14
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 147
+        width: 50
+        height: 95
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 647c3ef8143fb4bb0800000000000000
+      internalID: -4950595902451235002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FINN_CUTUP_FINISHED_normal_15
+      rect:
+        serializedVersion: 2
+        x: 374
+        y: 200
+        width: 91
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1b405d24eb0fc3b0800000000000000
+      internalID: -5490156346100659428
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FINN_CUTUP_FINISHED_normal_16
+      rect:
+        serializedVersion: 2
+        x: 487
+        y: 226
+        width: 20
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de665b2d985c34100800000000000000
+      internalID: 91133613213837037
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FINN_CUTUP_FINISHED_normal_17
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 41
+        width: 92
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9417743d3d4333b10800000000000000
+      internalID: 1959968347223716169
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FINN_CUTUP_FINISHED_normal_18
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 54
+        width: 95
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7c1711e92fe0e48f0800000000000000
+      internalID: -554489268923174457
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FINN_CUTUP_FINISHED_normal_19
+      rect:
+        serializedVersion: 2
+        x: 297
+        y: 95
+        width: 136
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7424a1788e8bf29d0800000000000000
+      internalID: -2796813534735220153
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      FINN_CUTUP_FINISHED_normal_0: 5948113484541739040
+      FINN_CUTUP_FINISHED_normal_1: 5000553116032771813
+      FINN_CUTUP_FINISHED_normal_10: 266163960693918390
+      FINN_CUTUP_FINISHED_normal_11: 7152254546895086139
+      FINN_CUTUP_FINISHED_normal_12: -6116199153411733591
+      FINN_CUTUP_FINISHED_normal_13: -345225320456077853
+      FINN_CUTUP_FINISHED_normal_14: -4950595902451235002
+      FINN_CUTUP_FINISHED_normal_15: -5490156346100659428
+      FINN_CUTUP_FINISHED_normal_16: 91133613213837037
+      FINN_CUTUP_FINISHED_normal_17: 1959968347223716169
+      FINN_CUTUP_FINISHED_normal_18: -554489268923174457
+      FINN_CUTUP_FINISHED_normal_19: -2796813534735220153
+      FINN_CUTUP_FINISHED_normal_2: -7217583072123289402
+      FINN_CUTUP_FINISHED_normal_3: 4576890992176209935
+      FINN_CUTUP_FINISHED_normal_4: 2697874414592626449
+      FINN_CUTUP_FINISHED_normal_5: -2819407032868339160
+      FINN_CUTUP_FINISHED_normal_6: 5374448375412568053
+      FINN_CUTUP_FINISHED_normal_7: 5775780467853108984
+      FINN_CUTUP_FINISHED_normal_8: 5381052886153085796
+      FINN_CUTUP_FINISHED_normal_9: 1373473498742286116
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

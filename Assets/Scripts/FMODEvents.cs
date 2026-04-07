@@ -11,6 +11,7 @@ public class FMODEvents : MonoBehaviour {
 	#region FMOD Events
 
 	public EventReference savedGame;
+	public EventReference buttonPress;
 
 	public EventReference playerFootstep;
 

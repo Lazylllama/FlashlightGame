@@ -61,6 +61,10 @@ public class PlayerController : MonoBehaviour {
 		if (tpToCheckpoint) transform.position = PlayerData.Instance.CheckpointPosition;
 		PlayerData.Instance.UpdateHealth(+100);
 	}
+	
+	public void HandleKnockback(Vector2 knockbackDirection, float knockbackForce) {
+		playerRb.AddForce(knockbackDirection.normalized * knockbackForce, ForceMode2D.Impulse);
+	}
 
 	#endregion
 }

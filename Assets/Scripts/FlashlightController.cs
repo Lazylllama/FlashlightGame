@@ -45,17 +45,21 @@ public class FlashlightController : MonoBehaviour {
 	[SerializeField] private float lerpTime               = 0.1f;
 	[SerializeField] private int   maxReflections         = 3;     // limit bounce count to avoid infinite loops
 	[SerializeField] private float reflectionOriginOffset = 0.01f; // offset to avoid insta re-hit on the same surface
+	[SerializeField] private float leftSideMaxAngle, leftSideMinAngle, rightSideMaxAngle, rightSideMinAngle;
 
 
 	[Header("Rig Settings")]
+	[SerializeField] private Transform pupilBone;
 	[SerializeField] private Transform playerTransform;
-	[SerializeField] private Transform armLeft,       armRight;
-	[SerializeField] private Vector3   armLeftOffset, armRightOffset;
+	[SerializeField] private Transform armLeft,                     armRight;
+	[SerializeField] private Vector3   armLeftOffset,               armRightOffset;
+	[SerializeField] private float     armLeftZRotMultiplierOver90, armLeftZRotMultiplierUnder90;
 
 	[Header("Light Output")]
 	[SerializeField] private Transform lightOutput;
 
 	[Header("SpotLight")]
+	[SerializeField] private GameObject lightGlowGameObject;
 	[SerializeField] private GameObject spotLightGameObject;
 	[SerializeField] private GameObject freeFormLightGameObject;
 
@@ -93,7 +97,7 @@ public class FlashlightController : MonoBehaviour {
 
 	private        LayerMask excludePlayer;
 	private static bool      FlashlightEnabled => PlayerData.Instance && PlayerData.Instance.FlashlightEnabled;
-	private static bool      isLookingRight    => PlayerData.Instance && PlayerData.Instance.IsLookingRight;
+	private static bool      IsLookingRight    => PlayerData.Instance && PlayerData.Instance.IsLookingRight;
 
 	//* States
 	private bool      isListening, isGamepad;
@@ -250,16 +254,62 @@ public class FlashlightController : MonoBehaviour {
 			else PlayerData.Instance.IsLookingRight                                                 = true;
 		}
 
+		var safeZonePosition = GetSafeZonePosition();
 
-		transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, cameraAngleZ, lerpTime));
+		transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, safeZonePosition, lerpTime));
+		lightGlowGameObject.transform.eulerAngles =
+			new Vector3(0, IsLookingRight ? 0 : 180,
+			            Mathf.LerpAngle(lightGlowGameObject.transform.eulerAngles.z, safeZonePosition, lerpTime));
+
 		armLeft.eulerAngles =
-			new Vector3(0, isLookingRight ? 0 : 180,
+			new Vector3(0, IsLookingRight ? 0 : 180,
 			            Mathf.LerpAngle(armLeft.eulerAngles.z,
-			                            (isLookingRight ? cameraAngleZ : -cameraAngleZ) + armLeftOffset.z, lerpTime));
+			                            (IsLookingRight ? safeZonePosition : -safeZonePosition) + GetLeftArmOffset(),
+			                            lerpTime));
 		armRight.eulerAngles =
-			new Vector3(0, isLookingRight ? 0 : 180,
+			new Vector3(0, IsLookingRight ? 0 : 180,
 			            Mathf.LerpAngle(armRight.eulerAngles.z,
-			                            (isLookingRight ? cameraAngleZ : -cameraAngleZ) + armRightOffset.z, lerpTime));
+			                            (IsLookingRight ? safeZonePosition : -safeZonePosition) + armRightOffset.z,
+			                            lerpTime));
+		return;
+
+		float GetSafeZonePosition() {
+			var actualAngle = cameraAngleZ + 90;
+
+			//? Logs for testing, uncomment to use.
+			switch (IsLookingRight) {
+				case true:
+					Debug.Log($"({actualAngle}) Looking Right and flashlight is "   +
+					          (actualAngle > rightSideMaxAngle ? "above" : "below") + "max angle and " +
+					          (actualAngle > rightSideMinAngle ? "above" : "below") + "min angle");
+					break;
+				case false:
+					Debug.Log($"({actualAngle}) Looking Right and flashlight is "  +
+					          (actualAngle > leftSideMaxAngle ? "above" : "below") + "max angle and " +
+					          (actualAngle > leftSideMinAngle ? "above" : "below") + "min angle");
+					break;
+			}
+
+			return IsLookingRight switch {
+				true when cameraAngleZ  > rightSideMaxAngle => rightSideMaxAngle,
+				true when cameraAngleZ  < rightSideMinAngle => rightSideMinAngle,
+				false when cameraAngleZ < leftSideMaxAngle  => leftSideMaxAngle,
+				false when cameraAngleZ < leftSideMinAngle  => leftSideMinAngle,
+				_                                           => cameraAngleZ
+			};
+		}
+
+		float GetLeftArmOffset() {
+			if (IsLookingRight) {
+				return cameraAngleZ > -90
+					       ? armLeftOffset.z * armLeftZRotMultiplierOver90
+					       : armLeftOffset.z * armLeftZRotMultiplierUnder90;
+			} else {
+				return cameraAngleZ > 0
+					       ? armLeftOffset.z * armLeftZRotMultiplierOver90
+					       : armLeftOffset.z * armLeftZRotMultiplierUnder90;
+			}
+		}
 	}
 
 	private void CheckForEnemy() {
