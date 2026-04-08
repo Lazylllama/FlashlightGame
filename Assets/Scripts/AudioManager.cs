@@ -10,7 +10,7 @@ public class AudioManager : MonoBehaviour {
 	#region Fields
 
 	public static  AudioManager Instance;
-	private static DebugHandler debug;
+	private static DebugHandler Debug;
 
 	private Bus masterBus, musicBus, ambienceBus, sfxBus, uiBus;
 
@@ -35,7 +35,14 @@ public class AudioManager : MonoBehaviour {
 
 	private void OnDestroy() => CleanUp();
 
+	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+	private static void OnRuntimeInit() {
+		Debug = new DebugHandler("AudioManager");
+	}
+
 	private void Awake() {
+		Debug = new DebugHandler("AudioManager");
+
 		if (Instance != null && Instance != this) {
 			Destroy(gameObject);
 			return;
@@ -53,7 +60,6 @@ public class AudioManager : MonoBehaviour {
 	private void Start() {
 		InitializeMusic(FMODEvents.Instance.gameMusic);
 
-		SetAmbienceParameter("WindIntensity", 0.2f);
 	}
 
 	private void Update() {
@@ -74,6 +80,8 @@ public class AudioManager : MonoBehaviour {
 
 		InitializeAmbience(FMODEvents.Instance.crowsAmbience);
 		InitializeAmbience(FMODEvents.Instance.forestWindAmbience);
+		
+		SetAmbienceParameter("WindIntensity", 0.2f);
 	}
 
 	/// <summary>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using FlashlightGame;
+using Sirenix.OdinInspector;
 
 public class PlayerMovement : MonoBehaviour {
 	#region Fields
@@ -50,10 +51,11 @@ public class PlayerMovement : MonoBehaviour {
 	[SerializeField] private Transform headLevelPosition;
 
 	//* States
-	private bool                         isGrounded, canMantle;
-	private Coroutine                    mantleRoutineState;
-	private Vector2                      moveInputVal, lastPosition;
-	public  AudioManager.FootstepSurface currentSurface;
+	[ReadOnly] [SerializeField] public  AudioManager.FootstepSurface currentSurface;
+	[ReadOnly] [SerializeField] private Vector2                      moveInputVal;
+	private                             bool                         isGrounded, canMantle;
+	private                             Coroutine                    mantleRoutineState;
+	private                             Vector2                      lastPosition;
 
 	#endregion
 

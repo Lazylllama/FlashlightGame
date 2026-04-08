@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Text;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using UnityEngine;
-using UnityEngine.InputSystem;
+﻿using System.Collections.Generic;
 
 namespace FlashlightGame {
 	public static class Preferences {
@@ -30,6 +24,4 @@ namespace FlashlightGame {
 			public static float LookInputDeadZone = 0.05f;
 		}
 	}
-
-
 }

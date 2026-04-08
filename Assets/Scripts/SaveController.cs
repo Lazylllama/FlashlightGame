@@ -10,7 +10,7 @@ public class SaveData {
 	public int     health;
 	public int     battery;
 	public bool    isLookingRight;
-	public Vector3 checkpointPosition;
+	public Vector2 checkpointPosition;
 	public long    lastSavedTicks;
 }
 
