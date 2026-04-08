@@ -32,15 +32,16 @@ public class PlayerData : MonoBehaviour {
 	private bool lowBattery;
 
 	//* Player States *//
-	public Dictionary<int, bool> FlashlightModesUnlocked { get; private set; } = new Dictionary<int, bool>() {
+	public Dictionary<int, bool> FlashlightModesUnlocked { get; private set; } = new() {
 		{ 1, true }, // TODO: Implement flashlight pickup
 		{ 2, true }, // TODO: Implement flashlight level up (in-lore)
 	};
 
-	public bool IsTalking         { get; set; }
-	public bool FlashlightEnabled { get; set; }
-	public int  FlashlightMode    { get; private set; } = 1;
-	public bool IsInvulnerable    { get; private set; } = false;
+	public bool  IsTalking         { get; set; }
+	public bool  FlashlightEnabled { get; set; }
+	public int   FlashlightMode    { get; private set; } = 1;
+	public bool  IsInvulnerable    { get; private set; } = false;
+	public float CrankSpeed        { get; set; }         = 0f;
 
 	//* Mood States *//
 	//? Relieved = player is at a checkpoint.
@@ -67,18 +68,35 @@ public class PlayerData : MonoBehaviour {
 	private float drainTimer;
 	private bool  lastCrankWasRight; // Controller Specific
 
+	// Crank speed measurement
+	[SerializeField] private float maxCrankFrequency = 6f; // how fast to crank to get max crank speed
+	[SerializeField] private float crankDecayRate    = 1f; // how fast CrankSpeed goes back to 0
+	private                  float lastCrankTime     = -1f;
+
 	#endregion
 
 	#region Unity Functions
 
-	private void Awake() {
+	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+	private static void OnRuntimeInit() {
 		Debug = new DebugHandler("PlayerData");
+	}
+	
+	private void Awake() {
+		Debug ??= new DebugHandler("PlayerData");
 	}
 
 	private void Start() => RegisterInstance(this);
 
 	private void FixedUpdate() {
 		HandleBatteryDrain();
+
+		// Decay crank speed towards 0 when not actively cranking
+		CrankSpeed = Mathf.MoveTowards(CrankSpeed, 0f, crankDecayRate * Time.deltaTime);
+
+		//TODO: Optimize by only setting this when flashlight state changes and sum like that for crank speed? Or just not
+		AudioManager.Instance.SetFlashlightState(FlashlightEnabled);
+		AudioManager.Instance.SetCrankSpeedParameter(CrankSpeed);
 	}
 
 	#endregion
@@ -95,6 +113,7 @@ public class PlayerData : MonoBehaviour {
 			return;
 		}
 
+		UpdateCrankSpeedOnCrank();
 		CrankLogic();
 	}
 
@@ -111,7 +130,24 @@ public class PlayerData : MonoBehaviour {
 
 		lastCrankWasRight = rightButton;
 
+		UpdateCrankSpeedOnCrank();
 		CrankLogic();
+	}
+
+	/// When crank: update CrankSpeed (0-1) based on time since last crank!!
+	private void UpdateCrankSpeedOnCrank() {
+		var now = Time.time;
+		if (lastCrankTime > 0f) {
+			var delta      = now - lastCrankTime;
+			var freq       = 1f / Mathf.Max(delta, 0.0001f);
+			var normalized = Mathf.Clamp01(freq / maxCrankFrequency);
+			CrankSpeed = normalized;
+		} else {
+			// First crank: set a small baseline crank speed
+			CrankSpeed = 0.1f;
+		}
+
+		lastCrankTime = now;
 	}
 
 	private void CrankLogic() {

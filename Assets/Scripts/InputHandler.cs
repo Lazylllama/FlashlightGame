@@ -40,11 +40,7 @@ public class InputHandler : MonoBehaviour {
 	[SerializeField] private InputSpriteAtlas xboxAtlas;
 	[SerializeField] private InputSpriteAtlas playstationAtlas;
 	[SerializeField] private InputSpriteAtlas steamDeckAtlas;
-
-	// TODO(@lazylllama): Add to player prefs
-	public static float MoveInputDeadZone = 0.05f;
-	public static float LookInputDeadZone = 0.05f;
-
+	
 	public Lib.InputType             CurrentInputType { get; private set; } = Lib.InputType.KeyboardMouse;
 	public UnityEvent<InputActions>  onActionBtnTriggered;
 	public UnityEvent<Lib.InputType> inputChange;
@@ -60,9 +56,14 @@ public class InputHandler : MonoBehaviour {
 	#endregion
 
 	#region Unity Functions
+	
+	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+	private static void OnRuntimeInit() {
+		Debug = new DebugHandler("InputHandler");
+	}
 
 	private void Awake() {
-		Debug = new DebugHandler("InputHandler");
+		Debug ??= new DebugHandler("InputHandler");
 
 		if (inputChange == null) {
 			inputChange = new UnityEvent<Lib.InputType>();
@@ -165,6 +166,8 @@ public class InputHandler : MonoBehaviour {
 			switch (kvp.Key) {
 				case InputActions.ToggleFlashlight:
 					//* Let the player turn it on even though the flashlight is dead just as a feature, it will be disabled automatically right after.
+					AudioManager.Instance.PlayOneShot(FMODEvents.Instance.flashlightToggle,
+					                                  PlayerMovement.Instance.transform.position);
 					PlayerData.Instance.FlashlightEnabled = !PlayerData.Instance.FlashlightEnabled;
 					break;
 				case InputActions.ToggleModeLeft or InputActions.ToggleModeRight:

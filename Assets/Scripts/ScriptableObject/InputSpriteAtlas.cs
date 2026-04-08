@@ -16,7 +16,7 @@ public class InputSpriteAtlas : ScriptableObject {
 
 	private Dictionary<InputHandler.InputActions, Sprite> inputSpriteDict;
 
-	[SerializeField] private Sprite inputIcon;
+	[SerializeField] private Sprite            inputIcon;
 	[SerializeField] private List<InputSprite> inputSprites;
 
 	#endregion
@@ -26,7 +26,9 @@ public class InputSpriteAtlas : ScriptableObject {
 	public void MapSprites() {
 		inputSpriteDict = new Dictionary<InputHandler.InputActions, Sprite>(inputSprites.Count);
 		foreach (var inputSprite in inputSprites) {
-			Debug.Log($"Mapping {inputSprite.inputName} to {inputSprite.sprite}");
+			#if UNITY_EDITOR
+			Debug.Log($"[DEBUG] [InputSpriteAtlas] Mapping {inputSprite.inputName} to {inputSprite.sprite.name}");
+			#endif
 			if (string.IsNullOrEmpty(inputSprite.inputName.ToString()) || inputSprite.sprite == null) return;
 			inputSpriteDict.Add(inputSprite.inputName, inputSprite.sprite);
 		}

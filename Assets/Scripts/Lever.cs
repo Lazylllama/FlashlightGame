@@ -26,25 +26,24 @@ public class Lever : MonoBehaviour {
 			TurnOnLever();
 		}
 
-		float currentAngle = transform.eulerAngles.z;
-		float newAngle     = Mathf.MoveTowardsAngle(currentAngle, targetAngle, rotationSpeed * Time.deltaTime);
+		var currentAngle = transform.eulerAngles.z;
+		var newAngle     = Mathf.MoveTowardsAngle(currentAngle, targetAngle, rotationSpeed * Time.deltaTime);
 		transform.rotation = Quaternion.Euler(0f, 0f, newAngle);
-		
+
 		if (isOn && Time.time - leverOnTime >= onDuration) {
 			TurnOffLever();
 		}
-		
 	}
-	
+
 	private void TurnOnLever() {
-		isOn = true;
+		isOn        = true;
 		targetAngle = startAngle - rotationAngle;
 		leverOnTime = Time.time;
 		Debug.Log("Lever turned ON");
 	}
 
 	private void TurnOffLever() {
-		isOn = false;
+		isOn        = false;
 		targetAngle = startAngle;
 		Debug.Log("Lever turned OFF");
 	}

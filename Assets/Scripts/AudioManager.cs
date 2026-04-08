@@ -31,9 +31,6 @@ public class AudioManager : MonoBehaviour {
 
 	private EventInstance ambienceEventInstance, musicEventInstance;
 
-	//* States *//
-	private Coroutine footstepCoroutine;
-
 	#endregion
 
 	private void OnDestroy() => CleanUp();
@@ -56,7 +53,7 @@ public class AudioManager : MonoBehaviour {
 	private void Start() {
 		InitializeMusic(FMODEvents.Instance.gameMusic);
 
-		SetAmbienceParameter("wind_intensity", 0.2f);
+		SetAmbienceParameter("WindIntensity", 0.2f);
 	}
 
 	private void Update() {
@@ -73,10 +70,18 @@ public class AudioManager : MonoBehaviour {
 	/// Handles all Audio initialization that needs to be done when the game starts. Called from UIController on game init.
 	/// </summary>
 	public void GameStarted() {
-		SetMusicTrack(AudioManager.MusicTrack.Game);
+		SetMusicTrack(MusicTrack.Game);
 
 		InitializeAmbience(FMODEvents.Instance.crowsAmbience);
 		InitializeAmbience(FMODEvents.Instance.forestWindAmbience);
+	}
+
+	/// <summary>
+	/// Play a sound (position is 0,0,0 if not specified)
+	/// </summary>
+	/// <param name="sound"></param>
+	public void PlayOneShot(EventReference sound) {
+		RuntimeManager.PlayOneShot(sound);
 	}
 
 	/// <summary>
@@ -95,6 +100,30 @@ public class AudioManager : MonoBehaviour {
 	/// <param name="value"></param>
 	public void SetAmbienceParameter(string paramName, float value) {
 		ambienceEventInstance.setParameterByName(paramName, value);
+	}
+
+	/// <summary>
+	/// Update the CrankSpeed parameter 0-1
+	/// </summary>
+	/// <param name="value">float 0-1</param>
+	public void SetCrankSpeedParameter(float value) {
+		RuntimeManager.StudioSystem.setParameterByName("CrankSpeed", value);
+	}
+
+	/// <summary>
+	/// Set current surface for footsteps.
+	/// </summary> 
+	/// <param name="surface"></param>
+	public void SetFootstepSurface(FootstepSurface surface) {
+		RuntimeManager.StudioSystem.setParameterByName("FootstepSurface", (int)surface);
+	}
+
+	/// <summary>
+	/// Convert bool to int and set FlashlightState parameter.
+	/// </summary>
+	/// <param name="state">converts to 1 for true or 0 for false</param>
+	public void SetFlashlightState(bool state) {
+		RuntimeManager.StudioSystem.setParameterByName("FlashlightState", state ? 1 : 0);
 	}
 
 	/// <summary>

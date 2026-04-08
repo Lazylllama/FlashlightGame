@@ -25,7 +25,7 @@ public class BossController : MonoBehaviour {
 
 	#endregion
 
-	#region unity functions
+	#region Unity Functions
 
 	private void Start() {
 		groundLayer         = LayerMask.GetMask("Ground");
@@ -46,8 +46,8 @@ public class BossController : MonoBehaviour {
 		timeSinceLastChange = 0;
 		foreach (var t in weakPoints) {
 			t.tag = "Untagged";
-			SpriteRenderer spriteRenderer = t.GetComponent<SpriteRenderer>();
-			if (spriteRenderer != null) {
+			var spriteRenderer = t.GetComponent<SpriteRenderer>();
+			if (spriteRenderer) {
 				spriteRenderer.color = Color.red;
 			} else {
 				Debug.LogWarning($"WeakPoint GameObject '{t.name}' is missing a SpriteRenderer component.", t);
@@ -58,10 +58,10 @@ public class BossController : MonoBehaviour {
 	}
 
 	private void OpenWeakPoint() {
-		GameObject openWeakPoint = weakPoints[Random.Range(0, weakPoints.Length)];
+		var openWeakPoint = weakPoints[Random.Range(0, weakPoints.Length)];
 		openWeakPoint.tag = "WeakPoint";
-		SpriteRenderer spriteRenderer = openWeakPoint.GetComponent<SpriteRenderer>();
-		if (spriteRenderer != null) {
+		var spriteRenderer = openWeakPoint.GetComponent<SpriteRenderer>();
+		if (spriteRenderer) {
 			spriteRenderer.color = Color.green;
 		} else {
 			Debug.LogWarning($"WeakPoint GameObject '{openWeakPoint.name}' is missing a SpriteRenderer component.",
@@ -80,7 +80,9 @@ public class BossController : MonoBehaviour {
 
 	#endregion
 
-	#region AttackFunctions
+	#region Attack Functions
+
+	// coming soon
 
 	#endregion
 }

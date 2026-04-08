@@ -37,9 +37,14 @@ public class ParallaxController : MonoBehaviour {
 	#endregion
 
 	#region Unity Functions
+	
+	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+	private static void OnRuntimeInit() {
+		Debug = new DebugHandler("ParallaxController");
+	}
 
 	private void Awake() {
-		Debug = new DebugHandler("ParallaxController");
+		Debug ??= new DebugHandler("ParallaxController");
 	}
 
 	private void Start() {

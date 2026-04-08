@@ -32,12 +32,15 @@ public struct ReflectInfo {
 	public bool       IsLightRay;
 }
 
+[DisallowMultipleComponent]
 public class FlashlightController : MonoBehaviour {
 	#region Fields
 
 	//* Static
-	public static  FlashlightController Instance;
-	private static DebugHandler         Debug;
+	public static FlashlightController Instance;
+
+	// ReSharper disable once InconsistentNaming
+	private static DebugHandler Debug;
 
 	[Header("Flashlight Settings")]
 	[SerializeField] private float flashlightWidth = 45;
@@ -96,8 +99,9 @@ public class FlashlightController : MonoBehaviour {
 	//* Refs
 
 	private        LayerMask excludePlayer;
-	private static bool      FlashlightEnabled => PlayerData.Instance && PlayerData.Instance.FlashlightEnabled;
-	private static bool      IsLookingRight    => PlayerData.Instance && PlayerData.Instance.IsLookingRight;
+	private static bool FlashlightEnabled => PlayerData.Instance && PlayerData.Instance.FlashlightEnabled;
+	private static bool IsLookingRight => PlayerData.Instance && PlayerData.Instance.IsLookingRight;
+	private static bool HasPickedUpFlashlight => PlayerData.Instance && PlayerData.Instance.FlashlightModesUnlocked[1];
 
 	//* States
 	private bool      isListening, isGamepad;
@@ -105,9 +109,9 @@ public class FlashlightController : MonoBehaviour {
 	private Vector3[] lightPoints = { };
 	private Coroutine flickerCoroutine;
 
-	private          FlashLightPreset                    equippedFlashlight = new FlashLightPreset();
-	private readonly Dictionary<Collider2D, int>         hitList            = new Dictionary<Collider2D, int>();
-	private readonly Dictionary<RaycastObj, ReflectInfo> reflectList        = new Dictionary<RaycastObj, ReflectInfo>();
+	private          FlashLightPreset                    equippedFlashlight = new();
+	private readonly Dictionary<Collider2D, int>         hitList            = new();
+	private readonly Dictionary<RaycastObj, ReflectInfo> reflectList        = new();
 
 
 	//* Active Flashlight Preset
@@ -117,8 +121,13 @@ public class FlashlightController : MonoBehaviour {
 
 	#region Unity Functions
 
-	private void Awake() {
+	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+	private static void OnRuntimeInit() {
 		Debug = new DebugHandler("FlashlightController");
+	}
+
+	private void Awake() {
+		Debug ??= new DebugHandler("FlashlightController");
 
 		//* Instance
 		if (Instance != null && Instance != this) {
@@ -195,7 +204,11 @@ public class FlashlightController : MonoBehaviour {
 	}
 
 	private void UpdateFlashlightPosition() {
-		float cameraAngleZ = 0;
+		var cameraAngleZ = 0f;
+
+		if (!HasPickedUpFlashlight) {
+		}
+
 		if (!isGamepad) {
 			var playerPos = playerTransform.position;
 
@@ -210,7 +223,15 @@ public class FlashlightController : MonoBehaviour {
 
 			//* Unity discussions my savior :pray:
 			// TODO: Simplify even more, lowkey too tired
-			var ray    = cam.ScreenPointToRay(new Vector3(mousePositionOnScreen.x, mousePositionOnScreen.y, 0f));
+			Ray ray;
+
+			try {
+				ray = cam.ScreenPointToRay(new Vector3(mousePositionOnScreen.x, mousePositionOnScreen.y, 0f));
+			} catch (Exception e) {
+				Debug.LogWarning($"ScreenPointToRay failed: {e.Message}");
+				return;
+			}
+
 			var planeZ = transform.position.z;
 			var t      = (planeZ - ray.origin.z) / ray.direction.z;
 
@@ -237,7 +258,7 @@ public class FlashlightController : MonoBehaviour {
 				PlayerData.Instance.IsLookingRight  = false;
 			else PlayerData.Instance.IsLookingRight = true;
 		} else {
-			var deadZone = InputHandler.LookInputDeadZone;
+			var deadZone = Preferences.Input.LookInputDeadZone;
 			var input    = InputHandler.Instance.ReadValue(InputHandler.InputActions.FlashlightDirection);
 
 			if (Mathf.Abs(input.x) < deadZone || Mathf.Abs(input.y) < deadZone) return;
@@ -274,30 +295,45 @@ public class FlashlightController : MonoBehaviour {
 		return;
 
 		float GetSafeZonePosition() {
-			var actualAngle = cameraAngleZ + 90;
+			//? actualAngle: 0 = right, 90 = up, 180/-180 = left, -90 = down (if that makes sense)
+			var actualAngle = cameraAngleZ + 90f;
 
-			//? Logs for testing, uncomment to use.
-			switch (IsLookingRight) {
-				case true:
-					Debug.Log($"({actualAngle}) Looking Right and flashlight is "   +
-					          (actualAngle > rightSideMaxAngle ? "above" : "below") + "max angle and " +
-					          (actualAngle > rightSideMinAngle ? "above" : "below") + "min angle");
-					break;
-				case false:
-					Debug.Log($"({actualAngle}) Looking Right and flashlight is "  +
-					          (actualAngle > leftSideMaxAngle ? "above" : "below") + "max angle and " +
-					          (actualAngle > leftSideMinAngle ? "above" : "below") + "min angle");
-					break;
+			//? uncomment when needed
+			Debug.LogKv("GetSafeZonePosition", DebugLevel.Debug, new object[] {
+				"actualAngle", actualAngle,
+				"IsLookingRight", IsLookingRight,
+			});
+
+			var clampedActual = IsLookingRight
+				                    ? ClampToSide(actualAngle, rightSideMinAngle, rightSideMaxAngle)
+				                    : ClampToSide(actualAngle, leftSideMinAngle,  leftSideMaxAngle);
+
+			// convert back to cameraAngleZ space
+			return clampedActual - 90f;
+
+			float ClampToSide(float angle, float min, float max) {
+				//? Got lost like halfway but ended up working after intense googling session
+
+				//? non-wrapping range
+				if (Mathf.DeltaAngle(min, max) >= 0 && Mathf.Abs(Mathf.DeltaAngle(min, max)) <= 180 && min <= max) {
+					return Mathf.Clamp(angle, min, max);
+				}
+
+				//? wrapping range (e.g. min=150, max=-150) -> valid is [min..180] U [-180..max]
+				if (min <= max) return Mathf.Clamp(angle, min, max);
+
+				//? if angle already inside wrapped interval, return it
+				if (angle >= min || angle <= max) return angle;
+
+				//? otherwise clamp to nearest boundary!!
+				var distToMin = Mathf.Abs(Mathf.DeltaAngle(angle, min));
+				var distToMax = Mathf.Abs(Mathf.DeltaAngle(angle, max));
+				return distToMin < distToMax ? min : max;
 			}
-
-			return IsLookingRight switch {
-				true when cameraAngleZ  > rightSideMaxAngle => rightSideMaxAngle,
-				true when cameraAngleZ  < rightSideMinAngle => rightSideMinAngle,
-				false when cameraAngleZ < leftSideMaxAngle  => leftSideMaxAngle,
-				false when cameraAngleZ < leftSideMinAngle  => leftSideMinAngle,
-				_                                           => cameraAngleZ
-			};
 		}
+
+		// normalize to [-180,180)
+		//static float NormalizeAngle(float a) => Mathf.Repeat(a + 180f, 360f) - 180f;
 
 		float GetLeftArmOffset() {
 			if (IsLookingRight) {

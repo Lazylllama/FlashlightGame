@@ -12,6 +12,8 @@ namespace SteamTools
         public const uint AppId = 4543970;
 #elif APP0
         public const uint AppId = 0;
+#elif APP4544530
+        public const uint AppId = 4544530;
 #else
         public const uint AppId = 0;
 #endif
@@ -64,6 +66,7 @@ namespace SteamTools
 
 #if APP4543970
 #elif APP0
+#elif APP4544530
 #endif
 
              Heathen.SteamworksIntegration.API.App.Client.Initialise(AppId, actions.ToArray());

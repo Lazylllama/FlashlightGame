@@ -19,7 +19,7 @@ public class EnemySpawner : MonoBehaviour {
 
 	private float timeSinceLastSpawn;
 	private List<GameObject> spawnedEnemies = new List<GameObject>();
-
+	
 	private void Awake() {
 		Debug = new DebugHandler("EnemySpawner ("                 +
 		                         Math.Floor(transform.position.x) + ", " +

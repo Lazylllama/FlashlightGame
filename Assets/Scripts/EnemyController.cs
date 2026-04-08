@@ -50,6 +50,11 @@ public class EnemyController : MonoBehaviour {
 	#endregion
 
 	#region Unity Functions
+	
+	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+	private static void OnRuntimeInit() {
+		Debug = new DebugHandler("EnemyController");
+	}
 
 	private void Awake() {
 		Debug = new DebugHandler("EnemyController");

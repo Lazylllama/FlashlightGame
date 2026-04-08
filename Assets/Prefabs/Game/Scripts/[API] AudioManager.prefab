@@ -51,6 +51,13 @@ MonoBehaviour:
       Data3: -641101381
       Data4: 748785323
     Path: event:/UI/SaveGame
+  buttonPress:
+    Guid:
+      Data1: -369186678
+      Data2: 1236898782
+      Data3: 507923332
+      Data4: -1633390846
+    Path: event:/UI/ButtonPress
   playerFootstep:
     Guid:
       Data1: 1199899806

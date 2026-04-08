@@ -105,6 +105,7 @@ InitTestScene*.unity*
 # Recovery
 _Recovery
 
+## FMOD
 # Never ignore DLLs in the FMOD subfolder.
 !/[Aa]ssets/Plugins/FMOD/**/lib/*
 
@@ -119,6 +120,6 @@ _Recovery
 /[Aa]ssets/StreamingAssets/**/*.bank
 /[Aa]ssets/StreamingAssets/**/*.bank.meta
 
-# If the source bank files are kept outside of the StreamingAssets folder then these can be ignored.
-# Log files can be ignored.
-fmod_editor.log
+## ODIN/Sirenix
+/[Aa]ssets/Plugins/Sirenix.meta
+/[Aa]ssets/Plugins/Sirenix

@@ -40,14 +40,14 @@ ScriptedImporter:
   spriteData:
     TessellationDetail: 0
     SpriteName: fmod-logoSprite
-    SpritePivot: {x: 0.5005303, y: 0.49542856}
+    SpritePivot: {x: 0.5, y: 0.5}
     SpriteAlignment: 0
     SpriteBorder: {x: 0, y: 0, z: 0, w: 0}
     SpriteRect:
       serializedVersion: 2
       x: 0
       y: 0
-      width: 132
-      height: 35
+      width: 100
+      height: 100
     SpriteID: cde57cc1eda10b54bbdd99e86af960d3
     PhysicsOutlines: []

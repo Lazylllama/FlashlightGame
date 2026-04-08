@@ -14,6 +14,7 @@ public class FMODEvents : MonoBehaviour {
 	public EventReference buttonPress;
 
 	public EventReference playerFootstep;
+	public EventReference flashlightToggle;
 
 	public EventReference crowsAmbience;
 	public EventReference forestWindAmbience;

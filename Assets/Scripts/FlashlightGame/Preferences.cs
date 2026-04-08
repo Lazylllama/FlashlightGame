@@ -1,4 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Text;
+using System.Collections.Generic;
+using System.Security.Cryptography;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace FlashlightGame {
 	public static class Preferences {
@@ -18,5 +24,12 @@ namespace FlashlightGame {
 			public static DebugLevel   DbgLevel  = DebugLevel.Error;
 			public static List<string> LogFilter = new List<string>();
 		}
+
+		public abstract class Input {
+			public static float MoveInputDeadZone = 0.05f;
+			public static float LookInputDeadZone = 0.05f;
+		}
 	}
+
+
 }

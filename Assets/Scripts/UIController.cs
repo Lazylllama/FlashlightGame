@@ -58,9 +58,14 @@ public class UIController : MonoBehaviour {
 	#endregion
 
 	#region Unity Functions
+	
+	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+	private static void OnRuntimeInit() {
+		Debug = new DebugHandler("UIController");
+	}
 
 	private void Awake() {
-		Debug      = new DebugHandler("UIController");
+		Debug      ??= new DebugHandler("UIController");
 		mainMenuUI = GameObject.FindGameObjectWithTag("MainMenuUI");
 
 		if (!mainMenuUI)

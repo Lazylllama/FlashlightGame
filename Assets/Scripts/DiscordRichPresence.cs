@@ -16,6 +16,11 @@ public class DiscordRichPresence : MonoBehaviour {
 
 	#region Unity Functions
 
+	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+	private static void OnRuntimeInit() {
+		Debug = new DebugHandler("DiscordRichPresence");
+	}
+
 	private void Awake() {
 		Debug = new DebugHandler("DiscordRichPresence");
 	}

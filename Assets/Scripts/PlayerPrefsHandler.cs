@@ -11,7 +11,7 @@ public class PlayerPrefsHandler : MonoBehaviour {
 
 	public static  PlayerPrefsHandler Instance;
 	private static DebugHandler       Debug;
-	private static Dictionary<string, object> configurationSchema = new Dictionary<string, object>() {
+	private readonly Dictionary<string, object> configurationSchema = new() {
 		{
 			"TargetFrameRate", 60
 		}, {
@@ -37,8 +37,14 @@ public class PlayerPrefsHandler : MonoBehaviour {
 
 	#region Unity Functions
 
-	private void Awake() {
+	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+	private static void OnRuntimeInit() {
 		Debug = new DebugHandler("PlayerPrefsHandler");
+	}
+
+	private void Awake() {
+		// ensure instance-level init also sets the handler in case domain reload order differs
+		Debug ??= new DebugHandler("PlayerPrefsHandler");
 
 		if (Instance == null) {
 			Instance = this;

@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class InputIcon : MonoBehaviour {
 	#region Fields
 
+	private static DebugHandler Debug;
+
 	[SerializeField] private InputHandler.InputActions inputAction;
 	[SerializeField] private bool                      getInputIcon;
 
@@ -23,10 +25,17 @@ public class InputIcon : MonoBehaviour {
 		if (!isInitialized) Initialize();
 	}
 
+	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+	private static void OnRuntimeInit() {
+		Debug = new DebugHandler("InputIcon");
+	}
+
 	private void Awake() {
-		uiImage 	  = GetComponent<Image>();
+		Debug ??= new DebugHandler("InputIcon");
+
+		uiImage        = GetComponent<Image>();
 		spriteRenderer = GetComponent<SpriteRenderer>();
-		
+
 		if (!spriteRenderer && uiImage == null) {
 			Debug.LogError("[ERROR] [InputIcon] InputIcon requires either a SpriteRenderer or an Image component.");
 			enabled = false;
@@ -48,7 +57,9 @@ public class InputIcon : MonoBehaviour {
 	#region Functions
 
 	private void RefreshSprite(Lib.InputType inputType = default) {
-		var sprite = getInputIcon ? InputHandler.Instance.GetInputLogoSprite() : InputHandler.Instance.GetSprite(inputAction);
+		var sprite = getInputIcon
+			             ? InputHandler.Instance.GetInputLogoSprite()
+			             : InputHandler.Instance.GetSprite(inputAction);
 
 		if (IsUiImage) uiImage.sprite = sprite;
 		else spriteRenderer.sprite    = sprite;

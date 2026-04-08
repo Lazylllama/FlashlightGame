@@ -17,8 +17,13 @@ public class GameController : MonoBehaviour {
 
 	#region Unity Functions
 
+	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+	private static void OnRuntimeInit() {
+		Debug = new DebugHandler("GameController");
+	}
+	
 	private void Awake() {
-		Debug = new DebugHandler("PlayerData");
+		Debug ??= new DebugHandler("GameController");
 	}
 
 	private void Start() => RegisterInstance(this);

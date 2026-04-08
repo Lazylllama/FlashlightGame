@@ -53,7 +53,7 @@ public class PlayerMovement : MonoBehaviour {
 	private bool                         isGrounded, canMantle;
 	private Coroutine                    mantleRoutineState;
 	private Vector2                      moveInputVal, lastPosition;
-	public AudioManager.FootstepSurface currentSurface;
+	public  AudioManager.FootstepSurface currentSurface;
 
 	#endregion
 
@@ -62,8 +62,13 @@ public class PlayerMovement : MonoBehaviour {
 	//? Set global instance
 	private void Awake() => RegisterInstance(this);
 
-	private void Start() {
+	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+	private static void OnRuntimeInit() {
 		Debug = new DebugHandler("PlayerMovement");
+	}
+
+	private void Start() {
+		Debug ??= new DebugHandler("PlayerMovement");
 
 		playerRb           = GetComponent<Rigidbody2D>();
 		particleController = GetComponentInChildren<ParticleController>();
@@ -119,10 +124,12 @@ public class PlayerMovement : MonoBehaviour {
 
 		if (!groundCheckHit) return;
 		currentSurface = surfaceTags.GetValueOrDefault(groundCheckHit.tag, AudioManager.FootstepSurface.Dirt);
+		AudioManager.Instance.SetFootstepSurface(currentSurface);
 	}
 
 	private void InputCheck() {
 		moveInputVal = InputHandler.Instance.ReadValue(InputHandler.InputActions.Move);
+		if (Mathf.Abs(moveInputVal.x) < Preferences.Input.MoveInputDeadZone) return;
 		IsWalkingRight = moveInputVal.x switch {
 			< 0 when IsWalkingRight  => false,
 			> 0 when !IsWalkingRight => true,
@@ -145,9 +152,7 @@ public class PlayerMovement : MonoBehaviour {
 
 			//? Particles very broken
 			//particleController.CrateMovement(moveX);
-			
-			//? Moved to anim events
-			//AudioManager.Instance.PlayFootstepSfx(currentSurface);
+
 			playerAnimator.SetInteger(WalkingDirection, walkDirection);
 		} else {
 			playerAnimator.SetInteger(WalkingDirection, 0);
@@ -157,7 +162,7 @@ public class PlayerMovement : MonoBehaviour {
 
 		playerRb.AddForce(Vector2.right * finalForce, ForceMode2D.Force);
 
-		//! TODO(@lazylllama): Do not include in prod builds :)
+		//! Do not include in prod builds, only use when testing accel :)
 		// Debug.LogKv("PerformMove", DebugLevel.Debug, new object[] {
 		// 	"inputSpeed", inputSpeed,
 		// 	"speedDifference", speedDifference,

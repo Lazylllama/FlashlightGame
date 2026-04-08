@@ -449,6 +449,7 @@ MonoBehaviour:
     m_Extent: {x: 1.3366305, y: 1.8927304, z: 0}
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
+  m_BoundsMode: 0
 --- !u!95 &8560574320476866450
 Animator:
   serializedVersion: 7
@@ -661,10 +662,11 @@ MonoBehaviour:
     m_Bits: 8
   animatorName: Flap
   soundInterval: 1
-  flap: {fileID: 8300000, guid: 04a523c3784be384a886b35ecf879c6f, type: 3}
+  flap: {fileID: 0}
   teleportCooldown: 1.2
   slowDistance: 2
   slowFactor: 0.5
+  shouldRespawn: 0
 --- !u!1 &2952221436293266534
 GameObject:
   m_ObjectHideFlags: 0
