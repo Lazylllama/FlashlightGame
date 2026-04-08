@@ -4906,7 +4906,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7303924617047246660}
   - component: {fileID: 8853980901766950471}
-  m_Layer: 10
+  m_Layer: 12
   m_Name: Mantle check
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4962,7 +4962,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.008185148, y: 0.014917284}
+  m_Offset: {x: 0.008185148, y: -0.09}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -4972,7 +4972,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.7366481, y: 1.805033}
+  m_Size: {x: 2.62, y: 2.16}
   m_EdgeRadius: 0
 --- !u!1 &1432703755560476231
 GameObject:
@@ -9885,7 +9885,7 @@ GameObject:
   - component: {fileID: 7086872392209876451}
   m_Layer: 7
   m_Name: Crate
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9900,8 +9900,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -9.61, y: -0.14, z: 0}
-  m_LocalScale: {x: 1.41725, y: 1.41725, z: 1.41725}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.4, y: 1.4, z: 1.4}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1329631103030762881}
   - {fileID: 7303924617047246660}
@@ -9956,7 +9956,7 @@ SpriteRenderer:
   m_SortingLayer: 4
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -1163504838602118676, guid: 984892099b542aa4c8b7d6293af3cb20, type: 3}
+  m_Sprite: {fileID: 981590623623466488, guid: 6335490727b080e4f9790ac0bc0f103d, type: 3}
   m_Color: {r: 1, g: 0.6696835, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -10002,15 +10002,15 @@ BoxCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0.01}
+    border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.67, y: 1.79}
+    oldSize: {x: 2.56, y: 2.51}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.2, y: 1.4}
+  m_Size: {x: 1.78, y: 1.74}
   m_EdgeRadius: 0.5
 --- !u!114 &691622476037598945
 MonoBehaviour:
@@ -10036,7 +10036,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 2
+  m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 8
