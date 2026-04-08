@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
 using FlashlightGame;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 [System.Serializable]
@@ -44,11 +45,12 @@ public class FlashlightController : MonoBehaviour {
 
 	[Header("Flashlight Settings")]
 	[SerializeField] private float flashlightWidth = 45;
-	[SerializeField] private int   rayAmount              = 100;
-	[SerializeField] private float lerpTime               = 0.1f;
-	[SerializeField] private int   maxReflections         = 3;     // limit bounce count to avoid infinite loops
-	[SerializeField] private float reflectionOriginOffset = 0.01f; // offset to avoid insta re-hit on the same surface
-	[SerializeField] private float leftSideMaxAngle, leftSideMinAngle, rightSideMaxAngle, rightSideMinAngle;
+	[SerializeField]                                                private int   rayAmount              = 100;
+	[SerializeField]                                                private float lerpTime               = 0.1f;
+	[SerializeField]                                                private int   maxReflections         = 3;     // limit bounce count to avoid infinite loops
+	[SerializeField]                                                private float reflectionOriginOffset = 0.01f; // offset to avoid insta re-hit on the same surface
+	[SerializeField] private float minAngle;
+	[SerializeField] private float maxAngle;
 
 
 	[Header("Rig Settings")]
@@ -280,7 +282,7 @@ public class FlashlightController : MonoBehaviour {
 		transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, safeZonePosition, lerpTime));
 		lightGlowGameObject.transform.eulerAngles =
 			new Vector3(0, IsLookingRight ? 0 : 180,
-			            Mathf.LerpAngle(lightGlowGameObject.transform.eulerAngles.z, safeZonePosition, lerpTime));
+			            Mathf.LerpAngle(lightGlowGameObject.transform.eulerAngles.z, safeZonePosition * (IsLookingRight ? 1 : -1), lerpTime));
 
 		armLeft.eulerAngles =
 			new Vector3(0, IsLookingRight ? 0 : 180,
@@ -296,7 +298,7 @@ public class FlashlightController : MonoBehaviour {
 
 		float GetSafeZonePosition() {
 			//? actualAngle: 0 = right, 90 = up, 180/-180 = left, -90 = down (if that makes sense)
-			var actualAngle = cameraAngleZ + 90f;
+			var actualAngle = ConvertAngle(cameraAngleZ);
 
 			//? uncomment when needed
 			Debug.LogKv("GetSafeZonePosition", DebugLevel.Debug, new object[] {
@@ -304,31 +306,46 @@ public class FlashlightController : MonoBehaviour {
 				"IsLookingRight", IsLookingRight,
 			});
 
-			var clampedActual = IsLookingRight
-				                    ? ClampToSide(actualAngle, rightSideMinAngle, rightSideMaxAngle)
-				                    : ClampToSide(actualAngle, leftSideMinAngle,  leftSideMaxAngle);
+			var clampedActual = ClampToSide(actualAngle, minAngle,  maxAngle);
 
 			// convert back to cameraAngleZ space
-			return clampedActual - 90f;
+			return ConvertAngleInverse(clampedActual);
 
-			float ClampToSide(float angle, float min, float max) {
-				//? Got lost like halfway but ended up working after intense googling session
+			float ConvertAngle(float angle) {
+				if (IsLookingRight) {
+					return angle + 180f;
+				}
+				
+				if (angle < 0) {
+					angle += 360f;
+				}
+				
+				angle = angle * -1f + 180f;
+				return angle;
+			}
 
-				//? non-wrapping range
-				if (Mathf.DeltaAngle(min, max) >= 0 && Mathf.Abs(Mathf.DeltaAngle(min, max)) <= 180 && min <= max) {
-					return Mathf.Clamp(angle, min, max);
+			float ConvertAngleInverse(float angle) {
+				if (IsLookingRight) {
+					return angle - 180f;
 				}
 
-				//? wrapping range (e.g. min=150, max=-150) -> valid is [min..180] U [-180..max]
-				if (min <= max) return Mathf.Clamp(angle, min, max);
+				angle = (angle - 180f) * -1f;
 
-				//? if angle already inside wrapped interval, return it
-				if (angle >= min || angle <= max) return angle;
+				if (angle < 360) {
+					angle -= 360f;
+				}
 
-				//? otherwise clamp to nearest boundary!!
-				var distToMin = Mathf.Abs(Mathf.DeltaAngle(angle, min));
-				var distToMax = Mathf.Abs(Mathf.DeltaAngle(angle, max));
-				return distToMin < distToMax ? min : max;
+				return angle;
+			}
+
+			float ClampToSide(float angle, float min, float max) {
+				if(actualAngle < min) {
+					return min;
+				} 
+				if (actualAngle > max) {
+					return max;
+				}
+				return actualAngle;
 			}
 		}
 
