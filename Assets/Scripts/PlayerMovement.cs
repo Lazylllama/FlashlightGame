@@ -193,7 +193,7 @@ public class PlayerMovement : MonoBehaviour {
 	#region Coroutines
 
 	private IEnumerator MantleRoutine() {
-		var mantle = Lib.Movement.GetWallMantlePoint(transform.position, IsWalkingRight);
+		var mantle = Lib.Movement.GetWallMantlePoint(headLevelPosition.position, IsWalkingRight);
 
 		if (mantle.Position == Vector3.zero) {
 			Debug.Log("Mantle point invalid, cancelling mantle.", DebugLevel.Warning);

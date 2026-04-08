@@ -14,7 +14,7 @@ namespace FlashlightGame {
 		private const string AesEncryptionKey = "JustGoBackToPlayingTheGame...";
 
 		private static LayerMask BoxLayerMask        => LayerMask.GetMask("Box");
-		private static LayerMask GroundLayerMask     => LayerMask.GetMask("Ground");
+		private static LayerMask GroundLayerMask     => LayerMask.GetMask("Ground", "Box");
 		private static LayerMask MantleWallLayerMask => LayerMask.GetMask("MantleWall");
 
 		//* Refs
@@ -189,11 +189,10 @@ namespace FlashlightGame {
 			/// <summary>
 			/// Returns the position and distance to the top of the nearest mantle-able wall from the given base position.
 			/// </summary>
-			/// <param name="basePosition">Where to originate from</param>
+			/// <param name="origin">Where to originate from</param>
 			/// <param name="positiveX">Positive X means isWalkingRight</param>
 			/// <returns>Lib.WallMantlePoint | Returns Position as Vector3.zero and Distance as 0f if no available point.</returns>
-			public static WallMantlePoint GetWallMantlePoint(Vector3 basePosition, bool positiveX) {
-				var origin        = (Vector2)basePosition + Vector2.up * WallCheckDistance;
+			public static WallMantlePoint GetWallMantlePoint(Vector3 origin, bool positiveX) {
 				var direction     = positiveX ? Vector2.right : Vector2.left;
 				var mantleWallHit = Physics2D.Raycast(origin, direction, WallCheckDistance, MantleWallLayerMask);
 				if (!mantleWallHit.collider) Debug.DrawRay(origin, direction * WallCheckDistance, Color.blue);
@@ -210,6 +209,8 @@ namespace FlashlightGame {
 				var rayOrigin = new Vector2(centerX, mantleWallHit.point.y + 300f);
 
 				var getGroundY = Physics2D.Raycast(rayOrigin, Vector2.down, 350f, GroundLayerMask);
+				if(!getGroundY.collider)  Debug.DrawRay(rayOrigin, Vector2.down * 350f, Color.red);
+				else Debug.DrawLine(rayOrigin, getGroundY.point, Color.yellow);
 
 				if (!getGroundY)
 					getGroundY = Physics2D.Raycast(rayOrigin, Vector2.down, 350f, BoxLayerMask);
@@ -218,9 +219,9 @@ namespace FlashlightGame {
 
 				return new WallMantlePoint() {
 					Position = new Vector3(
-					                       centerX,
+					                       centerX + (positiveX ? 0.5f : -0.5f),
 					                       getGroundY.point.y + WallTeleportOffsetY,
-					                       basePosition.z
+					                       origin.z
 					                      ),
 					Distance = mantleWallHit.distance
 				};
