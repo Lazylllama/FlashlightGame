@@ -26,7 +26,7 @@ public class MirrorController : MonoBehaviour
 	#endregion
 	#region Unity Functions
     private void Start() {
-	    animator = GetComponent<Animator>();
+	    animator = GetComponentInChildren<Animator>();
 	    speedMult = Random.Range(0.9f, 1.1f);
 	    animator.SetFloat("speedMult", speedMult) ;
         posA      = new Vector3(positionA.position.x, positionA.position.y, transform.position.z);
@@ -59,7 +59,7 @@ public class MirrorController : MonoBehaviour
     }
 
     private void UpdatePositon() {
-		LeanTween.move(gameObject, (posAIsTarget? posA : posB), 1).setEase(LeanTweenType.easeInOutQuint);
+		//LeanTween.move(gameObject, (posAIsTarget? posA : posB), 1).setEase(LeanTweenType.easeInOutQuint);
     }
     #endregion
     
