@@ -121,5 +121,29 @@ _Recovery
 /[Aa]ssets/StreamingAssets/**/*.bank.meta
 
 ## ODIN/Sirenix
-/[Aa]ssets/Plugins/Sirenix.meta
-/[Aa]ssets/Plugins/Sirenix
+# Ignore everything except the Attributes DLL (freely redistributable) and configs/profiles
+# Step 1: Ignore contents of Sirenix (not the dir itself, so negations work)
+/[Aa]ssets/Plugins/Sirenix/*
+# Step 2: Allow Assemblies dir, but ignore its contents, then allow only Attributes
+!/[Aa]ssets/Plugins/Sirenix/Assemblies/
+!/[Aa]ssets/Plugins/Sirenix/Assemblies.meta
+/[Aa]ssets/Plugins/Sirenix/Assemblies/*
+!/[Aa]ssets/Plugins/Sirenix/Assemblies/Sirenix.OdinInspector.Attributes.dll
+!/[Aa]ssets/Plugins/Sirenix/Assemblies/Sirenix.OdinInspector.Attributes.dll.meta
+!/[Aa]ssets/Plugins/Sirenix/Assemblies/Sirenix.OdinInspector.Attributes.xml
+!/[Aa]ssets/Plugins/Sirenix/Assemblies/Sirenix.OdinInspector.Attributes.xml.meta
+# Step 3: Allow Odin Inspector Config
+!/[Aa]ssets/Plugins/Sirenix/Odin Inspector/
+/[Aa]ssets/Plugins/Sirenix/Odin Inspector/*
+!/[Aa]ssets/Plugins/Sirenix/Odin Inspector/Config/
+!/[Aa]ssets/Plugins/Sirenix/Odin Inspector/Config.meta
+# Step 4: Allow Odin Validator Config and Profiles
+!/[Aa]ssets/Plugins/Sirenix/Odin Validator/
+/[Aa]ssets/Plugins/Sirenix/Odin Validator/*
+!/[Aa]ssets/Plugins/Sirenix/Odin Validator/Editor/
+!/[Aa]ssets/Plugins/Sirenix/Odin Validator/Editor.meta
+/[Aa]ssets/Plugins/Sirenix/Odin Validator/Editor/*
+!/[Aa]ssets/Plugins/Sirenix/Odin Validator/Editor/Config/
+!/[Aa]ssets/Plugins/Sirenix/Odin Validator/Editor/Config.meta
+!/[Aa]ssets/Plugins/Sirenix/Odin Validator/Editor/Profiles/
+!/[Aa]ssets/Plugins/Sirenix/Odin Validator/Editor/Profiles.meta
