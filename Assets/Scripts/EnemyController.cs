@@ -37,15 +37,17 @@ public class EnemyController : MonoBehaviour {
 
 
 	//* States
-	private AudioSource audioSource;
-	private Animator    animator;
-	private Vector2?    target;
-	private Vector3     teleportPoint, pathFindPoint, borderLeftPos, borderRightPos, spawnPoint;
-	private float       health,        enemySpeed;
-	private bool        canTeleport;
-	private int         playerCollisionCount;
-	private bool        collidingWithPlayer;
-	private Coroutine   teleportRoutineState, pathfindingRoutineState;
+	private CapsuleCollider2D capsuleCollider;
+	private Material          material;
+	private AudioSource       audioSource;
+	private Animator          animator;
+	private Vector2?          target;
+	private Vector3           teleportPoint, pathFindPoint, borderLeftPos, borderRightPos, spawnPoint;
+	private float             health,        enemySpeed;
+	private bool              canTeleport;
+	private int               playerCollisionCount;
+	private bool              collidingWithPlayer;
+	private Coroutine         teleportRoutineState, pathfindingRoutineState, deathHandlerRoutineState;
 
 	#endregion
 
@@ -61,14 +63,16 @@ public class EnemyController : MonoBehaviour {
 	}
 
 	private void Start() {
-		rb             = GetComponent<Rigidbody2D>();
-		audioSource    = GetComponent<AudioSource>();
-		animator       = GetComponent<Animator>();
-		health         = maxHealth;
-		enemySpeed     = baseSpeed;
-		borderLeftPos  = borderLeft.position;
-		borderRightPos = borderRight.position;
-		spawnPoint     = transform.position;
+		rb              = GetComponent<Rigidbody2D>();
+		audioSource     = GetComponent<AudioSource>();
+		animator        = GetComponent<Animator>();
+		health          = maxHealth;
+		enemySpeed      = baseSpeed;
+		borderLeftPos   = borderLeft.position;
+		borderRightPos  = borderRight.position;
+		spawnPoint      = transform.position;
+		capsuleCollider = GetComponent<CapsuleCollider2D>();
+		material        = GetComponent<SpriteRenderer>().material;
 
 		if (flyingEnemy) rb.gravityScale = 0;
 
@@ -76,6 +80,7 @@ public class EnemyController : MonoBehaviour {
 	}
 
 	private void Update() {
+		if (deathHandlerRoutineState != null) return;
 		isGrounded = Lib.Movement.GroundCheck(groundCheck.position, 0.2f);
 		CheckForTarget();
 		UpdateOverheadText();
@@ -96,6 +101,7 @@ public class EnemyController : MonoBehaviour {
 	}
 
 	private void FixedUpdate() {
+		if (deathHandlerRoutineState != null) return;
 		ChaseTarget();
 	}
 
@@ -222,10 +228,8 @@ public class EnemyController : MonoBehaviour {
 		UpdateOverheadText();
 
 		if (health <= 0) {
-			gameObject.SetActive(false);
+			deathHandlerRoutineState = StartCoroutine(DeathHander());
 		}
-
-		;
 	}
 
 	private void CheckFloatHeight() {
@@ -248,14 +252,18 @@ public class EnemyController : MonoBehaviour {
 
 	public void Respawn() {
 		gameObject.SetActive(true);
-		transform.position      = spawnPoint;
-		health                  = maxHealth;
-		pathfindingRoutineState = null;
-		teleportRoutineState    = null;
-		target                  = null;
-		isChasing               = false;
-		collidingWithPlayer     = false;
-		playerCollisionCount    = 0;
+		transform.position       = spawnPoint;
+		health                   = maxHealth;
+		pathfindingRoutineState  = null;
+		teleportRoutineState     = null;
+		deathHandlerRoutineState = null;
+		target                   = null;
+		isChasing                = false;
+		collidingWithPlayer      = false;
+		playerCollisionCount     = 0;
+		material.SetFloat("_Fade", 1f);
+		capsuleCollider.enabled = true;
+		rb.bodyType             = RigidbodyType2D.Dynamic;
 	}
 
 	private void OnDrawGizmos() {
@@ -269,6 +277,17 @@ public class EnemyController : MonoBehaviour {
 	#endregion
 
 	#region Coroutines
+
+	private IEnumerator DeathHander() {
+		rb.bodyType             = RigidbodyType2D.Kinematic;
+		rb.linearVelocity = Vector2.zero;
+		capsuleCollider.enabled = false;
+		for(float fade = 1; fade > 0; fade -= Time.deltaTime/2) {
+			material.SetFloat("_Fade", fade);
+			yield return new WaitForEndOfFrame();
+		}
+		gameObject.SetActive(false);
+	}
 
 	private IEnumerator SoundRoutine() {
 		var interval = Mathf.Max(0.01f, soundInterval);
