@@ -45,10 +45,10 @@ public class FlashlightController : MonoBehaviour {
 
 	[Header("Flashlight Settings")]
 	[SerializeField] private float flashlightWidth = 45;
-	[SerializeField]                                                private int   rayAmount              = 100;
-	[SerializeField]                                                private float lerpTime               = 0.1f;
-	[SerializeField]                                                private int   maxReflections         = 3;     // limit bounce count to avoid infinite loops
-	[SerializeField]                                                private float reflectionOriginOffset = 0.01f; // offset to avoid insta re-hit on the same surface
+	[SerializeField] private int   rayAmount              = 100;
+	[SerializeField] private float lerpTime               = 0.1f;
+	[SerializeField] private int   maxReflections         = 3;     // limit bounce count to avoid infinite loops
+	[SerializeField] private float reflectionOriginOffset = 0.01f; // offset to avoid insta re-hit on the same surface
 	[SerializeField] private float minAngle;
 	[SerializeField] private float maxAngle;
 
@@ -107,7 +107,7 @@ public class FlashlightController : MonoBehaviour {
 
 	//* States
 	private bool      isListening, isGamepad;
-	private Light2D   spotLight,   freeFormLight;
+	private Light2D   spotLight,   freeFormLight, glowLight;
 	private Vector3[] lightPoints = { };
 	private Coroutine flickerCoroutine;
 
@@ -142,9 +142,10 @@ public class FlashlightController : MonoBehaviour {
 
 	private void Start() {
 		//* Refs
-		excludePlayer = ~LayerMask.GetMask("Player");
+		excludePlayer = ~LayerMask.GetMask("Player", "FlashlightIgnore");
 		spotLight     = spotLightGameObject.GetComponent<Light2D>();
 		freeFormLight = freeFormLightGameObject.GetComponent<Light2D>();
+		glowLight     = lightGlowGameObject.GetComponent<Light2D>();
 	}
 
 
@@ -187,8 +188,9 @@ public class FlashlightController : MonoBehaviour {
 		var targetLight = equippedFlashlight == laserPreset ? freeFormLight : spotLight;
 		if (flickerCoroutine == null) targetLight.enabled = FlashlightEnabled;
 
-		freeFormLightGameObject.SetActive(equippedFlashlight == laserPreset);
-		spotLightGameObject.SetActive(equippedFlashlight     != laserPreset);
+		freeFormLightGameObject.SetActive(FlashlightEnabled && equippedFlashlight == laserPreset);
+		spotLightGameObject.SetActive(FlashlightEnabled     && equippedFlashlight != laserPreset);
+		lightGlowGameObject.SetActive(FlashlightEnabled);
 	}
 
 	private void LerpFlashlightPreset(FlashLightPreset targetPreset) {
@@ -282,7 +284,8 @@ public class FlashlightController : MonoBehaviour {
 		transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, safeZonePosition, lerpTime));
 		lightGlowGameObject.transform.eulerAngles =
 			new Vector3(0, IsLookingRight ? 0 : 180,
-			            Mathf.LerpAngle(lightGlowGameObject.transform.eulerAngles.z, safeZonePosition * (IsLookingRight ? 1 : -1), lerpTime));
+			            Mathf.LerpAngle(lightGlowGameObject.transform.eulerAngles.z,
+			                            safeZonePosition * (IsLookingRight ? 1 : -1), lerpTime));
 
 		armLeft.eulerAngles =
 			new Vector3(0, IsLookingRight ? 0 : 180,
@@ -306,7 +309,7 @@ public class FlashlightController : MonoBehaviour {
 				"IsLookingRight", IsLookingRight,
 			});*/
 
-			var clampedActual = ClampToSide(actualAngle, minAngle,  maxAngle);
+			var clampedActual = ClampToSide(actualAngle, minAngle, maxAngle);
 
 			// convert back to cameraAngleZ space
 			return ConvertAngleInverse(clampedActual);
@@ -315,11 +318,11 @@ public class FlashlightController : MonoBehaviour {
 				if (IsLookingRight) {
 					return angle + 180f;
 				}
-				
+
 				if (angle < 0) {
 					angle += 360f;
 				}
-				
+
 				angle = angle * -1f + 180f;
 				return angle;
 			}
@@ -339,12 +342,14 @@ public class FlashlightController : MonoBehaviour {
 			}
 
 			float ClampToSide(float angle, float min, float max) {
-				if(actualAngle < min) {
+				if (actualAngle < min) {
 					return min;
-				} 
+				}
+
 				if (actualAngle > max) {
 					return max;
 				}
+
 				return actualAngle;
 			}
 		}
@@ -617,7 +622,7 @@ public class FlashlightController : MonoBehaviour {
 
 	#endregion
 
-	#region Coroutuines
+	#region Coroutines
 
 	private IEnumerator Flicker() {
 		while (true) {
@@ -629,8 +634,10 @@ public class FlashlightController : MonoBehaviour {
 			var targetLight = equippedFlashlight == laserPreset ? freeFormLight : spotLight;
 
 			targetLight.enabled = false;
+			glowLight.enabled   = false;
 			yield return new WaitForSeconds(Random.Range(0.05f, 0.1f));
 			targetLight.enabled = true;
+			glowLight.enabled   = true;
 			yield return new WaitForSeconds(Random.Range(0.2f, 1f));
 		}
 	}
