@@ -3,6 +3,10 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Lever : MonoBehaviour {
+
+	[Header("Settings")]
+	[SerializeField] private string id;
+	
 	public bool  isOn          = false;
 	public float rotationAngle = 45f;
 	public float rotationSpeed = 360f;
@@ -19,6 +23,7 @@ public class Lever : MonoBehaviour {
 	private void Start() {
 		startAngle  = transform.eulerAngles.z;
 		targetAngle = startAngle;
+		
 	}
 
 	private void Update() {
@@ -40,6 +45,7 @@ public class Lever : MonoBehaviour {
 		targetAngle = startAngle - rotationAngle;
 		leverOnTime = Time.time;
 		Debug.Log("Lever turned ON");
+		GameController.Instance.leverEvent.Invoke(id);
 	}
 
 	private void TurnOffLever() {

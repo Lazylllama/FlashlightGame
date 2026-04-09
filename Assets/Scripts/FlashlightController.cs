@@ -301,10 +301,10 @@ public class FlashlightController : MonoBehaviour {
 			var actualAngle = ConvertAngle(cameraAngleZ);
 
 			//? uncomment when needed
-			Debug.LogKv("GetSafeZonePosition", DebugLevel.Debug, new object[] {
+			/*Debug.LogKv("GetSafeZonePosition", DebugLevel.Debug, new object[] {
 				"actualAngle", actualAngle,
 				"IsLookingRight", IsLookingRight,
-			});
+			});*/
 
 			var clampedActual = ClampToSide(actualAngle, minAngle,  maxAngle);
 

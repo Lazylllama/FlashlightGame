@@ -1,11 +1,13 @@
 using FlashlightGame;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameController : MonoBehaviour {
 	#region Fields
 
-	public static  GameController Instance;
-	private static DebugHandler   Debug;
+	public static  GameController     Instance;
+	private static DebugHandler       Debug;
+	public UnityEvent<string> leverEvent;
 
 
 	//* Data *//
@@ -24,6 +26,9 @@ public class GameController : MonoBehaviour {
 	
 	private void Awake() {
 		Debug ??= new DebugHandler("GameController");
+		
+		if (leverEvent == null) leverEvent = new UnityEvent<string>();
+		leverEvent.AddListener((string id) => Debug.Log(id));
 	}
 
 	private void Start() => RegisterInstance(this);
