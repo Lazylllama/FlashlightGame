@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class MirrorController : MonoBehaviour
 {
@@ -13,16 +14,23 @@ public class MirrorController : MonoBehaviour
 	[Header("Settings")]
 	[SerializeField] private string id;
 	
+	//? Refs
+	private Animator animator;
+	
 	//? States
 	private bool isInPosition;
 	private bool posAIsTarget;
 	private bool isInitialized;
+
+	private float speedMult = 1;
 	#endregion
 	#region Unity Functions
-    private void Start()
-    {
-        posA = new Vector3(positionA.position.x, positionA.position.y, transform.position.z);
-        posB = new Vector3(positionB.position.x, positionB.position.y, transform.position.z);
+    private void Start() {
+	    animator = GetComponent<Animator>();
+	    speedMult = Random.Range(0.9f, 1.1f);
+	    animator.SetFloat("speedMult", speedMult) ;
+        posA      = new Vector3(positionA.position.x, positionA.position.y, transform.position.z);
+        posB      = new Vector3(positionB.position.x, positionB.position.y, transform.position.z);
         if (posA == posB) {
 	        Debug.Log("Mirror positions need to be moved!");
         }
