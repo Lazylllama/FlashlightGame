@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FlashlightGame;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
-public class InputHandler : MonoBehaviour {
+public class InputHandler : SerializedMonoBehaviour {
 	#region Types
 
 	//! DO NOT CHANGE ORDER, DO NOT REMOVE!
@@ -177,9 +178,10 @@ public class InputHandler : MonoBehaviour {
 					PlayerData.Instance.HandleFlashlightModeChange(kvp.Key == InputActions.Flashlight2 ? 2 : 1);
 					break;
 				case InputActions.NextSentence:
-					if (PlayerData.Instance.IsTalking) ConversationHandler.Instance.SkipButtonPressed();
+					//if (PlayerData.Instance.IsTalking) ConversationHandler.Instance.SkipButtonPressed();
 					break;
 				case InputActions.Mantle:
+					if (!GameController.Instance.AllowPlayerMovement) return;
 					PlayerMovement.Instance.Mantle();
 					break;
 				case InputActions.CrankKeyboard:

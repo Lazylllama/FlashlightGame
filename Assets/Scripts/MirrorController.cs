@@ -29,7 +29,7 @@ public class MirrorController : MonoBehaviour {
 	#region Unity Functions
 
 	private void Start() {
-		animator  = GetComponent<Animator>();
+		animator  = GetComponentInChildren<Animator>();
 		speedMult = Random.Range(0.9f, 1.1f);
 		animator.SetFloat(SpeedMult, speedMult);
 

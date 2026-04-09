@@ -1508,6 +1508,7 @@ GameObject:
   - component: {fileID: 5106078979696390584}
   - component: {fileID: 1328892609101180736}
   - component: {fileID: 2529274850362529401}
+  - component: {fileID: 9212942068162022470}
   m_Layer: 5
   m_Name: DialoguePanel
   m_TagString: Untagged
@@ -1575,6 +1576,26 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &9212942068162022470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2219699813915427501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88194b52614456749b6cc0b4c100c38d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ConversationHandler
+  conversationUI: {fileID: 0}
+  textBox: {fileID: 0}
+  nameBox: {fileID: 0}
+  image: {fileID: 0}
+  playerSprite: {fileID: 0}
+  otherPartSprite: {fileID: 0}
+  conversationSpeed: 0.05
+  playerCanWalk: 1
 --- !u!1 &2787142393349385313
 GameObject:
   m_ObjectHideFlags: 0
@@ -3547,7 +3568,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 262143
 --- !u!1 &4869946898211284713
 GameObject:
   m_ObjectHideFlags: 0
@@ -5777,7 +5798,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 262143
 --- !u!1 &8426888213381910576
 GameObject:
   m_ObjectHideFlags: 0
@@ -6932,6 +6953,10 @@ PrefabInstance:
     - target: {fileID: 11414302, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_Value
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11490438, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
+      propertyPath: m_BlockingMask.m_Bits
+      value: 262143
       objectReference: {fileID: 0}
     - target: {fileID: 11491080, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: alertColorInfo.b

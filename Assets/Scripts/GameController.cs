@@ -7,11 +7,12 @@ public class GameController : MonoBehaviour {
 
 	public static  GameController     Instance;
 	private static DebugHandler       Debug;
-	public UnityEvent<string> leverEvent;
+	public         UnityEvent<string> leverEvent;
 
 
 	//* Data *//
-	public bool InActiveGame { get; set; } = false;
+	public bool InActiveGame        { get; set; } = false;
+	public bool AllowPlayerMovement { get; set; } = true;
 
 	//* State *//
 
@@ -23,10 +24,10 @@ public class GameController : MonoBehaviour {
 	private static void OnRuntimeInit() {
 		Debug = new DebugHandler("GameController");
 	}
-	
+
 	private void Awake() {
 		Debug ??= new DebugHandler("GameController");
-		
+
 		if (leverEvent == null) leverEvent = new UnityEvent<string>();
 		leverEvent.AddListener((string id) => Debug.Log(id));
 	}
