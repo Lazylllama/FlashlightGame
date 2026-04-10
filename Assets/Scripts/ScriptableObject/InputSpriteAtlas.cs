@@ -40,6 +40,8 @@ public class InputSpriteAtlas : ScriptableObject {
 		return sprite;
 	}
 
+	public string GetInputName(InputHandler.InputActions inputAction) => inputAction.ToString();
+
 	public Sprite GetInputLogoSprite() => inputIcon ? inputIcon : null;
 
 	#endregion

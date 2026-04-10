@@ -12,7 +12,6 @@ public class GameController : MonoBehaviour {
 
 	//* Data *//
 	public bool InActiveGame        { get; set; } = false;
-	public bool AllowPlayerMovement { get; set; } = true;
 
 	//* State *//
 

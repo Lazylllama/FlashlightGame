@@ -37,7 +37,8 @@ public class PlayerData : MonoBehaviour {
 		{ 2, true }, // TODO: Implement flashlight level up (in-lore)
 	};
 
-	public bool  IsTalking         { get; set; }
+	public bool  InConversation    { get; set; }
+	public bool  PreventMovement   { get; set; }
 	public bool  FlashlightEnabled { get; set; }
 	public int   FlashlightMode    { get; private set; } = 1;
 	public bool  IsInvulnerable    { get; private set; } = false;
@@ -81,7 +82,7 @@ public class PlayerData : MonoBehaviour {
 	private static void OnRuntimeInit() {
 		Debug = new DebugHandler("PlayerData");
 	}
-	
+
 	private void Awake() {
 		Debug ??= new DebugHandler("PlayerData");
 	}

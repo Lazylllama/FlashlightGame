@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: 7822599ff72316f46bafd5aae01104b4
+guid: 3eb25b4436dc7234cad135560ac2e730
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5653002923208231072
-    second: fallen-scout-bg_0002s_0000s_0006_TREE-TILE-2_0
+      213: 711819656271263937
+    second: fallen-scout-bg_0002s_0000s_0000_BUSH1_0
+  - first:
+      213: -7594001369324542700
+    second: fallen-scout-bg_0002s_0000s_0000_BUSH1_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,23 +116,45 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: fallen-scout-bg_0002s_0000s_0006_TREE-TILE-2_0
+      name: fallen-scout-bg_0002s_0000s_0000_BUSH1_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 197
-        width: 1920
-        height: 1799
+        x: 83
+        y: 172
+        width: 616
+        height: 344
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 067bdefcacf7c81b0800000000000000
-      internalID: -5653002923208231072
+      spriteID: 1c8703cb434e0e900800000000000000
+      internalID: 711819656271263937
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fallen-scout-bg_0002s_0000s_0000_BUSH1_1
+      rect:
+        serializedVersion: 2
+        x: 1074
+        y: 155
+        width: 769
+        height: 392
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 415a4954dffac9690800000000000000
+      internalID: -7594001369324542700
       vertices: []
       indices: 
       edges: []
@@ -139,18 +164,17 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 1537655665
+    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
-    secondaryTextures:
-    - texture: {fileID: 2800000, guid: 21ff175847b396d4491923d8c75b8746, type: 3}
-      name: _NormalMap
+    secondaryTextures: []
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      fallen-scout-bg_0002s_0000s_0006_TREE-TILE-2_0: -5653002923208231072
+      fallen-scout-bg_0002s_0000s_0000_BUSH1_0: 711819656271263937
+      fallen-scout-bg_0002s_0000s_0000_BUSH1_1: -7594001369324542700
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

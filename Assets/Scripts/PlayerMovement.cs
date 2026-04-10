@@ -84,7 +84,7 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	private void FixedUpdate() {
-		if (!GameController.Instance.InActiveGame) return;
+		if (!GameController.Instance.InActiveGame || PlayerData.Instance.InConversation) return;
 		InputCheck();
 		PerformMove();
 	}

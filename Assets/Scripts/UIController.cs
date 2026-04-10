@@ -58,7 +58,7 @@ public class UIController : MonoBehaviour {
 	#endregion
 
 	#region Unity Functions
-	
+
 	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
 	private static void OnRuntimeInit() {
 		Debug = new DebugHandler("UIController");
@@ -66,7 +66,7 @@ public class UIController : MonoBehaviour {
 
 	private void Awake() {
 		Debug      ??= new DebugHandler("UIController");
-		mainMenuUI = GameObject.FindGameObjectWithTag("MainMenuUI");
+		mainMenuUI =   GameObject.FindGameObjectWithTag("MainMenuUI");
 
 		if (!mainMenuUI)
 			Debug.LogException(new
@@ -120,7 +120,8 @@ public class UIController : MonoBehaviour {
 		savingGameUIAnimator.SetBool(IsSavingGame, true);
 
 		StartCoroutine(Lib.DelayFunction(3f, () => {
-			                                     AudioManager.Instance.PlayOneShot(FMODEvents.Instance.savedGame, mainCamera.transform.position);
+			                                     AudioManager.Instance.PlayOneShot(FMODEvents.Instance.savedGame,
+				                                     mainCamera.transform.position);
 			                                     savingGameUIAnimator.SetBool(IsSavingGame, false);
 		                                     }));
 	}
@@ -142,6 +143,11 @@ public class UIController : MonoBehaviour {
 			                                 gameOverlayCamera.enabled            = true;
 			                                 GameController.Instance.InActiveGame = true;
 		                                 }));
+
+		StartCoroutine(Lib.DelayFunction(duration + 3f, () => {
+			                                                ConversationHandler.Instance
+			                                                                   .StartConversation("BigBossMan");
+		                                                }));
 	}
 
 	private static void RegisterInstance(UIController instance) {
@@ -246,7 +252,7 @@ public class UIController : MonoBehaviour {
 		var loaded = SaveController.Instance.LoadGame();
 		if (loaded) StartCoroutine(GameStartSequence());
 	}
-	
+
 	/// <summary>
 	/// Reloads the current scene.
 	/// </summary>

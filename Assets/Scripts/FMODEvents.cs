@@ -12,13 +12,15 @@ public class FMODEvents : MonoBehaviour {
 
 	public EventReference savedGame;
 	public EventReference buttonPress;
+	public EventReference openMenu,       closeMenu;
+	public EventReference dialogueLetter, dialogueLastLetter;
 
 	public EventReference playerFootstep;
 	public EventReference flashlightToggle;
 
 	public EventReference crowsAmbience;
 	public EventReference forestWindAmbience;
-	
+
 	public EventReference gameMusic;
 
 	#endregion
