@@ -14,9 +14,6 @@
         },
         {
             "m_Id": "61d0da71b25e4e5697f531b98411f67f"
-        },
-        {
-            "m_Id": "b810df99173d4d2ead635dae0cde54eb"
         }
     ],
     "m_Keywords": [],
@@ -1391,9 +1388,6 @@
         },
         {
             "m_Id": "61d0da71b25e4e5697f531b98411f67f"
-        },
-        {
-            "m_Id": "b810df99173d4d2ead635dae0cde54eb"
         }
     ]
 }
@@ -2102,50 +2096,6 @@
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.Rendering.Universal.ShaderGraph.UniversalSpriteUnlitSubTarget",
     "m_ObjectId": "b73508f68bd043d2a2974cf1666a6b8e"
-}
-
-{
-    "m_SGVersion": 1,
-    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
-    "m_ObjectId": "b810df99173d4d2ead635dae0cde54eb",
-    "m_Guid": {
-        "m_GuidSerialized": "e2d5cc87-2e59-44e6-be02-f01ea9504277"
-    },
-    "promotedFromAssetID": "",
-    "promotedFromCategoryName": "",
-    "promotedOrdering": -1,
-    "m_Name": "Height",
-    "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "Height",
-    "m_DefaultReferenceName": "_Height",
-    "m_OverrideReferenceName": "",
-    "m_GeneratePropertyBlock": true,
-    "m_UseCustomSlotLabel": false,
-    "m_CustomSlotLabel": "",
-    "m_DismissedVersion": 0,
-    "m_Precision": 0,
-    "overrideHLSLDeclaration": false,
-    "hlslDeclarationOverride": 0,
-    "m_Hidden": false,
-    "m_PerRendererData": false,
-    "m_customAttributes": [],
-    "m_Value": 2.0,
-    "m_FloatType": 0,
-    "m_LiteralFloatMode": false,
-    "m_RangeValues": {
-        "x": 0.0,
-        "y": 1.0
-    },
-    "m_SliderType": 0,
-    "m_SliderPower": 3.0,
-    "m_EnumType": 0,
-    "m_CSharpEnumString": "",
-    "m_EnumNames": [
-        "Default"
-    ],
-    "m_EnumValues": [
-        0
-    ]
 }
 
 {
