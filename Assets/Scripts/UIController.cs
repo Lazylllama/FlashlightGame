@@ -271,8 +271,7 @@ public class UIController : MonoBehaviour {
 		if (saveData == null) {
 			loadMenuLastSavedDate.text = $"You have no save.";
 		} else {
-			var date = new DateTime(saveData.lastSavedTicks);
-			loadMenuLastSavedDate.text = $"Last Saved: {date:yyyy-MM-dd HH:mm:ss}";
+			loadMenuLastSavedDate.text = $"Last Saved: {new DateTime(saveData.lastSavedTicks):yyyy-MM-dd HH:mm:ss}";
 		}
 	}
 

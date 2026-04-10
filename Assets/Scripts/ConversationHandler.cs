@@ -6,7 +6,6 @@ using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 
@@ -30,24 +29,27 @@ public class ConversationHandler : SerializedMonoBehaviour {
 	private static DebugHandler        Debug;
 
 	[Header("Refs")]
-	[SerializeField] private GameObject conversationUI;
-	[SerializeField] private TextMeshProUGUI textBox,     nameBox, skipText;
-	[SerializeField] private Image           normalImage, holyOverlayImage;
-	[SerializeField] private RawImage        fogImage;
-	[SerializeField] private Image           skipGlyph;
+	//! Non-serialized fields are set in the UI element under "DialogueRefs"
+	private TextMeshProUGUI textBox, nameBox, skipText;
+	private Image    normalImage, holyOverlayImage;
+	private RawImage fogImage;
+	private Image    skipGlyph;
 
 	[SerializeField] private Sprite playerSprite;
 
 	//? Settings
+	[Header("Settings")]
 	[SerializeField] private float conversationSpeed = 0.05f;
+	[SerializeField] private float  pauseTime      = 1f;
+	[SerializeField] private string pauseString    = "<pause>";
+	private                  char   pauseCharacter = '|';
 
 	//? Conversations
 
 	[OdinSerialize] private readonly Dictionary<string, Conversation> Conversations = new();
 
 	//? States
-	private Conversation currentConversation;
-	public  bool         pressedProceed;
+	public bool pressedProceed;
 
 	#endregion
 
@@ -67,9 +69,13 @@ public class ConversationHandler : SerializedMonoBehaviour {
 		}
 
 		Instance = this;
+
+		SetDialogueRefs();
 	}
 
 	private void Start() {
+		SetDialogueRefs();
+		
 		nameBox.text = "";
 		textBox.text = "";
 
@@ -114,16 +120,74 @@ public class ConversationHandler : SerializedMonoBehaviour {
 		LeanTween.color(skipGlyph.rectTransform, new Color(.3f, .3f, .3f, visible ? 1 : 0), 1f)
 		         .setEase(LeanTweenType.easeInOutQuad);
 
-		LeanTween.value(skipText.gameObject, visible ? 0 : 1, visible ? 1 : 0, 2f).setOnUpdate(UpdateTextAlpha);
+		LeanTween.value(skipText.gameObject, visible ? 0 : 1, visible ? 1 : 0, 1f).setOnUpdate(UpdateSkipTextAlpha);
 	}
 
-	private void UpdateTextAlpha(float value) {
+	private void UpdateSkipTextAlpha(float value) {
 		skipText.color = new Color(.3f, .3f, .3f, value);
+	}
+
+	private string ParseText(string text, bool clean = false) {
+		var parsedText = text;
+
+		if (text.Contains("<pause>"))
+			parsedText = parsedText.Replace("<pause>", clean ? "" : pauseCharacter.ToString());
+
+		return parsedText;
+	}
+
+	private static void PlaySound(bool lastLetter = false) =>
+		AudioManager.Instance.PlayOneShot(lastLetter
+			                                  ? FMODEvents.Instance.dialogueLastLetter
+			                                  : FMODEvents.Instance.dialogueLetter);
+
+
+	private void UpdateSkipText(bool finished) {
+		skipText.text = finished ? "TO PROCEED" : "TO SKIP";
+	}
+
+	private void HandleStartEnd(bool start, Conversation conversation) {
+		PlayerData.Instance.InConversation = start;
+		if (conversation.preventMovement)
+			PlayerData.Instance.PreventMovement = start;
+	}
+
+	/*
+	 * This is a workaround for the fact that this script is using SerializedMonoBehaviour instead of MonoBehaviour,
+	 * which means that this gameObject can't be a prefab or a child of one. Instead, to ease the workload, the DialogueRefs
+	 * MonoBehaviour is placed in the prefab, and we use its values here. Not ideal, but it would be even less ideal to
+	 * not have the serialization and allat for the conversations :pray:
+	 *
+	 * https://odininspector.com/patch-notes/2-0-14-0
+	 *
+	 * TL;DR: This script can't be in a prefab due to it being a SerializedMonoBehaviour. Known Odin flaw but okay tradeoff.
+	 */
+	private void SetDialogueRefs() {
+		if (!DialogueRefs.Instance) {
+			Debug.LogError("DialogueRefs instance not found! Make sure you have a working DialogueRefs script in your scene.");
+			return;
+		}
+
+		textBox          = DialogueRefs.Instance.textBox;
+		nameBox          = DialogueRefs.Instance.nameBox;
+		skipText         = DialogueRefs.Instance.skipText;
+		normalImage      = DialogueRefs.Instance.normalImage;
+		holyOverlayImage = DialogueRefs.Instance.holyOverlayImage;
+		fogImage         = DialogueRefs.Instance.fogImage;
+		skipGlyph        = DialogueRefs.Instance.skipGlyph;
 	}
 
 	#endregion
 
 	#region Coroutines
+
+	private IEnumerator WaitForPlayer() {
+		if (!PlayerData.Instance.InConversation) yield break;
+		UpdateSkipText(true);
+		while (!pressedProceed) yield return null;
+		UpdateSkipText(false);
+		pressedProceed = false;
+	}
 
 	private IEnumerator StartConversationRoutine(string conversationId) {
 		//* Null-guards
@@ -137,61 +201,66 @@ public class ConversationHandler : SerializedMonoBehaviour {
 			yield break;
 		}
 
-		//* Update state
-		PlayerData.Instance.InConversation = true;
-		if (conversation.preventMovement)
-			PlayerData.Instance.PreventMovement = true;
-		currentConversation = conversation;
-
-		//* Fade in dialogue UI
+		//* Update states and fade in dialogue UI
+		HandleStartEnd(true, conversation);
 		ToggleDisplay(true, conversation);
 
 		yield return new WaitForSecondsRealtime(1f);
 
+		//* Write character name
 		foreach (var letter in conversation.otherPartName.Length > 0 ? conversation.otherPartName : "???") {
 			nameBox.text += letter;
-			AudioManager.Instance.PlayOneShot(FMODEvents.Instance.dialogueLetter);
+			PlaySound();
 			yield return new WaitForSecondsRealtime(conversationSpeed);
 		}
 
-		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.dialogueLastLetter);
+		PlaySound(true);
 
 		yield return new WaitForSecondsRealtime(1f);
 
 		foreach (var part in conversation.dialogue) {
+			//* Parse dialogue text
+			var parsedPart = ParseText(part);
+			var cleanPart  = ParseText(part, true);
+			
+			//* Clear textbox
 			textBox.text = "";
-			foreach (var letter in part) {
-				textBox.text += letter;
 
+			//* Loop through parsed text
+			foreach (var letter in parsedPart) {
+				//? If the letter is a pause character, wait for the pause time and dont add it to the textbox
+				if (letter == pauseCharacter) {
+					PlaySound(true);
+					yield return new WaitForSecondsRealtime(pauseTime);
+				} else {
+					PlaySound();
+					textBox.text += letter;
+				}
+
+				//? If the player pressed the next sentence button, finish the part early
 				if (pressedProceed) {
 					Debug.Log("Finishing part early");
 					pressedProceed = false;
-					textBox.text   = part;
+					textBox.text   = cleanPart;
 					break;
-				} else {
-					AudioManager.Instance.PlayOneShot(FMODEvents.Instance.dialogueLetter);
 				}
 
+				//? Otherwise, wait for the next letter
 				yield return new WaitForSecondsRealtime(conversationSpeed);
 			}
 
-			AudioManager.Instance.PlayOneShot(FMODEvents.Instance.dialogueLastLetter);
+			//* After the loop has finished, play the last letter sound.
+			PlaySound(true);
 			Debug.Log("Finished part: " + part);
 
-			while (!pressedProceed) yield return null;
-
-			pressedProceed = false;
-
-			yield return new WaitForSecondsRealtime(1f);
+			yield return WaitForPlayer();
 		}
 
-		while (pressedProceed) yield return null;
+		yield return WaitForPlayer();
 
-		//* Fade out dialogue UI
+		//* Update states and fade out dialogue UI
 		ToggleDisplay(false);
-		PlayerData.Instance.InConversation = false;
-		if (conversation.preventMovement)
-			PlayerData.Instance.PreventMovement = false;
+		HandleStartEnd(false, conversation);
 
 		Debug.Log("Finished conversation");
 	}

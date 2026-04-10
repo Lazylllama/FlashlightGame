@@ -20,7 +20,7 @@ namespace FlashlightGame {
 		}
 
 		public abstract class Input {
-			public static float MoveInputDeadZone = 0.05f;
+			public static float MoveInputDeadZone = 0.65f;
 			public static float LookInputDeadZone = 0.05f;
 		}
 	}

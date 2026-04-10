@@ -140,14 +140,15 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	private void PerformMove() {
-		var inputSpeed      = moveInputVal.x * maxSpeed;
+		var inputSpeed = (Mathf.Abs(moveInputVal.x) > Preferences.Input.MoveInputDeadZone ? moveInputVal.x : 0) *
+		                 maxSpeed;
 		var speedDifference = inputSpeed - playerRb.linearVelocityX;
 		var finalForce      = speedDifference * acceleration;
 
 		var movement = (Vector2)transform.position - lastPosition;
 		var moveX    = movement.x;
 
-		if (Mathf.Abs(moveX) > 0.05f) {
+		if (Mathf.Abs(moveX) > 0.039f) {
 			// If moving in the same direction the player is looking, it's "forward" (1), otherwise "backward" (-1)
 			var movingRight   = moveX > 0f;
 			var walkDirection = movingRight == IsLookingRight ? 1 : -1;
@@ -176,10 +177,7 @@ public class PlayerMovement : MonoBehaviour {
 	/// Called by InputHandler, attempts to mantle.
 	/// </summary>
 	public void Mantle() {
-		Debug.LogKv("Mantle", DebugLevel.Debug, new object[] {
-			"isGrounded", isGrounded,
-			"canMantle", canMantle
-		});
+		Debug.LogKv("Mantle", DebugLevel.Debug, "isGrounded", isGrounded, "canMantle", canMantle);
 
 		if (!isGrounded || !canMantle || mantleRoutineState != null) return;
 		mantleRoutineState = StartCoroutine(MantleRoutine());
