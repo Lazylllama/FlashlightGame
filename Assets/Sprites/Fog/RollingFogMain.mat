@@ -42,7 +42,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _FogSize: 0.5
-    - _Height: 2
+    - _Height: 27.02
     - _WorldSpace: 1
     m_Colors:
     - White: {r: 1, g: 1, b: 1, a: 1}
