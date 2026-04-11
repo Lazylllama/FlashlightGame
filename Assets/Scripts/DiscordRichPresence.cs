@@ -1,3 +1,4 @@
+#if !UNITY_WEBGL
 using System;
 using Discord;
 using FlashlightGame;
@@ -60,7 +61,7 @@ public class DiscordRichPresence : MonoBehaviour {
 		if (!isInitialized) return;
 		var activityManager = discord.GetActivityManager();
 		var activity = new Discord.Activity {
-			State   = "Scouting",
+			State = "Scouting",
 			Details = "Exploring the world",
 		};
 
@@ -77,3 +78,4 @@ public class DiscordRichPresence : MonoBehaviour {
 
 	#endregion
 }
+#endif

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 7e46e7f06dfeed941ac56d2af39200dc
+guid: 594ac56deab1ecf41804a185d2019d81
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -9208646237239713282
-    second: BOSS_sprite_test_0
+      213: 6931812067282785001
+    second: FINN_SPRITE_DIALOG_NEW_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: BOSS_sprite_test_0
+      name: FINN_SPRITE_DIALOG_NEW_0
       rect:
         serializedVersion: 2
-        x: 135
+        x: 127
         y: 0
-        width: 404
-        height: 614
+        width: 350
+        height: 429
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ef1e6176901543080800000000000000
-      internalID: -9208646237239713282
+      spriteID: 9e21820595eb23060800000000000000
+      internalID: 6931812067282785001
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      BOSS_sprite_test_0: -9208646237239713282
+      FINN_SPRITE_DIALOG_NEW_0: 6931812067282785001
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

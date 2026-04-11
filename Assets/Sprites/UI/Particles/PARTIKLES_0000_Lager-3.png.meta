@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 7e46e7f06dfeed941ac56d2af39200dc
+guid: e2bf531b807fea9478924a993c1a7e2b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -9208646237239713282
-    second: BOSS_sprite_test_0
+      213: -4468073562389007793
+    second: PARTIKLES_0000_Lager-3_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: BOSS_sprite_test_0
+      name: PARTIKLES_0000_Lager-3_0
       rect:
         serializedVersion: 2
-        x: 135
-        y: 0
-        width: 404
-        height: 614
+        x: 106
+        y: 70
+        width: 30
+        height: 35
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ef1e6176901543080800000000000000
-      internalID: -9208646237239713282
+      spriteID: f423d7394c63ef1c0800000000000000
+      internalID: -4468073562389007793
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      BOSS_sprite_test_0: -9208646237239713282
+      PARTIKLES_0000_Lager-3_0: -4468073562389007793
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

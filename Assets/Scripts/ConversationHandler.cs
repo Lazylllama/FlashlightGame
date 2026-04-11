@@ -31,9 +31,10 @@ public class ConversationHandler : SerializedMonoBehaviour {
 	[Header("Refs")]
 	//! Non-serialized fields are set in the UI element under "DialogueRefs"
 	private TextMeshProUGUI textBox, nameBox, skipText;
-	private Image    normalImage, holyOverlayImage;
+	private Image    normalImage, holyOverlayImage, gradientImage;
 	private RawImage fogImage;
 	private Image    skipGlyph;
+	private Color    gradientColor;
 
 	[SerializeField] private Sprite playerSprite;
 
@@ -84,6 +85,14 @@ public class ConversationHandler : SerializedMonoBehaviour {
 		fogImage.color         = Color.clear;
 		skipGlyph.color        = Color.clear;
 		skipText.color         = Color.clear;
+		gradientImage.color    = Color.clear;
+
+		normalImage.enabled      = false;
+		holyOverlayImage.enabled = false;
+		fogImage.enabled         = false;
+		gradientImage.enabled    = false;
+		skipGlyph.enabled        = false;
+		skipText.enabled         = false;
 	}
 
 	#endregion
@@ -98,6 +107,11 @@ public class ConversationHandler : SerializedMonoBehaviour {
 
 	private void ToggleDisplay(bool visible, Conversation conversation = default) {
 		var color = visible ? Color.white : Color.clear;
+
+		fogImage.enabled      = conversation.otherPartHolyOverlay;
+		gradientImage.enabled = !conversation.otherPartHolyOverlay;
+		skipGlyph.enabled     = true;
+		skipText.enabled      = true;
 
 		if (visible) {
 			holyOverlayImage.enabled = conversation is { otherPartStart: true, otherPartHolyOverlay: true };
@@ -118,10 +132,15 @@ public class ConversationHandler : SerializedMonoBehaviour {
 		LeanTween.color(fogImage.rectTransform, color, 2f)
 		         .setEase(LeanTweenType.easeInOutQuad);
 
+		LeanTween.color(gradientImage.rectTransform, visible ? gradientColor : Color.clear, 2f)
+		         .setEase(LeanTweenType.easeInOutQuad);
+
 		LeanTween.color(skipGlyph.rectTransform, new Color(.3f, .3f, .3f, visible ? 1 : 0), 1f)
 		         .setEase(LeanTweenType.easeInOutQuad);
 
-		LeanTween.value(skipText.gameObject, visible ? 0 : 1, visible ? 1 : 0, 1f).setOnUpdate(UpdateSkipTextAlpha);
+		LeanTween.value(skipText.gameObject, visible ? 0 : 1, visible ? 1 : 0, 1f)
+		         .setOnUpdate(UpdateSkipTextAlpha)
+		         .setEase(LeanTweenType.easeInOutQuad);
 	}
 
 	private void UpdateSkipTextAlpha(float value) {
@@ -184,7 +203,9 @@ public class ConversationHandler : SerializedMonoBehaviour {
 		normalImage      = DialogueRefs.Instance.normalImage;
 		holyOverlayImage = DialogueRefs.Instance.holyOverlayImage;
 		fogImage         = DialogueRefs.Instance.fogImage;
+		gradientImage    = DialogueRefs.Instance.gradientImage;
 		skipGlyph        = DialogueRefs.Instance.skipGlyph;
+		gradientColor    = DialogueRefs.Instance.gradientColor;
 	}
 
 	#endregion
@@ -212,7 +233,8 @@ public class ConversationHandler : SerializedMonoBehaviour {
 		yield return new WaitForSecondsRealtime(1f);
 
 		//* Write character name
-		foreach (var letter in conversation.otherPartName.Length > 0 ? conversation.otherPartName : "???") {
+		var startName = conversation.otherPartStart ? conversation.otherPartName : "Finn";
+		foreach (var letter in startName.Length > 0 ? startName : "???") {
 			nameBox.text += letter;
 			PlaySound();
 			yield return new WaitForSecondsRealtime(conversationSpeed);

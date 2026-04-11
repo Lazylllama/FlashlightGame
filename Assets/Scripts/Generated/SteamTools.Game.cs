@@ -1,3 +1,4 @@
+#if !DISABLESTEAMWORKS
 using Heathen.SteamworksIntegration;
 using UnityEngine;
 using System.Collections.Generic;
@@ -82,3 +83,4 @@ namespace SteamTools
         }
     }
 }
+#endif

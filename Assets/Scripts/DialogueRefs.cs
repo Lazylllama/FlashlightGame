@@ -14,9 +14,13 @@ public class DialogueRefs : MonoBehaviour {
 
 	[Header("Images")]
 	[SerializeField] public RawImage fogImage;
+	[SerializeField] public Image gradientImage;
 	[SerializeField] public Image holyOverlayImage;
 	[SerializeField] public Image normalImage;
 	[SerializeField] public Image skipGlyph;
+
+	[Header("Settings")]
+	[SerializeField] public Color gradientColor = Color.red;
 
 	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
 	private static void OnRuntimeInit() {
@@ -38,25 +42,13 @@ public class DialogueRefs : MonoBehaviour {
 	}
 
 	private void CheckRefs() {
-		if (textBox == null)
-			Debug.LogError("textBox is null!");
-
-		if (nameBox == null)
-			Debug.LogError("nameBox is null!");
-
-		if (skipText == null)
-			Debug.LogError("skipText is null!");
-
-		if (normalImage == null)
-			Debug.LogError("normalImage is null!");
-
-		if (holyOverlayImage == null)
-			Debug.LogError("holyOverlayImage is null!");
-
-		if (fogImage == null)
-			Debug.LogError("fogImage is null!");
-
-		if (skipGlyph == null)
-			Debug.LogError("skipGlyph is null!");
+		if (textBox          == null) Debug.LogError("textBox is null!");
+		if (nameBox          == null) Debug.LogError("nameBox is null!");
+		if (skipText         == null) Debug.LogError("skipText is null!");
+		if (normalImage      == null) Debug.LogError("normalImage is null!");
+		if (holyOverlayImage == null) Debug.LogError("holyOverlayImage is null!");
+		if (fogImage         == null) Debug.LogError("fogImage is null!");
+		if (gradientImage    == null) Debug.LogError("gradientImage is null!");
+		if (skipGlyph        == null) Debug.LogError("skipGlyph is null!");
 	}
 }

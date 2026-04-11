@@ -51,10 +51,6 @@ public class UIController : MonoBehaviour {
 	public  bool IsInMenu     { get; private set; } = true;
 	private bool InActiveGame => GameController.Instance.InActiveGame;
 
-	//* PlayerPrefs *//
-	//private static bool SkipIntroFade => FBPP.GetBool("SkipIntroFade");
-	private static bool SkipIntroFade => true; //? Temp hardcoded cause it lowk looks better...
-
 	#endregion
 
 	#region Unity Functions
@@ -127,9 +123,8 @@ public class UIController : MonoBehaviour {
 	}
 
 	private void SwitchToGameCams() {
-		var duration = SkipIntroFade ? 0f : 3f;
-		mainMenuOverlayCamera.enabled = false;
-		mainMenuUI.SetActive(false);
+		var duration = Preferences.Game.SkipIntroFade ? 0f : 3f;
+		print($"Switching to game cameras with a fade duration of {duration} seconds.");
 
 		StartCoroutine(FadeBetweenCams(
 		                               mainMenuCinemachine,
@@ -140,14 +135,16 @@ public class UIController : MonoBehaviour {
 
 		StartCoroutine(Lib.DelayFunction(Math.Clamp(duration - 1f, 0f, float.MaxValue),
 		                                 () => {
+			                                 mainMenuOverlayCamera.enabled = false;
+			                                 mainMenuUI.SetActive(false);
 			                                 gameOverlayCamera.enabled            = true;
 			                                 GameController.Instance.InActiveGame = true;
 		                                 }));
 
-		/*StartCoroutine(Lib.DelayFunction(duration + 3f, () => {
+		StartCoroutine(Lib.DelayFunction(duration + 3f, () => {
 			                                                ConversationHandler.Instance
 			                                                                   .StartConversation("BigBossMan");
-		                                                }));*/
+		                                                }));
 	}
 
 	private static void RegisterInstance(UIController instance) {
@@ -301,13 +298,13 @@ public class UIController : MonoBehaviour {
 		Camera            fromOverlay,
 		Camera            toOverlay
 	) {
+		storyboardBlackCinemachine.Priority = 11;
+		
+		yield return new WaitForSecondsRealtime(duration);
+
 		fromCam.Priority    = 0;
 		fromOverlay.enabled = false;
 		toCam.Priority      = 10;
-
-		storyboardBlackCinemachine.Priority = 11;
-
-		yield return new WaitForSecondsRealtime(duration);
 
 		toOverlay.enabled                   = true;
 		storyboardBlackCinemachine.Priority = 0;
