@@ -14,10 +14,12 @@ public class PlayerMovement : MonoBehaviour {
 
 	//* Hash
 	private static readonly int WalkingDirection = Animator.StringToHash("walkingDirection");
+	private static readonly int IsFalling        = Animator.StringToHash("isFalling");
+	private static readonly int HasFlashlight    = Animator.StringToHash("hasFlashlight");
 
 	//* Refs
 	private Rigidbody2D        playerRb;
-	private ParticleController particleController;
+	//private ParticleController particleController;
 	private Animator           playerAnimator;
 
 	//? Aiming right and walking left will cause the player to walk blindly/backwards.
@@ -73,7 +75,7 @@ public class PlayerMovement : MonoBehaviour {
 		Debug ??= new DebugHandler("PlayerMovement");
 
 		playerRb           = GetComponent<Rigidbody2D>();
-		particleController = GetComponentInChildren<ParticleController>();
+		//particleController = GetComponentInChildren<ParticleController>();
 		playerAnimator     = GetComponentInChildren<Animator>();
 
 		lastPosition = transform.position;
@@ -124,6 +126,12 @@ public class PlayerMovement : MonoBehaviour {
 		isGrounded = groundCheckHit;
 		canMantle  = mantleCheckHit.collider;
 
+		if (!groundCheckHit && !Lib.Movement.WallCheck(gameObject.transform.position, IsWalkingRight).collider) {
+			playerAnimator.SetBool(IsFalling, true);
+		} else {
+			playerAnimator.SetBool(IsFalling, false);
+		}
+		
 		if (!groundCheckHit) return;
 		currentSurface = surfaceTags.GetValueOrDefault(groundCheckHit.tag, AudioManager.FootstepSurface.Dirt);
 		AudioManager.Instance.SetFootstepSurface(currentSurface);

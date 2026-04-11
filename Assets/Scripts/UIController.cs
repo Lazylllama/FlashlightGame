@@ -143,7 +143,7 @@ public class UIController : MonoBehaviour {
 
 		StartCoroutine(Lib.DelayFunction(duration + 3f, () => {
 			                                                ConversationHandler.Instance
-			                                                                   .StartConversation("BigBossMan");
+			                                                                   .StartConversation("PlayerSpawned");
 		                                                }));
 	}
 
