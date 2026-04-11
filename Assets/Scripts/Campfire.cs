@@ -39,10 +39,6 @@ public class Campfire : MonoBehaviour {
 	private void FixedUpdate() {
 		if (!player) Start();
 		if (!isInitialized) Initialize();
-
-		dist = Vector2.Distance(player.transform.position, transform.position);
-
-		if (dist < maxDist) spriteRenderer.color = new Color(1f, 1f, 1f, Math.Clamp(1f - (dist / maxDist), 0f, 1f));
 	}
 
 	#endregion

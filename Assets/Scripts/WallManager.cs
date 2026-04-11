@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using SteamTools;
 using UnityEngine;
 
@@ -8,6 +9,13 @@ public class WallManager : MonoBehaviour
 	[SerializeField] private string id;
 	
 	private bool isInitialized = false;
+	
+	//? Refs
+	private ParticleSystem ps;
+
+	private void Awake() {
+		ps = GetComponentInChildren<ParticleSystem>();
+	}
 
 	private void Update() {
 		if (!isInitialized) Init();
@@ -20,6 +28,12 @@ public class WallManager : MonoBehaviour
 
 	private void OpenWall(string _id) {
 		if (id != _id) return;
-		gameObject.SetActive(false);	
+		ps.Play();
+		StartCoroutine(Delay());
+	}
+
+	private IEnumerator Delay() {
+		yield return new WaitForSeconds(2f);
+		gameObject.SetActive(false);
 	}
 }
