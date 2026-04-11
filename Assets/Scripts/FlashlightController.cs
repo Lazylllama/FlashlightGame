@@ -99,11 +99,9 @@ public class FlashlightController : MonoBehaviour {
 	};
 
 	[Header("Refs")]
-	[SerializeField] private CameraController cameraController;
-
-	private        LayerMask excludePlayer;
-	private static bool FlashlightEnabled => PlayerData.Instance && PlayerData.Instance.FlashlightEnabled;
-	private static bool IsLookingRight => PlayerData.Instance && PlayerData.Instance.IsLookingRight;
+	private LayerMask excludePlayer;
+	private static bool FlashlightEnabled     => PlayerData.Instance && PlayerData.Instance.FlashlightEnabled;
+	private static bool IsLookingRight        => PlayerData.Instance && PlayerData.Instance.IsLookingRight;
 	private static bool HasPickedUpFlashlight => PlayerData.Instance && PlayerData.Instance.FlashlightModesUnlocked[1];
 
 	//* States
@@ -261,10 +259,10 @@ public class FlashlightController : MonoBehaviour {
 			    Mathf.Atan2(mousePosition.y - playerPos.y,
 			                mousePosition.x - playerPos.x) * Mathf.Rad2Deg < -90) {
 				PlayerData.Instance.IsLookingRight = false;
-				cameraController.CallTurnCamera(true);
+				CameraController.Instance.CallTurnCamera(true);
 			} else {
 				PlayerData.Instance.IsLookingRight = true;
-				cameraController.CallTurnCamera(false);
+				CameraController.Instance.CallTurnCamera(false);
 			}
 		} else {
 			var deadZone = Preferences.Input.LookInputDeadZone;
