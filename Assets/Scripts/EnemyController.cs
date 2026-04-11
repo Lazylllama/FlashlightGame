@@ -272,6 +272,7 @@ public class EnemyController : MonoBehaviour {
 		material.SetFloat("_Fade", 1f);
 		capsuleCollider.enabled = true;
 		rb.bodyType             = RigidbodyType2D.Dynamic;
+		animator.SetBool("isWalking", true);
 	}
 
 	private void OnDrawGizmos() {
@@ -290,6 +291,7 @@ public class EnemyController : MonoBehaviour {
 		rb.bodyType             = RigidbodyType2D.Kinematic;
 		rb.linearVelocity       = Vector2.zero;
 		capsuleCollider.enabled = false;
+		animator.SetBool("isWalking", false);
 		for (float fade = 1; fade > 0; fade -= Time.deltaTime / 2) {
 			material.SetFloat("_Fade", fade);
 			yield return new WaitForEndOfFrame();

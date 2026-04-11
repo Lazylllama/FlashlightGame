@@ -9,10 +9,12 @@ public class InputIcon : MonoBehaviour {
 	private static DebugHandler Debug;
 
 	[SerializeField] private InputHandler.InputActions inputAction;
-	[SerializeField] private bool                      getInputIcon;
+	[SerializeField] private bool                      getInputIcon, isInWorldSpace;
+	[SerializeField] private float                     maxDist;
 
 	private SpriteRenderer spriteRenderer;
 	private Image          uiImage;
+	private GameObject player;
 
 	private bool isInitialized;
 	private bool IsUiImage => uiImage != null;
@@ -23,6 +25,13 @@ public class InputIcon : MonoBehaviour {
 
 	private void FixedUpdate() {
 		if (!isInitialized) Initialize();
+		if (isInWorldSpace) GetOpacity();
+	}
+
+	private void GetOpacity() {
+		var dist = Vector2.Distance(player.transform.position, transform.position);
+
+		if (dist < maxDist) spriteRenderer.color = new Color(1f, 1f, 1f, Math.Clamp(1f - (dist / maxDist), 0f, 1f));
 	}
 
 	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
@@ -35,6 +44,9 @@ public class InputIcon : MonoBehaviour {
 
 		uiImage        = GetComponent<Image>();
 		spriteRenderer = GetComponent<SpriteRenderer>();
+		player = GameObject.FindGameObjectWithTag("Player");
+		
+		if(Vector2.Distance(player.transform.position, transform.position) > maxDist && isInWorldSpace) spriteRenderer.color = new Color(1f, 1f, 1f, 0f);
 
 		if (!spriteRenderer && uiImage == null) {
 			Debug.LogError("[ERROR] [InputIcon] InputIcon requires either a SpriteRenderer or an Image component.");
