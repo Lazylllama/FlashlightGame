@@ -33,8 +33,8 @@ public class PlayerData : MonoBehaviour {
 
 	//* Player States *//
 	public Dictionary<int, bool> FlashlightModesUnlocked { get; private set; } = new() {
-		{ 1, true }, // TODO: Implement flashlight pickup
-		{ 2, true }, // TODO: Implement flashlight level up (in-lore)
+		{ 1, false }, // TODO: Implement flashlight pickup
+		{ 2, true },  // TODO: Implement flashlight level up (in-lore)
 	};
 
 	public bool  InConversation    { get; set; }
@@ -43,6 +43,7 @@ public class PlayerData : MonoBehaviour {
 	public int   FlashlightMode    { get; private set; } = 1;
 	public bool  IsInvulnerable    { get; private set; } = false;
 	public float CrankSpeed        { get; set; }         = 0f;
+	public bool  IsCranking        => CrankSpeed > 0f;
 
 	//* Mood States *//
 	//? Relieved = player is at a checkpoint.
@@ -146,6 +147,7 @@ public class PlayerData : MonoBehaviour {
 		} else {
 			// First crank: set a small baseline crank speed
 			CrankSpeed = 0.1f;
+			AudioManager.Instance.PlayOneShot(FMODEvents.Instance.flashlightCrank);
 		}
 
 		lastCrankTime = now;
@@ -187,8 +189,8 @@ public class PlayerData : MonoBehaviour {
 	}
 
 	private void RespawnEnemies() {
-		for (int i = 0; i < enemyControllers.Count; i++) {
-			enemyControllers[i].Respawn();
+		foreach (var t in enemyControllers) {
+			t.Respawn();
 		}
 	}
 
@@ -208,7 +210,7 @@ public class PlayerData : MonoBehaviour {
 	/// <param name="mode">Int - 1,2 and 3</param>
 	public void HandleFlashlightModeChange(int mode) {
 		if (!FlashlightModesUnlocked.ContainsKey(mode)) {
-			Debug.Log($"Invalid flashlight mode: {mode}. No such mode exists.", DebugLevel.Warning);
+			Debug.Log($"Invalid flashlight mode: {mode.ToString()}. No such mode exists.", DebugLevel.Warning);
 			return;
 		}
 

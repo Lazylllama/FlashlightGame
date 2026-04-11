@@ -58,6 +58,34 @@ MonoBehaviour:
       Data3: 507923332
       Data4: -1633390846
     Path: event:/UI/ButtonPress
+  openMenu:
+    Guid:
+      Data1: -581993079
+      Data2: 1169577523
+      Data3: 159327377
+      Data4: -677936092
+    Path: event:/UI/OpenMenu
+  closeMenu:
+    Guid:
+      Data1: 278679332
+      Data2: 1098560074
+      Data3: 1659971214
+      Data4: -1256499838
+    Path: event:/UI/CloseMenu
+  dialogueLetter:
+    Guid:
+      Data1: -1215347289
+      Data2: 1202144722
+      Data3: -1347746895
+      Data4: 1801482694
+    Path: event:/UI/DialogueLetter
+  dialogueLastLetter:
+    Guid:
+      Data1: -700067684
+      Data2: 1318261878
+      Data3: -101017677
+      Data4: -444739558
+    Path: event:/UI/DialogueLastLetter
   playerFootstep:
     Guid:
       Data1: 1199899806
@@ -65,6 +93,20 @@ MonoBehaviour:
       Data3: -238720124
       Data4: 94103721
     Path: event:/Player/PlayerFootstep
+  flashlightToggle:
+    Guid:
+      Data1: 604983704
+      Data2: 1084454834
+      Data3: -985518969
+      Data4: 1642822833
+    Path: event:/Player/FlashlightToggle
+  flashlightCrank:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   crowsAmbience:
     Guid:
       Data1: -1593215002

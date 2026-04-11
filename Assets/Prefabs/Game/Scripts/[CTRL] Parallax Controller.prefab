@@ -151,9 +151,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1893991801169772997}
     m_Modifications:
+    - target: {fileID: 355070975784336686, guid: 76302948b00378e4893776bde69bd83c, type: 3}
+      propertyPath: m_Name
+      value: fallen-scout-bg_0002s_0005_TREE-FREE-3-Left
+      objectReference: {fileID: 0}
     - target: {fileID: 617937093001032971, guid: 76302948b00378e4893776bde69bd83c, type: 3}
       propertyPath: m_Name
       value: Parallax
+      objectReference: {fileID: 0}
+    - target: {fileID: 1779242093276274668, guid: 76302948b00378e4893776bde69bd83c, type: 3}
+      propertyPath: m_Name
+      value: fallen-scout-bg_0002s_0005_TREE-FREE-3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3754596709246995499, guid: 76302948b00378e4893776bde69bd83c, type: 3}
+      propertyPath: m_Name
+      value: fallen-scout-bg_0002s_0005_TREE-FREE-3-Right
+      objectReference: {fileID: 0}
+    - target: {fileID: 6899070762122424066, guid: 76302948b00378e4893776bde69bd83c, type: 3}
+      propertyPath: m_Name
+      value: Tree Free - 3
       objectReference: {fileID: 0}
     - target: {fileID: 8296521386574576628, guid: 76302948b00378e4893776bde69bd83c, type: 3}
       propertyPath: m_LocalScale.x
