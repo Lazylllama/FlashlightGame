@@ -7,14 +7,20 @@ public class WallManager : MonoBehaviour
 {
 	[Header("ID")]
 	[SerializeField] private string id;
+
+	[Header("Sprites")]
+	[SerializeField] private GameObject unbroken;
+	[SerializeField] private GameObject broken;
 	
 	private bool isInitialized = false;
 	
 	//? Refs
 	private ParticleSystem ps;
+	private Collider2D     coll;
 
 	private void Awake() {
 		ps = GetComponentInChildren<ParticleSystem>();
+		coll = GetComponent<Collider2D>();
 	}
 
 	private void Update() {
@@ -34,6 +40,9 @@ public class WallManager : MonoBehaviour
 
 	private IEnumerator Delay() {
 		yield return new WaitForSeconds(2f);
-		gameObject.SetActive(false);
+		unbroken.SetActive(false);
+		coll.enabled = false;
+		broken.SetActive(true);
+		
 	}
 }

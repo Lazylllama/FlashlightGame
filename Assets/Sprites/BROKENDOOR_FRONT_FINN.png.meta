@@ -1,10 +1,16 @@
 fileFormatVersion: 2
-guid: 1438f070e37410149a0a1713aa6f9ef4
+guid: 607076915c0f1374cbfdb36b8abb09e8
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7711875158524993831
-    second: ROTATION_MIRROR_PUZZLE_0
+      213: 3854459837090192963
+    second: BROKENDOOR_FRONT_FINN_0
+  - first:
+      213: 5534062582952073759
+    second: BROKENDOOR_FRONT_FINN_1
+  - first:
+      213: 107544168221091588
+    second: BROKENDOOR_FRONT_FINN_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +52,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -96,30 +102,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ROTATION_MIRROR_PUZZLE_0
+      name: BROKENDOOR_FRONT_FINN_0
       rect:
         serializedVersion: 2
-        x: 256
-        y: 345
-        width: 762
-        height: 491
+        x: 977
+        y: 267
+        width: 722
+        height: 813
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +121,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9de55ff076ae9f490800000000000000
-      internalID: -7711875158524993831
+      spriteID: 34e55cecccacd7530800000000000000
+      internalID: 3854459837090192963
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BROKENDOOR_FRONT_FINN_1
+      rect:
+        serializedVersion: 2
+        x: 884
+        y: 29
+        width: 152
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f1a93a53990fccc40800000000000000
+      internalID: 5534062582952073759
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BROKENDOOR_FRONT_FINN_2
+      rect:
+        serializedVersion: 2
+        x: 1466
+        y: 58
+        width: 70
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 407ab78e9d21e7100800000000000000
+      internalID: 107544168221091588
       vertices: []
       indices: 
       edges: []
@@ -138,7 +175,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +185,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      ROTATION_MIRROR_PUZZLE_0: -7711875158524993831
+      BROKENDOOR_FRONT_FINN_0: 3854459837090192963
+      BROKENDOOR_FRONT_FINN_1: 5534062582952073759
+      BROKENDOOR_FRONT_FINN_2: 107544168221091588
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
