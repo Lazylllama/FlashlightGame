@@ -453,6 +453,7 @@ public class FlashlightController : MonoBehaviour {
 				hitList[hit.collider]++;
 				break;
 			case "Mirror":
+				if (PlayerData.Instance.FlashlightMode != 2) break;
 				reflectList.TryAdd
 					(new RaycastObj() { Point = hit.point, Normal = hit.normal },
 					 new ReflectInfo { Origin = start, Collider   = hit.collider, IsLightRay = isLightRay });
@@ -481,6 +482,7 @@ public class FlashlightController : MonoBehaviour {
 				hitList[hit.collider]++;
 				break;
 			case "Mirror":
+				if (PlayerData.Instance.FlashlightMode != 2) break;
 				reflectList.TryAdd
 					(new RaycastObj() { Point = hit.point, Normal = hit.normal },
 					 new ReflectInfo { Origin = start, Collider   = hit.collider });
@@ -590,7 +592,7 @@ public class FlashlightController : MonoBehaviour {
 				lightPoints = lightPoints.Append(new Vector3(hit.point.x, hit.point.y, 0)).ToArray();
 			}
 
-			if (hit.collider.gameObject.tag is not ("Enemy" or "WeakPoint" or "Prism" or "Mirror")) return;
+			if (hit.collider.gameObject.tag is not ("Enemy" or "WeakPoint" or "Prism" or "Mirror" or "WallTrigger")) return;
 
 			if (hit.collider.gameObject.CompareTag("Mirror")) {
 				//? enqueue next mirror reflection (use newOrigin as the origin for the next incoming direction)
@@ -607,8 +609,15 @@ public class FlashlightController : MonoBehaviour {
 				depth          = depth + 1;
 				continue;
 			} else {
-				//? Hit an enemy or weakpoint along the reflection
-				if (!hitList.TryAdd(hit.collider, 1)) hitList[hit.collider]++;
+				switch (hit.collider.tag) {
+					case "WallTrigger":
+						hit.collider.gameObject.GetComponent<WallTrigger>().OpenWall();
+						break;
+					default:
+						//? Hit an enemy or weakpoint along the reflection
+						if (!hitList.TryAdd(hit.collider, 1)) hitList[hit.collider]++;
+						break;
+				}
 			}
 
 			break;

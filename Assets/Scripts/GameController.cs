@@ -7,7 +7,8 @@ public class GameController : MonoBehaviour {
 
 	public static  GameController     Instance;
 	private static DebugHandler       Debug;
-	public         UnityEvent<string> leverEvent;
+	public         UnityEvent<string> leverEvent, wallTriggerEvent;
+	public         UnityEvent<CameraBoundsEventParameters> changeCameraBounds;
 
 
 	//* Data *//
@@ -29,6 +30,11 @@ public class GameController : MonoBehaviour {
 
 		if (leverEvent == null) leverEvent = new UnityEvent<string>();
 		leverEvent.AddListener((string id) => Debug.Log(id));
+		
+		if (wallTriggerEvent == null) wallTriggerEvent = new UnityEvent<string>();
+		leverEvent.AddListener((string id) => Debug.Log(id));
+		
+		if(changeCameraBounds == null) changeCameraBounds = new UnityEvent<CameraBoundsEventParameters>();
 	}
 
 	private void Start() => RegisterInstance(this);

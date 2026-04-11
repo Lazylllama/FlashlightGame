@@ -15,7 +15,7 @@ public class CameraController : MonoBehaviour
 
     private bool isFacingRight;
 
-    private CinemachineCamera currentCamera;
+    public CinemachineCamera currentCamera;
     
     public static CameraController Instance;
 
