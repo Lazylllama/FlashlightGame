@@ -173,6 +173,7 @@ MonoBehaviour:
   groundCheckRadius: 0.2
   headLevelPosition: {fileID: 7988358005208953918}
   currentSurface: 1
+  moveInputVal: {x: 0, y: 0}
 --- !u!114 &6812476317795494045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10206,7 +10207,7 @@ Transform:
   m_GameObject: {fileID: 4295775074873238092}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: 0.35, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -20189,11 +20190,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3382411605867472247, guid: 5aadd893fd70b344f87bfc408462933f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.4720373
+      value: 0.47142592
       objectReference: {fileID: 0}
     - target: {fileID: 3382411605867472247, guid: 5aadd893fd70b344f87bfc408462933f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.0034427643
+      value: 0.00576669
       objectReference: {fileID: 0}
     - target: {fileID: 4394701673013354078, guid: 5aadd893fd70b344f87bfc408462933f, type: 3}
       propertyPath: m_LocalPosition.x

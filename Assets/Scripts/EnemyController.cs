@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Globalization;
 using TMPro;
 using UnityEngine;
 using FlashlightGame;
@@ -52,7 +53,7 @@ public class EnemyController : MonoBehaviour {
 	#endregion
 
 	#region Unity Functions
-	
+
 	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
 	private static void OnRuntimeInit() {
 		Debug = new DebugHandler("EnemyController");
@@ -219,7 +220,8 @@ public class EnemyController : MonoBehaviour {
 	}
 
 	private void UpdateOverheadText() {
-		overheadText.text                 = $"Health: {health}/{maxHealth}";
+		overheadText.text = "Health: " + health.ToString(CultureInfo.CurrentCulture) + "/" +
+		                    maxHealth.ToString(CultureInfo.CurrentCulture);
 		overheadText.transform.localScale = facingRight ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1);
 	}
 
@@ -280,12 +282,13 @@ public class EnemyController : MonoBehaviour {
 
 	private IEnumerator DeathHander() {
 		rb.bodyType             = RigidbodyType2D.Kinematic;
-		rb.linearVelocity = Vector2.zero;
+		rb.linearVelocity       = Vector2.zero;
 		capsuleCollider.enabled = false;
-		for(float fade = 1; fade > 0; fade -= Time.deltaTime/2) {
+		for (float fade = 1; fade > 0; fade -= Time.deltaTime / 2) {
 			material.SetFloat("_Fade", fade);
 			yield return new WaitForEndOfFrame();
 		}
+
 		gameObject.SetActive(false);
 	}
 

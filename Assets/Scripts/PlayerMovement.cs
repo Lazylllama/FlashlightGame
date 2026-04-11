@@ -177,7 +177,7 @@ public class PlayerMovement : MonoBehaviour {
 	/// Called by InputHandler, attempts to mantle.
 	/// </summary>
 	public void Mantle() {
-		Debug.LogKv("Mantle", DebugLevel.Debug, "isGrounded", isGrounded, "canMantle", canMantle);
+		Debug.LogKv("Mantle", DebugLevel.Debug, "isGrounded", isGrounded.ToString(), "canMantle", canMantle.ToString());
 
 		if (!isGrounded || !canMantle || mantleRoutineState != null) return;
 		mantleRoutineState = StartCoroutine(MantleRoutine());

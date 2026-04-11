@@ -163,8 +163,8 @@ public class UIController : MonoBehaviour {
 	/// </summary>
 	public void UpdateUI() {
 		Debug.LogKv("Updating UI", DebugLevel.Debug, new object[] {
-			"Health", PlayerData.Instance.Health,
-			"Battery", PlayerData.Instance.Battery
+			"Health", PlayerData.Instance.Health.ToString(),
+			"Battery", PlayerData.Instance.Battery.ToString()
 		});
 
 		healthFill.fillAmount  = PlayerData.Instance.Health  / 100f;
@@ -271,7 +271,8 @@ public class UIController : MonoBehaviour {
 		if (saveData == null) {
 			loadMenuLastSavedDate.text = $"You have no save.";
 		} else {
-			loadMenuLastSavedDate.text = $"Last Saved: {new DateTime(saveData.lastSavedTicks):yyyy-MM-dd HH:mm:ss}";
+			var date = new DateTime(saveData.lastSavedTicks);
+			loadMenuLastSavedDate.text = $"Last Saved: {date:yyyy-MM-dd HH:mm:ss}";
 		}
 	}
 

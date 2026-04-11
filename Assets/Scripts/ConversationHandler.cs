@@ -13,7 +13,7 @@ using UnityEngine.UI;
 public struct Conversation {
 	public             string[] dialogue;
 	public             bool     preventMovement;
-	public             bool     playerIncluded;
+	public             bool     finnIncluded;
 	public             bool     otherPartStart;
 	public             bool     otherPartHolyOverlay;
 	[CanBeNull] public Sprite   otherPartSprite;
@@ -40,9 +40,11 @@ public class ConversationHandler : SerializedMonoBehaviour {
 	//? Settings
 	[Header("Settings")]
 	[SerializeField] private float conversationSpeed = 0.05f;
-	[SerializeField] private float  pauseTime      = 1f;
-	[SerializeField] private string pauseString    = "<pause>";
-	private                  char   pauseCharacter = '|';
+	[SerializeField] private float  pauseTime          = 1f;
+	[SerializeField] private string pauseString        = "<pause>";
+	[SerializeField] private string halfPauseString    = "<halfpause>";
+	private                  char   pauseCharacter     = '|';
+	private                  char   halfPauseCharacter = '~';
 
 	//? Conversations
 
@@ -57,11 +59,11 @@ public class ConversationHandler : SerializedMonoBehaviour {
 
 	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
 	private static void OnRuntimeInit() {
-		Debug = new DebugHandler("AudioManager");
+		Debug = new DebugHandler("ConversationHandler");
 	}
 
 	private void Awake() {
-		Debug = new DebugHandler("AudioManager");
+		Debug = new DebugHandler("ConversationHandler");
 
 		if (Instance != null && Instance != this) {
 			Destroy(gameObject);
@@ -69,13 +71,11 @@ public class ConversationHandler : SerializedMonoBehaviour {
 		}
 
 		Instance = this;
-
-		SetDialogueRefs();
 	}
 
 	private void Start() {
 		SetDialogueRefs();
-		
+
 		nameBox.text = "";
 		textBox.text = "";
 
@@ -100,10 +100,11 @@ public class ConversationHandler : SerializedMonoBehaviour {
 		var color = visible ? Color.white : Color.clear;
 
 		if (visible) {
-			holyOverlayImage.enabled = conversation.otherPartHolyOverlay;
-			normalImage.enabled      = !conversation.otherPartHolyOverlay;
+			holyOverlayImage.enabled = conversation is { otherPartStart: true, otherPartHolyOverlay: true };
+			normalImage.enabled = conversation is { otherPartStart: true, otherPartHolyOverlay: false } or
+			                                      { otherPartStart: false };
 
-			normalImage.sprite      = conversation.otherPartSprite;
+			normalImage.sprite      = conversation.otherPartStart ? conversation.otherPartSprite : playerSprite;
 			holyOverlayImage.sprite = conversation.otherPartSprite;
 		} else {
 			textBox.text = "";
@@ -130,8 +131,8 @@ public class ConversationHandler : SerializedMonoBehaviour {
 	private string ParseText(string text, bool clean = false) {
 		var parsedText = text;
 
-		if (text.Contains("<pause>"))
-			parsedText = parsedText.Replace("<pause>", clean ? "" : pauseCharacter.ToString());
+		parsedText = parsedText.Replace(pauseString,     clean ? "" : pauseCharacter.ToString());
+		parsedText = parsedText.Replace(halfPauseString, clean ? "" : halfPauseCharacter.ToString());
 
 		return parsedText;
 	}
@@ -150,6 +151,15 @@ public class ConversationHandler : SerializedMonoBehaviour {
 		PlayerData.Instance.InConversation = start;
 		if (conversation.preventMovement)
 			PlayerData.Instance.PreventMovement = start;
+	}
+
+	private void CharacterSwap(bool toFinn, Conversation conversation) {
+		normalImage.sprite       = toFinn ? playerSprite : conversation.otherPartSprite;
+		normalImage.enabled      = toFinn || !conversation.otherPartHolyOverlay;
+		holyOverlayImage.enabled = !toFinn && conversation.otherPartHolyOverlay;
+
+		nameBox.text = toFinn ? "Finn" : conversation.otherPartName;
+		textBox.text = "";
 	}
 
 	/*
@@ -195,12 +205,6 @@ public class ConversationHandler : SerializedMonoBehaviour {
 		Conversations.TryGetValue(conversationId, out var conversation);
 		if (conversation.dialogue.Length == 0) yield break;
 
-		//* Feature implementation check
-		if (conversation.playerIncluded) {
-			Debug.LogException(new Exception("You haven't implemented player included conversations yet dipshit."));
-			yield break;
-		}
-
 		//* Update states and fade in dialogue UI
 		HandleStartEnd(true, conversation);
 		ToggleDisplay(true, conversation);
@@ -218,20 +222,25 @@ public class ConversationHandler : SerializedMonoBehaviour {
 
 		yield return new WaitForSecondsRealtime(1f);
 
+		var nextPartIndex     = 0;
+		var otherPartSpeaking = conversation.otherPartStart;
+
 		foreach (var part in conversation.dialogue) {
+			nextPartIndex++;
+
 			//* Parse dialogue text
 			var parsedPart = ParseText(part);
 			var cleanPart  = ParseText(part, true);
-			
+
 			//* Clear textbox
 			textBox.text = "";
 
 			//* Loop through parsed text
 			foreach (var letter in parsedPart) {
 				//? If the letter is a pause character, wait for the pause time and dont add it to the textbox
-				if (letter == pauseCharacter) {
+				if (letter == pauseCharacter || letter == halfPauseCharacter) {
 					PlaySound(true);
-					yield return new WaitForSecondsRealtime(pauseTime);
+					yield return new WaitForSecondsRealtime(letter == pauseCharacter ? pauseTime : pauseTime / 2);
 				} else {
 					PlaySound();
 					textBox.text += letter;
@@ -253,7 +262,12 @@ public class ConversationHandler : SerializedMonoBehaviour {
 			PlaySound(true);
 			Debug.Log("Finished part: " + part);
 
+			if (conversation.dialogue.Length <= nextPartIndex) continue;
 			yield return WaitForPlayer();
+
+			if (conversation is not { finnIncluded: true, otherPartStart: true }) continue;
+			CharacterSwap(otherPartSpeaking, conversation);
+			otherPartSpeaking = !otherPartSpeaking;
 		}
 
 		yield return WaitForPlayer();

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using FlashlightGame;
@@ -6,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
-public class InputHandler : MonoBehaviour {
+public partial class InputHandler : MonoBehaviour {
 	#region Types
 
 	//! DO NOT CHANGE ORDER, DO NOT REMOVE!
@@ -52,6 +53,8 @@ public class InputHandler : MonoBehaviour {
 
 	private readonly Dictionary<InputActions, InputAction>       inputActionsList = new();
 	private          Dictionary<Lib.InputType, InputSpriteAtlas> inputAtlases     = new();
+
+	private bool inVibrationSequence;
 
 	#endregion
 
@@ -116,7 +119,7 @@ public class InputHandler : MonoBehaviour {
 	public string GetInputDisplayName(InputActions action) {
 		return Lib.InputTypeDisplayName.GetValueOrDefault(CurrentInputType, "Unknown");
 	}
-	
+
 	public string GetInputName(InputActions action) {
 		if (inputAtlases.TryGetValue(CurrentInputType, out var atlas) && atlas)
 			return atlas.GetInputName(action) ?? "Unknown";
@@ -180,9 +183,11 @@ public class InputHandler : MonoBehaviour {
 					AudioManager.Instance.PlayOneShot(FMODEvents.Instance.flashlightToggle,
 					                                  PlayerMovement.Instance.transform.position);
 					PlayerData.Instance.FlashlightEnabled = !PlayerData.Instance.FlashlightEnabled;
+					InputVibrationFeedback();
 					break;
 				case InputActions.ToggleModeLeft or InputActions.ToggleModeRight:
 					if (PlayerData.Instance.PreventMovement) return;
+					InputVibrationFeedback();
 					PlayerData.Instance.HandleFlashlightModeChange(kvp.Key == InputActions.ToggleModeRight);
 					break;
 				case InputActions.Flashlight1 or InputActions.Flashlight2:
@@ -190,7 +195,9 @@ public class InputHandler : MonoBehaviour {
 					PlayerData.Instance.HandleFlashlightModeChange(kvp.Key == InputActions.Flashlight2 ? 2 : 1);
 					break;
 				case InputActions.NextSentence:
-					if (PlayerData.Instance.PreventMovement) ConversationHandler.Instance.pressedProceed = true;
+					if (!PlayerData.Instance.InConversation) return;
+					InputVibrationFeedback();
+					ConversationHandler.Instance.pressedProceed = true;
 					break;
 				case InputActions.Mantle:
 					if (PlayerData.Instance.PreventMovement) return;
@@ -202,6 +209,7 @@ public class InputHandler : MonoBehaviour {
 					break;
 				case InputActions.CrankLeft or InputActions.CrankRight:
 					if (PlayerData.Instance.PreventMovement) return;
+					if (!PlayerData.Instance.IsCranking) StartCoroutine(HandleCrankVibrationSequence());
 					PlayerData.Instance.Crank(kvp.Key == InputActions.CrankRight);
 					break;
 				case InputActions.Interact:
@@ -215,6 +223,11 @@ public class InputHandler : MonoBehaviour {
 		}
 	}
 
+	private void InputVibrationFeedback() {
+		if (CurrentInputType == Lib.InputType.KeyboardMouse || !Gamepad.current.enabled) return;
+		StartCoroutine(HandleVibrationSequence());
+	}
+
 	private static void RegisterInstance(InputHandler instance) {
 		if (Instance && Instance != instance) {
 			Destroy(instance.gameObject);
@@ -223,6 +236,35 @@ public class InputHandler : MonoBehaviour {
 
 			Debug.Log("PlayerData initialized.");
 		}
+	}
+
+	#endregion
+
+	#region MyRegion
+
+	private IEnumerator HandleVibrationSequence() {
+		if (inVibrationSequence) yield break;
+		Gamepad.current?.SetMotorSpeeds(0.1f, 0f);
+		yield return new WaitForSeconds(0.2f);
+		Gamepad.current?.SetMotorSpeeds(0, 0);
+		yield return null;
+	}
+
+	private IEnumerator HandleCrankVibrationSequence() {
+		if (inVibrationSequence) Gamepad.current.ResetHaptics();
+		inVibrationSequence = true;
+
+		while (!PlayerData.Instance.IsCranking) yield return null;
+		while (PlayerData.Instance.IsCranking) {
+			print("Is cranking");
+			var multiplier = PlayerData.Instance.CrankSpeed;
+			Gamepad.current.SetMotorSpeeds(Math.Clamp(multiplier / 4, 0f, 1f), Math.Clamp(multiplier / 10, 0f, 1f));
+			yield return new WaitForSeconds(0.1f);
+		}
+
+		inVibrationSequence = false;
+		Gamepad.current.ResetHaptics();
+		yield return null;
 	}
 
 	#endregion
