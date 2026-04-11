@@ -65,14 +65,14 @@ public class EnemyController : MonoBehaviour {
 	private void Start() {
 		rb              = GetComponent<Rigidbody2D>();
 		audioSource     = GetComponent<AudioSource>();
-		animator        = GetComponent<Animator>();
+		animator        = GetComponentInChildren<Animator>();
 		health          = maxHealth;
 		enemySpeed      = baseSpeed;
 		borderLeftPos   = borderLeft.position;
 		borderRightPos  = borderRight.position;
 		spawnPoint      = transform.position;
 		capsuleCollider = GetComponent<CapsuleCollider2D>();
-		material        = GetComponent<SpriteRenderer>().material;
+		material        = GetComponentInChildren<SpriteRenderer>().material;
 
 		if (flyingEnemy) rb.gravityScale = 0;
 
@@ -82,12 +82,13 @@ public class EnemyController : MonoBehaviour {
 	private void Update() {
 		if (deathHandlerRoutineState != null) return;
 		isGrounded = Lib.Movement.GroundCheck(groundCheck.position, 0.2f);
-		CheckForTarget();
+		if (!CheckBorder()) {
+			CheckForTarget();
+		}
 		UpdateOverheadText();
 		TurnEnemy();
 		CheckMantleWall();
 		CheckWall();
-		CheckBorder();
 		if (!flyingEnemy) LedgeCheck();
 		if (flyingEnemy) CheckFloatHeight();
 
@@ -97,6 +98,7 @@ public class EnemyController : MonoBehaviour {
 
 		if (collidingWithPlayer && !PlayerData.Instance.IsInvulnerable) {
 			PlayerData.Instance.UpdateHealth(-20);
+			animator.SetTrigger("Attack");
 		}
 	}
 
@@ -123,12 +125,16 @@ public class EnemyController : MonoBehaviour {
 
 	#region Functions
 
-	private void CheckBorder() {
+	private bool CheckBorder() {
 		if (transform.position.x < borderLeftPos.x) {
 			facingRight = true;
+			return true;
 		} else if (transform.position.x > borderRightPos.x) {
 			facingRight = false;
+			return true;
 		}
+
+		return false;
 	}
 
 	private void CheckForTarget() {

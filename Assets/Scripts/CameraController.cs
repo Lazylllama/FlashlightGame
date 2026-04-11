@@ -55,13 +55,11 @@ public class CameraController : MonoBehaviour
 		    cameraFromRight.gameObject.SetActive(true);
 		    cameraFromLeft.gameObject.SetActive(false);
 		    currentCamera = cameraFromRight;
-		    print("Switched Camera");
 	    } 
 	    if (currentCamera == cameraFromRight && triggerExitDirection.x < 0f) {
 		    cameraFromLeft.gameObject.SetActive(true);
 		    cameraFromRight.gameObject.SetActive(false);
 		    currentCamera           = cameraFromLeft;
-		    print("Switched camera");
 	    }
     }
     

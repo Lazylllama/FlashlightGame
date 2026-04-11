@@ -33,7 +33,7 @@ public class PlayerData : MonoBehaviour {
 
 	//* Player States *//
 	public Dictionary<int, bool> FlashlightModesUnlocked { get; private set; } = new() {
-		{ 1, false }, // TODO: Implement flashlight pickup
+		{ 1, true }, // TODO: Implement flashlight pickup
 		{ 2, true }, // TODO: Implement flashlight level up (in-lore)
 	};
 
