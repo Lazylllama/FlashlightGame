@@ -144,10 +144,10 @@ public class UIController : MonoBehaviour {
 			                                 GameController.Instance.InActiveGame = true;
 		                                 }));
 
-		StartCoroutine(Lib.DelayFunction(duration + 3f, () => {
+		/*StartCoroutine(Lib.DelayFunction(duration + 3f, () => {
 			                                                ConversationHandler.Instance
 			                                                                   .StartConversation("BigBossMan");
-		                                                }));
+		                                                }));*/
 	}
 
 	private static void RegisterInstance(UIController instance) {

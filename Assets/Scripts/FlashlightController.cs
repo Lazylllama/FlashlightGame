@@ -98,7 +98,8 @@ public class FlashlightController : MonoBehaviour {
 		color     = new Color(1, 1f, 1f, 0)
 	};
 
-	//* Refs
+	[Header("Refs")]
+	[SerializeField] private CameraController cameraController;
 
 	private        LayerMask excludePlayer;
 	private static bool FlashlightEnabled => PlayerData.Instance && PlayerData.Instance.FlashlightEnabled;
@@ -258,9 +259,13 @@ public class FlashlightController : MonoBehaviour {
 			if (Mathf.Atan2(mousePosition.y - playerPos.y,
 			                mousePosition.x - playerPos.x) * Mathf.Rad2Deg > 90 ||
 			    Mathf.Atan2(mousePosition.y - playerPos.y,
-			                mousePosition.x - playerPos.x) * Mathf.Rad2Deg < -90)
-				PlayerData.Instance.IsLookingRight  = false;
-			else PlayerData.Instance.IsLookingRight = true;
+			                mousePosition.x - playerPos.x) * Mathf.Rad2Deg < -90) {
+				PlayerData.Instance.IsLookingRight = false;
+				cameraController.CallTurnCamera(true);
+			} else {
+				PlayerData.Instance.IsLookingRight = true;
+				cameraController.CallTurnCamera(false);
+			}
 		} else {
 			var deadZone = Preferences.Input.LookInputDeadZone;
 			var input    = InputHandler.Instance.ReadValue(InputHandler.InputActions.FlashlightDirection);
