@@ -43,6 +43,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _Fade: 1
+    - _Outline: 0.041
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Scale: 14.3
