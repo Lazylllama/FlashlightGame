@@ -141,7 +141,7 @@ public class UIController : MonoBehaviour {
 			                                 GameController.Instance.InActiveGame = true;
 		                                 }));
 
-		StartCoroutine(Lib.DelayFunction(duration + 3f, () => {
+		StartCoroutine(Lib.DelayFunction(duration + 1f, () => {
 			                                                ConversationHandler.Instance
 			                                                                   .StartConversation("PlayerSpawned");
 		                                                }));

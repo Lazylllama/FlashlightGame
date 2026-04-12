@@ -86,7 +86,7 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	private void FixedUpdate() {
-		if (!GameController.Instance.InActiveGame || PlayerData.Instance.InConversation) return;
+		if (!GameController.Instance.InActiveGame) return;
 		InputCheck();
 		PerformMove();
 	}
@@ -140,6 +140,7 @@ public class PlayerMovement : MonoBehaviour {
 	private void InputCheck() {
 		moveInputVal = InputHandler.Instance.ReadValue(InputHandler.InputActions.Move);
 		if (Mathf.Abs(moveInputVal.x) < Preferences.Input.MoveInputDeadZone) return;
+		if (PlayerData.Instance.PreventMovement) moveInputVal = Vector2.zero;
 		IsWalkingRight = moveInputVal.x switch {
 			< 0 when IsWalkingRight  => false,
 			> 0 when !IsWalkingRight => true,
@@ -160,9 +161,6 @@ public class PlayerMovement : MonoBehaviour {
 			// If moving in the same direction the player is looking, it's "forward" (1), otherwise "backward" (-1)
 			var movingRight   = moveX > 0f;
 			var walkDirection = movingRight == IsLookingRight ? 1 : -1;
-
-			//? Particles very broken
-			//particleController.CrateMovement(moveX);
 
 			playerAnimator.SetInteger(WalkingDirection, walkDirection);
 		} else {
@@ -190,6 +188,7 @@ public class PlayerMovement : MonoBehaviour {
 		if (!isGrounded || !canMantle || mantleRoutineState != null) return;
 		mantleRoutineState = StartCoroutine(MantleRoutine());
 	}
+
 	/// <summary>
 	/// Set flashlight to true in animator.
 	/// </summary>

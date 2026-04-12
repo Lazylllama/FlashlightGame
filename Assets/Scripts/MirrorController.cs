@@ -57,9 +57,7 @@ public class MirrorController : MonoBehaviour {
 	}
 
 	private void ChangeTarget(string eventId) {
-		print("received");
 		if (!string.Equals(eventId, id, StringComparison.CurrentCultureIgnoreCase)) return;
-		print("passed");
 		posAIsTarget = !posAIsTarget;
 		UpdatePositon();
 	}

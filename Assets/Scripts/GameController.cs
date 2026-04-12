@@ -5,14 +5,14 @@ using UnityEngine.Events;
 public class GameController : MonoBehaviour {
 	#region Fields
 
-	public static  GameController     Instance;
-	private static DebugHandler       Debug;
-	public         UnityEvent<string> leverEvent, wallTriggerEvent;
+	public static  GameController                          Instance;
+	private static DebugHandler                            Debug;
+	public         UnityEvent<string>                      leverEvent, wallTriggerEvent;
 	public         UnityEvent<CameraBoundsEventParameters> changeCameraBounds;
 
 
 	//* Data *//
-	public bool InActiveGame        { get; set; } = false;
+	public bool InActiveGame { get; set; } = false;
 
 	//* State *//
 
@@ -28,13 +28,9 @@ public class GameController : MonoBehaviour {
 	private void Awake() {
 		Debug ??= new DebugHandler("GameController");
 
-		if (leverEvent == null) leverEvent = new UnityEvent<string>();
-		leverEvent.AddListener((string id) => Debug.Log(id));
-		
-		if (wallTriggerEvent == null) wallTriggerEvent = new UnityEvent<string>();
-		leverEvent.AddListener((string id) => Debug.Log(id));
-		
-		if(changeCameraBounds == null) changeCameraBounds = new UnityEvent<CameraBoundsEventParameters>();
+		leverEvent         ??= new UnityEvent<string>();
+		wallTriggerEvent   ??= new UnityEvent<string>();
+		changeCameraBounds ??= new UnityEvent<CameraBoundsEventParameters>();
 	}
 
 	private void Start() => RegisterInstance(this);
