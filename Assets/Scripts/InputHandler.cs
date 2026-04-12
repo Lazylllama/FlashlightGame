@@ -187,20 +187,31 @@ public partial class InputHandler : MonoBehaviour {
 					                                  PlayerMovement.Instance.transform.position);
 					PlayerData.Instance.FlashlightEnabled = !PlayerData.Instance.FlashlightEnabled;
 
-					print(TutorialHandler.Instance.activeTutorialObjectIndex == 0);
-					print(TutorialHandler.Instance.isTutorialActive);
 					if (TutorialHandler.Instance.activeTutorialObjectIndex == 0 &&
-					    TutorialHandler.Instance.isTutorialActive) TutorialHandler.Instance.HideTutorial();
+					    TutorialHandler.Instance.isTutorialActive) {
+						TutorialHandler.Instance.ShowTutorial(1);
+					}
+
 					InputVibrationFeedback();
 					break;
 				case InputActions.ToggleModeLeft or InputActions.ToggleModeRight:
 					if (PlayerData.Instance.PreventMovement) return;
 					InputVibrationFeedback();
 					PlayerData.Instance.HandleFlashlightModeChange(kvp.Key == InputActions.ToggleModeRight);
+					if (TutorialHandler.Instance.activeTutorialObjectIndex == 1 &&
+					    TutorialHandler.Instance.isTutorialActive) {
+						TutorialHandler.Instance.ShowTutorial(4);
+					}
+
 					break;
 				case InputActions.Flashlight1 or InputActions.Flashlight2:
 					if (PlayerData.Instance.PreventMovement) return;
 					PlayerData.Instance.HandleFlashlightModeChange(kvp.Key == InputActions.Flashlight2 ? 2 : 1);
+					if (TutorialHandler.Instance.activeTutorialObjectIndex == 1 &&
+					    TutorialHandler.Instance.isTutorialActive) {
+						TutorialHandler.Instance.ShowTutorial(4);
+					}
+
 					break;
 				case InputActions.NextSentence:
 					if (!PlayerData.Instance.InConversation) return;
@@ -219,6 +230,10 @@ public partial class InputHandler : MonoBehaviour {
 					if (PlayerData.Instance.PreventMovement) return;
 					if (!PlayerData.Instance.IsCranking) StartCoroutine(HandleCrankVibrationSequence());
 					PlayerData.Instance.Crank(kvp.Key == InputActions.CrankRight);
+					if (TutorialHandler.Instance.activeTutorialObjectIndex == 2 &&
+					    TutorialHandler.Instance.isTutorialActive) {
+						TutorialHandler.Instance.HideTutorial();
+					}
 					break;
 				case InputActions.Interact:
 				case InputActions.Leap:

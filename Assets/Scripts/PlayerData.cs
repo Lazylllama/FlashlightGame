@@ -287,6 +287,7 @@ public class PlayerData : MonoBehaviour {
 		if (Battery > 20 || lowBattery) return;
 		lowBattery = true;
 		FlashlightController.Instance.LowBatteryWarning(true);
+		TutorialHandler.Instance.ShowTutorial(2);
 	}
 
 	/// Register the PlayerData instance.

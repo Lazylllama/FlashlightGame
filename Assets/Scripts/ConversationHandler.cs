@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using JetBrains.Annotations;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
@@ -48,11 +50,11 @@ public class ConversationHandler : SerializedMonoBehaviour {
 	private                  char   halfPauseCharacter = '~';
 
 	//? Conversations
-
 	[OdinSerialize] private readonly Dictionary<string, Conversation> Conversations = new();
 
 	//? States
-	public bool pressedProceed;
+	public  bool pressedProceed;
+	private bool ready;
 
 	#endregion
 
@@ -100,8 +102,10 @@ public class ConversationHandler : SerializedMonoBehaviour {
 	#region Functions
 
 	public void StartConversation(string conversationId) {
-		if (PlayerData.Instance.InConversation) Debug.LogError("Already in conversation! Cannot start a new one.");
+		if (PlayerData.Instance.InConversation || !ready)
+			Debug.LogError("Already in conversation! Cannot start a new one.");
 		else Debug.Log($"Starting conversation: {conversationId}");
+		ready = false;
 		StartCoroutine(StartConversationRoutine(conversationId));
 	}
 
@@ -298,6 +302,15 @@ public class ConversationHandler : SerializedMonoBehaviour {
 		ToggleDisplay(false);
 		HandleStartEnd(false, conversation);
 
+		if (conversationId == "End") {
+			Debug.LogException(new Exception("Game ended conversation reached. Goodbye player."));
+			yield return new WaitForSecondsRealtime(3f);
+			UIController.Instance.FadeToBlack(20f);
+			yield return new WaitForSecondsRealtime(4f);
+			SceneManager.LoadScene("Main");
+		}
+
+		ready = true;
 		Debug.Log("Finished conversation");
 	}
 

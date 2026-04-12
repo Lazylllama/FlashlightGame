@@ -173,7 +173,6 @@ public class SaveController : MonoBehaviour {
 			Destroy(instance.gameObject);
 		} else {
 			Instance = instance;
-			DontDestroyOnLoad(instance.gameObject);
 		}
 	}
 

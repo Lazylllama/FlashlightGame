@@ -36,12 +36,17 @@ public class WallManager : MonoBehaviour {
 	}
 
 	private IEnumerator Delay() {
+		if (TutorialHandler.Instance.isTutorialActive && TutorialHandler.Instance.activeTutorialObjectIndex == 4) {
+			TutorialHandler.Instance.ShowTutorial(2);
+			ConversationHandler.Instance.StartConversation("FirstDoorBroken");
+		}
+
 		yield return new WaitForSeconds(2f);
 
 		unbroken.SetActive(false);
 		broken.SetActive(true);
-		
-		hitCollider.enabled                = false;
-		enabled                            = false;
+
+		hitCollider.enabled = false;
+		enabled             = false;
 	}
 }
