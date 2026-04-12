@@ -10,9 +10,7 @@ public class EnemyController : MonoBehaviour {
 	#region Fields
 
 	private static DebugHandler Debug;
-
-	[Header("Refs")]
-	[SerializeField] private TMP_Text overheadText;
+	
 	private Rigidbody2D rb;
 
 	[Header("Enemy Options")]
@@ -38,7 +36,7 @@ public class EnemyController : MonoBehaviour {
 
 
 	//* States
-	private CapsuleCollider2D capsuleCollider;
+	private Collider2D capsuleCollider;
 	private Material          material;
 	private AudioSource       audioSource;
 	private Animator          animator;
@@ -72,7 +70,7 @@ public class EnemyController : MonoBehaviour {
 		borderLeftPos   = borderLeft.position;
 		borderRightPos  = borderRight.position;
 		spawnPoint      = transform.position;
-		capsuleCollider = GetComponent<CapsuleCollider2D>();
+		capsuleCollider = GetComponent<Collider2D>();
 		material        = GetComponentInChildren<SpriteRenderer>().material;
 
 		if (flyingEnemy) rb.gravityScale = 0;
@@ -86,7 +84,6 @@ public class EnemyController : MonoBehaviour {
 		if (!CheckBorder()) {
 			CheckForTarget();
 		}
-		UpdateOverheadText();
 		TurnEnemy();
 		CheckMantleWall();
 		CheckWall();
@@ -225,15 +222,10 @@ public class EnemyController : MonoBehaviour {
 		transform.localScale = facingRight ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1);
 	}
 
-	private void UpdateOverheadText() {
-		overheadText.text = "Health: " + health.ToString(CultureInfo.CurrentCulture) + "/" +
-		                    maxHealth.ToString(CultureInfo.CurrentCulture);
-		overheadText.transform.localScale = facingRight ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1);
-	}
+	
 
 	public void UpdateHealth(float amount) {
 		health -= amount;
-		UpdateOverheadText();
 
 		if (health <= 0) {
 			deathHandlerRoutineState = StartCoroutine(DeathHander());
