@@ -31,7 +31,6 @@ public class WallManager : MonoBehaviour {
 
 	private void OpenWall(string _id) {
 		if (id != _id) return;
-		ps.Play();
 		StartCoroutine(Delay());
 	}
 
