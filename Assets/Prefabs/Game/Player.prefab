@@ -5112,7 +5112,7 @@ Transform:
   m_GameObject: {fileID: 2820268781652515991}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.038518626, w: 0.9992579}
-  m_LocalPosition: {x: 0.002, y: 0.016, z: 0}
+  m_LocalPosition: {x: 0.002000004, y: 0.016000032, z: 0}
   m_LocalScale: {x: 2.8050804, y: 1.7857144, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5195,7 +5195,7 @@ Transform:
   m_GameObject: {fileID: 3133551703881505264}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.07, z: 0}
+  m_LocalPosition: {x: 0, y: -1.5342857, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5227,7 +5227,7 @@ Transform:
   m_GameObject: {fileID: 3960592807234988282}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.027, y: -0.434, z: -2}
+  m_LocalPosition: {x: 0.02699995, y: -0.43400002, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10207,7 +10207,7 @@ Transform:
   m_GameObject: {fileID: 4295775074873238092}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0.35, z: 0}
+  m_LocalPosition: {x: -0.000000834465, y: 0.3499999, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -20065,7 +20065,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6095902756367772043}
   - component: {fileID: 5188551032976108374}
-  - component: {fileID: 3372813745512499410}
   m_Layer: 0
   m_Name: Flashlight
   m_TagString: Untagged
@@ -20081,8 +20080,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8947315786924848605}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 1.249, y: 0.172, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: -0.6384321, w: 0.7696782}
+  m_LocalPosition: {x: 1.498, y: 1.137, z: 0}
   m_LocalScale: {x: 0.25464, y: 0.4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -20090,7 +20089,7 @@ Transform:
   - {fileID: 1164619786127058633}
   - {fileID: 4936669862843185341}
   m_Father: {fileID: 1277423520945956340}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -79.35}
 --- !u!114 &5188551032976108374
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20105,19 +20104,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FlashlightController
   flashlightWidth: 0.1
   rayAmount: 100
-  lerpTime: 0.1
+  lerpTime: 1
   maxReflections: 3
   reflectionOriginOffset: 0.1
   minAngle: 40
   maxAngle: 140
   pupilBone: {fileID: 7088924521896671088}
   playerTransform: {fileID: 1277423520945956340}
-  armLeft: {fileID: 0}
-  armRight: {fileID: 0}
+  armLeft: {fileID: 6394860606024734879}
+  armRight: {fileID: 2096287188378204192}
+  flashlightBulb: {fileID: 1641369389436432403}
   armLeftOffset: {x: 0, y: 0, z: 6}
   armRightOffset: {x: 0, y: 0, z: 0}
-  armLeftZRotMultiplierOver90: 2.38
-  armLeftZRotMultiplierUnder90: 1.3
+  armLeftZRotMultiplierOver90: 0.44
+  armLeftZRotMultiplierUnder90: 0.21
   lightOutput: {fileID: 4936669862843185341}
   lightGlowGameObject: {fileID: 2820268781652515991}
   spotLightGameObject: {fileID: 3960592807234988282}
@@ -20140,26 +20140,6 @@ MonoBehaviour:
     range: 0
     intensity: 0
     color: {r: 1, g: 1, b: 1, a: 0}
---- !u!1818360608 &3372813745512499410
-PositionConstraint:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8947315786924848605}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Weight: 1
-  m_TranslationAtRest: {x: 1.249, y: 0.172, z: 0}
-  m_TranslationOffset: {x: 0.0061610937, y: -0.0013729036, z: 0}
-  m_AffectTranslationX: 1
-  m_AffectTranslationY: 1
-  m_AffectTranslationZ: 1
-  m_Active: 1
-  m_IsLocked: 1
-  m_Sources:
-  - sourceTransform: {fileID: 0}
-    weight: 1
 --- !u!1001 &6032306488810343915
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20174,7 +20154,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 844471605232356439, guid: 6418b523b2be031439167b0bb209d6b5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.368871
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 844471605232356439, guid: 6418b523b2be031439167b0bb209d6b5, type: 3}
       propertyPath: m_LocalPosition.z
@@ -20211,6 +20191,18 @@ PrefabInstance:
     - target: {fileID: 2001171003484830078, guid: 6418b523b2be031439167b0bb209d6b5, type: 3}
       propertyPath: m_Name
       value: FINN 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5982680627079880386, guid: 6418b523b2be031439167b0bb209d6b5, type: 3}
+      propertyPath: m_SortingLayer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5982680627079880386, guid: 6418b523b2be031439167b0bb209d6b5, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 307310415
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427635031569276916, guid: 6418b523b2be031439167b0bb209d6b5, type: 3}
+      propertyPath: m_AutoRebind
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7427635031569276916, guid: 6418b523b2be031439167b0bb209d6b5, type: 3}
       propertyPath: m_BoneTransforms.Array.size
@@ -20309,6 +20301,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5003602582705143288, guid: 6418b523b2be031439167b0bb209d6b5, type: 3}
   m_PrefabInstance: {fileID: 6032306488810343915}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &2096287188378204192 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5665683215733437899, guid: 6418b523b2be031439167b0bb209d6b5, type: 3}
+  m_PrefabInstance: {fileID: 6032306488810343915}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2912282576226944346 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8925447645581936817, guid: 6418b523b2be031439167b0bb209d6b5, type: 3}
@@ -20342,6 +20339,11 @@ Transform:
 --- !u!4 &6345330780819177916 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 844471605232356439, guid: 6418b523b2be031439167b0bb209d6b5, type: 3}
+  m_PrefabInstance: {fileID: 6032306488810343915}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6394860606024734879 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 794908546313311604, guid: 6418b523b2be031439167b0bb209d6b5, type: 3}
   m_PrefabInstance: {fileID: 6032306488810343915}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &6620467787801860973 stripped

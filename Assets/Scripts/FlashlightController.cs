@@ -56,7 +56,7 @@ public class FlashlightController : MonoBehaviour {
 	[Header("Rig Settings")]
 	[SerializeField] private Transform pupilBone;
 	[SerializeField] private Transform playerTransform;
-	[SerializeField] private Transform armLeft,                     armRight;
+	[SerializeField] private Transform armLeft,                     armRight, flashlightBulb;
 	[SerializeField] private Vector3   armLeftOffset,               armRightOffset;
 	[SerializeField] private float     armLeftZRotMultiplierOver90, armLeftZRotMultiplierUnder90;
 
@@ -160,13 +160,14 @@ public class FlashlightController : MonoBehaviour {
 		spotLight.pointLightOuterRadius = activePreset.range;
 		spotLight.intensity             = activePreset.intensity;
 
-		if (!FlashlightEnabled) return;
-		CheckForEnemy();
-		if (equippedFlashlight == laserPreset) LaserLightRay();
+		
 	}
 
 	private void LateUpdate() {
 		UpdateFlashlightPosition();
+		if (!FlashlightEnabled) return;
+		CheckForEnemy();
+		if (equippedFlashlight == laserPreset) LaserLightRay();
 	}
 
 	#endregion
@@ -308,6 +309,8 @@ public class FlashlightController : MonoBehaviour {
 		
 		armRight.eulerAngles = new Vector3(0, IsLookingRight ? 0 : 180,
 		                                   (IsLookingRight ? safeZonePosition : -safeZonePosition) + armRightOffset.z);
+
+		transform.position = flashlightBulb.position;
 		return;
 
 

@@ -16,11 +16,9 @@ public class WallManager : MonoBehaviour
 	
 	//? Refs
 	private ParticleSystem ps;
-	private Collider2D     coll;
 
 	private void Awake() {
 		ps = GetComponentInChildren<ParticleSystem>();
-		coll = GetComponent<Collider2D>();
 	}
 
 	private void Update() {
@@ -41,7 +39,6 @@ public class WallManager : MonoBehaviour
 	private IEnumerator Delay() {
 		yield return new WaitForSeconds(2f);
 		unbroken.SetActive(false);
-		coll.enabled = false;
 		broken.SetActive(true);
 		
 	}
