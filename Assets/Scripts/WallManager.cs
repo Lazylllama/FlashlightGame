@@ -37,11 +37,11 @@ public class WallManager : MonoBehaviour {
 
 	private IEnumerator Delay() {
 		yield return new WaitForSeconds(2f);
-		
+
 		unbroken.SetActive(false);
 		broken.SetActive(true);
 		
-		hitCollider.enabled = false;
-		enabled             = false;
+		hitCollider.enabled                = false;
+		enabled                            = false;
 	}
 }
