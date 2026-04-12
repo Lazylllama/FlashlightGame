@@ -38,7 +38,7 @@ public class PlayerData : MonoBehaviour {
 	};
 
 	public bool  InConversation    { get; set; }
-	public bool  PreventMovement   { get; set; }
+	public bool  PreventMovement   { get; set; } = true;
 	public bool  FlashlightEnabled { get; set; }
 	public int   FlashlightMode    { get; private set; } = 1;
 	public bool  IsInvulnerable    { get; private set; } = false;

@@ -18,9 +18,9 @@ public class PlayerMovement : MonoBehaviour {
 	private static readonly int HasFlashlight    = Animator.StringToHash("hasFlashlight");
 
 	//* Refs
-	private Rigidbody2D        playerRb;
+	private Rigidbody2D playerRb;
 	//private ParticleController particleController;
-	private Animator           playerAnimator;
+	private Animator playerAnimator;
 
 	//? Aiming right and walking left will cause the player to walk blindly/backwards.
 	private static bool IsLookingRight => PlayerData.Instance && PlayerData.Instance.IsLookingRight;
@@ -74,9 +74,9 @@ public class PlayerMovement : MonoBehaviour {
 	private void Start() {
 		Debug ??= new DebugHandler("PlayerMovement");
 
-		playerRb           = GetComponent<Rigidbody2D>();
+		playerRb = GetComponent<Rigidbody2D>();
 		//particleController = GetComponentInChildren<ParticleController>();
-		playerAnimator     = GetComponentInChildren<Animator>();
+		playerAnimator = GetComponentInChildren<Animator>();
 
 		lastPosition = transform.position;
 	}
@@ -131,7 +131,7 @@ public class PlayerMovement : MonoBehaviour {
 		} else {
 			playerAnimator.SetBool(IsFalling, false);
 		}
-		
+
 		if (!groundCheckHit) return;
 		currentSurface = surfaceTags.GetValueOrDefault(groundCheckHit.tag, AudioManager.FootstepSurface.Dirt);
 		AudioManager.Instance.SetFootstepSurface(currentSurface);
@@ -190,11 +190,10 @@ public class PlayerMovement : MonoBehaviour {
 		if (!isGrounded || !canMantle || mantleRoutineState != null) return;
 		mantleRoutineState = StartCoroutine(MantleRoutine());
 	}
-
-	public void Respawn(Vector3 position) {
-		playerRb.linearVelocity = Vector2.zero;
-		transform.position      = position;
-	}
+	/// <summary>
+	/// Set flashlight to true in animator.
+	/// </summary>
+	public void PickupFlashlight() => playerAnimator.SetBool(HasFlashlight, true);
 
 	#endregion
 

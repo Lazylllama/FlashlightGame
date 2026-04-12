@@ -152,7 +152,6 @@ public class FlashlightController : MonoBehaviour {
 		if (!isListening) Initialize();
 
 		LerpFlashlightPreset(!FlashlightEnabled ? disabledPreset : equippedFlashlight);
-		UpdateFlashlightPosition();
 		CheckPlayerInputs();
 
 		//* Update Spotlight
@@ -164,6 +163,10 @@ public class FlashlightController : MonoBehaviour {
 		if (!FlashlightEnabled) return;
 		CheckForEnemy();
 		if (equippedFlashlight == laserPreset) LaserLightRay();
+	}
+
+	private void LateUpdate() {
+		UpdateFlashlightPosition();
 	}
 
 	#endregion
@@ -209,8 +212,7 @@ public class FlashlightController : MonoBehaviour {
 	private void UpdateFlashlightPosition() {
 		var cameraAngleZ = 0f;
 
-		if (!HasPickedUpFlashlight) {
-		}
+		if (!HasPickedUpFlashlight) return;
 
 		if (!isGamepad) {
 			var playerPos = playerTransform.position;
@@ -290,17 +292,24 @@ public class FlashlightController : MonoBehaviour {
 			            Mathf.LerpAngle(lightGlowGameObject.transform.eulerAngles.z,
 			                            safeZonePosition * (IsLookingRight ? 1 : -1), lerpTime));
 
-		armLeft.eulerAngles =
-			new Vector3(0, IsLookingRight ? 0 : 180,
-			            Mathf.LerpAngle(armLeft.eulerAngles.z,
-			                            (IsLookingRight ? safeZonePosition : -safeZonePosition) + GetLeftArmOffset(),
-			                            lerpTime));
-		armRight.eulerAngles =
-			new Vector3(0, IsLookingRight ? 0 : 180,
-			            Mathf.LerpAngle(armRight.eulerAngles.z,
-			                            (IsLookingRight ? safeZonePosition : -safeZonePosition) + armRightOffset.z,
-			                            lerpTime));
+		// armLeft.eulerAngles =
+		// 	new Vector3(0, IsLookingRight ? 0 : 180,
+		// 	            Mathf.LerpAngle(armLeft.eulerAngles.z,
+		// 	                            (IsLookingRight ? safeZonePosition : -safeZonePosition) + GetLeftArmOffset(),
+		// 	                            lerpTime));
+		// armRight.eulerAngles =
+		// 	new Vector3(0, IsLookingRight ? 0 : 180,
+		// 	            Mathf.LerpAngle(armRight.eulerAngles.z,
+		// 	                            (IsLookingRight ? safeZonePosition : -safeZonePosition) + armRightOffset.z,
+		// 	                            lerpTime));
+
+		armLeft.eulerAngles = new Vector3(0, IsLookingRight ? 0 : 180,
+		                                  (IsLookingRight ? safeZonePosition : -safeZonePosition) + GetLeftArmOffset());
+		
+		armRight.eulerAngles = new Vector3(0, IsLookingRight ? 0 : 180,
+		                                   (IsLookingRight ? safeZonePosition : -safeZonePosition) + armRightOffset.z);
 		return;
+
 
 		float GetSafeZonePosition() {
 			//? actualAngle: 0 = right, 90 = up, 180/-180 = left, -90 = down (if that makes sense)
@@ -592,7 +601,8 @@ public class FlashlightController : MonoBehaviour {
 				lightPoints = lightPoints.Append(new Vector3(hit.point.x, hit.point.y, 0)).ToArray();
 			}
 
-			if (hit.collider.gameObject.tag is not ("Enemy" or "WeakPoint" or "Prism" or "Mirror" or "WallTrigger")) return;
+			if (hit.collider.gameObject.tag is not ("Enemy" or "WeakPoint" or "Prism" or "Mirror" or "WallTrigger"))
+				return;
 
 			if (hit.collider.gameObject.CompareTag("Mirror")) {
 				//? enqueue next mirror reflection (use newOrigin as the origin for the next incoming direction)
