@@ -1,18 +1,12 @@
-using System;
 using System.Collections;
-using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class Campfire : MonoBehaviour {
 	#region Fields
 
-	private bool           isInitialized, isResting;
-	private SpriteRenderer spriteRenderer;
-	private GameObject     player;
-	private float          dist;
-
-	private static DebugHandler Debug;
+	private bool       isInitialized, isResting;
+	private GameObject player;
+	private float      dist;
 
 	[Range(0, 30)] [SerializeField] private float maxDist = 8f;
 
@@ -20,13 +14,8 @@ public class Campfire : MonoBehaviour {
 
 	#region Unity Functions
 
-	private void Awake() {
-		Debug = new DebugHandler("Campfire - " + Vector2.Normalize(transform.position));
-	}
-
 	private void Start() {
-		player         = GameObject.FindGameObjectWithTag("Player");
-		spriteRenderer = GetComponent<SpriteRenderer>();
+		player = GameObject.FindGameObjectWithTag("Player");
 	}
 
 	private void OnEnable() => Initialize();
@@ -39,6 +28,7 @@ public class Campfire : MonoBehaviour {
 	private void FixedUpdate() {
 		if (!player) Start();
 		if (!isInitialized) Initialize();
+		dist = Vector3.Distance(player.transform.position, transform.position);
 	}
 
 	#endregion
@@ -56,8 +46,6 @@ public class Campfire : MonoBehaviour {
 	private void HandleOnActionBtnTriggered(InputHandler.InputActions action) {
 		if (action      != InputHandler.InputActions.Interact) return;
 		if (maxDist / 2 < dist) return;
-
-		Debug.Log("In-range and ready to rest");
 
 		StartCoroutine(RestRoutine());
 	}

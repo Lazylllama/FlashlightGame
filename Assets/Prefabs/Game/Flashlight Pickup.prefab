@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 1370598805811157121}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.45554492, w: 0.89021283}
-  m_LocalPosition: {x: 0.392, y: 0.214, z: 0}
+  m_LocalPosition: {x: 0.187, y: 0.089, z: 0}
   m_LocalScale: {x: 0.35649607, y: 0.56000006, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -49,8 +49,8 @@ MonoBehaviour:
   m_LightType: 3
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.1
-  m_Color: {r: 1, g: 0.79161656, b: 0.02, a: 1}
-  m_Intensity: 44
+  m_Color: {r: 1, g: 0.821, b: 0.15566039, a: 1}
+  m_Intensity: 33.01
   m_LightVolumeIntensity: 0.6
   m_LightVolumeEnabled: 0
   m_ApplyToSortingLayers: ef66f3150000000081bc7b706131c549c17d7736e554f17a
@@ -97,7 +97,6 @@ GameObject:
   - component: {fileID: 5054898161399024657}
   - component: {fileID: 8165869697396636223}
   - component: {fileID: 5872494981454402408}
-  - component: {fileID: 294707862092489602}
   m_Layer: 0
   m_Name: Flashlight Pickup
   m_TagString: Untagged
@@ -113,7 +112,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3946588805614752785}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.2528297, w: 0.9675108}
+  m_LocalRotation: {x: 0, y: 0, z: -0.25282934, w: 0.96751094}
   m_LocalPosition: {x: -26.2, y: -0.81, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -168,8 +167,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -2131472559
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -2638390803197812687, guid: bae65af5d33d3d840b8a9863b5129be2, type: 3}
@@ -231,28 +230,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   maxDist: 4
---- !u!95 &294707862092489602
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3946588805614752785}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 0edbd913504ddb1478112013a9940cfd, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4371753526261536108
 GameObject:
   m_ObjectHideFlags: 0
