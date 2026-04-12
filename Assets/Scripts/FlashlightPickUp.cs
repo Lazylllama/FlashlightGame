@@ -7,7 +7,7 @@ public class FlashlightPickUp : MonoBehaviour {
 	[SerializeField] private float maxDist;
 
 	//? Refs
-	private GameObject     player;
+	private GameObject player;
 
 	//? States
 	private bool  isInitialized;
@@ -18,7 +18,7 @@ public class FlashlightPickUp : MonoBehaviour {
 	#region Unity Functions
 
 	private void Start() {
-		player         = GameObject.FindGameObjectWithTag("Player");
+		player = GameObject.FindGameObjectWithTag("Player");
 	}
 
 	private void FixedUpdate() {
@@ -48,6 +48,8 @@ public class FlashlightPickUp : MonoBehaviour {
 	private void PickUpFlashlight() {
 		PlayerData.Instance.UnlockFlashlightMode(1);
 		PlayerMovement.Instance.PickupFlashlight();
+		TutorialHandler.Instance.ShowTutorial(0);
+		ConversationHandler.Instance.StartConversation("FlashlightPickUp");
 		Destroy(gameObject);
 	}
 

@@ -1,16 +1,10 @@
 fileFormatVersion: 2
-guid: 607076915c0f1374cbfdb36b8abb09e8
+guid: e1ca4d2c3e5913745b3421e196028a73
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3854459837090192963
-    second: BROKENDOOR_FRONT_FINN_0
-  - first:
-      213: 5534062582952073759
-    second: BROKENDOOR_FRONT_FINN_1
-  - first:
-      213: 107544168221091588
-    second: BROKENDOOR_FRONT_FINN_2
+      213: -1167868875889742029
+    second: 9SliceStuff 1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -54,11 +48,11 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 1
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 128
+  spriteBorder: {x: 45, y: 45, z: 45, w: 45}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -102,71 +96,40 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: BROKENDOOR_FRONT_FINN_0
+      name: 9SliceStuff 1_0
       rect:
         serializedVersion: 2
-        x: 977
-        y: 267
-        width: 722
-        height: 813
+        x: 0
+        y: 0
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 34e55cecccacd7530800000000000000
-      internalID: 3854459837090192963
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BROKENDOOR_FRONT_FINN_1
-      rect:
-        serializedVersion: 2
-        x: 884
-        y: 29
-        width: 152
-        height: 61
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f1a93a53990fccc40800000000000000
-      internalID: 5534062582952073759
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BROKENDOOR_FRONT_FINN_2
-      rect:
-        serializedVersion: 2
-        x: 1466
-        y: 58
-        width: 70
-        height: 69
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 407ab78e9d21e7100800000000000000
-      internalID: 107544168221091588
+      spriteID: 33f6b5ce175eacfe0800000000000000
+      internalID: -1167868875889742029
       vertices: []
       indices: 
       edges: []
@@ -176,7 +139,7 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 0
+    internalID: 1537655665
     vertices: []
     indices: 
     edges: []
@@ -185,9 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      BROKENDOOR_FRONT_FINN_0: 3854459837090192963
-      BROKENDOOR_FRONT_FINN_1: 5534062582952073759
-      BROKENDOOR_FRONT_FINN_2: 107544168221091588
+      9SliceStuff 1_0: -1167868875889742029
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

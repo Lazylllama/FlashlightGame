@@ -1,19 +1,18 @@
-using System;
 using System.Collections;
-using SteamTools;
 using UnityEngine;
 
-public class WallManager : MonoBehaviour
-{
+public class WallManager : MonoBehaviour {
 	[Header("ID")]
 	[SerializeField] private string id;
 
 	[Header("Sprites")]
 	[SerializeField] private GameObject unbroken;
 	[SerializeField] private GameObject broken;
-	
+
+	[SerializeField] private Collider2D hitCollider;
+
 	private bool isInitialized = false;
-	
+
 	//? Refs
 	private ParticleSystem ps;
 
@@ -38,8 +37,11 @@ public class WallManager : MonoBehaviour
 
 	private IEnumerator Delay() {
 		yield return new WaitForSeconds(2f);
+		
 		unbroken.SetActive(false);
 		broken.SetActive(true);
 		
+		hitCollider.enabled = false;
+		enabled             = false;
 	}
 }

@@ -59,7 +59,6 @@ public class AudioManager : MonoBehaviour {
 
 	private void Start() {
 		InitializeMusic(FMODEvents.Instance.gameMusic);
-
 	}
 
 	private void Update() {
@@ -80,8 +79,9 @@ public class AudioManager : MonoBehaviour {
 
 		InitializeAmbience(FMODEvents.Instance.crowsAmbience);
 		InitializeAmbience(FMODEvents.Instance.forestWindAmbience);
-		
-		SetAmbienceParameter("WindIntensity", 0.2f);
+
+		SetAmbienceParameter("WindIntensity",         0.2f);
+		SetAmbienceParameter("AmbienceCrowSpawnRate", 0.2f);
 	}
 
 	/// <summary>

@@ -18,13 +18,13 @@ public partial class InputHandler : MonoBehaviour {
 		ToggleModeRight,     // RIGHT TOP BUTTON / RB / R1
 		Flashlight1,         // 1
 		Flashlight2,         // 2
-		Mantle,              // Left Stick Up / W (keyboard)
+		Mantle,              // Button West / X / Square / W (keyboard)
 		CrankKeyboard,       // Space
 		CrankLeft,           // LEFT TRIGGER / LT / L2
 		CrankRight,          // RIGHT TRIGGER / RT / R2
 		NextSentence,        // Button South / A / Cross / Enter (keyboard)
 		Interact,            // Button South / A / Cross / E (keyboard)
-		Leap,                // Button West / X / Square / Left Shift (keyboard) [Prelimiary, maybe change soon]
+		Leap,                // Button West / [NONE] / [NONE] / Left Shift (keyboard) [Prelimiary, maybe change soon]
 		FlashlightDirection, // Right Stick 2D Vector
 		Move,                // Left Stick 2D Vector / WASD 2D Vector (keyboard)
 	}
@@ -179,10 +179,18 @@ public partial class InputHandler : MonoBehaviour {
 
 			switch (kvp.Key) {
 				case InputActions.ToggleFlashlight:
+					if (!PlayerData.Instance.FlashlightModesUnlocked.ContainsKey(1) ||
+					    !PlayerData.Instance.FlashlightModesUnlocked[1]) return;
+
 					//* Let the player turn it on even though the flashlight is dead just as a feature, it will be disabled automatically right after.
 					AudioManager.Instance.PlayOneShot(FMODEvents.Instance.flashlightToggle,
 					                                  PlayerMovement.Instance.transform.position);
 					PlayerData.Instance.FlashlightEnabled = !PlayerData.Instance.FlashlightEnabled;
+
+					print(TutorialHandler.Instance.activeTutorialObjectIndex == 0);
+					print(TutorialHandler.Instance.isTutorialActive);
+					if (TutorialHandler.Instance.activeTutorialObjectIndex == 0 &&
+					    TutorialHandler.Instance.isTutorialActive) TutorialHandler.Instance.HideTutorial();
 					InputVibrationFeedback();
 					break;
 				case InputActions.ToggleModeLeft or InputActions.ToggleModeRight:
@@ -224,7 +232,8 @@ public partial class InputHandler : MonoBehaviour {
 	}
 
 	private void InputVibrationFeedback() {
-		if (CurrentInputType == Lib.InputType.KeyboardMouse || !Gamepad.current.enabled) return;
+		if (CurrentInputType == Lib.InputType.KeyboardMouse || !Gamepad.current.enabled ||
+		    !Preferences.Input.EnableGamepadVibration) return;
 		StartCoroutine(HandleVibrationSequence());
 	}
 

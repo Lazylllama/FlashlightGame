@@ -5128,6 +5128,7 @@ MonoBehaviour:
   id: test1
   unbroken: {fileID: 1465632840453410724}
   broken: {fileID: 8633322129508463742}
+  hitCollider: {fileID: 6562453809602542454}
 --- !u!61 &6968557809536429160
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5386,8 +5387,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -848509141
-  m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingLayer: 3
+  m_SortingOrder: -1
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 607076915c0f1374cbfdb36b8abb09e8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

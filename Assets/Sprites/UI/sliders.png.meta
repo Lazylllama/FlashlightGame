@@ -1,10 +1,19 @@
 fileFormatVersion: 2
-guid: 49d98931710ba5848a901e9e43ec49b6
+guid: f7e1761bb22b9b54f8a29ce3a78f08c5
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2151244663191871890
-    second: LaserBeam_0
+      213: -1219215148358866900
+    second: sliders_0
+  - first:
+      213: 6253017926595650097
+    second: sliders_1
+  - first:
+      213: -5264326804901369965
+    second: sliders_2
+  - first:
+      213: 1267146130438197894
+    second: sliders_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,12 +55,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 7
+  alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 5
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -96,17 +105,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: LaserBeam_0
+      name: sliders_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 2
-        height: 1000
+        x: 129
+        y: 350
+        width: 281
+        height: 21
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +137,74 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 291a1869f91cadd10800000000000000
-      internalID: 2151244663191871890
+      spriteID: c286b41484a741fe0800000000000000
+      internalID: -1219215148358866900
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sliders_1
+      rect:
+        serializedVersion: 2
+        x: 130
+        y: 309
+        width: 279
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 13222e0acae27c650800000000000000
+      internalID: 6253017926595650097
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sliders_2
+      rect:
+        serializedVersion: 2
+        x: 436
+        y: 300
+        width: 31
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 397694c99aa51f6b0800000000000000
+      internalID: -5264326804901369965
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sliders_3
+      rect:
+        serializedVersion: 2
+        x: 130
+        y: 257
+        width: 279
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 682974721bec59110800000000000000
+      internalID: 1267146130438197894
       vertices: []
       indices: 
       edges: []
@@ -125,7 +213,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +223,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      LaserBeam_0: 2151244663191871890
+      sliders_0: -1219215148358866900
+      sliders_1: 6253017926595650097
+      sliders_2: -5264326804901369965
+      sliders_3: 1267146130438197894
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
