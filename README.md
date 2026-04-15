@@ -1,3 +1,5 @@
+<img width="920" height="430" alt="library_header png" src="https://github.com/user-attachments/assets/3352169f-617d-49ea-8aa9-3397b223cbb6" />
+
 # FlashlightGame
 
 > [!IMPORTANT]
