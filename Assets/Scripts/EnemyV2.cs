@@ -43,7 +43,7 @@ public class EnemyV2 : MonoBehaviour {
 		if (Vector3.Distance(player.transform.position, transform.position) > dist) return;
 		
 		var hit = Physics2D.Linecast(transform.position, player.transform.position);
-		DebugLine(hit, "line", new Vector3(), player.transform.position);
+		DebugLine(transform.position, hit, "line", new Vector3(), player.transform.position);
 		playerInSight = hit.collider.gameObject.CompareTag("Player");
 	}
 
@@ -52,60 +52,87 @@ public class EnemyV2 : MonoBehaviour {
 		var startPos = transform.position;
 		while (!foundPath) {
 			var hit = Physics2D.Linecast(startPos, target.transform.position);
-			DebugLine(hit, "line", new Vector3(), target.transform.position);
+			DebugLine(startPos, hit, "line", new Vector3(), target.transform.position);
 
 			if (hit.collider.gameObject == target) {
 				foundPath = true;
 				if (points.Count == 0) directPath = true;
 				break;
 			}
+			
+			var tempExclude = points;
+			var tempCounter = 0;
+			var closestCorner = Vector3.zero;
+			while (true) {
+				closestCorner                  = GetClosestCorner(startPos, hit, tempExclude);
+				var tempHit                        = Physics2D.Linecast(startPos, closestCorner);
+				if (!tempHit.collider) break;
+				tempExclude.Add(closestCorner);
+				tempCounter++;
+				if (tempCounter == 4) { 
+					Debug.LogError("No valid corners found, breaking loop to prevent infinite loop.");
+					break;
+				}
+			}
 
-			var closestCorner = GetClosestCorner(hit);
-			print(closestCorner);
+			if (closestCorner == Vector3.zero) {
+				print("No valid corners found, breaking loop.");
+				break;
+			}
+			hit = Physics2D.Linecast(startPos, closestCorner);
+			DebugLine(startPos, hit, "line", new Vector3(), closestCorner);
 			points.Add(closestCorner);
+			startPos = closestCorner;
 			if (points.Count == 10) {
 				break;
 			}
 		}
 	}
 
-	private Vector3 GetClosestCorner(RaycastHit2D hit) {
+	private Vector3 GetClosestCorner(Vector3 origin, RaycastHit2D hit, List<Vector3> exclude, Vector3 checkPos = new()) {
+		if (checkPos == new Vector3()) checkPos = origin; 
 		var corners = new List<Vector3>();
 		for (int i = 0; i < 4; i++) {
 			Vector3 temp;
+			GameObject newGameObject = hit.collider.gameObject;
 			switch (i) {
 				case 0:
-					temp = hit.collider.bounds.max + coll.bounds.max - transform.position;
+					temp = hit.collider.bounds.max + new Vector3(1.0f, 1.0f, 0.0f);
+					if (exclude.Contains(temp)) continue;
 					corners.Add(temp);
 					break;
 				case 1:
-					temp = hit.collider.bounds.min - coll.bounds.min - transform.position;
+					temp = hit.collider.bounds.min - new Vector3(1.0f, 1.0f, 0.0f);
+					if (exclude.Contains(temp)) continue;
 					corners.Add(temp);
 					break;
 				case 2:
-					temp = new Vector3(hit.collider.bounds.max.x + coll.bounds.max.x - transform.position.x, hit.collider.bounds.min.y - coll.bounds.max.y - transform.position.y, hit.collider.bounds.center.z);
+					temp = new Vector3(hit.collider.bounds.max.x + 1.0f, hit.collider.bounds.min.y - 1.0f, transform.position.z);
+					if (exclude.Contains(temp)) continue;
 					corners.Add(temp);
 					break;
 				case 3:
-					temp = new Vector3(hit.collider.bounds.min.x - coll.bounds.max.x - transform.position.x, hit.collider.bounds.max.y + coll.bounds.max.y - transform.position.y, hit.collider.bounds.center.z);
+					temp = new Vector3(hit.collider.bounds.min.x - 1.0f, hit.collider.bounds.max.y + 1.0f, transform.position.z);
+					if (exclude.Contains(temp)) continue;
 					corners.Add(temp);
 					break;
 			}
 		}
 
 		Vector3 result = Vector3.zero;
+		;
 		foreach (var corner in corners) {
-			if (Vector3.Distance(corner, transform.position) < dist || result == Vector3.zero) {
+			if (Vector3.Distance(corner, checkPos) < Vector3.Distance(result, checkPos) || result == Vector3.zero) {
 				result = corner;
 			}
 		}
 		return result;
 	}
 
-	private void DebugLine(RaycastHit2D hit, string type = "Line", Vector3 direction = new(), Vector3 end = new()) {
-		if(hit.collider) Debug.DrawLine(transform.position, hit.point, hit.collider.gameObject.CompareTag("Player") ? Color.green : Color.red);
-		else if(type.ToLower() == "line") Debug.DrawLine(transform.position, end, Color.red);
-		else Debug.DrawRay(transform.position, direction, Color.red);
+	private void DebugLine(Vector3 origin, RaycastHit2D hit, string type = "Line", Vector3 direction = new(), Vector3 end = new()) {
+		if(hit.collider) Debug.DrawLine(origin, hit.point, hit.collider.gameObject.CompareTag("Player") ? Color.green : Color.red);
+		else if(type.ToLower() == "line") Debug.DrawLine(origin, end, Color.red);
+		else Debug.DrawRay(origin, direction, Color.red);
 	}
 
 	private void OnDrawGizmos() {
