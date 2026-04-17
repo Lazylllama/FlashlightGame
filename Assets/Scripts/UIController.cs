@@ -39,7 +39,7 @@ public class UIController : MonoBehaviour {
 
 	[Header("Focus Elements")]
 	[SerializeField] private GameObject startButtonMainMenu;
-	//[SerializeField] private Button returnButtonEscMenu;
+	[SerializeField] private GameObject firstSelectSettings;
 
 	[Header("UI Animators")]
 	[SerializeField] private Animator savingGameUIAnimator;
@@ -142,9 +142,9 @@ public class UIController : MonoBehaviour {
 		                                 }));
 
 		StartCoroutine(Lib.DelayFunction(duration, () => {
-			                                                ConversationHandler.Instance
-			                                                                   .StartConversation("PlayerSpawned");
-		                                                }));
+			                                           ConversationHandler.Instance
+			                                                              .StartConversation("PlayerSpawned");
+		                                           }));
 	}
 
 	private static void RegisterInstance(UIController instance) {
@@ -228,8 +228,9 @@ public class UIController : MonoBehaviour {
 	public void SetSettingsMenu(bool newState = true) {
 		settingsMenu.SetActive(newState);
 
+		EventSystem.current.SetSelectedGameObject(newState ? startButtonMainMenu : firstSelectSettings);
+
 		if (newState) return;
-		EventSystem.current.SetSelectedGameObject(startButtonMainMenu);
 		PlayerPrefsHandler.Instance.SavePreferences();
 	}
 
@@ -299,7 +300,7 @@ public class UIController : MonoBehaviour {
 		Camera            toOverlay
 	) {
 		storyboardBlackCinemachine.Priority = 11;
-		
+
 		yield return new WaitForSecondsRealtime(duration);
 
 		fromCam.Priority    = 0;
