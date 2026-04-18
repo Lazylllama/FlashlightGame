@@ -21,6 +21,12 @@ public class PlayerPrefsHandler : MonoBehaviour {
 		}, {
 			"SkipIntroFade", false
 		}, {
+			"SkipMainMenu", false
+		}, {
+			"SkipAllDialogues", false
+		}, {
+			"SkipPickups", false
+		}, {
 			"MasterVolume", 0.5f
 		}, {
 			"MusicVolume", 1f
@@ -43,7 +49,6 @@ public class PlayerPrefsHandler : MonoBehaviour {
 	}
 
 	private void Awake() {
-		// ensure instance-level init also sets the handler in case domain reload order differs
 		Debug ??= new DebugHandler("PlayerPrefsHandler");
 
 		if (Instance == null) {
@@ -62,13 +67,13 @@ public class PlayerPrefsHandler : MonoBehaviour {
 		};
 
 		FBPP.Start(config);
-
+		
+		CheckMissingKeysAndSave();
+		
 		LoadPreferences();
 	}
 
 	private void Start() {
-		CheckMissingKeysAndSave();
-
 		Debug.LogKv("DebugInformation:", DebugLevel.Info, new object[] {
 			"isEditor", Application.isEditor,
 			"isProduction", Application.version,
@@ -143,6 +148,12 @@ public class PlayerPrefsHandler : MonoBehaviour {
 		//? Framerate Soft-cap/Target
 		Preferences.Game.TargetFrameRate = FBPP.GetInt("TargetFrameRate", 60);
 		Application.targetFrameRate      = Preferences.Game.TargetFrameRate;
+
+		//? Debug Skip Preferences
+		Preferences.Debug.SkipMainMenu     = FBPP.GetBool("SkipMainMenu");
+		Preferences.Debug.SkipIntroFade    = FBPP.GetBool("SkipIntroFade");
+		Preferences.Debug.SkipAllDialogues = FBPP.GetBool("SkipAllDialogues");
+		Preferences.Debug.SkipPickups      = FBPP.GetBool("SkipPickups");
 
 		//? DebugHandler Level & Filter
 		Preferences.DebugHandler.DbgLevel = FBPP.GetString("DebugLevel", "Error") switch {

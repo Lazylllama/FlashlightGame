@@ -299,7 +299,7 @@ public class EnemyController : MonoBehaviour {
 		while (health > 0f) {
 			if (audioSource) {
 				if (animator && animatorName.Length > 0) animator.SetTrigger(animatorName);
-				audioSource.PlayOneShot(flap);
+				//audioSource.PlayOneShot(flap);
 			} else {
 				Debug.LogWarning("AudioSource component missing on EnemyController. Sound will not play.");
 			}

@@ -63,9 +63,6 @@ public class PlayerMovement : MonoBehaviour {
 
 	#region Unity Functions
 
-	//? Set global instance
-	private void Awake() => RegisterInstance(this);
-
 	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
 	private static void OnRuntimeInit() {
 		Debug = new DebugHandler("PlayerMovement");
@@ -74,11 +71,15 @@ public class PlayerMovement : MonoBehaviour {
 	private void Start() {
 		Debug ??= new DebugHandler("PlayerMovement");
 
-		playerRb = GetComponent<Rigidbody2D>();
-		//particleController = GetComponentInChildren<ParticleController>();
-		playerAnimator = GetComponentInChildren<Animator>();
-
 		lastPosition = transform.position;
+	}
+	
+	private void Awake() {
+		RegisterInstance(this);
+		
+		//? Required in other start functions
+		playerRb       = GetComponent<Rigidbody2D>();
+		playerAnimator = GetComponentInChildren<Animator>();
 	}
 
 	private void Update() {

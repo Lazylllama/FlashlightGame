@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using FlashlightGame;
 using UnityEngine;
 
 public class FlashlightPickUp : MonoBehaviour {
@@ -19,6 +21,9 @@ public class FlashlightPickUp : MonoBehaviour {
 
 	private void Start() {
 		player = GameObject.FindGameObjectWithTag("Player");
+
+		if (!Preferences.Debug.SkipPickups) return;
+		PickUpFlashlight();
 	}
 
 	private void FixedUpdate() {

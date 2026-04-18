@@ -11,8 +11,14 @@ namespace FlashlightGame {
 		}
 
 		public abstract class Game {
-			public static int  TargetFrameRate = 60;
-			public static bool SkipIntroFade   = false;
+			public static int TargetFrameRate = 60;
+		}
+
+		public abstract class Debug {
+			public static bool SkipIntroFade    = false;
+			public static bool SkipMainMenu     = false;
+			public static bool SkipAllDialogues = false;
+			public static bool SkipPickups      = false;
 		}
 
 		public abstract class DebugHandler {

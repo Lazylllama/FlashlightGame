@@ -33,8 +33,8 @@ public class PlayerData : MonoBehaviour {
 
 	//* Player States *//
 	public Dictionary<int, bool> FlashlightModesUnlocked { get; private set; } = new() {
-		{ 1, false }, // TODO: Implement flashlight pickup
-		{ 2, true },  // TODO: Implement flashlight level up (in-lore)
+		{ 1, false },
+		{ 2, true }, // TODO: Implement flashlight level up (in-lore)
 	};
 
 	public bool  InConversation    { get; set; }
@@ -86,9 +86,8 @@ public class PlayerData : MonoBehaviour {
 
 	private void Awake() {
 		Debug ??= new DebugHandler("PlayerData");
+		RegisterInstance(this);
 	}
-
-	private void Start() => RegisterInstance(this);
 
 	private void FixedUpdate() {
 		HandleBatteryDrain();
@@ -99,6 +98,10 @@ public class PlayerData : MonoBehaviour {
 		//TODO: Optimize by only setting this when flashlight state changes and sum like that for crank speed? Or just not
 		AudioManager.Instance.SetFlashlightState(FlashlightEnabled);
 		AudioManager.Instance.SetCrankSpeedParameter(CrankSpeed);
+	}
+
+	private void Start() {
+		PreventMovement = !Preferences.Debug.SkipAllDialogues;
 	}
 
 	#endregion

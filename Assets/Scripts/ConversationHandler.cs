@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using FlashlightGame;
 using JetBrains.Annotations;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
@@ -54,7 +55,6 @@ public class ConversationHandler : SerializedMonoBehaviour {
 
 	//? States
 	public  bool pressedProceed;
-	private bool ready;
 
 	#endregion
 
@@ -102,33 +102,50 @@ public class ConversationHandler : SerializedMonoBehaviour {
 	#region Functions
 
 	public void StartConversation(string conversationId) {
-		if (PlayerData.Instance.InConversation || !ready)
+		if (PlayerData.Instance.InConversation) {
 			Debug.LogError("Already in conversation! Cannot start a new one.");
-		else Debug.Log($"Starting conversation: {conversationId}");
-		ready = false;
+			return;
+		}
+
+		//? Debug Preferences
+		if (Preferences.Debug.SkipAllDialogues) {
+			Debug.LogWarning($"Skipping conversation (SkipAllDialogues): {conversationId}");
+			return;
+		}
+
+		Debug.Log($"Starting conversation: {conversationId}");
+		
 		StartCoroutine(StartConversationRoutine(conversationId));
 	}
 
 	private void ToggleDisplay(bool visible, Conversation conversation = default) {
+		//* Looks more advanced than it is.
+
+		//? See-through if not visible, otherwise white.
 		var color = visible ? Color.white : Color.clear;
 
+		//? Enable correct sprite and show skip text
 		fogImage.enabled      = conversation.otherPartHolyOverlay;
 		gradientImage.enabled = !conversation.otherPartHolyOverlay;
 		skipGlyph.enabled     = true;
 		skipText.enabled      = true;
 
 		if (visible) {
+			//? "is" checks for partial equality. Only checks the given params and dgaf about the others.
 			holyOverlayImage.enabled = conversation is { otherPartStart: true, otherPartHolyOverlay: true };
 			normalImage.enabled = conversation is { otherPartStart: true, otherPartHolyOverlay: false } or
 			                                      { otherPartStart: false };
 
+			//? Select the correct first sprite
 			normalImage.sprite      = conversation.otherPartStart ? conversation.otherPartSprite : playerSprite;
 			holyOverlayImage.sprite = conversation.otherPartSprite;
 		} else {
+			//? Clear textboxes for next time
 			textBox.text = "";
 			nameBox.text = "";
 		}
 
+		//? Gradually fade in/out
 		LeanTween.color(normalImage.rectTransform, color, 1f)
 		         .setEase(LeanTweenType.easeInOutQuad);
 		LeanTween.color(holyOverlayImage.rectTransform, color, 1f)
@@ -142,15 +159,15 @@ public class ConversationHandler : SerializedMonoBehaviour {
 		LeanTween.color(skipGlyph.rectTransform, new Color(.3f, .3f, .3f, visible ? 1 : 0), 1f)
 		         .setEase(LeanTweenType.easeInOutQuad);
 
+		//? TMP Texts needs their own function.
 		LeanTween.value(skipText.gameObject, visible ? 0 : 1, visible ? 1 : 0, 1f)
-		         .setOnUpdate(UpdateSkipTextAlpha)
+		         .setOnUpdate((value) => skipText.color = new Color(.3f, .3f, .3f, value))
 		         .setEase(LeanTweenType.easeInOutQuad);
 	}
 
-	private void UpdateSkipTextAlpha(float value) {
-		skipText.color = new Color(.3f, .3f, .3f, value);
-	}
-
+	/// <summary>
+	/// Parses the text for params and replaces them with characters that can be handled in a foreach.
+	/// </summary>
 	private string ParseText(string text, bool clean = false) {
 		var parsedText = text;
 
@@ -310,7 +327,6 @@ public class ConversationHandler : SerializedMonoBehaviour {
 			SceneManager.LoadScene("Main");
 		}
 
-		ready = true;
 		Debug.Log("Finished conversation");
 	}
 

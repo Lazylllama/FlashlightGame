@@ -28,6 +28,8 @@ public class UIController : MonoBehaviour {
 	[SerializeField] private GameObject      loadMenu;
 	[SerializeField] private TextMeshProUGUI loadMenuLastSavedDate;
 
+	[SerializeField] private TextMeshProUGUI debugPrefsMainMenuUI;
+
 	[Header("Cinemachine")]
 	[SerializeField] private CinemachineCamera playerCinemachine;
 	[SerializeField] private CinemachineCamera mainMenuCinemachine;
@@ -71,7 +73,11 @@ public class UIController : MonoBehaviour {
 		EventSystem.current.firstSelectedGameObject = startButtonMainMenu;
 	}
 
-	private void Start()    => RegisterInstance(this);
+	private void Start() {
+		RegisterInstance(this);
+		CheckDebug();
+	}
+
 	private void OnEnable() => Initialize();
 
 	private void OnDisable() {
@@ -101,9 +107,9 @@ public class UIController : MonoBehaviour {
 		if (GameController.Instance.InActiveGame || newType == Lib.InputType.KeyboardMouse) {
 			Debug.Log("Input type changed to " + newType, DebugLevel.Debug);
 		} else {
+			EventSystem.current.SetSelectedGameObject(startButtonMainMenu);
 			Debug.Log("Input type changed to " + newType + ", resetting selected UI element.", DebugLevel.Debug,
 			          EventSystem.current.currentSelectedGameObject);
-			EventSystem.current.SetSelectedGameObject(startButtonMainMenu);
 		}
 	}
 
@@ -123,9 +129,10 @@ public class UIController : MonoBehaviour {
 	}
 
 	private void SwitchToGameCams() {
-		var duration = Preferences.Game.SkipIntroFade ? 0f : 3f;
+		var duration = Preferences.Debug.SkipIntroFade ? 0f : 3f;
 		print($"Switching to game cameras with a fade duration of {duration} seconds.");
 
+		//? Fade between cameras with splash
 		StartCoroutine(FadeBetweenCams(
 		                               mainMenuCinemachine,
 		                               playerCinemachine,
@@ -133,6 +140,7 @@ public class UIController : MonoBehaviour {
 		                               mainMenuOverlayCamera,
 		                               gameOverlayCamera));
 
+		//? Wait until view has gone dark before switching UI
 		StartCoroutine(Lib.DelayFunction(Math.Clamp(duration - 1f, 0f, float.MaxValue),
 		                                 () => {
 			                                 mainMenuOverlayCamera.enabled = false;
@@ -141,6 +149,7 @@ public class UIController : MonoBehaviour {
 			                                 GameController.Instance.InActiveGame = true;
 		                                 }));
 
+		//? First conversation
 		StartCoroutine(Lib.DelayFunction(duration, () => {
 			                                           ConversationHandler.Instance
 			                                                              .StartConversation("PlayerSpawned");
@@ -159,10 +168,11 @@ public class UIController : MonoBehaviour {
 	/// Update the UI with the current player data.
 	/// </summary>
 	public void UpdateUI() {
-		Debug.LogKv("Updating UI", DebugLevel.Debug, new object[] {
-			"Health", PlayerData.Instance.Health.ToString(),
-			"Battery", PlayerData.Instance.Battery.ToString()
-		});
+		//! Don't leave on in prod
+		// Debug.LogKv("Updating UI", DebugLevel.Debug, new object[] {
+		// 	"Health", PlayerData.Instance.Health.ToString(),
+		// 	"Battery", PlayerData.Instance.Battery.ToString()
+		// });
 
 		healthFill.fillAmount  = PlayerData.Instance.Health  / 100f;
 		batteryFill.fillAmount = PlayerData.Instance.Battery / 100f;
@@ -228,7 +238,7 @@ public class UIController : MonoBehaviour {
 	public void SetSettingsMenu(bool newState = true) {
 		settingsMenu.SetActive(newState);
 
-		EventSystem.current.SetSelectedGameObject(newState ? startButtonMainMenu : firstSelectSettings);
+		EventSystem.current.SetSelectedGameObject(newState ? firstSelectSettings : startButtonMainMenu);
 
 		if (newState) return;
 		PlayerPrefsHandler.Instance.SavePreferences();
@@ -271,6 +281,25 @@ public class UIController : MonoBehaviour {
 		} else {
 			var date = new DateTime(saveData.lastSavedTicks);
 			loadMenuLastSavedDate.text = $"Last Saved: {date:yyyy-MM-dd HH:mm:ss}";
+		}
+	}
+
+	private void CheckDebug() {
+		if (Preferences.Debug.SkipAllDialogues || Preferences.Debug.SkipIntroFade || Preferences.Debug.SkipMainMenu ||
+		    Preferences.Debug.SkipPickups) {
+			debugPrefsMainMenuUI.text = "<color=\"purple\"><b>DEBUG<b>\n"
+			                            + "<color=\"" + (Preferences.Debug.SkipPickups ? "green" : "red") + "\">" +
+			                            "SkipPickups\n"
+			                            + "<color=\"" + (Preferences.Debug.SkipMainMenu ? "green" : "red") + "\">" +
+			                            "SkipMainMenu\n"
+			                            + "<color=\"" + (Preferences.Debug.SkipIntroFade ? "green" : "red") + "\">" +
+			                            "SkipIntroFade\n"
+			                            + "<color=\"" + (Preferences.Debug.SkipAllDialogues ? "green" : "red") + "\">" +
+			                            "SkipAllDialogues";
+
+			if (Preferences.Debug.SkipMainMenu) InitiateGameStart();
+		} else {
+			debugPrefsMainMenuUI.enabled = false;
 		}
 	}
 
