@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Splines.ExtrusionShapes;
 
 // ReSharper disable CheckNamespace
 namespace FlashlightGame {
@@ -209,7 +210,7 @@ namespace FlashlightGame {
 				var rayOrigin = new Vector2(centerX, mantleWallHit.point.y + 300f);
 
 				var getGroundY = Physics2D.Raycast(rayOrigin, Vector2.down, 350f, GroundLayerMask);
-				if(!getGroundY.collider)  Debug.DrawRay(rayOrigin, Vector2.down * 350f, Color.red);
+				if (!getGroundY.collider) Debug.DrawRay(rayOrigin, Vector2.down * 350f, Color.red);
 				else Debug.DrawLine(rayOrigin, getGroundY.point, Color.yellow);
 
 				if (!getGroundY)
@@ -219,7 +220,7 @@ namespace FlashlightGame {
 
 				return new WallMantlePoint() {
 					Position = new Vector3(
-					                       centerX + (positiveX ? 0.5f : -0.5f),
+					                       centerX            + (positiveX ? 0.5f : -0.5f),
 					                       getGroundY.point.y + WallTeleportOffsetY,
 					                       origin.z
 					                      ),
