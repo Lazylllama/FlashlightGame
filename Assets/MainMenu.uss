@@ -1,0 +1,20 @@
+:root {
+}
+
+.mainmenu-button {
+    margin-top: 36px;
+    opacity: 0.38;
+    margin-left: 75px;
+    align-items: flex-start;
+    transition-property: opacity, margin-left;
+    transition-duration: 200ms, 200ms;
+    transition-timing-function: ease, ease-in-out;
+    transition-delay: 0s, 50ms;
+}
+
+.mainmenu-button:hover {
+    margin-top: 36px;
+    opacity: 1;
+    margin-left: 117px;
+    align-items: flex-start;
+}

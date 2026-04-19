@@ -1,0 +1,21 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/MainMenu.uss?fileID=7433441132597879392&amp;guid=67a8f2a63ca5482439140414ccd710a5&amp;type=3#MainMenu"/>
+    <ui:VisualElement style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Sprites/UI/TITLE_SCREEN.png?fileID=8330829300997504501&amp;guid=d949d61131fcae54c97d14764a7ed8e9&amp;type=3#TITLE_SCREEN_0&quot;);">
+        <ui:Image style="background-image: url(&quot;project://database/Assets/Sprites/Brand/tight_library_logo_transparent.png%201.png?fileID=53962299157634888&amp;guid=4c8ec4ce2d832fb47a44c95d6c89a614&amp;type=3#library_logo_transparent.png_0&quot;); height: 480px; width: 751px; aspect-ratio: auto; margin-top: 69px; margin-left: 8px;"/>
+        <ui:GroupBox name="GroupBox" style="margin-top: 64px;">
+            <ui:GroupBox class="mainmenu-button" style="flex-direction: row; width: 350px; align-items: center; align-content: auto;">
+                <ui:Image source="project://database/Assets/Sprites/Kenney/GameIcons/White/2x/arrowRight.png?fileID=2800000&amp;guid=794068a064804694d9a53ecd8d2acae3&amp;type=3#arrowRight" tint-color="rgb(255, 255, 255)" style="color: rgb(0, 0, 0);"/>
+                <ui:Button text="PLAY" emoji-fallback-support="true" style="width: auto; -unity-slice-scale: 1px; background-color: rgba(188, 188, 188, 0); -unity-background-image-tint-color: rgb(255, 255, 255); border-left-width: 0; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; -unity-font-definition: url(&quot;project://database/Assets/Dead%20Font%20Walking.otf?fileID=12800000&amp;guid=e09ecb90fda6e5f48849a18bbbe6f6fb&amp;type=3#Dead Font Walking&quot;); font-size: 96px; color: rgb(255, 255, 255); -unity-text-align: middle-left; height: auto; -unity-font-style: normal; white-space: nowrap; text-overflow: clip;"/>
+            </ui:GroupBox>
+            <ui:GroupBox class="mainmenu-button" style="flex-direction: row; width: 500px; align-items: center; align-content: auto;">
+                <ui:Image source="project://database/Assets/Sprites/Kenney/GameIcons/White/2x/arrowRight.png?fileID=2800000&amp;guid=794068a064804694d9a53ecd8d2acae3&amp;type=3#arrowRight" tint-color="rgb(255, 255, 255)" style="color: rgb(0, 0, 0);"/>
+                <ui:Button text="SETTINGS" emoji-fallback-support="true" style="width: auto; -unity-slice-scale: 1px; background-color: rgba(188, 188, 188, 0); -unity-background-image-tint-color: rgb(255, 255, 255); border-left-width: 0; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; -unity-font-definition: url(&quot;project://database/Assets/Dead%20Font%20Walking.otf?fileID=12800000&amp;guid=e09ecb90fda6e5f48849a18bbbe6f6fb&amp;type=3#Dead Font Walking&quot;); font-size: 96px; color: rgb(255, 255, 255); -unity-text-align: middle-left; height: auto; -unity-font-style: normal; white-space: nowrap; text-overflow: clip;"/>
+            </ui:GroupBox>
+            <ui:GroupBox class="mainmenu-button" style="flex-direction: row; width: 350px; align-items: center; align-content: auto;">
+                <ui:Image source="project://database/Assets/Sprites/Kenney/GameIcons/White/2x/arrowRight.png?fileID=2800000&amp;guid=794068a064804694d9a53ecd8d2acae3&amp;type=3#arrowRight" tint-color="rgb(255, 255, 255)" style="color: rgb(0, 0, 0);"/>
+                <ui:Button text="QUIT" emoji-fallback-support="true" style="width: auto; -unity-slice-scale: 1px; background-color: rgba(188, 188, 188, 0); -unity-background-image-tint-color: rgb(255, 255, 255); border-left-width: 0; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; -unity-font-definition: url(&quot;project://database/Assets/Dead%20Font%20Walking.otf?fileID=12800000&amp;guid=e09ecb90fda6e5f48849a18bbbe6f6fb&amp;type=3#Dead Font Walking&quot;); font-size: 96px; color: rgb(255, 255, 255); -unity-text-align: middle-left; height: auto; -unity-font-style: normal; white-space: nowrap; text-overflow: clip;"/>
+            </ui:GroupBox>
+            <ui:VisualElement style="flex-grow: 1;"/>
+        </ui:GroupBox>
+    </ui:VisualElement>
+</ui:UXML>
