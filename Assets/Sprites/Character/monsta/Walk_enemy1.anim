@@ -15648,23 +15648,16 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.21666667
-    functionName: 
+    functionName: CameraImpulse
     data: 
     objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
+    floatParameter: 0.1
     intParameter: 0
     messageOptions: 0
-  - time: 1.1166667
-    functionName: 
+  - time: 1.4333333
+    functionName: CameraImpulse
     data: 
     objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 1.2333333
-    functionName: 
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
+    floatParameter: 0.1
     intParameter: 0
     messageOptions: 0

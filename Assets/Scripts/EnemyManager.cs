@@ -12,15 +12,15 @@ public class EnemyManager : MonoBehaviour {
 		Instance = this;
 	}
 
-	public void RespawnAll() {
-		var enemies = FindObjectsByType<EnemyController>(
-		                                                 FindObjectsInactive.Include,
-		                                                 FindObjectsSortMode.None
-		                                                );
-
-		foreach (var enemy in enemies) {
-			//* Conflict or sum shit idk
-			//enemy.ResetEnemy();
-		}
-	}
+	// public void RespawnAll() {
+	// 	var enemies = FindObjectsByType<EnemyController>(
+	// 	                                                 FindObjectsInactive.Include,
+	// 	                                                 FindObjectsSortMode.None
+	// 	                                                );
+	//
+	// 	foreach (var enemy in enemies) {
+	// 		//* Conflict or sum shit idk
+	// 		//enemy.ResetEnemy();
+	// 	}
+	// }
 }

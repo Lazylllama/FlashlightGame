@@ -15,6 +15,7 @@ public class FMODEvents : MonoBehaviour {
 	public EventReference openMenu,       closeMenu;
 	public EventReference dialogueLetter, dialogueLastLetter;
 
+	public EventReference enemyFlap, enemyFlyingDie, enemyFlyingAttack, bearFootstep, bearAttack, bearDeath;
 	public EventReference playerFootstep;
 	public EventReference flashlightToggle;
 	public EventReference flashlightCrank;

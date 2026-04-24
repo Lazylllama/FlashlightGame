@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2372212669211465823}
   - component: {fileID: 3964370604011390740}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: WING-L_0007_Lager-6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,7 +100,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 857791272857076343}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: BorderLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -131,7 +131,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 300361181624099942}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: iris R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -162,7 +162,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6504835975916847299}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: teeth down 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -193,7 +193,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4876632875639631681}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: nose
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -224,7 +224,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4795951995238294631}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: jaw 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -257,7 +257,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6606128180490351737}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: teeth 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -289,7 +289,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8941676159402247918}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: jaw 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -324,10 +324,9 @@ GameObject:
   - component: {fileID: 1620614184467148823}
   - component: {fileID: 8560574320476866450}
   - component: {fileID: 2160721483958690193}
-  - component: {fileID: 5886722165635506747}
   - component: {fileID: 4515519680040247604}
   - component: {fileID: 6640594793475143355}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: BatEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -498,103 +497,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!82 &5886722165635506747
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2636493876161159136}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 50
-  Pan2D: 0
-  rolloffMode: 2
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0.47477296
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.71450806
-      value: 0
-      inSlope: -1.0204082
-      outSlope: -1.0204082
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!58 &4515519680040247604
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -643,7 +545,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6354dbd65a643984b816f61daa02dc14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController
-  overheadText: {fileID: 0}
   isGrounded: 0
   isChasing: 0
   facingRight: 1
@@ -651,7 +552,7 @@ MonoBehaviour:
   detectionRange: 10
   baseSpeed: 2
   maxHealth: 100
-  floatHeight: 2
+  floatHeight: 6
   lookPosition: {fileID: 2426106113358387362}
   groundCheck: {fileID: 7368174170273588092}
   borderLeft: {fileID: 857791272857076343}
@@ -675,7 +576,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2426106113358387362}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: lookPosition
   m_TagString: Untagged
   m_Icon: {fileID: 2488908585195742037, guid: 0000000000000000d000000000000000, type: 0}
@@ -706,7 +607,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1607594502324465857}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: jaw 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -738,7 +639,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9022567123654061333}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: BorderRIght
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -769,7 +670,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3736768929992400834}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: sclera L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -801,7 +702,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2811255203485290639}
   - component: {fileID: 5172449398385750650}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: WING-R_0001_Lager-11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -891,7 +792,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7763868361025603673}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: inner mouth
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -922,7 +823,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8421910239025766564}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: teeth 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -953,7 +854,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5759978182705360664}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: nose area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -985,7 +886,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2397691406188767820}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1026,7 +927,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3016301281185809214}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: sclera R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1057,7 +958,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7867267395186463229}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: iris L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1088,7 +989,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3525618372036643715}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: teeth up 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1120,7 +1021,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7368174170273588092}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: groundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
@@ -1151,7 +1052,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 288068079730731362}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: jaw 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}

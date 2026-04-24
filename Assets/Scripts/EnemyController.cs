@@ -1,7 +1,4 @@
-using System;
 using System.Collections;
-using System.Globalization;
-using TMPro;
 using UnityEngine;
 using FlashlightGame;
 using Unity.Mathematics;
@@ -9,8 +6,11 @@ using Unity.Mathematics;
 public class EnemyController : MonoBehaviour {
 	#region Fields
 
-	private static DebugHandler Debug;
-	
+	private static          DebugHandler Debug;
+	private static readonly int          IsWalking = Animator.StringToHash("isWalking");
+	private static readonly int          Fade      = Shader.PropertyToID("_Fade");
+	private static readonly int          Attack    = Animator.StringToHash("Attack");
+
 	private Rigidbody2D rb;
 
 	[Header("Enemy Options")]
@@ -26,8 +26,7 @@ public class EnemyController : MonoBehaviour {
 
 	[Header("Teleport Settings")]
 	[SerializeField] private float teleportCooldown = 1.2f;
-	private float teleportTimer;
-
+	
 	[Header("Slow Down")]
 	[SerializeField] private float slowDistance = 2f;
 	[SerializeField] private float slowFactor = 0.5f;
@@ -67,7 +66,7 @@ public class EnemyController : MonoBehaviour {
 		animator        = GetComponentInChildren<Animator>();
 		health          = maxHealth;
 		enemySpeed      = baseSpeed;
-		borderLeftPos   = borderLeft.position;
+		borderLeftPos    = borderLeft.position;
 		borderRightPos  = borderRight.position;
 		spawnPoint      = transform.position;
 		capsuleCollider = GetComponent<Collider2D>();
@@ -96,7 +95,7 @@ public class EnemyController : MonoBehaviour {
 
 		if (collidingWithPlayer && !PlayerData.Instance.IsInvulnerable) {
 			PlayerData.Instance.UpdateHealth(-20);
-			animator.SetTrigger("Attack");
+			animator.SetTrigger(Attack);
 		}
 	}
 
@@ -228,7 +227,7 @@ public class EnemyController : MonoBehaviour {
 		health -= amount;
 
 		if (health <= 0) {
-			deathHandlerRoutineState = StartCoroutine(DeathHander());
+			deathHandlerRoutineState = StartCoroutine(DeathHandler());
 		}
 	}
 
@@ -261,10 +260,10 @@ public class EnemyController : MonoBehaviour {
 		isChasing                = false;
 		collidingWithPlayer      = false;
 		playerCollisionCount     = 0;
-		material.SetFloat("_Fade", 1f);
+		material.SetFloat(Fade, 1f);
 		capsuleCollider.enabled = true;
 		rb.bodyType             = RigidbodyType2D.Dynamic;
-		animator.SetBool("isWalking", true);
+		animator.SetBool(IsWalking, true);
 	}
 
 	private void OnDrawGizmos() {
@@ -279,40 +278,22 @@ public class EnemyController : MonoBehaviour {
 
 	#region Coroutines
 
-	private IEnumerator DeathHander() {
+	private IEnumerator DeathHandler() {
 		rb.bodyType             = RigidbodyType2D.Kinematic;
 		rb.linearVelocity       = Vector2.zero;
 		capsuleCollider.enabled = false;
-		animator.SetBool("isWalking", false);
+		animator.SetBool(IsWalking, false);
 		for (float fade = 1; fade > 0; fade -= Time.deltaTime / 2) {
-			material.SetFloat("_Fade", fade);
+			material.SetFloat(Fade, fade);
 			yield return new WaitForEndOfFrame();
 		}
 
 		gameObject.SetActive(false);
 	}
 
-	private IEnumerator SoundRoutine() {
-		var interval = Mathf.Max(0.01f, soundInterval);
-
-		// repeat while the enemy is alive
-		while (health > 0f) {
-			if (audioSource) {
-				if (animator && animatorName.Length > 0) animator.SetTrigger(animatorName);
-				//audioSource.PlayOneShot(flap);
-			} else {
-				Debug.LogWarning("AudioSource component missing on EnemyController. Sound will not play.");
-			}
-
-			// wait for the configured interval before playing again
-			yield return new WaitForSeconds(interval);
-		}
-	}
-
 	private IEnumerator HandleTeleport() {
 		yield return new WaitForSecondsRealtime(teleportCooldown);
 		transform.position   = teleportPoint;
-		teleportTimer        = 0f;
 		teleportRoutineState = null;
 	}
 
