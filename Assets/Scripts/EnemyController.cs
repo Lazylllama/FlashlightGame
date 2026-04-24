@@ -66,7 +66,7 @@ public class EnemyController : MonoBehaviour {
 		animator        = GetComponentInChildren<Animator>();
 		health          = maxHealth;
 		enemySpeed      = baseSpeed;
-		borderLeftPos   = borderLeft.position;
+		borderLeftPos    = borderLeft.position;
 		borderRightPos  = borderRight.position;
 		spawnPoint      = transform.position;
 		capsuleCollider = GetComponent<Collider2D>();
@@ -227,7 +227,7 @@ public class EnemyController : MonoBehaviour {
 		health -= amount;
 
 		if (health <= 0) {
-			deathHandlerRoutineState = StartCoroutine(DeathHander());
+			deathHandlerRoutineState = StartCoroutine(DeathHandler());
 		}
 	}
 
@@ -278,7 +278,7 @@ public class EnemyController : MonoBehaviour {
 
 	#region Coroutines
 
-	private IEnumerator DeathHander() {
+	private IEnumerator DeathHandler() {
 		rb.bodyType             = RigidbodyType2D.Kinematic;
 		rb.linearVelocity       = Vector2.zero;
 		capsuleCollider.enabled = false;
@@ -289,23 +289,6 @@ public class EnemyController : MonoBehaviour {
 		}
 
 		gameObject.SetActive(false);
-	}
-
-	private IEnumerator SoundRoutine() {
-		var interval = Mathf.Max(0.01f, soundInterval);
-
-		// repeat while the enemy is alive
-		while (health > 0f) {
-			if (audioSource) {
-				if (animator && animatorName.Length > 0) animator.SetTrigger(animatorName);
-				//audioSource.PlayOneShot(flap);
-			} else {
-				Debug.LogWarning("AudioSource component missing on EnemyController. Sound will not play.");
-			}
-
-			// wait for the configured interval before playing again
-			yield return new WaitForSeconds(interval);
-		}
 	}
 
 	private IEnumerator HandleTeleport() {

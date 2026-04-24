@@ -102,6 +102,8 @@ public class PlayerData : MonoBehaviour {
 
 	private void Start() {
 		PreventMovement = !Preferences.Debug.SkipAllDialogues;
+		
+		enemyControllers = new List<EnemyController>(FindObjectsByType<EnemyController>());
 	}
 
 	#endregion
