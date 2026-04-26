@@ -28,10 +28,12 @@ public class EnemyV2 : MonoBehaviour {
 	private Collider2D coll;
 
 	//? States
-	private bool          directPath, goToLastPlayerPos;
+	private bool          directPath, goToLastPlayerPos, touchingPlayer;
 	private List<Vector3> points               = new();
 	private float         changeTargetCooldown = 0.5f, speedMult = 1f;
 	private Coroutine     chargeRoutine;
+
+	private LayerMask ignoreSomeThings;
 
 	#region Unity Functions
 
@@ -41,9 +43,12 @@ public class EnemyV2 : MonoBehaviour {
 		pointAColl          = pointA.GetComponent<Collider2D>();
 		pointBColl          = pointB.GetComponent<Collider2D>();
 		lastPlayerPointColl = lastPlayerPoint.GetComponent<Collider2D>();
+
+		ignoreSomeThings = ~LayerMask.GetMask("PathfindIgnore");
 	}
 
 	private void Update() {
+		if (chargeRoutine != null) return;
 		changeTargetCooldown -= Time.deltaTime;
 		points.Clear();
 		directPath = false;
@@ -51,6 +56,18 @@ public class EnemyV2 : MonoBehaviour {
 		CheckPlayerSight();
 		var target = goToLastPlayerPos ? lastPlayerPoint : goA ? pointA : pointB;
 		PathFindTo(target);
+	}
+
+	private void OnCollisionEnter2D(Collision2D other) {
+		if (other.gameObject.CompareTag("Player")) {
+			touchingPlayer = true;
+		}
+	}
+
+	private void OnCollisionExit2D(Collision2D other) {
+		if (other.gameObject.CompareTag("Player")) {
+			touchingPlayer = false;
+		}
 	}
 
 	#endregion
@@ -72,9 +89,10 @@ public class EnemyV2 : MonoBehaviour {
 		}
 
 		if (!playerInSight && goToLastPlayerPos &&
-		    Vector3.Distance(lastPlayerPoint.transform.position, transform.position) < 0.5f) {
+		    Vector3.Distance(lastPlayerPoint.transform.position, transform.position) <=
+		    lastPlayerPointColl.GetComponent<CircleCollider2D>().radius) {
 			goToLastPlayerPos           = false;
-			lastPlayerPointColl.enabled = true;
+			lastPlayerPointColl.enabled = false;
 		}
 	}
 
@@ -84,7 +102,7 @@ public class EnemyV2 : MonoBehaviour {
 			return;
 		}
 
-		var hit = Physics2D.Linecast(transform.position, player.transform.position);
+		var hit = Physics2D.Linecast(transform.position, player.transform.position, ignoreSomeThings);
 		DebugLine(transform.position, hit, "line", new Vector3(), player.transform.position);
 		if (!hit.collider) return;
 		playerInSight = hit.collider.gameObject.CompareTag("Player");
@@ -94,7 +112,7 @@ public class EnemyV2 : MonoBehaviour {
 			lastPlayerPointColl.enabled        = true;
 			if (chargeRoutine                                                            == null &&
 			    Vector3.Distance(lastPlayerPoint.transform.position, transform.position) < chargeRange) {
-				chargeRoutine = StartCoroutine(Charge(lastPlayerPoint.transform.position));
+				chargeRoutine = StartCoroutine(Charge(transform.position, lastPlayerPoint.transform.position));
 			}
 		}
 	}
@@ -298,16 +316,23 @@ public class EnemyV2 : MonoBehaviour {
 
 	#region Coroutines
 
-	private IEnumerator Charge(Vector3 targetPos) {
+	private IEnumerator Charge(Vector3 startPos, Vector3 targetPos) {
 		speedMult = 0;
 		yield return new WaitForSeconds(chargeTime);
 		speedMult = chargeSpeed;
+		var hasAttacked = false;
 		while (true) {
-			if (Vector3.Distance(transform.position, targetPos) < 0.1f) {
-				chargeRoutine = null;
-				yield break;
+			if (touchingPlayer) hasAttacked = true;
+			if (!hasAttacked) Vector3.MoveTowards(transform.position, targetPos, speed * Time.deltaTime * speedMult);
+			else {
+				if (Vector3.Distance(transform.position, startPos) < 0.1f) {
+					chargeRoutine = null;
+					yield break;
+				}
+
+				Vector3.MoveTowards(transform.position, startPos, speed * Time.deltaTime * speedMult);
 			}
-			Vector3.MoveTowards(transform.position, targetPos, speed * Time.deltaTime * speedMult);
+
 			yield return new WaitForEndOfFrame();
 		}
 	}

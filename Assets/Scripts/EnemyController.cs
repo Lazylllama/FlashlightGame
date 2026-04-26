@@ -74,7 +74,7 @@ public class EnemyController : MonoBehaviour {
 
 		if (flyingEnemy) rb.gravityScale = 0;
 
-		if (soundInterval > 0) StartCoroutine(SoundRoutine());
+		//if (soundInterval > 0) StartCoroutine(SoundRoutine());
 	}
 
 	private void Update() {

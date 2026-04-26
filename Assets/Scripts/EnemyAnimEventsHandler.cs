@@ -3,7 +3,7 @@ using Unity.Cinemachine;
 using UnityEngine;
 
 public class EnemyAnimEventsHandler : MonoBehaviour {
-	[SerializeField] private 
+	//[SerializeField] private 
 	
 	private CinemachineImpulseSource impulseSource;
 
@@ -15,7 +15,7 @@ public class EnemyAnimEventsHandler : MonoBehaviour {
 		impulseSource.GenerateImpulseWithForce(impulse);
 	}
 
-	public void 
+	//public void 
 	
 	public void FlapSound() {
 		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.enemyFlap, transform.position);
