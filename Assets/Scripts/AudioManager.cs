@@ -29,7 +29,9 @@ public class AudioManager : MonoBehaviour {
 
 	private readonly List<EventInstance> eventInstances = new();
 
-	private EventInstance ambienceEventInstance, musicEventInstance;
+	private EventInstance forestWindAmbience, crowAmbience, musicEventInstance, playerEventInstance, crankEventInstance;
+
+	private GameObject camControllerGameObject, playerGameObject;
 
 	#endregion
 
@@ -55,6 +57,9 @@ public class AudioManager : MonoBehaviour {
 		ambienceBus = RuntimeManager.GetBus("bus:/Ambience");
 		sfxBus      = RuntimeManager.GetBus("bus:/SFX");
 		uiBus       = RuntimeManager.GetBus("bus:/UI");
+
+		camControllerGameObject = FindAnyObjectByType<CameraController>()?.gameObject;
+		playerGameObject        = FindAnyObjectByType<PlayerController>()?.gameObject;
 	}
 
 	private void Start() {
@@ -77,8 +82,18 @@ public class AudioManager : MonoBehaviour {
 	public void GameStarted() {
 		SetMusicTrack(MusicTrack.Game);
 
-		InitializeAmbience(FMODEvents.Instance.crowsAmbience);
-		InitializeAmbience(FMODEvents.Instance.forestWindAmbience);
+		crankEventInstance = CreateInstance(FMODEvents.Instance.flashlightCrank);
+		forestWindAmbience = CreateInstance(FMODEvents.Instance.forestWindAmbience);
+		crowAmbience       = CreateInstance(FMODEvents.Instance.crowsAmbience);
+
+		crankEventInstance.start();
+		forestWindAmbience.start();
+		crowAmbience.start();
+
+		RuntimeManager.AttachInstanceToGameObject(crankEventInstance, playerGameObject);
+		RuntimeManager.AttachInstanceToGameObject(forestWindAmbience, camControllerGameObject);
+		RuntimeManager.AttachInstanceToGameObject(crowAmbience,       camControllerGameObject);
+
 
 		SetAmbienceParameter("WindIntensity",         0.2f);
 		SetAmbienceParameter("AmbienceCrowSpawnRate", 0.2f);
@@ -107,7 +122,7 @@ public class AudioManager : MonoBehaviour {
 	/// <param name="paramName">FMOD Parameter</param>
 	/// <param name="value"></param>
 	public void SetAmbienceParameter(string paramName, float value) {
-		ambienceEventInstance.setParameterByName(paramName, value);
+		RuntimeManager.StudioSystem.setParameterByName(paramName, value);
 	}
 
 	/// <summary>
@@ -116,6 +131,11 @@ public class AudioManager : MonoBehaviour {
 	/// <param name="value">float 0-1</param>
 	public void SetCrankSpeedParameter(float value) {
 		RuntimeManager.StudioSystem.setParameterByName("CrankSpeed", value);
+		var nowValue =
+			RuntimeManager.StudioSystem.getParameterByName("CrankSpeed", out var nowValueFloat) == FMOD.RESULT.OK
+				? nowValueFloat
+				: -1;
+		print("CrankSpeed is now " + nowValue + " (tried to set to " + value + ")");
 	}
 
 	/// <summary>
@@ -124,6 +144,11 @@ public class AudioManager : MonoBehaviour {
 	/// <param name="surface"></param>
 	public void SetFootstepSurface(FootstepSurface surface) {
 		RuntimeManager.StudioSystem.setParameterByName("FootstepSurface", (int)surface);
+		var nowValue =
+			RuntimeManager.StudioSystem.getParameterByName("FootstepSurface", out var nowValueFloat) == FMOD.RESULT.OK
+				? nowValueFloat
+				: -1;
+		print("Footstep surface is now " + nowValue + " (tried to set to " + surface + ")");
 	}
 
 	/// <summary>
@@ -175,10 +200,6 @@ public class AudioManager : MonoBehaviour {
 		}
 	}
 
-	private void InitializeAmbience(EventReference ambienceEvent) {
-		ambienceEventInstance = CreateInstance(ambienceEvent);
-		ambienceEventInstance.start();
-	}
 
 	private void InitializeMusic(EventReference musicEvent) {
 		musicEventInstance = CreateInstance(musicEvent);

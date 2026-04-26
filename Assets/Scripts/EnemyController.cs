@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using FlashlightGame;
+using FMODUnity;
 using Unity.Mathematics;
 
 public class EnemyController : MonoBehaviour {
@@ -19,14 +20,15 @@ public class EnemyController : MonoBehaviour {
 	[SerializeField] private Transform lookPosition,   groundCheck, borderLeft, borderRight;
 	[SerializeField] private LayerMask groundLayer;
 
-	[Header("Sound")]
-	[SerializeField] private string animatorName;
-	[SerializeField] private float     soundInterval;
-	[SerializeField] private AudioClip flap;
+	[Header("Animation/SFX Sync")]
+	[SerializeField] private EventReference sfxEvent;
+	[SerializeField] private string animatorParameterName;
+	[SerializeField] private float  syncInterval;
+
 
 	[Header("Teleport Settings")]
 	[SerializeField] private float teleportCooldown = 1.2f;
-	
+
 	[Header("Slow Down")]
 	[SerializeField] private float slowDistance = 2f;
 	[SerializeField] private float slowFactor = 0.5f;
@@ -36,16 +38,15 @@ public class EnemyController : MonoBehaviour {
 
 	//* States
 	private Collider2D capsuleCollider;
-	private Material          material;
-	private AudioSource       audioSource;
-	private Animator          animator;
-	private Vector2?          target;
-	private Vector3           teleportPoint, pathFindPoint, borderLeftPos, borderRightPos, spawnPoint;
-	private float             health,        enemySpeed;
-	private bool              canTeleport;
-	private int               playerCollisionCount;
-	private bool              collidingWithPlayer;
-	private Coroutine         teleportRoutineState, pathfindingRoutineState, deathHandlerRoutineState;
+	private Material material;
+	private Animator animator;
+	private Vector2? target;
+	private Vector3 teleportPoint, pathFindPoint, borderLeftPos, borderRightPos, spawnPoint;
+	private float health, enemySpeed;
+	private bool canTeleport;
+	private int playerCollisionCount;
+	private bool collidingWithPlayer;
+	private Coroutine teleportRoutineState, pathfindingRoutineState, deathHandlerRoutineState, animationSfxRoutineState;
 
 	#endregion
 
@@ -61,20 +62,17 @@ public class EnemyController : MonoBehaviour {
 	}
 
 	private void Start() {
+		animator        = GetComponent<Animator>();
 		rb              = GetComponent<Rigidbody2D>();
-		audioSource     = GetComponent<AudioSource>();
-		animator        = GetComponentInChildren<Animator>();
+		capsuleCollider = GetComponent<Collider2D>();
+		material        = GetComponent<SpriteRenderer>().material;
 		health          = maxHealth;
 		enemySpeed      = baseSpeed;
-		borderLeftPos    = borderLeft.position;
+		borderLeftPos   = borderLeft.position;
 		borderRightPos  = borderRight.position;
 		spawnPoint      = transform.position;
-		capsuleCollider = GetComponent<Collider2D>();
-		material        = GetComponentInChildren<SpriteRenderer>().material;
 
 		if (flyingEnemy) rb.gravityScale = 0;
-
-		if (soundInterval > 0) StartCoroutine(SoundRoutine());
 	}
 
 	private void Update() {
@@ -83,6 +81,7 @@ public class EnemyController : MonoBehaviour {
 		if (!CheckBorder()) {
 			CheckForTarget();
 		}
+
 		TurnEnemy();
 		CheckMantleWall();
 		CheckWall();
@@ -93,10 +92,9 @@ public class EnemyController : MonoBehaviour {
 			Respawn();
 		}
 
-		if (collidingWithPlayer && !PlayerData.Instance.IsInvulnerable) {
-			PlayerData.Instance.UpdateHealth(-20);
-			animator.SetTrigger(Attack);
-		}
+		AttemptAttack();
+
+		animationSfxRoutineState ??= StartCoroutine(AnimationSfxSyncRoutine());
 	}
 
 	private void FixedUpdate() {
@@ -105,17 +103,25 @@ public class EnemyController : MonoBehaviour {
 	}
 
 	private void OnCollisionEnter2D(Collision2D other) {
-		if (other.gameObject != null && other.gameObject.CompareTag("Player")) {
-			playerCollisionCount++;
-			collidingWithPlayer = playerCollisionCount > 0;
-		}
+		if (other.gameObject == null || !other.gameObject.CompareTag("Player")) return;
+		playerCollisionCount++;
+		collidingWithPlayer = playerCollisionCount > 0;
 	}
 
 	private void OnCollisionExit2D(Collision2D other) {
-		if (other.gameObject != null && other.gameObject.CompareTag("Player")) {
-			playerCollisionCount = Mathf.Max(0, playerCollisionCount - 1);
-			collidingWithPlayer  = playerCollisionCount > 0;
-		}
+		if (other.gameObject == null || !other.gameObject.CompareTag("Player")) return;
+		playerCollisionCount = Mathf.Max(0, playerCollisionCount - 1);
+		collidingWithPlayer  = playerCollisionCount > 0;
+	}
+
+	private void AttemptAttack() {
+		if (!collidingWithPlayer || PlayerData.Instance.IsInvulnerable) return;
+		animator.SetTrigger(Attack);
+	}
+
+	public void TryDealDamageToPlayer() {
+		if (!collidingWithPlayer || PlayerData.Instance.IsInvulnerable) return;
+		PlayerData.Instance.UpdateHealth(-20);
 	}
 
 	#endregion
@@ -221,7 +227,6 @@ public class EnemyController : MonoBehaviour {
 		transform.localScale = facingRight ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1);
 	}
 
-	
 
 	public void UpdateHealth(float amount) {
 		health -= amount;
@@ -260,10 +265,18 @@ public class EnemyController : MonoBehaviour {
 		isChasing                = false;
 		collidingWithPlayer      = false;
 		playerCollisionCount     = 0;
+
 		material.SetFloat(Fade, 1f);
+		foreach (var spriteRenderer in GetComponentsInChildren<SpriteRenderer>()) {
+			if (!spriteRenderer.material || !spriteRenderer.material.HasFloat(Fade)) return;
+			spriteRenderer.material.SetFloat(Fade, 1f);
+		}
+
 		capsuleCollider.enabled = true;
 		rb.bodyType             = RigidbodyType2D.Dynamic;
 		animator.SetBool(IsWalking, true);
+
+		animationSfxRoutineState ??= StartCoroutine(AnimationSfxSyncRoutine());
 	}
 
 	private void OnDrawGizmos() {
@@ -285,6 +298,10 @@ public class EnemyController : MonoBehaviour {
 		animator.SetBool(IsWalking, false);
 		for (float fade = 1; fade > 0; fade -= Time.deltaTime / 2) {
 			material.SetFloat(Fade, fade);
+			foreach (var rendered in GetComponentsInChildren<SpriteRenderer>()) {
+				rendered.material.SetFloat(Fade, fade);
+			}
+
 			yield return new WaitForEndOfFrame();
 		}
 
@@ -318,6 +335,17 @@ public class EnemyController : MonoBehaviour {
 		}
 
 		pathfindingRoutineState = null;
+	}
+
+	private IEnumerator AnimationSfxSyncRoutine() {
+		if (syncInterval <= 0 || sfxEvent.IsNull || animatorParameterName.Length <= 0) yield break;
+
+		while (health > 0) {
+			RuntimeManager.PlayOneShot(sfxEvent, transform.position);
+			animator.SetTrigger(animatorParameterName);
+
+			yield return new WaitForSeconds(syncInterval);
+		}
 	}
 
 	#endregion

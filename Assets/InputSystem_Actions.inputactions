@@ -16,21 +16,21 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "FlashlightDirection",
+                    "type": "Value",
+                    "id": "81bcb5c9-29b2-447c-9153-a2cd2ff9f1ad",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "Mantle",
                     "type": "Button",
                     "id": "852140f2-7766-474d-8707-702459ba45f3",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "Hold",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "CrankKeyboard",
-                    "type": "Button",
-                    "id": "f1ba0d36-48eb-4cd5-b651-1c94a6531f70",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
                     "initialStateCheck": false
                 },
                 {
@@ -124,13 +124,13 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "FlashlightDirection",
-                    "type": "Value",
-                    "id": "81bcb5c9-29b2-447c-9153-a2cd2ff9f1ad",
-                    "expectedControlType": "Vector2",
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "2c5fc478-69bd-4bc0-a28f-be9d5c259341",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -279,17 +279,6 @@
                 },
                 {
                     "name": "",
-                    "id": "eb40bb66-4559-4dfa-9a2f-820438abb426",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "CrankKeyboard",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "890c619f-aac5-4c26-b3d2-857f838be2c8",
                     "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
@@ -301,11 +290,33 @@
                 },
                 {
                     "name": "",
+                    "id": "50f0f72d-c089-49c8-8d2a-5fb594f8a997",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "CrankLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "d6541eb2-638a-48fd-a013-566c953db41e",
                     "path": "<Gamepad>/rightTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
+                    "action": "CrankRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5a4a1e43-934b-44cd-8677-f109fc094038",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
                     "action": "CrankRight",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -324,7 +335,7 @@
                 {
                     "name": "",
                     "id": "db30ea7e-54ac-4fcc-b5d6-ce249fe76726",
-                    "path": "<Gamepad>/leftStick/up",
+                    "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
@@ -434,7 +445,7 @@
                 {
                     "name": "",
                     "id": "d8ab184c-808b-4bc3-9035-45f0ad5514f7",
-                    "path": "<Gamepad>/dpad/right",
+                    "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
@@ -450,6 +461,28 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "FlashlightDirection",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ce47a58e-962c-4ec5-a074-201c3774d18d",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7189019d-a147-439b-90a8-fa3dc40d1939",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

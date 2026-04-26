@@ -102,7 +102,7 @@ public class PlayerData : MonoBehaviour {
 
 	private void Start() {
 		PreventMovement = !Preferences.Debug.SkipAllDialogues;
-		
+
 		enemyControllers = new List<EnemyController>(FindObjectsByType<EnemyController>());
 	}
 
@@ -152,6 +152,7 @@ public class PlayerData : MonoBehaviour {
 		} else {
 			// First crank: set a small baseline crank speed
 			CrankSpeed = 0.1f;
+			AudioManager.Instance.SetCrankSpeedParameter(CrankSpeed);
 			AudioManager.Instance.PlayOneShot(FMODEvents.Instance.flashlightCrank);
 		}
 

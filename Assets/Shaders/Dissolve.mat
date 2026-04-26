@@ -46,7 +46,7 @@ Material:
     - _Outline: 0.041
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Scale: 14.3
+    - _Scale: 8
     m_Colors:
     - White: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 0.48200053, b: 0, a: 0}

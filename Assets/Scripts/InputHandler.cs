@@ -14,14 +14,14 @@ public partial class InputHandler : MonoBehaviour {
 	//? ONLY ADD TO END OR YOU ARE THE ONE REMAPPING ALL THE INPUTS AFTERWARD!
 	public enum InputActions {
 		ToggleFlashlight,    // Button North / Y / Triangle / F (keyboard)
-		ToggleModeLeft,      // LEFT TOP BUTTON / LB / L1
-		ToggleModeRight,     // RIGHT TOP BUTTON / RB / R1
+		ToggleModeLeft,      // LB / L1
+		ToggleModeRight,     // RB / R1
 		Flashlight1,         // 1
 		Flashlight2,         // 2
 		Mantle,              // Button West / X / Square / W (keyboard)
-		CrankKeyboard,       // Space
-		CrankLeft,           // LEFT TRIGGER / LT / L2
-		CrankRight,          // RIGHT TRIGGER / RT / R2
+		Jump,                // Button South / Space
+		CrankLeft,           // LT / L2 / Left MB
+		CrankRight,          // RT / R2 / Right MB
 		NextSentence,        // Button South / A / Cross / Enter (keyboard)
 		Interact,            // Button South / A / Cross / E (keyboard)
 		Leap,                // Button West / [NONE] / [NONE] / Left Shift (keyboard) [Prelimiary, maybe change soon]
@@ -222,18 +222,15 @@ public partial class InputHandler : MonoBehaviour {
 					if (PlayerData.Instance.PreventMovement) return;
 					PlayerMovement.Instance.Mantle();
 					break;
-				case InputActions.CrankKeyboard:
-					if (PlayerData.Instance.PreventMovement) return;
-					PlayerData.Instance.Crank();
-					break;
 				case InputActions.CrankLeft or InputActions.CrankRight:
 					if (PlayerData.Instance.PreventMovement) return;
-					if (!PlayerData.Instance.IsCranking) StartCoroutine(HandleCrankVibrationSequence());
+					if (!PlayerData.Instance.IsCranking) InputVibrationFeedback(true);
 					PlayerData.Instance.Crank(kvp.Key == InputActions.CrankRight);
 					if (TutorialHandler.Instance.activeTutorialObjectIndex == 2 &&
 					    TutorialHandler.Instance.isTutorialActive) {
 						TutorialHandler.Instance.HideTutorial();
 					}
+
 					break;
 				case InputActions.Interact:
 				case InputActions.Leap:
@@ -246,10 +243,10 @@ public partial class InputHandler : MonoBehaviour {
 		}
 	}
 
-	private void InputVibrationFeedback() {
+	private void InputVibrationFeedback(bool crank = false) {
 		if (CurrentInputType == Lib.InputType.KeyboardMouse || !Gamepad.current.enabled ||
 		    !Preferences.Input.EnableGamepadVibration) return;
-		StartCoroutine(HandleVibrationSequence());
+		StartCoroutine(crank ? HandleCrankVibrationSequence() : HandleVibrationSequence());
 	}
 
 	private static void RegisterInstance(InputHandler instance) {
@@ -280,7 +277,6 @@ public partial class InputHandler : MonoBehaviour {
 
 		while (!PlayerData.Instance.IsCranking) yield return null;
 		while (PlayerData.Instance.IsCranking) {
-			print("Is cranking");
 			var multiplier = PlayerData.Instance.CrankSpeed;
 			Gamepad.current.SetMotorSpeeds(Math.Clamp(multiplier / 4, 0f, 1f), Math.Clamp(multiplier / 10, 0f, 1f));
 			yield return new WaitForSeconds(0.1f);

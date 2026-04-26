@@ -16,7 +16,7 @@ namespace FlashlightGame {
 
 		private static LayerMask BoxLayerMask        => LayerMask.GetMask("Box");
 		private static LayerMask GroundLayerMask     => LayerMask.GetMask("Ground", "Box");
-		private static LayerMask MantleWallLayerMask => LayerMask.GetMask("MantleWall");
+		private static LayerMask MantleWallLayerMask => LayerMask.GetMask("MantleWall", "Box");
 
 		//* Refs
 		private static bool GizmosEnabled => true;

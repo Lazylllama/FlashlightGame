@@ -19412,7 +19412,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 1.0666667
-    functionName: CameraImpulse
+    functionName: BearAttack
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0.1
