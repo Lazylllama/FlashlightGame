@@ -18,13 +18,13 @@ public partial class InputHandler : MonoBehaviour {
 		ToggleModeRight,     // RB / R1
 		Flashlight1,         // 1
 		Flashlight2,         // 2
-		Mantle,              // Button West / X / Square / W (keyboard)
+		Climb,               // Button West / X / Square / W (keyboard)
 		Jump,                // Button South / Space
 		CrankLeft,           // LT / L2 / Left MB
 		CrankRight,          // RT / R2 / Right MB
 		NextSentence,        // Button South / A / Cross / Enter (keyboard)
 		Interact,            // Button South / A / Cross / E (keyboard)
-		Leap,                // Button West / [NONE] / [NONE] / Left Shift (keyboard) [Prelimiary, maybe change soon]
+		Leap,                // [NONE] / [NONE] / [NONE] / Left Shift (keyboard) [Prelimiary, maybe change soon]
 		FlashlightDirection, // Right Stick 2D Vector
 		Move,                // Left Stick 2D Vector / WASD 2D Vector (keyboard)
 	}
@@ -218,9 +218,9 @@ public partial class InputHandler : MonoBehaviour {
 					InputVibrationFeedback();
 					ConversationHandler.Instance.pressedProceed = true;
 					break;
-				case InputActions.Mantle:
+				case InputActions.Climb:
 					if (PlayerData.Instance.PreventMovement) return;
-					PlayerMovement.Instance.Mantle();
+					PlayerMovement.Instance.TryClimb();
 					break;
 				case InputActions.CrankLeft or InputActions.CrankRight:
 					if (PlayerData.Instance.PreventMovement) return;

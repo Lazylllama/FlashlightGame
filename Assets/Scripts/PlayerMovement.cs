@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using FlashlightGame;
 using Sirenix.OdinInspector;
 
@@ -16,11 +15,11 @@ public class PlayerMovement : MonoBehaviour {
 	private static readonly int WalkingDirection = Animator.StringToHash("walkingDirection");
 	private static readonly int IsFalling        = Animator.StringToHash("isFalling");
 	private static readonly int HasFlashlight    = Animator.StringToHash("hasFlashlight");
+	private static readonly int StartClimb       = Animator.StringToHash("startClimb");
 
 	//* Refs
 	private Rigidbody2D playerRb;
-	//private ParticleController particleController;
-	private Animator playerAnimator;
+	private Animator    playerAnimator;
 
 	//? Aiming right and walking left will cause the player to walk blindly/backwards.
 	private static bool IsLookingRight => PlayerData.Instance && PlayerData.Instance.IsLookingRight;
@@ -55,7 +54,7 @@ public class PlayerMovement : MonoBehaviour {
 	//* States
 	[ReadOnly] [SerializeField] public  AudioManager.FootstepSurface currentSurface;
 	[ReadOnly] [SerializeField] private Vector2                      moveInputVal;
-	private                             bool                         isGrounded, canMantle;
+	private                             bool                         isGrounded;
 	private                             Coroutine                    mantleRoutineState;
 	private                             Vector2                      lastPosition;
 
@@ -73,10 +72,10 @@ public class PlayerMovement : MonoBehaviour {
 
 		lastPosition = transform.position;
 	}
-	
+
 	private void Awake() {
 		RegisterInstance(this);
-		
+
 		//? Required in other start functions
 		playerRb       = GetComponent<Rigidbody2D>();
 		playerAnimator = GetComponentInChildren<Animator>();
@@ -122,10 +121,8 @@ public class PlayerMovement : MonoBehaviour {
 
 	private void RaycastChecks() {
 		var groundCheckHit = Lib.Movement.GroundCheck(groundCheckPosition.position, groundCheckRadius);
-		var mantleCheckHit = Lib.Movement.MantleWallCheck(headLevelPosition.position, IsWalkingRight);
 
 		isGrounded = groundCheckHit;
-		canMantle  = mantleCheckHit.collider;
 
 		if (!groundCheckHit && !Lib.Movement.WallCheck(gameObject.transform.position, IsWalkingRight).collider) {
 			playerAnimator.SetBool(IsFalling, true);
@@ -181,19 +178,28 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Called by InputHandler, attempts to mantle.
-	/// </summary>
-	public void Mantle() {
-		Debug.LogKv("Mantle", DebugLevel.Debug, "isGrounded", isGrounded.ToString(), "canMantle", canMantle.ToString());
-
-		if (!isGrounded || !canMantle || mantleRoutineState != null) return;
-		mantleRoutineState = StartCoroutine(MantleRoutine());
-	}
-
-	/// <summary>
 	/// Set flashlight to true in animator.
 	/// </summary>
 	public void PickupFlashlight() => playerAnimator.SetBool(HasFlashlight, true);
+
+	/// <summary>
+	/// Tries to climb the object in front
+	/// </summary>
+	public void TryClimb() {
+		var mantleCheckHit = Lib.Movement.MantleWallCheck(headLevelPosition.position, IsWalkingRight);
+		if (!mantleCheckHit.collider || !PlayerData.Instance.FlashlightModesUnlocked[1]) return;
+
+		PlayerData.Instance.PreventMovement = true;
+		playerAnimator.SetTrigger(StartClimb);
+	}
+
+	/// <summary>
+	/// Teleports the actual player to where the animation stopped and allows momvent
+	/// </summary>
+	public void ClimbAnimationFinished() {
+		transform.position                  += new Vector3(1.631f, 2.429f) + new Vector3(0.7f, 0.7f);
+		PlayerData.Instance.PreventMovement =  false;
+	}
 
 	#endregion
 

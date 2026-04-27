@@ -25,7 +25,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Mantle",
+                    "name": "Climb",
                     "type": "Button",
                     "id": "852140f2-7766-474d-8707-702459ba45f3",
                     "expectedControlType": "",
@@ -268,17 +268,6 @@
                 },
                 {
                     "name": "",
-                    "id": "053e1ed6-a4ab-4de4-85d6-6e4a7987496f",
-                    "path": "<Gamepad>/buttonWest",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Gamepad",
-                    "action": "Leap",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "890c619f-aac5-4c26-b3d2-857f838be2c8",
                     "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
@@ -328,7 +317,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Mantle",
+                    "action": "Climb",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -339,7 +328,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "Mantle",
+                    "action": "Climb",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

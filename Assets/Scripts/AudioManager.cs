@@ -135,7 +135,6 @@ public class AudioManager : MonoBehaviour {
 			RuntimeManager.StudioSystem.getParameterByName("CrankSpeed", out var nowValueFloat) == FMOD.RESULT.OK
 				? nowValueFloat
 				: -1;
-		print("CrankSpeed is now " + nowValue + " (tried to set to " + value + ")");
 	}
 
 	/// <summary>
@@ -148,7 +147,6 @@ public class AudioManager : MonoBehaviour {
 			RuntimeManager.StudioSystem.getParameterByName("FootstepSurface", out var nowValueFloat) == FMOD.RESULT.OK
 				? nowValueFloat
 				: -1;
-		print("Footstep surface is now " + nowValue + " (tried to set to " + surface + ")");
 	}
 
 	/// <summary>
