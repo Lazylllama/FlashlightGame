@@ -42,11 +42,16 @@ public class WallManager : MonoBehaviour {
 		}
 
 		yield return new WaitForSeconds(2f);
-
+		
+		AstarManager.Instance.UpdateAndDisableBounds(unbroken.GetComponent<Collider2D>());
+		AstarManager.Instance.UpdateAndDisableBounds(hitCollider);
+		
 		unbroken.SetActive(false);
 		broken.SetActive(true);
+		
+		
 
-		hitCollider.enabled = false;
+		
 		enabled             = false;
 	}
 }

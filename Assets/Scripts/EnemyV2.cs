@@ -34,6 +34,9 @@ public class EnemyV2 : MonoBehaviour {
 	private Coroutine     chargeRoutine;
 
 	private LayerMask ignoreSomeThings;
+	
+	//? Instance
+	private EnemyV2 instance;
 
 	#region Unity Functions
 
@@ -45,6 +48,10 @@ public class EnemyV2 : MonoBehaviour {
 		lastPlayerPointColl = lastPlayerPoint.GetComponent<Collider2D>();
 
 		ignoreSomeThings = ~LayerMask.GetMask("PathfindIgnore");
+
+		if (instance == null) {
+			instance = this;
+		}
 	}
 
 	private void Update() {

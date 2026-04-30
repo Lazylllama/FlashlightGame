@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using FlashlightGame;
 using FMODUnity;
+using Pathfinding;
 using Unity.Mathematics;
 
 public class EnemyController : MonoBehaviour {
@@ -16,7 +17,7 @@ public class EnemyController : MonoBehaviour {
 
 	[Header("Enemy Options")]
 	[SerializeField] private bool isGrounded, isChasing, facingRight, flyingEnemy;
-	[SerializeField] private float     detectionRange, baseSpeed,   maxHealth,  floatHeight;
+	[SerializeField] private float     detectionRange, baseSpeed,   maxHealth,  floatHeight, startPathfindDistance;
 	[SerializeField] private Transform lookPosition,   groundCheck, borderLeft, borderRight;
 	[SerializeField] private LayerMask groundLayer;
 
@@ -60,46 +61,60 @@ public class EnemyController : MonoBehaviour {
 	private void Awake() {
 		Debug = new DebugHandler("EnemyController");
 	}
+	
+	private void OnEnable() {
+		Debug.Log($"{name} OnEnable");
+	}
 
 	private void Start() {
-		animator        = GetComponent<Animator>();
+		Debug.Log($"{name} Start");
+		if(flyingEnemy) animator        = GetComponent<Animator>();
+		else animator = GetComponentInChildren<Animator>();
 		rb              = GetComponent<Rigidbody2D>();
 		capsuleCollider = GetComponent<Collider2D>();
-		material        = GetComponent<SpriteRenderer>().material;
+		if (flyingEnemy) material        = GetComponent<SpriteRenderer>().material;
+		else material = GetComponentInChildren<SpriteRenderer>().material;
 		health          = maxHealth;
 		enemySpeed      = baseSpeed;
+		print(borderLeft.position + " "+ borderRight.position);
 		borderLeftPos   = borderLeft.position;
 		borderRightPos  = borderRight.position;
+		print($"{name} START borderLeftPos: {borderLeftPos}");
 		spawnPoint      = transform.position;
 
 		if (flyingEnemy) rb.gravityScale = 0;
 	}
 
 	private void Update() {
-		if (deathHandlerRoutineState != null) return;
-		isGrounded = Lib.Movement.GroundCheck(groundCheck.position, 0.2f);
-		if (!CheckBorder()) {
-			CheckForTarget();
+		if (!flyingEnemy) {
+			if (deathHandlerRoutineState != null) return;
+			isGrounded = Lib.Movement.GroundCheck(groundCheck.position, 0.2f);
+			if (!CheckBorder()) {
+				CheckForTarget();
+			}
+
+			TurnEnemy();
+			CheckMantleWall();
+			CheckWall();
+			LedgeCheck();
+
+			if (shouldRespawn) {
+				Respawn();
+			}
+
+			AttemptAttack();
+
+			animationSfxRoutineState ??= StartCoroutine(AnimationSfxSyncRoutine());
+		} else {
+			if (Vector3.Distance(transform.position, PlayerData.Instance.gameObject.transform.position) <
+			    startPathfindDistance) GetComponent<AIPath>().canMove = true;
 		}
-
-		TurnEnemy();
-		CheckMantleWall();
-		CheckWall();
-		if (!flyingEnemy) LedgeCheck();
-		if (flyingEnemy) CheckFloatHeight();
-
-		if (shouldRespawn) {
-			Respawn();
-		}
-
-		AttemptAttack();
-
-		animationSfxRoutineState ??= StartCoroutine(AnimationSfxSyncRoutine());
+		TryDealDamageToPlayer();
 	}
 
 	private void FixedUpdate() {
 		if (deathHandlerRoutineState != null) return;
-		ChaseTarget();
+		if(!flyingEnemy) ChaseTarget();
 	}
 
 	private void OnCollisionEnter2D(Collision2D other) {
@@ -131,9 +146,13 @@ public class EnemyController : MonoBehaviour {
 	private bool CheckBorder() {
 		if (transform.position.x < borderLeftPos.x) {
 			facingRight = true;
+			print($"{name} CHECK borderLeftPos: {borderLeftPos}");
 			return true;
-		} else if (transform.position.x > borderRightPos.x) {
+		} 
+		if (transform.position.x > borderRightPos.x) {
 			facingRight = false;
+			print(borderRightPos);
+			print($"{name} CHECK borderLeftPos: {borderLeftPos}");
 			return true;
 		}
 
@@ -154,8 +173,10 @@ public class EnemyController : MonoBehaviour {
 			enemySpeed = baseSpeed;
 			if (facingRight && isGrounded) {
 				facingRight = false;
+				print("Changed facingRight here!");
 			} else if (!facingRight && isGrounded) {
 				facingRight = true;
+				print("Changed facingRight here!");
 			}
 		}
 	}
@@ -282,6 +303,9 @@ public class EnemyController : MonoBehaviour {
 	private void OnDrawGizmos() {
 		Gizmos.color = Color.green;
 		Gizmos.DrawWireSphere(transform.position, detectionRange);
+		Gizmos.color = Color.purple;
+		Gizmos.DrawWireSphere(transform.position, startPathfindDistance);
+		Gizmos.color = Color.red;
 
 		if (!canTeleport) return;
 		Gizmos.DrawSphere(teleportPoint, 0.15f);
