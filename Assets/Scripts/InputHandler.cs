@@ -200,7 +200,7 @@ public partial class InputHandler : MonoBehaviour {
 					PlayerData.Instance.HandleFlashlightModeChange(kvp.Key == InputActions.ToggleModeRight);
 					if (TutorialHandler.Instance.activeTutorialObjectIndex == 1 &&
 					    TutorialHandler.Instance.isTutorialActive) {
-						TutorialHandler.Instance.ShowTutorial(4);
+						TutorialHandler.Instance.ShowTutorial(3);
 					}
 
 					break;
@@ -209,7 +209,7 @@ public partial class InputHandler : MonoBehaviour {
 					PlayerData.Instance.HandleFlashlightModeChange(kvp.Key == InputActions.Flashlight2 ? 2 : 1);
 					if (TutorialHandler.Instance.activeTutorialObjectIndex == 1 &&
 					    TutorialHandler.Instance.isTutorialActive) {
-						TutorialHandler.Instance.ShowTutorial(4);
+						TutorialHandler.Instance.ShowTutorial(3);
 					}
 
 					break;

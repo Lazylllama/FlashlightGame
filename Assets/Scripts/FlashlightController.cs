@@ -162,7 +162,7 @@ public class FlashlightController : MonoBehaviour {
 	}
 
 	private void LateUpdate() {
-		UpdateFlashlightPosition();
+		if (!PlayerData.Instance.PreventMovement) UpdateFlashlightPosition();
 		if (!FlashlightEnabled) return;
 		CheckForEnemy();
 		if (equippedFlashlight == laserPreset) LaserLightRay();
@@ -528,6 +528,7 @@ public class FlashlightController : MonoBehaviour {
 		foreach (var hit in hitList) {
 			switch (hit.Key.gameObject.tag) {
 				case "Enemy":
+					if (PlayerData.Instance.FlashlightMode == 2) return;
 					hit.Key.gameObject.GetComponent<EnemyController>().UpdateHealth(hit.Value / (float)rayAmount);
 					break;
 				case "WeakPoint":

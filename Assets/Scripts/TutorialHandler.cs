@@ -41,7 +41,6 @@ public class TutorialHandler : MonoBehaviour {
 	}
 
 	public void HideTutorial() {
-		print("hide tutorial");
 		if (!isTutorialActive) return;
 		isTutorialActive = false;
 		tutorialObjects[activeTutorialObjectIndex].SetActive(false);

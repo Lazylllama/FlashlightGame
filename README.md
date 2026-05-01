@@ -1,14 +1,32 @@
 <img width="920" height="430" alt="library_header png" src="https://github.com/user-attachments/assets/3352169f-617d-49ea-8aa9-3397b223cbb6" />
 
-# FlashlightGame
+# Fallen Scout (FlashlightGame)
+<a href="https://store.steampowered.com/app/2306440/Fallen_Scout/">
+<img width="245" height="93" alt="wishlist on steam" src="https://i.imgur.com/ZXJ5uEx.png" /></a>
+<br><br>
 
 > [!IMPORTANT]
 > Running on Unity Editor v6000.4.1f1
 
+## Game Description
+***Fallen Scout*** *is a cozy yet mysterious 2D adventure about a tiny scout who took one wrong step and came tumbling down a cliff. Now stranded in a forest laid in shadow, that definitely didn't look this creepy from up there, he now must find his way through the darkness armed with nothing but courage, determination, and a surprisingly powerful flashlight.*
+
+The forest has been swallowed by shadow, and the things lurking in it are not friendly. Brutes that block your path, cat-like creatures that watch you from the bushes, and bat-things that dive from above. Lucky for you, they all share one weakness: they really, really hate light. Point your flashlight at them to slow them down, and keep it on them long enough to melt them into nothing. Just don't let them get too close.
+
+Features:
+- Use your flashlight to slow and melt shadow enemies
+- Face off against three enemy types: big, sneaky, and flying
+- Solve environmental and light-based puzzles to progress
+- Discover hidden secrets and collectibles
+- Stunning 2D art no matter where you look
+- A complete story-driven adventure
+
+*Made with <3 (and Unity) by Fallen Interactive*
+
 ## Audio Assets
 > [!IMPORTANT]
 > Many audio assets are **NOT** included in this repository due to licensing restrictions on the audio, hence the FMOD project is in a separate repository. The game is able to run without this project just from the build folder (/BanksFMOD), but if you want to get your hands on theese audio files, see credits!
-  
+
 ## Generative AI/LLM Disclaimer
 > [!NOTE]
 > This repository **does** contain traces of partially AI generated content, see below for detailed specifics. But more or less, we've just reject anything fully genereated by AI cause most of it is garbage and instead we opted to use code completions.
@@ -17,7 +35,7 @@
     - Graphics and Art
     - Sounds and Music
     - Dialogue and Story
- 
+
 - The repository **DOES** contain content partially generated scripts by AI in the form of:
     - [JetBrains AI Code-completion in Rider](https://www.jetbrains.com/help/ai-assistant/code-completion.html#configure-cloud-completion)
 

@@ -317,6 +317,7 @@ public class UIController : MonoBehaviour {
 	private IEnumerator GameStartSequence() {
 		yield return new WaitForSecondsRealtime(1f);
 		AudioManager.Instance.GameStarted();
+		SaveController.Instance.SaveGameBackend();
 		SwitchToGameCams();
 		yield return null;
 	}

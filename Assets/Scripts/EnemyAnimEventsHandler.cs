@@ -9,7 +9,7 @@ public class EnemyAnimEventsHandler : MonoBehaviour {
 
 	private void Start() {
 		impulseSource   = GetComponent<CinemachineImpulseSource>();
-		enemyController = GetComponent<EnemyController>();
+		enemyController = GetComponentInParent<EnemyController>() ;
 		playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
 	}
 

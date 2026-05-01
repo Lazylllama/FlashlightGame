@@ -187,7 +187,8 @@ public class PlayerMovement : MonoBehaviour {
 	/// </summary>
 	public void TryClimb() {
 		var mantleCheckHit = Lib.Movement.MantleWallCheck(headLevelPosition.position, IsWalkingRight);
-		if (!mantleCheckHit.collider || !PlayerData.Instance.FlashlightModesUnlocked[1]) return;
+		if (!mantleCheckHit.collider || !PlayerData.Instance.FlashlightModesUnlocked[1] ||
+		    PlayerData.Instance.PreventMovement) return;
 
 		PlayerData.Instance.PreventMovement = true;
 		playerAnimator.SetTrigger(StartClimb);
@@ -197,8 +198,15 @@ public class PlayerMovement : MonoBehaviour {
 	/// Teleports the actual player to where the animation stopped and allows momvent
 	/// </summary>
 	public void ClimbAnimationFinished() {
-		transform.position                  += new Vector3(1.631f, 2.429f) + new Vector3(0.7f, 0.7f);
-		PlayerData.Instance.PreventMovement =  false;
+		if (IsLookingRight) {
+			transform.position += new Vector3(1.631f, 2.429f) + new Vector3(0.7f, 0.7f);
+		} else {
+			transform.position += new Vector3(-1.631f, 2.429f) + new Vector3(-0.7f, 0.7f);
+		}
+
+		if (TutorialHandler.Instance.activeTutorialObjectIndex == 3 && TutorialHandler.Instance.isTutorialActive)
+			TutorialHandler.Instance.ShowTutorial(4);
+		PlayerData.Instance.PreventMovement = false;
 	}
 
 	#endregion

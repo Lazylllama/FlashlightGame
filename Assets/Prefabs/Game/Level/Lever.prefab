@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8062180101155606000}
   - component: {fileID: 6314889081899499238}
   - component: {fileID: 8211631729780635022}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Lever
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -131,12 +131,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf88e7fb406699349b5afa2211cbb1b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Lever
-  id: test
+  id: first
   rotatingPart: {fileID: 4848335434074341943}
   maxDist: 5
   rotationAngle: 30
   rotationSpeed: 0.5
-  onDuration: 2
 --- !u!1 &4848335434074341943
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,7 +145,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2221366615458483273}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: bone_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -178,7 +177,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4693664966771122698}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: bone_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -213,7 +212,7 @@ GameObject:
   - component: {fileID: 7333311631514774496}
   - component: {fileID: 4193691013939565466}
   - component: {fileID: 4851687186380945131}
-  m_Layer: 17
+  m_Layer: 14
   m_Name: InputIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -319,7 +318,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2025066382482378283}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: bone_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -350,7 +349,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7410520518403267844}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: bone_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}

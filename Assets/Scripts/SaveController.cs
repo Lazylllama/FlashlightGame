@@ -86,6 +86,14 @@ public class SaveController : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Set the checkpoint position to the player's current position and save the game.
+	/// </summary>
+	public void GameStart() {
+		PlayerData.Instance.CheckpointPosition = CachePlayer().transform.position;
+		SaveGameBackend();
+	}
+
+	/// <summary>
 	/// You probably don't want to call this. Try UIController.Instance.SaveGame() instead...
 	/// </summary>
 	public void SaveGameBackend() {

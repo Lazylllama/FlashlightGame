@@ -61,26 +61,24 @@ public class EnemyController : MonoBehaviour {
 	private void Awake() {
 		Debug = new DebugHandler("EnemyController");
 	}
-	
+
 	private void OnEnable() {
 		Debug.Log($"{name} OnEnable");
 	}
 
 	private void Start() {
 		Debug.Log($"{name} Start");
-		if(flyingEnemy) animator        = GetComponent<Animator>();
-		else animator = GetComponentInChildren<Animator>();
+		if (flyingEnemy) animator = GetComponent<Animator>();
+		else animator             = GetComponentInChildren<Animator>();
 		rb              = GetComponent<Rigidbody2D>();
 		capsuleCollider = GetComponent<Collider2D>();
-		if (flyingEnemy) material        = GetComponent<SpriteRenderer>().material;
-		else material = GetComponentInChildren<SpriteRenderer>().material;
-		health          = maxHealth;
-		enemySpeed      = baseSpeed;
-		print(borderLeft.position + " "+ borderRight.position);
-		borderLeftPos   = borderLeft.position;
-		borderRightPos  = borderRight.position;
-		print($"{name} START borderLeftPos: {borderLeftPos}");
-		spawnPoint      = transform.position;
+		if (flyingEnemy) material = GetComponent<SpriteRenderer>().material;
+		else material             = GetComponentInChildren<SpriteRenderer>().material;
+		health         = maxHealth;
+		enemySpeed     = baseSpeed;
+		borderLeftPos  = borderLeft.position;
+		borderRightPos = borderRight.position;
+		spawnPoint     = transform.position;
 
 		if (flyingEnemy) rb.gravityScale = 0;
 	}
@@ -103,18 +101,19 @@ public class EnemyController : MonoBehaviour {
 			}
 
 			AttemptAttack();
-
-			animationSfxRoutineState ??= StartCoroutine(AnimationSfxSyncRoutine());
 		} else {
 			if (Vector3.Distance(transform.position, PlayerData.Instance.gameObject.transform.position) <
 			    startPathfindDistance) GetComponent<AIPath>().canMove = true;
+			TryDealDamageToPlayer();
 		}
-		TryDealDamageToPlayer();
+
+
+		animationSfxRoutineState ??= StartCoroutine(AnimationSfxSyncRoutine());
 	}
 
 	private void FixedUpdate() {
 		if (deathHandlerRoutineState != null) return;
-		if(!flyingEnemy) ChaseTarget();
+		if (!flyingEnemy) ChaseTarget();
 	}
 
 	private void OnCollisionEnter2D(Collision2D other) {
@@ -144,15 +143,15 @@ public class EnemyController : MonoBehaviour {
 	#region Functions
 
 	private bool CheckBorder() {
+		if (target != null) return false;
+
 		if (transform.position.x < borderLeftPos.x) {
 			facingRight = true;
-			print($"{name} CHECK borderLeftPos: {borderLeftPos}");
 			return true;
-		} 
+		}
+
 		if (transform.position.x > borderRightPos.x) {
 			facingRight = false;
-			print(borderRightPos);
-			print($"{name} CHECK borderLeftPos: {borderLeftPos}");
 			return true;
 		}
 
