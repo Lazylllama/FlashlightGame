@@ -105,6 +105,7 @@ public class FlashlightController : MonoBehaviour {
 	private static bool HasPickedUpFlashlight => PlayerData.Instance && PlayerData.Instance.FlashlightModesUnlocked[1];
 
 	//* States
+	private Vector2   lastInput;
 	private bool      isListening, isGamepad;
 	private Light2D   spotLight,   freeFormLight, glowLight;
 	private Vector3[] lightPoints = { };
@@ -113,7 +114,6 @@ public class FlashlightController : MonoBehaviour {
 	private          FlashLightPreset                    equippedFlashlight = new();
 	private readonly Dictionary<Collider2D, int>         hitList            = new();
 	private readonly Dictionary<RaycastObj, ReflectInfo> reflectList        = new();
-
 
 	//* Active Flashlight Preset
 	private FlashLightPreset activePreset = new FlashLightPreset();
@@ -159,8 +159,6 @@ public class FlashlightController : MonoBehaviour {
 		spotLight.color                 = activePreset.color;
 		spotLight.pointLightOuterRadius = activePreset.range;
 		spotLight.intensity             = activePreset.intensity;
-
-		
 	}
 
 	private void LateUpdate() {
@@ -271,18 +269,25 @@ public class FlashlightController : MonoBehaviour {
 			var deadZone = Preferences.Input.LookInputDeadZone;
 			var input    = InputHandler.Instance.ReadValue(InputHandler.InputActions.FlashlightDirection);
 
+
+			if (input == Vector2.zero)
+				input = lastInput;
+			else
+				Debug.Log("Jävla gamepad input fan i helvetes hävla: " + input.ToString());
+
+			lastInput = input;
+
 			if (Mathf.Abs(input.x) < deadZone || Mathf.Abs(input.y) < deadZone) return;
 
-			var dir = InputHandler.Instance.ReadValue(InputHandler.InputActions.FlashlightDirection);
-			if (dir.sqrMagnitude < 1e-6f) {
+			if (input.sqrMagnitude < 1e-6f) {
 				cameraAngleZ = transform.eulerAngles.z;
 			} else {
-				cameraAngleZ = -90f + Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+				cameraAngleZ = -90f + Mathf.Atan2(input.y, input.x) * Mathf.Rad2Deg;
 			}
 
-			if (Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg > 90 ||
-			    Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg < -90) PlayerData.Instance.IsLookingRight = false;
-			else PlayerData.Instance.IsLookingRight                                                 = true;
+			if (Mathf.Atan2(input.y, input.x) * Mathf.Rad2Deg > 90 ||
+			    Mathf.Atan2(input.y, input.x) * Mathf.Rad2Deg < -90) PlayerData.Instance.IsLookingRight = false;
+			else PlayerData.Instance.IsLookingRight                                                     = true;
 		}
 
 		var safeZonePosition = GetSafeZonePosition();
@@ -306,7 +311,7 @@ public class FlashlightController : MonoBehaviour {
 
 		armLeft.eulerAngles = new Vector3(0, IsLookingRight ? 0 : 180,
 		                                  (IsLookingRight ? safeZonePosition : -safeZonePosition) + GetLeftArmOffset());
-		
+
 		armRight.eulerAngles = new Vector3(0, IsLookingRight ? 0 : 180,
 		                                   (IsLookingRight ? safeZonePosition : -safeZonePosition) + armRightOffset.z);
 
