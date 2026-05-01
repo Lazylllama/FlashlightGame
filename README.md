@@ -1,12 +1,15 @@
 <img width="920" height="430" alt="library_header png" src="https://github.com/user-attachments/assets/3352169f-617d-49ea-8aa9-3397b223cbb6" />
 
 # Fallen Scout (FlashlightGame)
-<a href="https://store.steampowered.com/app/2306440/Fallen_Scout/">
+<a href="https://store.steampowered.com/app/4543970/Fallen_Scout/">
 <img width="245" height="93" alt="wishlist on steam" src="https://i.imgur.com/ZXJ5uEx.png" /></a>
 <br><br>
 
 > [!IMPORTANT]
 > Running on Unity Editor v6000.4.1f1
+
+> [!NOTE]
+> This project is a work in progress, and is far from complete so keep that in mind!
 
 ## Game Description
 ***Fallen Scout*** *is a cozy yet mysterious 2D adventure about a tiny scout who took one wrong step and came tumbling down a cliff. Now stranded in a forest laid in shadow, that definitely didn't look this creepy from up there, he now must find his way through the darkness armed with nothing but courage, determination, and a surprisingly powerful flashlight.*
