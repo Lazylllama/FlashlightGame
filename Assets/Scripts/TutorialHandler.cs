@@ -3,15 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum TutorialObject {
+	FlashlightPickup,
+	Laser,
+	Mirror,
+	Crank,
+	Mantle
+}
+
 public class TutorialHandler : MonoBehaviour {
 	#region Fields
 
 	public static TutorialHandler Instance;
 
-	[SerializeField] private List<GameObject> tutorialObjects;
+	private Dictionary<TutorialObject, GameObject> tutorialObjects;
 
-	public bool isTutorialActive;
-	public int  activeTutorialObjectIndex;
+	[SerializeField] private List<GameObject> rawObjects;
+
+	public bool           isTutorialActive;
+	public TutorialObject activeTutorialObjectIndex;
 
 	#endregion
 
@@ -19,6 +29,14 @@ public class TutorialHandler : MonoBehaviour {
 
 	private void Awake() {
 		RegisterInstance(this);
+
+		tutorialObjects = new Dictionary<TutorialObject, GameObject>() {
+			{ TutorialObject.FlashlightPickup, rawObjects[0] },
+			{ TutorialObject.Laser, rawObjects[1] },
+			{ TutorialObject.Mirror, rawObjects[2] },
+			{ TutorialObject.Crank, rawObjects[3] },
+			{ TutorialObject.Mantle, rawObjects[4] }
+		};
 	}
 
 	#endregion
@@ -33,17 +51,19 @@ public class TutorialHandler : MonoBehaviour {
 		}
 	}
 
-	public void ShowTutorial(int index) {
+	public void ShowTutorial(TutorialObject key) {
 		if (isTutorialActive) HideTutorial();
 		isTutorialActive          = true;
-		activeTutorialObjectIndex = index;
-		tutorialObjects[index].SetActive(true);
+		activeTutorialObjectIndex = key;
+		tutorialObjects.TryGetValue(key, out var obj);
+		if (obj) obj.SetActive(true);
 	}
 
 	public void HideTutorial() {
 		if (!isTutorialActive) return;
 		isTutorialActive = false;
-		tutorialObjects[activeTutorialObjectIndex].SetActive(false);
+		tutorialObjects.TryGetValue(activeTutorialObjectIndex, out var obj);
+		if (obj) obj.SetActive(false);
 	}
 
 	#endregion

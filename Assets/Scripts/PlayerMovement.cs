@@ -55,6 +55,7 @@ public class PlayerMovement : MonoBehaviour {
 	[ReadOnly] [SerializeField] public  AudioManager.FootstepSurface currentSurface;
 	[ReadOnly] [SerializeField] private Vector2                      moveInputVal;
 	private                             bool                         isGrounded;
+	private                             bool                         flashlightBeforeClimb = false;
 	private                             Coroutine                    mantleRoutineState;
 	private                             Vector2                      lastPosition;
 
@@ -191,6 +192,15 @@ public class PlayerMovement : MonoBehaviour {
 		    PlayerData.Instance.PreventMovement) return;
 
 		PlayerData.Instance.PreventMovement = true;
+
+		flashlightBeforeClimb = PlayerData.Instance.FlashlightEnabled;
+
+		if (flashlightBeforeClimb) {
+			AudioManager.Instance.PlayOneShot(FMODEvents.Instance.flashlightToggle,
+			                                  transform.position);
+			PlayerData.Instance.FlashlightEnabled = false;
+		}
+
 		playerAnimator.SetTrigger(StartClimb);
 	}
 
@@ -204,9 +214,16 @@ public class PlayerMovement : MonoBehaviour {
 			transform.position += new Vector3(-1.631f, 2.429f) + new Vector3(-0.7f, 0.7f);
 		}
 
-		if (TutorialHandler.Instance.activeTutorialObjectIndex == 3 && TutorialHandler.Instance.isTutorialActive)
-			TutorialHandler.Instance.ShowTutorial(4);
+		if (TutorialHandler.Instance.activeTutorialObjectIndex == TutorialObject.Mantle &&
+		    TutorialHandler.Instance.isTutorialActive)
+			TutorialHandler.Instance.HideTutorial();
+
 		PlayerData.Instance.PreventMovement = false;
+
+		if (!flashlightBeforeClimb) return;
+		PlayerData.Instance.FlashlightEnabled = flashlightBeforeClimb;
+		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.flashlightToggle,
+		                                  transform.position);
 	}
 
 	#endregion

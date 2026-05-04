@@ -53,7 +53,7 @@ public class FlashlightPickUp : MonoBehaviour {
 	private void PickUpFlashlight() {
 		PlayerData.Instance.UnlockFlashlightMode(1);
 		PlayerMovement.Instance.PickupFlashlight();
-		TutorialHandler.Instance.ShowTutorial(0);
+		TutorialHandler.Instance.ShowTutorial(TutorialObject.FlashlightPickup);
 		ConversationHandler.Instance.StartConversation("FlashlightPickup");
 		Destroy(gameObject);
 	}

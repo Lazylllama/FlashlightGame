@@ -36,22 +36,19 @@ public class WallManager : MonoBehaviour {
 	}
 
 	private IEnumerator Delay() {
-		if (TutorialHandler.Instance.isTutorialActive && TutorialHandler.Instance.activeTutorialObjectIndex == 4) {
-			TutorialHandler.Instance.ShowTutorial(2);
+		if (id == "wall1") {
+			TutorialHandler.Instance.ShowTutorial(TutorialObject.Mantle);
 			ConversationHandler.Instance.StartConversation("FirstDoorBroken");
 		}
 
 		yield return new WaitForSeconds(2f);
-		
+
 		AstarManager.Instance.UpdateAndDisableBounds(unbroken.GetComponent<Collider2D>());
 		AstarManager.Instance.UpdateAndDisableBounds(hitCollider);
-		
+
 		unbroken.SetActive(false);
 		broken.SetActive(true);
-		
-		
 
-		
-		enabled             = false;
+		enabled = false;
 	}
 }

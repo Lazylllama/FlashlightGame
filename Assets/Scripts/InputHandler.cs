@@ -180,16 +180,16 @@ public partial class InputHandler : MonoBehaviour {
 			switch (kvp.Key) {
 				case InputActions.ToggleFlashlight:
 					if (!PlayerData.Instance.FlashlightModesUnlocked.ContainsKey(1) ||
-					    !PlayerData.Instance.FlashlightModesUnlocked[1]) return;
+					    !PlayerData.Instance.FlashlightModesUnlocked[1] || PlayerData.Instance.PreventMovement) return;
 
 					//* Let the player turn it on even though the flashlight is dead just as a feature, it will be disabled automatically right after.
 					AudioManager.Instance.PlayOneShot(FMODEvents.Instance.flashlightToggle,
 					                                  PlayerMovement.Instance.transform.position);
 					PlayerData.Instance.FlashlightEnabled = !PlayerData.Instance.FlashlightEnabled;
 
-					if (TutorialHandler.Instance.activeTutorialObjectIndex == 0 &&
+					if (TutorialHandler.Instance.activeTutorialObjectIndex == TutorialObject.FlashlightPickup &&
 					    TutorialHandler.Instance.isTutorialActive) {
-						TutorialHandler.Instance.ShowTutorial(1);
+						TutorialHandler.Instance.ShowTutorial(TutorialObject.Laser);
 					}
 
 					InputVibrationFeedback();
@@ -198,18 +198,18 @@ public partial class InputHandler : MonoBehaviour {
 					if (PlayerData.Instance.PreventMovement) return;
 					InputVibrationFeedback();
 					PlayerData.Instance.HandleFlashlightModeChange(kvp.Key == InputActions.ToggleModeRight);
-					if (TutorialHandler.Instance.activeTutorialObjectIndex == 1 &&
+					if (TutorialHandler.Instance.activeTutorialObjectIndex == TutorialObject.Laser &&
 					    TutorialHandler.Instance.isTutorialActive) {
-						TutorialHandler.Instance.ShowTutorial(3);
+						TutorialHandler.Instance.ShowTutorial(TutorialObject.Mirror);
 					}
 
 					break;
 				case InputActions.Flashlight1 or InputActions.Flashlight2:
 					if (PlayerData.Instance.PreventMovement) return;
 					PlayerData.Instance.HandleFlashlightModeChange(kvp.Key == InputActions.Flashlight2 ? 2 : 1);
-					if (TutorialHandler.Instance.activeTutorialObjectIndex == 1 &&
+					if (TutorialHandler.Instance.activeTutorialObjectIndex == TutorialObject.Laser &&
 					    TutorialHandler.Instance.isTutorialActive) {
-						TutorialHandler.Instance.ShowTutorial(3);
+						TutorialHandler.Instance.ShowTutorial(TutorialObject.Mirror);
 					}
 
 					break;
@@ -226,16 +226,13 @@ public partial class InputHandler : MonoBehaviour {
 					if (PlayerData.Instance.PreventMovement) return;
 					if (!PlayerData.Instance.IsCranking) InputVibrationFeedback(true);
 					PlayerData.Instance.Crank(kvp.Key == InputActions.CrankRight);
-					if (TutorialHandler.Instance.activeTutorialObjectIndex == 2 &&
-					    TutorialHandler.Instance.isTutorialActive) {
-						TutorialHandler.Instance.HideTutorial();
-					}
 
 					break;
 				case InputActions.Interact:
 				case InputActions.Leap:
 				case InputActions.FlashlightDirection:
 				case InputActions.Move:
+				case InputActions.Jump:
 					break;
 				default:
 					throw new ArgumentOutOfRangeException(kvp.Key.ToString());

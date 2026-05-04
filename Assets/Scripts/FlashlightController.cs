@@ -56,9 +56,13 @@ public class FlashlightController : MonoBehaviour {
 	[Header("Rig Settings")]
 	[SerializeField] private Transform pupilBone;
 	[SerializeField] private Transform playerTransform;
-	[SerializeField] private Transform armLeft,                     armRight, flashlightBulb;
-	[SerializeField] private Vector3   armLeftOffset,               armRightOffset;
-	[SerializeField] private float     armLeftZRotMultiplierOver90, armLeftZRotMultiplierUnder90;
+	[SerializeField] private Transform armLeft,       armRight, flashlightBulb;
+	[SerializeField] private Vector3   armLeftOffset, armRightOffset;
+	[SerializeField] private float
+		armRightZRotMultiplierOver90Left,
+		armRightZRotMultiplierUnder90Left,
+		armRightZRotMultiplierOver90Right,
+		armRightZRotMultiplierUnder90Right;
 
 	[Header("Light Output")]
 	[SerializeField] private Transform lightOutput;
@@ -192,16 +196,18 @@ public class FlashlightController : MonoBehaviour {
 		freeFormLightGameObject.SetActive(FlashlightEnabled && equippedFlashlight == laserPreset);
 		spotLightGameObject.SetActive(FlashlightEnabled     && equippedFlashlight != laserPreset);
 		lightGlowGameObject.SetActive(FlashlightEnabled);
+
+		targetLight.enabled = FlashlightEnabled;
+		glowLight.enabled   = FlashlightEnabled;
 	}
 
 	private void LerpFlashlightPreset(FlashLightPreset targetPreset) {
 		if (targetPreset == null || activePreset == targetPreset) return;
 
 		activePreset = new FlashLightPreset() {
-			density = Mathf.Lerp(activePreset.density, targetPreset.density, Time.deltaTime * 10),
-			beamWidth = Mathf.Lerp(activePreset.beamWidth, targetPreset.beamWidth,
-			                       Time.deltaTime * 10),
-			range = Mathf.Lerp(activePreset.range, targetPreset.range, Time.deltaTime * 10),
+			density   = targetPreset.density,
+			beamWidth = targetPreset.beamWidth,
+			range     = targetPreset.range,
 			intensity = Mathf.Lerp(activePreset.intensity, targetPreset.intensity,
 			                       Time.deltaTime * 10),
 			color = Color.Lerp(activePreset.color, targetPreset.color, Time.deltaTime * 10)
@@ -272,8 +278,6 @@ public class FlashlightController : MonoBehaviour {
 
 			if (input == Vector2.zero)
 				input = lastInput;
-			else
-				Debug.Log("Jävla gamepad input fan i helvetes hävla: " + input.ToString());
 
 			lastInput = input;
 
@@ -310,10 +314,11 @@ public class FlashlightController : MonoBehaviour {
 		// 	                            lerpTime));
 
 		armLeft.eulerAngles = new Vector3(0, IsLookingRight ? 0 : 180,
-		                                  (IsLookingRight ? safeZonePosition : -safeZonePosition) + GetLeftArmOffset());
+		                                  (IsLookingRight ? safeZonePosition : -safeZonePosition) + armLeftOffset.z);
 
 		armRight.eulerAngles = new Vector3(0, IsLookingRight ? 0 : 180,
-		                                   (IsLookingRight ? safeZonePosition : -safeZonePosition) + armRightOffset.z);
+		                                   (IsLookingRight ? safeZonePosition : -safeZonePosition) +
+		                                   GetRightArmOffset());
 
 		transform.position = flashlightBulb.position;
 		return;
@@ -377,16 +382,18 @@ public class FlashlightController : MonoBehaviour {
 		// normalize to [-180,180)
 		//static float NormalizeAngle(float a) => Mathf.Repeat(a + 180f, 360f) - 180f;
 
-		float GetLeftArmOffset() {
+		float GetRightArmOffset() {
+			var newAngle = GetSafeZonePosition() + (IsLookingRight ? 90f : 0f);
+
 			if (IsLookingRight) {
-				return cameraAngleZ > -90
-					       ? armLeftOffset.z * armLeftZRotMultiplierOver90
-					       : armLeftOffset.z * armLeftZRotMultiplierUnder90;
-			} else {
-				return cameraAngleZ > 0
-					       ? armLeftOffset.z * armLeftZRotMultiplierOver90
-					       : armLeftOffset.z * armLeftZRotMultiplierUnder90;
+				return newAngle > 0
+					       ? armRightOffset.z + (armRightZRotMultiplierOver90Right  * newAngle / 100f)
+					       : armRightOffset.z + (armRightZRotMultiplierUnder90Right * newAngle / 100f);
 			}
+
+			return newAngle < -280
+				       ? armRightOffset.z + (armRightZRotMultiplierOver90Left  * newAngle / 100f)
+				       : armRightOffset.z + (armRightZRotMultiplierUnder90Left * newAngle / 100f);
 		}
 	}
 

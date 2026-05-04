@@ -67,8 +67,9 @@ public class PlayerData : MonoBehaviour {
 	[SerializeField] private float invulnerabilityTime  = 1f;
 
 	//* States *//
-	private float drainTimer;
-	private bool  lastCrankWasRight; // Controller Specific
+	private float          drainTimer;
+	private bool           lastCrankWasRight; // Controller Specific
+	private TutorialObject prevTutorial;
 
 	// Crank speed measurement
 	[SerializeField] private float maxCrankFrequency = 6f; // how fast to crank to get max crank speed
@@ -94,6 +95,12 @@ public class PlayerData : MonoBehaviour {
 
 		// Decay crank speed towards 0 when not actively cranking
 		CrankSpeed = Mathf.MoveTowards(CrankSpeed, 0f, crankDecayRate * Time.deltaTime);
+
+		if (CrankSpeed <= 0f && prevTutorial > 0 && !lowBattery) {
+			print("Restoring tutorial " + prevTutorial);
+			TutorialHandler.Instance.ShowTutorial(prevTutorial);
+			prevTutorial = 0;
+		}
 
 		//TODO: Optimize by only setting this when flashlight state changes and sum like that for crank speed? Or just not
 		AudioManager.Instance.SetFlashlightState(FlashlightEnabled);
@@ -293,7 +300,11 @@ public class PlayerData : MonoBehaviour {
 		if (Battery > 20 || lowBattery) return;
 		lowBattery = true;
 		FlashlightController.Instance.LowBatteryWarning(true);
-		TutorialHandler.Instance.ShowTutorial(2);
+
+		prevTutorial = TutorialHandler.Instance.isTutorialActive
+			               ? TutorialHandler.Instance.activeTutorialObjectIndex
+			               : 0;
+		TutorialHandler.Instance.ShowTutorial(TutorialObject.Crank);
 	}
 
 	/// Register the PlayerData instance.

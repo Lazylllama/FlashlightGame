@@ -247,8 +247,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.5}
-  m_Size: {x: 1.6, y: 4.15}
+  m_Offset: {x: 0, y: 0.75}
+  m_Size: {x: 1.6, y: 4}
   m_Direction: 0
 --- !u!1 &1298746302499239558
 GameObject:
@@ -20176,10 +20176,12 @@ MonoBehaviour:
   armLeft: {fileID: 6394860606024734879}
   armRight: {fileID: 2096287188378204192}
   flashlightBulb: {fileID: 1641369389436432403}
-  armLeftOffset: {x: 0, y: 0, z: 6}
+  armLeftOffset: {x: 0, y: 0, z: -2}
   armRightOffset: {x: 0, y: 0, z: 0}
-  armLeftZRotMultiplierOver90: 0.44
-  armLeftZRotMultiplierUnder90: 0.21
+  armRightZRotMultiplierOver90Left: 1.95
+  armRightZRotMultiplierUnder90Left: -1.55
+  armRightZRotMultiplierOver90Right: -17.9
+  armRightZRotMultiplierUnder90Right: -33
   lightOutput: {fileID: 4936669862843185341}
   lightGlowGameObject: {fileID: 2820268781652515991}
   spotLightGameObject: {fileID: 3960592807234988282}
