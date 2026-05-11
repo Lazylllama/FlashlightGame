@@ -1,4 +1,4 @@
-#if !UNITY_WEBGL
+#if !UNITY_WEBGL && !UNITY_STANDALONE_LINUX
 using System;
 using Discord;
 using FlashlightGame;
