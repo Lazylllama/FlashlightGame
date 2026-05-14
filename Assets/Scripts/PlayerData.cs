@@ -19,7 +19,7 @@ public class PlayerData : MonoBehaviour {
 	public bool IsDead  => Health <= 0;
 
 	//* Player Data *//
-	public bool IsWalkingRight { set; get; } = true;
+	public bool IsWalkingRight { get; set; } = true;
 
 	private bool isLookingRight = true;
 	public bool IsLookingRight {
