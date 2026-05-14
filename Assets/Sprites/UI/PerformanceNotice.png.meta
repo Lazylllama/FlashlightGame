@@ -1,0 +1,2106 @@
+fileFormatVersion: 2
+guid: 76f4b61ff75ba5143951520583088906
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -579259257817262227
+    second: PerformanceNotice_0
+  - first:
+      213: -591220312581485995
+    second: PerformanceNotice_1
+  - first:
+      213: -3715317496412311599
+    second: PerformanceNotice_2
+  - first:
+      213: 176923131030890424
+    second: PerformanceNotice_3
+  - first:
+      213: 9177367026027523356
+    second: PerformanceNotice_4
+  - first:
+      213: -2155884971513835459
+    second: PerformanceNotice_5
+  - first:
+      213: -7052283298380958467
+    second: PerformanceNotice_6
+  - first:
+      213: -948414899643656698
+    second: PerformanceNotice_7
+  - first:
+      213: 8694368774429440448
+    second: PerformanceNotice_8
+  - first:
+      213: -2056045877559161823
+    second: PerformanceNotice_9
+  - first:
+      213: -5931642037158993395
+    second: PerformanceNotice_10
+  - first:
+      213: 4215633736658942926
+    second: PerformanceNotice_11
+  - first:
+      213: 3258682237196217967
+    second: PerformanceNotice_12
+  - first:
+      213: -2991306657601005888
+    second: PerformanceNotice_13
+  - first:
+      213: -3452178774026903384
+    second: PerformanceNotice_14
+  - first:
+      213: 382012440377996638
+    second: PerformanceNotice_15
+  - first:
+      213: -8749744625769469803
+    second: PerformanceNotice_16
+  - first:
+      213: 7687779927655097017
+    second: PerformanceNotice_17
+  - first:
+      213: 7541951942512191203
+    second: PerformanceNotice_18
+  - first:
+      213: -5322314538895773343
+    second: PerformanceNotice_19
+  - first:
+      213: 3027895017479763532
+    second: PerformanceNotice_20
+  - first:
+      213: 5676670011993373929
+    second: PerformanceNotice_21
+  - first:
+      213: -8635984689462593114
+    second: PerformanceNotice_22
+  - first:
+      213: -2972546814262461121
+    second: PerformanceNotice_23
+  - first:
+      213: 1487048550607831394
+    second: PerformanceNotice_24
+  - first:
+      213: 4548067712720606431
+    second: PerformanceNotice_25
+  - first:
+      213: -8969387241256959579
+    second: PerformanceNotice_26
+  - first:
+      213: -4185968220053499951
+    second: PerformanceNotice_27
+  - first:
+      213: 4642387420268190399
+    second: PerformanceNotice_28
+  - first:
+      213: -3693607173294430668
+    second: PerformanceNotice_29
+  - first:
+      213: 9174865808486544952
+    second: PerformanceNotice_30
+  - first:
+      213: -2731638200194817965
+    second: PerformanceNotice_31
+  - first:
+      213: -2520423825671577362
+    second: PerformanceNotice_32
+  - first:
+      213: -8506130567663228051
+    second: PerformanceNotice_33
+  - first:
+      213: 2388082815292070676
+    second: PerformanceNotice_34
+  - first:
+      213: 6065826884855356173
+    second: PerformanceNotice_35
+  - first:
+      213: 8646234164068636004
+    second: PerformanceNotice_36
+  - first:
+      213: -8426904449900721940
+    second: PerformanceNotice_37
+  - first:
+      213: 4547178830071322663
+    second: PerformanceNotice_38
+  - first:
+      213: -5854386892520187625
+    second: PerformanceNotice_39
+  - first:
+      213: 388907901265280278
+    second: PerformanceNotice_40
+  - first:
+      213: 423585573890438171
+    second: PerformanceNotice_41
+  - first:
+      213: 471420879815413690
+    second: PerformanceNotice_42
+  - first:
+      213: -4060504348747214356
+    second: PerformanceNotice_43
+  - first:
+      213: 2972568622055301530
+    second: PerformanceNotice_44
+  - first:
+      213: -489945773795219360
+    second: PerformanceNotice_45
+  - first:
+      213: -4566841197423144368
+    second: PerformanceNotice_46
+  - first:
+      213: -1473437158095595721
+    second: PerformanceNotice_47
+  - first:
+      213: 1323991178219595556
+    second: PerformanceNotice_48
+  - first:
+      213: 8774129258053865606
+    second: PerformanceNotice_49
+  - first:
+      213: -4428473767839954283
+    second: PerformanceNotice_50
+  - first:
+      213: -3018767635676221520
+    second: PerformanceNotice_51
+  - first:
+      213: 2834130135400589609
+    second: PerformanceNotice_52
+  - first:
+      213: 3419923663105407163
+    second: PerformanceNotice_53
+  - first:
+      213: 232689133325982791
+    second: PerformanceNotice_54
+  - first:
+      213: -8662209529393434197
+    second: PerformanceNotice_55
+  - first:
+      213: 2303426096773350742
+    second: PerformanceNotice_56
+  - first:
+      213: 8154784632552743895
+    second: PerformanceNotice_57
+  - first:
+      213: 318585612269540683
+    second: PerformanceNotice_58
+  - first:
+      213: 3350938123279394601
+    second: PerformanceNotice_59
+  - first:
+      213: -3478050243903207253
+    second: PerformanceNotice_60
+  - first:
+      213: -6778042226873492312
+    second: PerformanceNotice_61
+  - first:
+      213: -5014581186910295480
+    second: PerformanceNotice_62
+  - first:
+      213: 6357947828948755618
+    second: PerformanceNotice_63
+  - first:
+      213: -7499486323622414074
+    second: PerformanceNotice_64
+  - first:
+      213: 3123106630727178413
+    second: PerformanceNotice_65
+  - first:
+      213: 2150181988625749493
+    second: PerformanceNotice_66
+  - first:
+      213: 5285678038998391150
+    second: PerformanceNotice_67
+  - first:
+      213: 7491220085027954378
+    second: PerformanceNotice_68
+  - first:
+      213: 5896236411429204139
+    second: PerformanceNotice_69
+  - first:
+      213: -3912437065133888018
+    second: PerformanceNotice_70
+  - first:
+      213: -3168506735766328601
+    second: PerformanceNotice_71
+  - first:
+      213: -1925805108056228635
+    second: PerformanceNotice_72
+  - first:
+      213: 8522528386037996512
+    second: PerformanceNotice_73
+  - first:
+      213: -5023841777623381805
+    second: PerformanceNotice_74
+  - first:
+      213: 5657595458280394225
+    second: PerformanceNotice_75
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: PerformanceNotice_0
+      rect:
+        serializedVersion: 2
+        x: 849
+        y: 876
+        width: 218
+        height: 204
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d6712f826ce06f7f0800000000000000
+      internalID: -579259257817262227
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_1
+      rect:
+        serializedVersion: 2
+        x: 624
+        y: 714
+        width: 20
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 55ac59412409bc7f0800000000000000
+      internalID: -591220312581485995
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_2
+      rect:
+        serializedVersion: 2
+        x: 661
+        y: 714
+        width: 97
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1dfec8eeb6a807cc0800000000000000
+      internalID: -3715317496412311599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_3
+      rect:
+        serializedVersion: 2
+        x: 774
+        y: 714
+        width: 61
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b765a976ae847200800000000000000
+      internalID: 176923131030890424
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_4
+      rect:
+        serializedVersion: 2
+        x: 844
+        y: 713
+        width: 82
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1de0c7bfae8c5f70800000000000000
+      internalID: 9177367026027523356
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_5
+      rect:
+        serializedVersion: 2
+        x: 942
+        y: 714
+        width: 62
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3090507a02c412e0800000000000000
+      internalID: -2155884971513835459
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_6
+      rect:
+        serializedVersion: 2
+        x: 1010
+        y: 714
+        width: 62
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df4359864b1412e90800000000000000
+      internalID: -7052283298380958467
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_7
+      rect:
+        serializedVersion: 2
+        x: 1069
+        y: 714
+        width: 80
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6065d077cad86d2f0800000000000000
+      internalID: -948414899643656698
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_8
+      rect:
+        serializedVersion: 2
+        x: 1159
+        y: 714
+        width: 61
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c97d1ae55a98a870800000000000000
+      internalID: 8694368774429440448
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_9
+      rect:
+        serializedVersion: 2
+        x: 1234
+        y: 714
+        width: 62
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12c0e22fa257773e0800000000000000
+      internalID: -2056045877559161823
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_10
+      rect:
+        serializedVersion: 2
+        x: 316
+        y: 490
+        width: 33
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d022d509ef29eada0800000000000000
+      internalID: -5931642037158993395
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_11
+      rect:
+        serializedVersion: 2
+        x: 353
+        y: 490
+        width: 29
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ecb75b05c80f08a30800000000000000
+      internalID: 4215633736658942926
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_12
+      rect:
+        serializedVersion: 2
+        x: 387
+        y: 489
+        width: 31
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6ea4ffba3a293d20800000000000000
+      internalID: 3258682237196217967
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_13
+      rect:
+        serializedVersion: 2
+        x: 437
+        y: 476
+        width: 32
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c65e6b817ebc76d0800000000000000
+      internalID: -2991306657601005888
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_14
+      rect:
+        serializedVersion: 2
+        x: 474
+        y: 489
+        width: 32
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a0abf802b56710d0800000000000000
+      internalID: -3452178774026903384
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_15
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 490
+        width: 45
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e55b2806a4e2d4500800000000000000
+      internalID: 382012440377996638
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_16
+      rect:
+        serializedVersion: 2
+        x: 563
+        y: 489
+        width: 31
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 598a0a9fe99a29680800000000000000
+      internalID: -8749744625769469803
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_17
+      rect:
+        serializedVersion: 2
+        x: 610
+        y: 490
+        width: 53
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b2a243dc1b70ba60800000000000000
+      internalID: 7687779927655097017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_18
+      rect:
+        serializedVersion: 2
+        x: 667
+        y: 490
+        width: 11
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e6a18e25556aa860800000000000000
+      internalID: 7541951942512191203
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_19
+      rect:
+        serializedVersion: 2
+        x: 687
+        y: 490
+        width: 26
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 161783e20275326b0800000000000000
+      internalID: -5322314538895773343
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_20
+      rect:
+        serializedVersion: 2
+        x: 719
+        y: 490
+        width: 26
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c467e06d97e350a20800000000000000
+      internalID: 3027895017479763532
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_21
+      rect:
+        serializedVersion: 2
+        x: 750
+        y: 490
+        width: 417
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ec3af3bc4597ce40800000000000000
+      internalID: 5676670011993373929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_22
+      rect:
+        serializedVersion: 2
+        x: 762
+        y: 490
+        width: 29
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a9beda2ea1d62880800000000000000
+      internalID: -8635984689462593114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_23
+      rect:
+        serializedVersion: 2
+        x: 797
+        y: 489
+        width: 31
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3dbaa1fb646fb6d0800000000000000
+      internalID: -2972546814262461121
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_24
+      rect:
+        serializedVersion: 2
+        x: 830
+        y: 490
+        width: 21
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2614dbe27ce03a410800000000000000
+      internalID: 1487048550607831394
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_25
+      rect:
+        serializedVersion: 2
+        x: 871
+        y: 490
+        width: 23
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd4922fec7bfd1f30800000000000000
+      internalID: 4548067712720606431
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_26
+      rect:
+        serializedVersion: 2
+        x: 898
+        y: 489
+        width: 29
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a145ff63d5568380800000000000000
+      internalID: -8969387241256959579
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_27
+      rect:
+        serializedVersion: 2
+        x: 933
+        y: 490
+        width: 29
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1df03a2051478e5c0800000000000000
+      internalID: -4185968220053499951
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_28
+      rect:
+        serializedVersion: 2
+        x: 984
+        y: 476
+        width: 32
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fbad3d623c21d6040800000000000000
+      internalID: 4642387420268190399
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_29
+      rect:
+        serializedVersion: 2
+        x: 1020
+        y: 489
+        width: 31
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43663ff68dbadbcc0800000000000000
+      internalID: -3693607173294430668
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_30
+      rect:
+        serializedVersion: 2
+        x: 1055
+        y: 490
+        width: 23
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 836b7b0a7dba35f70800000000000000
+      internalID: 9174865808486544952
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_31
+      rect:
+        serializedVersion: 2
+        x: 1104
+        y: 489
+        width: 31
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 350208e9785471ad0800000000000000
+      internalID: -2731638200194817965
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_32
+      rect:
+        serializedVersion: 2
+        x: 1138
+        y: 489
+        width: 29
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee02a6362e7a50dd0800000000000000
+      internalID: -2520423825671577362
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_33
+      rect:
+        serializedVersion: 2
+        x: 1169
+        y: 490
+        width: 21
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d6b675de05724f980800000000000000
+      internalID: -8506130567663228051
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_34
+      rect:
+        serializedVersion: 2
+        x: 1194
+        y: 490
+        width: 11
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41bd2bbfaac242120800000000000000
+      internalID: 2388082815292070676
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_35
+      rect:
+        serializedVersion: 2
+        x: 1209
+        y: 477
+        width: 32
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0b51d4e9652e2450800000000000000
+      internalID: 6065826884855356173
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_36
+      rect:
+        serializedVersion: 2
+        x: 1257
+        y: 489
+        width: 31
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 465582a99289df770800000000000000
+      internalID: 8646234164068636004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_37
+      rect:
+        serializedVersion: 2
+        x: 1293
+        y: 490
+        width: 29
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce8428bec0f9d0b80800000000000000
+      internalID: -8426904449900721940
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_38
+      rect:
+        serializedVersion: 2
+        x: 1340
+        y: 490
+        width: 53
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 728d390dd03da1f30800000000000000
+      internalID: 4547178830071322663
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_39
+      rect:
+        serializedVersion: 2
+        x: 1398
+        y: 490
+        width: 28
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 71991ad932a01cea0800000000000000
+      internalID: -5854386892520187625
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_40
+      rect:
+        serializedVersion: 2
+        x: 1433
+        y: 490
+        width: 32
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 61d7249fcada56500800000000000000
+      internalID: 388907901265280278
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_41
+      rect:
+        serializedVersion: 2
+        x: 1485
+        y: 489
+        width: 31
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b1438bfc5d0e0e500800000000000000
+      internalID: 423585573890438171
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_42
+      rect:
+        serializedVersion: 2
+        x: 1521
+        y: 490
+        width: 29
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: abf8911eac2da8600800000000000000
+      internalID: 471420879815413690
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_43
+      rect:
+        serializedVersion: 2
+        x: 1556
+        y: 490
+        width: 11
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce15efbeec036a7c0800000000000000
+      internalID: -4060504348747214356
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_44
+      rect:
+        serializedVersion: 2
+        x: 1571
+        y: 477
+        width: 32
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a912414996fa04920800000000000000
+      internalID: 2972568622055301530
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_45
+      rect:
+        serializedVersion: 2
+        x: 621
+        y: 422
+        width: 32
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0686bb12aec5339f0800000000000000
+      internalID: -489945773795219360
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_46
+      rect:
+        serializedVersion: 2
+        x: 657
+        y: 422
+        width: 11
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 05259f980225f90c0800000000000000
+      internalID: -4566841197423144368
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_47
+      rect:
+        serializedVersion: 2
+        x: 674
+        y: 421
+        width: 31
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 737d9d816bc4d8be0800000000000000
+      internalID: -1473437158095595721
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_48
+      rect:
+        serializedVersion: 2
+        x: 708
+        y: 421
+        width: 32
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 427a78736f2cf5210800000000000000
+      internalID: 1323991178219595556
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_49
+      rect:
+        serializedVersion: 2
+        x: 745
+        y: 421
+        width: 25
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 68099a7a218f3c970800000000000000
+      internalID: 8774129258053865606
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_50
+      rect:
+        serializedVersion: 2
+        x: 775
+        y: 421
+        width: 31
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 59a83ca3296ea82c0800000000000000
+      internalID: -4428473767839954283
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_51
+      rect:
+        serializedVersion: 2
+        x: 825
+        y: 421
+        width: 25
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0bfa21854de2b16d0800000000000000
+      internalID: -3018767635676221520
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_52
+      rect:
+        serializedVersion: 2
+        x: 854
+        y: 421
+        width: 31
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 92928cf975ad45720800000000000000
+      internalID: 2834130135400589609
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_53
+      rect:
+        serializedVersion: 2
+        x: 888
+        y: 421
+        width: 31
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bb8b95ab372067f20800000000000000
+      internalID: 3419923663105407163
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_54
+      rect:
+        serializedVersion: 2
+        x: 939
+        y: 422
+        width: 29
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 74c1dfea88daa3300800000000000000
+      internalID: 232689133325982791
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_55
+      rect:
+        serializedVersion: 2
+        x: 973
+        y: 421
+        width: 31
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba1308ec356a9c780800000000000000
+      internalID: -8662209529393434197
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_56
+      rect:
+        serializedVersion: 2
+        x: 1007
+        y: 422
+        width: 21
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6554a88b4d967ff10800000000000000
+      internalID: 2303426096773350742
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_57
+      rect:
+        serializedVersion: 2
+        x: 1031
+        y: 452
+        width: 13
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d3ee1bda6d9b2170800000000000000
+      internalID: 8154784632552743895
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_58
+      rect:
+        serializedVersion: 2
+        x: 1049
+        y: 421
+        width: 29
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4550e92de7db6400800000000000000
+      internalID: 318585612269540683
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_59
+      rect:
+        serializedVersion: 2
+        x: 1081
+        y: 421
+        width: 31
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 927e166187ce08e20800000000000000
+      internalID: 3350938123279394601
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_60
+      rect:
+        serializedVersion: 2
+        x: 1131
+        y: 421
+        width: 32
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba8403d0bbb7bbfc0800000000000000
+      internalID: -3478050243903207253
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_61
+      rect:
+        serializedVersion: 2
+        x: 1168
+        y: 421
+        width: 31
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ac9b9a918e8fe1a0800000000000000
+      internalID: -6778042226873492312
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_62
+      rect:
+        serializedVersion: 2
+        x: 1203
+        y: 422
+        width: 11
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84aead89af0a86ab0800000000000000
+      internalID: -5014581186910295480
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_63
+      rect:
+        serializedVersion: 2
+        x: 1220
+        y: 421
+        width: 31
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2a4e4f45dd7fb3850800000000000000
+      internalID: 6357947828948755618
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_64
+      rect:
+        serializedVersion: 2
+        x: 1300
+        y: 435
+        width: 12
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 609f5923ce87ce790800000000000000
+      internalID: -7499486323622414074
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_65
+      rect:
+        serializedVersion: 2
+        x: 1032
+        y: 422
+        width: 11
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da819280fe0875b20800000000000000
+      internalID: 3123106630727178413
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_66
+      rect:
+        serializedVersion: 2
+        x: 1252
+        y: 422
+        width: 45
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5f51b72602bf6dd10800000000000000
+      internalID: 2150181988625749493
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_67
+      rect:
+        serializedVersion: 2
+        x: 1300
+        y: 421
+        width: 13
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e691597fb208a5940800000000000000
+      internalID: 5285678038998391150
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_68
+      rect:
+        serializedVersion: 2
+        x: 813
+        y: 288
+        width: 35
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: acedc562af826f760800000000000000
+      internalID: 7491220085027954378
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_69
+      rect:
+        serializedVersion: 2
+        x: 900
+        y: 326
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba036fec6c3a3d150800000000000000
+      internalID: 5896236411429204139
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_70
+      rect:
+        serializedVersion: 2
+        x: 1022
+        y: 292
+        width: 38
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eed6f9ed73b34b9c0800000000000000
+      internalID: -3912437065133888018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_71
+      rect:
+        serializedVersion: 2
+        x: 1067
+        y: 287
+        width: 36
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7ea273a49e33704d0800000000000000
+      internalID: -3168506735766328601
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_72
+      rect:
+        serializedVersion: 2
+        x: 855
+        y: 288
+        width: 36
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5ecfca3257a2645e0800000000000000
+      internalID: -1925805108056228635
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_73
+      rect:
+        serializedVersion: 2
+        x: 892
+        y: 271
+        width: 22
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0eb5afda96a164670800000000000000
+      internalID: 8522528386037996512
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_74
+      rect:
+        serializedVersion: 2
+        x: 920
+        y: 287
+        width: 39
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d8cdfc458ab74ab0800000000000000
+      internalID: -5023841777623381805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PerformanceNotice_75
+      rect:
+        serializedVersion: 2
+        x: 961
+        y: 271
+        width: 39
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1fd8aa51811d38e40800000000000000
+      internalID: 5657595458280394225
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      PerformanceNotice_0: -579259257817262227
+      PerformanceNotice_1: -591220312581485995
+      PerformanceNotice_10: -5931642037158993395
+      PerformanceNotice_11: 4215633736658942926
+      PerformanceNotice_12: 3258682237196217967
+      PerformanceNotice_13: -2991306657601005888
+      PerformanceNotice_14: -3452178774026903384
+      PerformanceNotice_15: 382012440377996638
+      PerformanceNotice_16: -8749744625769469803
+      PerformanceNotice_17: 7687779927655097017
+      PerformanceNotice_18: 7541951942512191203
+      PerformanceNotice_19: -5322314538895773343
+      PerformanceNotice_2: -3715317496412311599
+      PerformanceNotice_20: 3027895017479763532
+      PerformanceNotice_21: 5676670011993373929
+      PerformanceNotice_22: -8635984689462593114
+      PerformanceNotice_23: -2972546814262461121
+      PerformanceNotice_24: 1487048550607831394
+      PerformanceNotice_25: 4548067712720606431
+      PerformanceNotice_26: -8969387241256959579
+      PerformanceNotice_27: -4185968220053499951
+      PerformanceNotice_28: 4642387420268190399
+      PerformanceNotice_29: -3693607173294430668
+      PerformanceNotice_3: 176923131030890424
+      PerformanceNotice_30: 9174865808486544952
+      PerformanceNotice_31: -2731638200194817965
+      PerformanceNotice_32: -2520423825671577362
+      PerformanceNotice_33: -8506130567663228051
+      PerformanceNotice_34: 2388082815292070676
+      PerformanceNotice_35: 6065826884855356173
+      PerformanceNotice_36: 8646234164068636004
+      PerformanceNotice_37: -8426904449900721940
+      PerformanceNotice_38: 4547178830071322663
+      PerformanceNotice_39: -5854386892520187625
+      PerformanceNotice_4: 9177367026027523356
+      PerformanceNotice_40: 388907901265280278
+      PerformanceNotice_41: 423585573890438171
+      PerformanceNotice_42: 471420879815413690
+      PerformanceNotice_43: -4060504348747214356
+      PerformanceNotice_44: 2972568622055301530
+      PerformanceNotice_45: -489945773795219360
+      PerformanceNotice_46: -4566841197423144368
+      PerformanceNotice_47: -1473437158095595721
+      PerformanceNotice_48: 1323991178219595556
+      PerformanceNotice_49: 8774129258053865606
+      PerformanceNotice_5: -2155884971513835459
+      PerformanceNotice_50: -4428473767839954283
+      PerformanceNotice_51: -3018767635676221520
+      PerformanceNotice_52: 2834130135400589609
+      PerformanceNotice_53: 3419923663105407163
+      PerformanceNotice_54: 232689133325982791
+      PerformanceNotice_55: -8662209529393434197
+      PerformanceNotice_56: 2303426096773350742
+      PerformanceNotice_57: 8154784632552743895
+      PerformanceNotice_58: 318585612269540683
+      PerformanceNotice_59: 3350938123279394601
+      PerformanceNotice_6: -7052283298380958467
+      PerformanceNotice_60: -3478050243903207253
+      PerformanceNotice_61: -6778042226873492312
+      PerformanceNotice_62: -5014581186910295480
+      PerformanceNotice_63: 6357947828948755618
+      PerformanceNotice_64: -7499486323622414074
+      PerformanceNotice_65: 3123106630727178413
+      PerformanceNotice_66: 2150181988625749493
+      PerformanceNotice_67: 5285678038998391150
+      PerformanceNotice_68: 7491220085027954378
+      PerformanceNotice_69: 5896236411429204139
+      PerformanceNotice_7: -948414899643656698
+      PerformanceNotice_70: -3912437065133888018
+      PerformanceNotice_71: -3168506735766328601
+      PerformanceNotice_72: -1925805108056228635
+      PerformanceNotice_73: 8522528386037996512
+      PerformanceNotice_74: -5023841777623381805
+      PerformanceNotice_75: 5657595458280394225
+      PerformanceNotice_8: 8694368774429440448
+      PerformanceNotice_9: -2056045877559161823
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
