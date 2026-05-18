@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: d949d61131fcae54c97d14764a7ed8e9
+guid: 6ad9537a8efff45428eb512a0a10c87b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8330829300997504501
-    second: TITLE_SCREEN_0
+      213: -8951333552680723447
+    second: TITEL_SCREEN_BG_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,24 +96,11 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: TITLE_SCREEN_0
+      name: TITEL_SCREEN_BG_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5fd3f525c1d0d9370800000000000000
-      internalID: 8330829300997504501
+      spriteID: 90c1e6e5f8976c380800000000000000
+      internalID: -8951333552680723447
       vertices: []
       indices: 
       edges: []
@@ -148,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      TITLE_SCREEN_0: 8330829300997504501
+      TITEL_SCREEN_BG_0: -8951333552680723447
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

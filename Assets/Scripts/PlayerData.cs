@@ -137,8 +137,8 @@ public class PlayerData : MonoBehaviour {
 			return;
 		}
 
-		if (rightButton && lastCrankWasRight) {
-			Debug.Log("Pressed right crank but last crank was also right, ignoring.");
+		if (rightButton && lastCrankWasRight || !rightButton && !lastCrankWasRight) {
+			Debug.Log("Pressed crank but last crank was also the same button, ignoring.");
 			return;
 		}
 
