@@ -12,12 +12,13 @@ public class EnemyController : MonoBehaviour {
 	private static readonly int          IsWalking = Animator.StringToHash("isWalking");
 	private static readonly int          Fade      = Shader.PropertyToID("_Fade");
 	private static readonly int          Attack    = Animator.StringToHash("Attack");
+	private static readonly int          IsHurting = Animator.StringToHash("isHurting");
 
 	private Rigidbody2D rb;
 
 	[Header("Enemy Options")]
 	[SerializeField] private bool isGrounded, isChasing, facingRight, flyingEnemy;
-	[SerializeField] private float     detectionRange, baseSpeed,   maxHealth,  floatHeight, startPathfindDistance;
+	[SerializeField] private float     detectionRange, baseSpeed,   maxHealth,  floatHeight, startPathfindDistance, flashTimeAfterHurt;
 	[SerializeField] private Transform lookPosition,   groundCheck, borderLeft, borderRight;
 	[SerializeField] private LayerMask groundLayer;
 
@@ -43,7 +44,7 @@ public class EnemyController : MonoBehaviour {
 	private Animator animator;
 	private Vector2? target;
 	private Vector3 teleportPoint, pathFindPoint, borderLeftPos, borderRightPos, spawnPoint;
-	private float health, enemySpeed;
+	private float health, enemySpeed, flashTimeRemaining;
 	private bool canTeleport;
 	private int playerCollisionCount;
 	private bool collidingWithPlayer;
@@ -104,11 +105,16 @@ public class EnemyController : MonoBehaviour {
 		} else {
 			if (Vector3.Distance(transform.position, PlayerData.Instance.gameObject.transform.position) <
 			    startPathfindDistance) GetComponent<AIPath>().canMove = true;
+			else GetComponent<AIPath>().canMove                       = false;
 			TryDealDamageToPlayer();
 		}
 
 
 		animationSfxRoutineState ??= StartCoroutine(AnimationSfxSyncRoutine());
+		
+		print(flashTimeRemaining);
+		animator.SetBool(IsHurting, flashTimeRemaining > 0);
+		flashTimeRemaining -= Time.deltaTime;
 	}
 
 	private void FixedUpdate() {
@@ -249,8 +255,8 @@ public class EnemyController : MonoBehaviour {
 
 
 	public void UpdateHealth(float amount) {
-		health -= amount;
-
+		health             -= amount;
+		flashTimeRemaining =  flashTimeAfterHurt;
 		if (health <= 0) {
 			deathHandlerRoutineState = StartCoroutine(DeathHandler());
 		}
@@ -295,8 +301,9 @@ public class EnemyController : MonoBehaviour {
 		capsuleCollider.enabled = true;
 		rb.bodyType             = RigidbodyType2D.Dynamic;
 		animator.SetBool(IsWalking, true);
-
-		animationSfxRoutineState ??= StartCoroutine(AnimationSfxSyncRoutine());
+		
+		StopCoroutine(AnimationSfxSyncRoutine());
+		animationSfxRoutineState = StartCoroutine(AnimationSfxSyncRoutine());
 	}
 
 	private void OnDrawGizmos() {

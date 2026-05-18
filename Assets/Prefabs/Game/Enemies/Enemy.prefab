@@ -120,9 +120,11 @@ MonoBehaviour:
   facingRight: 1
   flyingEnemy: 0
   detectionRange: 10
-  baseSpeed: 2
+  baseSpeed: 5
   maxHealth: 250
   floatHeight: 0
+  startPathfindDistance: 0
+  flashTimeAfterHurt: 0.1
   lookPosition: {fileID: 2614677539902940201}
   groundCheck: {fileID: 2793618837586593339}
   borderLeft: {fileID: 4007710872548569465}
@@ -130,9 +132,15 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
-  animatorName: 
-  soundInterval: 0
-  flap: {fileID: 0}
+  sfxEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  animatorParameterName: 
+  syncInterval: 0
   teleportCooldown: 1.2
   slowDistance: 2
   slowFactor: 0.1
@@ -162,7 +170,7 @@ Transform:
   m_GameObject: {fileID: 3548537800052265981}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -24.2, y: -3.7, z: 0}
+  m_LocalPosition: {x: -29, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -255,7 +263,7 @@ Transform:
   m_GameObject: {fileID: 5638678712560425188}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 21.1, y: -3.8, z: 0}
+  m_LocalPosition: {x: 24.6, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

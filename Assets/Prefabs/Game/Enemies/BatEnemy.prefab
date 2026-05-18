@@ -557,6 +557,7 @@ MonoBehaviour:
   maxHealth: 100
   floatHeight: 6
   startPathfindDistance: 20
+  flashTimeAfterHurt: 0.1
   lookPosition: {fileID: 2426106113358387362}
   groundCheck: {fileID: 7368174170273588092}
   borderLeft: {fileID: 857791272857076343}
