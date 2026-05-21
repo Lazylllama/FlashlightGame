@@ -5133,6 +5133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1680658186630145603}
   - component: {fileID: 3189404332023079586}
+  - component: {fileID: 7009043201615415363}
   m_Layer: 0
   m_Name: Wall
   m_TagString: Untagged
@@ -5175,6 +5176,59 @@ MonoBehaviour:
   unbroken: {fileID: 1465632840453410724}
   broken: {fileID: 8633322129508463742}
   hitCollider: {fileID: 6562453809602542454}
+--- !u!114 &7009043201615415363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7029489344527969019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineImpulseSource
+  ImpulseDefinition:
+    ImpulseChannel: 1
+    ImpulseShape: 4
+    CustomImpulseShape:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    ImpulseDuration: 1.28
+    ImpulseType: 2
+    DissipationRate: 0.133
+    RawSignal: {fileID: 0}
+    AmplitudeGain: 1
+    FrequencyGain: 1
+    RepeatMode: 0
+    Randomize: 1
+    TimeEnvelope:
+      AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      AttackTime: 0
+      SustainTime: 0.2
+      DecayTime: 0.7
+      ScaleWithImpact: 1
+      HoldForever: 0
+    ImpactRadius: 100
+    DirectionMode: 0
+    DissipationMode: 2
+    DissipationDistance: 762.96
+    PropagationSpeed: 527.54
+  DefaultVelocity: {x: 0.49, y: 0.36, z: 0.48}
 --- !u!1 &7343195950614077861
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class WallManager : MonoBehaviour {
@@ -14,10 +15,12 @@ public class WallManager : MonoBehaviour {
 	private bool isInitialized = false;
 
 	//? Refs
-	private ParticleSystem ps;
+	private ParticleSystem           ps;
+	private CinemachineImpulseSource impulseSource;
 
 	private void Awake() {
-		ps = GetComponentInChildren<ParticleSystem>();
+		ps            = GetComponentInChildren<ParticleSystem>();
+		impulseSource = GetComponent<CinemachineImpulseSource>();
 	}
 
 	private void Update() {
@@ -32,6 +35,7 @@ public class WallManager : MonoBehaviour {
 	private void OpenWall(string _id) {
 		if (id != _id) return;
 		ps.Play();
+		impulseSource.GenerateImpulse();
 		StartCoroutine(Delay());
 	}
 

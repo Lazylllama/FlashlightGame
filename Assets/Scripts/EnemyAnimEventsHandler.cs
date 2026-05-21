@@ -9,7 +9,7 @@ public class EnemyAnimEventsHandler : MonoBehaviour {
 
 	private void Start() {
 		impulseSource   = GetComponent<CinemachineImpulseSource>();
-		enemyController = GetComponentInParent<EnemyController>() ;
+		enemyController = GetComponentInParent<EnemyController>();
 		playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
 	}
 
@@ -31,5 +31,13 @@ public class EnemyAnimEventsHandler : MonoBehaviour {
 
 	public void FlapSound() {
 		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.enemyFlap, transform.position);
+	}
+
+	public void BatHurt() {
+		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.enemyFlyingHurt, transform.position);
+	}
+
+	public void BearHurt() {
+		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.bearHurt, transform.position);
 	}
 }

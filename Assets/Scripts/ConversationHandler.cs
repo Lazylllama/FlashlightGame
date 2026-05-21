@@ -17,6 +17,8 @@ public struct Conversation {
 	public             string[] dialogue;
 	public             bool     preventMovement;
 	public             bool     finnIncluded;
+	public             bool     finnAfraid;
+	public             int      finnAfraidIndex;
 	public             bool     otherPartStart;
 	public             bool     otherPartHolyOverlay;
 	[CanBeNull] public Sprite   otherPartSprite;
@@ -40,6 +42,7 @@ public class ConversationHandler : SerializedMonoBehaviour {
 	private Color    gradientColor;
 
 	[SerializeField] private Sprite playerSprite;
+	[SerializeField] private Sprite playerAfraidSprite;
 
 	//? Settings
 	[Header("Settings")]
@@ -54,7 +57,7 @@ public class ConversationHandler : SerializedMonoBehaviour {
 	[OdinSerialize] private readonly Dictionary<string, Conversation> Conversations = new();
 
 	//? States
-	public  bool pressedProceed;
+	public bool pressedProceed;
 
 	#endregion
 
@@ -114,7 +117,7 @@ public class ConversationHandler : SerializedMonoBehaviour {
 		}
 
 		Debug.Log($"Starting conversation: {conversationId}");
-		
+
 		StartCoroutine(StartConversationRoutine(conversationId));
 	}
 
@@ -137,7 +140,11 @@ public class ConversationHandler : SerializedMonoBehaviour {
 			                                      { otherPartStart: false };
 
 			//? Select the correct first sprite
-			normalImage.sprite      = conversation.otherPartStart ? conversation.otherPartSprite : playerSprite;
+			normalImage.sprite = conversation.otherPartStart
+				                     ? conversation.otherPartSprite
+				                     : (conversation is { finnAfraid: true, finnAfraidIndex: 0 }
+					                        ? playerAfraidSprite
+					                        : playerSprite);
 			holyOverlayImage.sprite = conversation.otherPartSprite;
 		} else {
 			//? Clear textboxes for next time
@@ -193,8 +200,12 @@ public class ConversationHandler : SerializedMonoBehaviour {
 			PlayerData.Instance.PreventMovement = start;
 	}
 
-	private void CharacterSwap(bool toFinn, Conversation conversation) {
-		normalImage.sprite       = toFinn ? playerSprite : conversation.otherPartSprite;
+	private void CharacterSwap(bool toFinn, Conversation conversation, int nextPartIndex) {
+		normalImage.sprite = toFinn
+			                     ? (conversation.finnAfraid && (nextPartIndex - 1) == conversation.finnAfraidIndex
+				                        ? playerAfraidSprite
+				                        : playerSprite)
+			                     : conversation.otherPartSprite;
 		normalImage.enabled      = toFinn || !conversation.otherPartHolyOverlay;
 		holyOverlayImage.enabled = !toFinn && conversation.otherPartHolyOverlay;
 
@@ -309,7 +320,7 @@ public class ConversationHandler : SerializedMonoBehaviour {
 			yield return WaitForPlayer();
 
 			if (conversation is not { finnIncluded: true, otherPartStart: true }) continue;
-			CharacterSwap(otherPartSpeaking, conversation);
+			CharacterSwap(otherPartSpeaking, conversation, nextPartIndex);
 			otherPartSpeaking = !otherPartSpeaking;
 		}
 

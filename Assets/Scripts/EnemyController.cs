@@ -18,8 +18,9 @@ public class EnemyController : MonoBehaviour {
 
 	[Header("Enemy Options")]
 	[SerializeField] private bool isGrounded, isChasing, facingRight, flyingEnemy;
-	[SerializeField] private float     detectionRange, baseSpeed,   maxHealth,  floatHeight, startPathfindDistance, flashTimeAfterHurt;
-	[SerializeField] private Transform lookPosition,   groundCheck, borderLeft, borderRight;
+	[SerializeField]
+	private float detectionRange, baseSpeed, maxHealth, floatHeight, startPathfindDistance, flashTimeAfterHurt;
+	[SerializeField] private Transform lookPosition, groundCheck, borderLeft, borderRight;
 	[SerializeField] private LayerMask groundLayer;
 
 	[Header("Animation/SFX Sync")]
@@ -109,10 +110,8 @@ public class EnemyController : MonoBehaviour {
 			TryDealDamageToPlayer();
 		}
 
-
 		animationSfxRoutineState ??= StartCoroutine(AnimationSfxSyncRoutine());
-		
-		print(flashTimeRemaining);
+
 		animator.SetBool(IsHurting, flashTimeRemaining > 0);
 		flashTimeRemaining -= Time.deltaTime;
 	}
@@ -301,7 +300,7 @@ public class EnemyController : MonoBehaviour {
 		capsuleCollider.enabled = true;
 		rb.bodyType             = RigidbodyType2D.Dynamic;
 		animator.SetBool(IsWalking, true);
-		
+
 		StopCoroutine(AnimationSfxSyncRoutine());
 		animationSfxRoutineState = StartCoroutine(AnimationSfxSyncRoutine());
 	}
