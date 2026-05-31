@@ -110,6 +110,7 @@ public class EnemyController : MonoBehaviour {
 			TryDealDamageToPlayer();
 		}
 
+		// This might be broken isch
 		animationSfxRoutineState ??= StartCoroutine(AnimationSfxSyncRoutine());
 
 		animator.SetBool(IsHurting, flashTimeRemaining > 0);
@@ -299,6 +300,7 @@ public class EnemyController : MonoBehaviour {
 		rb.bodyType             = RigidbodyType2D.Dynamic;
 		animator.SetBool(IsWalking, true);
 
+		// I dont trust this, somthing is not right hmmm
 		StopCoroutine(AnimationSfxSyncRoutine());
 		animationSfxRoutineState = StartCoroutine(AnimationSfxSyncRoutine());
 	}
