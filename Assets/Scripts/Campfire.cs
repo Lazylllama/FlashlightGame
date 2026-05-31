@@ -63,6 +63,7 @@ public class Campfire : MonoBehaviour {
 		// yield return ScreenFader.Instance.FadeIn(0.3f);
 		// yield return new WaitForSeconds(0.2f);
 
+		PlayerData.Instance.UpdateHealth(+100);
 		UIController.Instance.SaveGame();
 		isResting = false;
 	}

@@ -10,6 +10,7 @@ public class PlayerData : MonoBehaviour {
 
 	public static  PlayerData   Instance;
 	private static DebugHandler Debug;
+
 	//* Respawn *//
 	[SerializeField] private List<EnemyController> enemyControllers;
 
@@ -44,23 +45,6 @@ public class PlayerData : MonoBehaviour {
 	public bool  IsInvulnerable    { get; private set; } = false;
 	public float CrankSpeed        { get; set; }         = 0f;
 	public bool  IsCranking        => CrankSpeed > 0f;
-
-	//* Mood States *//
-	//? Relieved = player is at a checkpoint.
-	//? Frightened = player is/was recently in danger.
-	public bool Frightened { get; set; } = false;
-	public bool Relieved   { get; set; } = false;
-
-	//* Movement *//
-	public float MovementMultiplier => Frightened ? 1.25f : 1f;
-	public int InjuryLevel =>
-		Health switch {
-			> 75 => 0,
-			> 50 => 1,
-			> 25 => 2,
-			> 0  => 3,
-			_    => 4
-		};
 
 	//* Options *//
 	[SerializeField] private float batteryDrainInterval = 1f;
@@ -213,6 +197,8 @@ public class PlayerData : MonoBehaviour {
 		Health             = 100;
 		Battery            = 100;
 		transform.position = saveData.checkpointPosition;
+
+		PreventMovement = false;
 
 		UIController.Instance.UpdateUI();
 	}

@@ -177,10 +177,8 @@ public class EnemyController : MonoBehaviour {
 			enemySpeed = baseSpeed;
 			if (facingRight && isGrounded) {
 				facingRight = false;
-				print("Changed facingRight here!");
 			} else if (!facingRight && isGrounded) {
 				facingRight = true;
-				print("Changed facingRight here!");
 			}
 		}
 	}

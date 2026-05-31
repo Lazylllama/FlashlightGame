@@ -319,7 +319,7 @@ public class ConversationHandler : SerializedMonoBehaviour {
 			if (conversation.dialogue.Length <= nextPartIndex) continue;
 			yield return WaitForPlayer();
 
-			if (conversation is not { finnIncluded: true, otherPartStart: true }) continue;
+			if (!(conversation.finnIncluded && conversation.otherPartSprite)) continue;
 			CharacterSwap(otherPartSpeaking, conversation, nextPartIndex);
 			otherPartSpeaking = !otherPartSpeaking;
 		}
@@ -335,7 +335,7 @@ public class ConversationHandler : SerializedMonoBehaviour {
 			yield return new WaitForSecondsRealtime(3f);
 			UIController.Instance.FadeToBlack(20f);
 			yield return new WaitForSecondsRealtime(4f);
-			SceneManager.LoadScene("Main");
+			SceneManager.LoadScene("CreditsRoll");
 		}
 
 		Debug.Log("Finished conversation");
