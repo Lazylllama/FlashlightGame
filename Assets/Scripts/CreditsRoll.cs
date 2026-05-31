@@ -7,6 +7,9 @@ public class CreditsRoll : MonoBehaviour {
 	private void Start() {
 		LeanTween.moveY(gameObject, transform.position.y + (movementDist * 1.5f), 20f)
 		         .setEase(LeanTweenType.linear)
-		         .setOnComplete(() => { SceneManager.LoadScene("Main"); });
+		         .setOnComplete(() => {
+			                        Debug.Log("Thank you player one");
+			                        SceneManager.LoadScene("Main");
+		                        });
 	}
 }
