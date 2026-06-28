@@ -53,7 +53,7 @@ Please see the LICENSE.md files for full details.
 
 ### Development
 - **Lead Programmer** | Simon Klövdahl [(@Lazylllama)](https://github.com/Lazylllama)
-- **Technical Design** | Thino Ivarsson [(@Th1n0-I)](https://github.com/Lazylllama)
+- **Technical Design** | Thino Ivarsson [(@Th1n0-I)](https://github.com/Th1n0-I)
 - **Level & Features** | Liam Karlsson [(@LKarLzs0n)](https://github.com/LKarLzs0n)
 - **Effects Design** | Aziz Mushtaq [(@ImWazi)](https://github.com/ImWazi)
 
